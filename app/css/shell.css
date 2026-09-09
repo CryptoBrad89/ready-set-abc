@@ -1,0 +1,573 @@
+/* Ready Set ABC — shell + tactile primitives
+   Header chrome, tabs, the pillow/CTA/card vocabulary every screen reuses.
+   Landscape-first; the kid stage does not scroll. */
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--on-surface);
+  background: var(--surface);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Stitch body-md is 18px/600 Nunito; the browser default 16px reads thin next
+   to the pillow chrome. On body only — html keeps its size so nothing that
+   resolves against the root drifts. Clamped for short Chromebooks. */
+body { font-size: clamp(15px, 1.9vh, 18px); }
+
+button, input, select { font-family: inherit; color: inherit; }
+button { border: 0; background: none; cursor: pointer; padding: 0; }
+
+.app {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* Ambient blobs: the warm playground wash behind every screen. */
+.blobs { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+.blobs i {
+  position: absolute;
+  display: block;
+  border-radius: var(--r-full);
+  filter: blur(60px);
+}
+.blob-1 { top: -8vh;  left: -6vw;  width: 40vw; height: 40vw; background: var(--sunny-yellow-tint); opacity: .9; }
+.blob-2 { top: 20vh;  right: -8vw; width: 46vw; height: 46vw; background: var(--sky-blue-tint);    opacity: .75; }
+.blob-3 { bottom: -12vh; left: 28vw; width: 44vw; height: 30vw; background: var(--mint-green-tint); opacity: .7; }
+
+/* ---------------------------------------------------------------- header */
+.chrome {
+  position: relative;
+  z-index: 5;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  height: clamp(80px, 11vh, 96px);
+  padding: 0 var(--gutter);
+  background: rgba(255, 241, 234, .92);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 4px 16px rgba(74, 59, 50, .06);
+}
+
+.brand { display: flex; align-items: center; gap: var(--space-sm); background: none; }
+.brand-paw {
+  width: clamp(44px, 6.4vh, 56px);
+  height: clamp(44px, 6.4vh, 56px);
+  border-radius: var(--r-full);
+  background: var(--sunny-yellow);
+  border: 2px solid var(--surface-container-lowest);
+  box-shadow: 0 4px 0 var(--sunny-yellow-press);
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+.brand-paw svg { width: 62%; height: 62%; }
+.brand-words { display: flex; flex-direction: column; text-align: left; line-height: 1.1; }
+.brand-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(20px, 2.6vh, 28px);
+  color: var(--primary);
+  letter-spacing: .01em;
+}
+.brand-sub {
+  font-size: clamp(10px, 1.4vh, 14px);
+  font-weight: 700;
+  color: var(--on-surface-variant);
+}
+
+/* Tabs: Play Cards · ABC Trail · Star Pouch — Stitch: white pill, yellow squircle */
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0 auto;
+  padding: 8px 16px;
+  background: var(--surface-container-lowest);
+  border-radius: var(--r-full);
+  box-shadow: 0 2px 8px rgba(74, 59, 50, .05);
+}
+.tab {
+  min-height: 40px;
+  padding: 8px 16px;
+  /* Stitch nav pills are rounded-xl (3rem): on a 40px tab that reads as a
+     full pill, and it stays a squircle at whiteboard height. Never 16px. */
+  border-radius: var(--r-xl);
+  font-size: clamp(14px, 1.8vh, 18px);
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background var(--dur-press), color var(--dur-press);
+  white-space: nowrap;
+}
+.tab svg { width: 20px; height: 20px; flex: 0 0 auto; display: none; }
+.tab:hover { background: var(--surface-container-high); color: var(--on-surface); }
+.tab[aria-current="page"] {
+  background: var(--sunny-yellow);
+  color: var(--on-primary-container);
+  font-weight: 700;
+  box-shadow: none;
+  border-radius: var(--r-xl);
+}
+.tabs[hidden] { display: none; }
+.tab-label { display: inline; }
+@media (max-width: 780px) {
+  .tabs { padding: 6px 8px; gap: 4px; }
+  .tab { padding: 8px 12px; min-height: 40px; }
+  .tab svg { display: block; }
+  .tab-label { display: none; }
+}
+
+.chrome-right { display: flex; align-items: center; gap: var(--space-sm); margin-left: auto; flex-shrink: 0; }
+.tabs { min-width: 0; }
+
+/* Independent Music / SFX / Voice toggles */
+.audio-cluster {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  background: var(--surface-container);
+  border: 1px solid var(--surface-container-highest);
+  border-radius: var(--r-full);
+}
+.audio-toggle {
+  width: 40px; height: 40px;
+  border-radius: var(--r-full);
+  background: var(--surface-container-lowest);
+  color: var(--outline);
+  display: grid;
+  place-items: center;
+  position: relative;
+  transition: color var(--dur-press), background var(--dur-press);
+}
+.audio-toggle svg { width: 21px; height: 21px; }
+.audio-toggle[aria-pressed="true"] { color: var(--primary); background: var(--sunny-yellow-tint); }
+.audio-toggle[aria-pressed="false"]::after {
+  content: "";
+  position: absolute;
+  left: 8px; right: 8px; top: 50%;
+  height: 2.5px;
+  border-radius: 2px;
+  background: var(--coral-pop);
+  transform: rotate(-32deg);
+}
+
+/* Who is playing (classroom mode) */
+.who-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px 5px 5px;
+  background: var(--surface-container-lowest);
+  border-radius: var(--r-full);
+  box-shadow: var(--shadow-1);
+  font-weight: 800;
+  font-size: clamp(12px, 1.6vh, 17px);
+}
+.who-face {
+  width: 34px; height: 34px;
+  border-radius: var(--r-full);
+  display: grid; place-items: center;
+  font-size: 19px;
+}
+
+/* Grown-Ups: low contrast slate + lock, deliberately unattractive to a 3yo */
+.gate-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: var(--r-xl);   /* Stitch: rounded-xl, same family as the tabs */
+  background: var(--surface-container-highest);
+  color: var(--gate-slate);
+  font-size: 14px;
+  font-weight: 600;
+}
+.gate-btn svg { width: 17px; height: 17px; }
+.gate-btn:hover { background: var(--surface-container-high); color: var(--on-surface-variant); }
+@media (max-width: 700px) { .gate-btn .gate-label { display: none; } }
+
+/* ----------------------------------------------------------------- stage */
+.stage {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.screen {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md) var(--gutter) var(--space-lg);
+  gap: var(--space-md);
+}
+@media (max-height: 700px) {
+  .screen { padding: var(--space-sm) var(--gutter) var(--space-sm); gap: var(--space-sm); }
+}
+
+.pop-in { animation: popIn 320ms var(--ease-pillow) both; }
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(10px) scale(.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ------------------------------------------------------ pillow primitives */
+/* Solid colour top face + solid darker underside lip. The lip is a 0-blur
+   box-shadow so 48px squircles still read as chunky toys (a border-bottom
+   on this radius collapses to a hairline). Press = drop + lip collapse. */
+.pillow {
+  --face: var(--card-cloud);
+  --edge: var(--lip-idle);
+  background: var(--face);
+  border: 0;
+  border-radius: var(--r-md);
+  box-shadow: 0 var(--lip) 0 var(--edge), var(--shadow-2);
+  transition: transform var(--dur-press) var(--ease-pillow),
+              box-shadow var(--dur-press),
+              background var(--dur-press);
+}
+.pillow:active:not([disabled]):not(.locked),
+.pillow.is-pressed:not(.locked) {
+  transform: translateY(var(--press));
+  box-shadow: 0 var(--lip-pressed) 0 var(--edge), var(--shadow-1);
+}
+
+/* Giant primary action: sunny yellow face, 8px #D99B00 lip, breathing idle. */
+.cta {
+  --face: var(--sunny-yellow);
+  --edge: var(--sunny-yellow-press);
+  --lip: var(--lip-cta);
+  --press: var(--press-cta);
+  min-height: max(var(--target-min), 88px);
+  padding: 0 var(--space-xl);
+  border-radius: var(--r-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(18px, 2.6vh, 28px);
+  color: var(--on-primary-container);
+  box-shadow: 0 var(--lip) 0 var(--edge), var(--shadow-2);
+}
+.cta:active:not([disabled]),
+.cta.is-pressed:not([disabled]) {
+  box-shadow: 0 var(--lip-pressed) 0 var(--edge), var(--shadow-1);
+}
+.cta--quiet {
+  --face: var(--surface-container-lowest);
+  --edge: var(--surface-container-highest);
+  color: var(--on-surface);
+}
+.cta[disabled] { opacity: .5; cursor: default; }
+.cta svg { width: 1.15em; height: 1.15em; flex: 0 0 auto; }
+
+.breathe:not(:active):not(.is-pressed) { animation: breathe 2.4s ease-in-out infinite; }
+.breathe:active, .breathe.is-pressed { animation: none; }
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.03); }
+}
+
+/* Small pill chips */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--r-full);
+  background: var(--surface-container-low);
+  font-size: clamp(12px, 1.6vh, 17px);
+  font-weight: 700;
+  color: var(--on-surface-variant);
+}
+.chip svg { width: 18px; height: 18px; }
+.chip--gold { background: var(--sunny-yellow-tint); color: var(--primary); }
+.chip--sky  { background: var(--sky-blue-tint);     color: var(--secondary); }
+.chip--mint { background: var(--mint-green-tint);   color: var(--tertiary); }
+
+.stars { display: inline-flex; align-items: center; gap: 3px; color: var(--star-gold); }
+.stars svg { width: 1em; height: 1em; }
+.stars .off { color: var(--outline-variant); opacity: .45; }
+
+/* ------------------------------------------------------------ Lucy */
+/* Golden retriever, real name, talks and moves.
+   Pose (idle / teaching / celebrating) is independent of talking so
+   glasses and bows stay on while her mouth yaps. */
+.lucy { display: block; width: 100%; height: 100%; overflow: visible; }
+.lucy .lucy-tail { transform-origin: 118px 150px; animation: wag 900ms ease-in-out infinite; }
+.lucy .lucy-ear-l { transform-origin: 62px 62px; animation: earL 2.6s ease-in-out infinite; }
+.lucy .lucy-ear-r { transform-origin: 138px 62px; animation: earR 2.6s ease-in-out infinite; }
+.lucy .lucy-head  { transform-origin: 100px 110px; animation: tilt 3.4s ease-in-out infinite; }
+.lucy .lucy-eyes  { transform-origin: 100px 96px; animation: blink 4.4s ease-in-out infinite; }
+.lucy .lucy-glasses,
+.lucy .lucy-bows,
+.lucy .lucy-cap,
+.lucy .lucy-collar-rainbow,
+.lucy .lucy-bone,
+.lucy .lucy-pack,
+.lucy .lucy-sparkles { display: none; }
+
+/* Lucy's closet (js/closet.js → rsabc.outfit). data-wear is independent of
+   the pose: teaching Lucy keeps her spectacles and still wears the cap. */
+.lucy[data-wear="bows"] .lucy-bows,
+.lucy[data-wear="specs"] .lucy-glasses,
+.lucy[data-wear="cap"] .lucy-cap,
+.lucy[data-wear="rainbow"] .lucy-collar-rainbow,
+.lucy[data-wear="bone"] .lucy-bone,
+.lucy[data-wear="pack"] .lucy-pack { display: block; }
+.lucy[data-wear="bone"] .lucy-bone { animation: boneBob 2.6s ease-in-out infinite; transform-origin: 160px 150px; }
+@keyframes boneBob { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-6px) rotate(4deg); } }
+
+.lucy[data-pose="idle"] .lucy-tail { animation-duration: 900ms; }
+.lucy[data-pose="teaching"] .lucy-glasses { display: block; }
+.lucy[data-pose="teaching"] .lucy-head { animation: teachNod 2.8s ease-in-out infinite; }
+.lucy[data-pose="teaching"] .lucy-tail { animation-duration: 1400ms; }
+.lucy[data-pose="celebrating"] .lucy-bows,
+.lucy[data-pose="celebrating"] .lucy-sparkles { display: block; }
+.lucy[data-pose="celebrating"] { animation: lucyBounce 700ms var(--ease-pillow) infinite; }
+.lucy[data-pose="celebrating"] .lucy-tail { animation-duration: 520ms; }
+.lucy[data-talking="true"] .lucy-mouth { animation: yap 340ms ease-in-out infinite; transform-origin: 100px 128px; }
+
+@keyframes wag  { 0%,100% { transform: rotate(-16deg); } 50% { transform: rotate(18deg); } }
+@keyframes earL { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-7deg); } }
+@keyframes earR { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(7deg); } }
+@keyframes tilt { 0%,100% { transform: rotate(0deg) translateY(0); } 50% { transform: rotate(-3deg) translateY(-3px); } }
+@keyframes teachNod { 0%,100% { transform: rotate(0deg) translateY(0); } 40% { transform: rotate(2deg) translateY(2px); } 70% { transform: rotate(-2deg) translateY(-2px); } }
+@keyframes lucyBounce { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-10px) rotate(2deg); } }
+@keyframes yap { 0%,100% { transform: scaleY(.6); } 50% { transform: scaleY(1.25); } }
+@keyframes blink { 0%, 88%, 100% { transform: scaleY(1); } 92% { transform: scaleY(.08); } }
+@keyframes twinkle { 0%,100% { opacity: .2; transform: scale(.7); } 50% { opacity: 1; transform: scale(1.15); } }
+.lucy .lucy-sparkles circle { animation: twinkle 1.1s ease-in-out infinite; }
+.lucy .lucy-sparkles circle:nth-child(2) { animation-delay: .25s; }
+.lucy .lucy-sparkles circle:nth-child(3) { animation-delay: .55s; }
+
+.lucy-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: var(--r-full);
+  background: var(--stage-lavender);
+  border: 4px solid var(--surface-container-lowest);
+  box-shadow: var(--shadow-2);
+  padding: 0;
+  overflow: visible;
+}
+.lucy-well {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.lucy-well .lucy {
+  position: absolute;
+  width: 168%;
+  height: 168%;
+  left: -34%;
+  top: -8%;
+  pointer-events: none;
+}
+/* Step A / celebrate: rounded-square peach panel, Teacher Lucy badge sits on it. */
+.lucy-stage--card {
+  border-radius: var(--r-xl);
+  background: var(--surface-container);
+  border: 0;
+  box-shadow: inset 0 2px 10px rgba(74, 59, 50, .08), var(--shadow-2);
+}
+.lucy-stage--card .lucy-well .lucy {
+  width: 128%;
+  height: 128%;
+  left: -14%;
+  top: 2%;
+}
+.lucy-stage--circle {
+  border-radius: var(--r-full);
+  background: var(--surface-container-low);
+  border: 4px solid var(--surface-container-lowest);
+}
+
+.bubble,
+.lucy-prompt {
+  position: relative;
+  z-index: 2;
+  background: var(--surface-container-lowest);
+  border-radius: var(--r-md);
+  padding: var(--space-sm) var(--space-lg);
+  box-shadow: var(--shadow-2);
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(14px, 2.1vh, 24px);
+  color: var(--primary);
+  transform: rotate(-1.6deg);
+}
+.bubble p { margin: 0; }
+.bubble .bubble-kicker {
+  font-size: 1.05em;
+  margin-bottom: 2px;
+}
+.bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -9px; left: 50%;
+  width: 18px; height: 18px;
+  background: inherit;
+  transform: translateX(-50%) rotate(45deg);
+  border-radius: 3px;
+}
+.bubble.pulse { animation: bubblePop 260ms var(--ease-pillow); }
+@keyframes bubblePop { from { transform: rotate(-1.6deg) scale(.94); } to { transform: rotate(-1.6deg) scale(1); } }
+
+/* ----------------------------------------------------------- feedback */
+.wobble { animation: wobble 400ms cubic-bezier(.36,.07,.19,.97); }
+@keyframes wobble {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-11px) rotate(-2deg); }
+  40% { transform: translateX(9px) rotate(2deg); }
+  60% { transform: translateX(-6px) rotate(-1deg); }
+  80% { transform: translateX(4px); }
+}
+.leap { animation: leap 520ms var(--ease-pillow); }
+@keyframes leap {
+  0% { transform: translateY(0) scale(1); }
+  40% { transform: translateY(-22px) scale(1.06); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* ------------------------------------------------------------ footer */
+.foot {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: 6px var(--gutter);
+  background: var(--surface-container-low);
+  color: var(--on-surface-variant);
+  font-size: clamp(12px, 1.5vh, 14px);   /* Stitch label-gate */
+  font-weight: 600;
+  box-shadow: 0 -2px 12px rgba(74, 59, 50, .03);
+}
+.foot svg { width: 14px; height: 14px; color: var(--sunny-yellow); vertical-align: -2px; }
+body[data-screen="case"] .foot,
+body[data-screen="picture"] .foot,
+body[data-screen="bonus"] .foot { display: none; }
+@media (max-height: 620px) { .foot { display: none; } }
+
+/* ------------------------------------------------------- rotate nudge */
+.rotate { display: none; }
+@media (orientation: portrait) and (max-width: 900px) {
+  .rotate {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: grid;
+    place-items: center;
+    background: var(--surface);
+    text-align: center;
+    padding: var(--space-xl);
+  }
+  .rotate svg { width: 96px; height: 96px; color: var(--sunny-yellow); }
+  .rotate p {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--primary);
+  }
+}
+
+/* Whiteboard chrome: taller header, bigger tabs, room to tap from the rug.
+   Kid actions use --target-min (140px). Header tabs sit just under that so
+   the chrome still fits; Play / Match / cards go the full 140. */
+html[data-mode="whiteboard"] .chrome { height: clamp(96px, 13vh, 128px); }
+html[data-mode="whiteboard"] .tab {
+  min-height: 72px;
+  font-size: clamp(18px, 2.2vh, 24px);
+  padding: 12px 26px;
+}
+html[data-mode="whiteboard"] .tab svg { display: none; }
+html[data-mode="whiteboard"] .cta,
+html[data-mode="whiteboard"] .play-btn { min-height: var(--target-min); }
+html[data-mode="whiteboard"] .audio-toggle { width: 56px; height: 56px; }
+html[data-mode="whiteboard"] .who-chip { min-height: 56px; padding: 6px 16px 6px 6px; }
+html[data-mode="whiteboard"] .who-face { width: 44px; height: 44px; font-size: 24px; }
+html[data-mode="whiteboard"] .brand-paw { width: 64px; height: 64px; }
+
+/* Optional hide chrome (Grown-Ups → Device, or Shift+H).
+   Tabs, Grown-Ups, sound dots, who-chip, footer go away. The yellow paw
+   stays so a teacher can long-press into Grown-Ups. Lucy's prompt bubble
+   is never hidden — kids on the rug still see what she said. */
+html[data-chrome="hidden"] .tabs,
+html[data-chrome="hidden"] .brand-words,
+html[data-chrome="hidden"] .audio-cluster,
+html[data-chrome="hidden"] .who-chip,
+html[data-chrome="hidden"] .gate-btn,
+html[data-chrome="hidden"] .foot,
+html[data-chrome="hidden"] .home-status,
+html[data-chrome="hidden"] .home-trust {
+  display: none !important;
+}
+html[data-chrome="hidden"] .chrome {
+  height: auto;
+  min-height: 0;
+  padding: 8px var(--gutter);
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  pointer-events: none;
+}
+html[data-chrome="hidden"] .brand {
+  pointer-events: auto;
+}
+html[data-chrome="hidden"] .brand-paw {
+  width: 56px;
+  height: 56px;
+}
+html[data-chrome="hidden"] .lucy-prompt,
+html[data-chrome="hidden"] .bubble {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Whiteboard / hide-chrome: Lucy and her prompt never leave the board,
+   even on short Chromebooks that otherwise tuck the mascot column. */
+html[data-mode="whiteboard"] .lucy-prompt,
+html[data-mode="whiteboard"] .bubble,
+html[data-chrome="hidden"] .lucy-prompt,
+html[data-chrome="hidden"] .bubble {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+html[data-mode="whiteboard"] .bubble,
+html[data-mode="whiteboard"] .lucy-prompt {
+  font-size: clamp(20px, 2.8vh, 36px);
+  color: var(--on-surface);
+  background: var(--card-cloud);
+  box-shadow: 0 0 0 4px var(--on-surface), var(--shadow-2);
+  padding: var(--space-md) var(--space-lg);
+}

@@ -1,0 +1,30 @@
+{
+  "className": "Ms. Brandy — Pre-K AM",
+  "schoolYear": "2026-2027",
+  "kids": [
+    { "id": "k01", "name": "Ava",     "emoji": "🦊", "color": "#ff8a5c" },
+    { "id": "k02", "name": "Marcus",  "emoji": "🐢", "color": "#4ec3a5" },
+    { "id": "k03", "name": "Sofia",   "emoji": "🦋", "color": "#c48cf0" },
+    { "id": "k04", "name": "Eli",     "emoji": "🐸", "color": "#7fd35f" },
+    { "id": "k05", "name": "Nia",     "emoji": "🦄", "color": "#ff7fa8" },
+    { "id": "k06", "name": "Jonah",   "emoji": "🐳", "color": "#5aa9f0" },
+    { "id": "k07", "name": "Lily",    "emoji": "🌻", "color": "#ffc93c" },
+    { "id": "k08", "name": "Diego",   "emoji": "🦖", "color": "#3fbf8f" },
+    { "id": "k09", "name": "Zara",    "emoji": "🦜", "color": "#ff9f43" },
+    { "id": "k10", "name": "Owen",    "emoji": "🐻", "color": "#b98b62" },
+    { "id": "k11", "name": "Maya",    "emoji": "🐝", "color": "#f2b705" },
+    { "id": "k12", "name": "Theo",    "emoji": "🦁", "color": "#e8a33d" },
+    { "id": "k13", "name": "Iris",    "emoji": "🌈", "color": "#8ec9ff" },
+    { "id": "k14", "name": "Kai",     "emoji": "🦈", "color": "#4fb0c6" },
+    { "id": "k15", "name": "Rosa",    "emoji": "🌹", "color": "#f2678d" },
+    { "id": "k16", "name": "Amir",    "emoji": "🚀", "color": "#7e8cf0" },
+    { "id": "k17", "name": "Ellie",   "emoji": "🐘", "color": "#a0a7b8" },
+    { "id": "k18", "name": "Hank",    "emoji": "🐶", "color": "#d9a05b" },
+    { "id": "k19", "name": "Priya",   "emoji": "🦩", "color": "#ff6f91" },
+    { "id": "k20", "name": "Sam",     "emoji": "🐧", "color": "#6fb3d9" },
+    { "id": "k21", "name": "Nora",    "emoji": "🍓", "color": "#f0567a" },
+    { "id": "k22", "name": "Beau",    "emoji": "🐮", "color": "#9ecb6a" },
+    { "id": "k23", "name": "Tessa",   "emoji": "🦋", "color": "#5ec9c0" },
+    { "id": "k24", "name": "Miles",   "emoji": "🎺", "color": "#f0a04b" }
+  ]
+}

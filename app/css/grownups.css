@@ -1,0 +1,324 @@
+/* Ready Set ABC — Grown-Ups gate + settings sheet.
+   Deliberately calmer than the kid shell: slate, small type, no juice. */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  background: rgba(59, 45, 37, .55);
+  backdrop-filter: blur(6px);
+}
+.overlay[hidden] { display: none; }
+
+/* ------------------------------------------------------------- gate --- */
+.gate-sheet {
+  width: min(440px, 100%);
+  background: var(--surface-container-lowest);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-4);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-xs);
+}
+.gate-lock {
+  width: 62px; height: 62px;
+  border-radius: var(--r-full);
+  background: var(--surface-container-highest);
+  color: var(--gate-slate);
+  display: grid; place-items: center;
+}
+.gate-lock svg { width: 30px; height: 30px; }
+.gate-sheet h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+}
+.gate-sheet p { margin: 0; color: var(--on-surface-variant); font-size: 15px; }
+.gate-challenge {
+  margin: 4px 0;
+  padding: 8px 26px;
+  border-radius: var(--r-md);
+  background: var(--surface-container-low);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--primary);
+}
+.gate-display {
+  letter-spacing: .5em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 30px;
+  min-height: 40px;
+  color: var(--on-surface);
+}
+.gate-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xs);
+  width: 100%;
+}
+.gate-key {
+  min-height: 56px;
+  border-radius: var(--r);
+  background: var(--surface-container);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--on-surface);
+  transition: background var(--dur-press);
+}
+.gate-key:hover { background: var(--surface-container-high); }
+.gate-key:active { background: var(--surface-container-highest); }
+.gate-key.wrong { background: #ffdad6; color: #93000a; }
+.gate-cancel { color: var(--on-surface-variant); font-size: 14px; font-weight: 700; padding: 10px; }
+.gate-hint { color: var(--gate-slate); font-size: 12px; }
+
+/* ------------------------------------------------------------ sheet --- */
+.gu {
+  width: min(1000px, 100%);
+  height: min(88vh, 760px);
+  background: var(--surface-container-low);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.gu-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--surface-container-lowest);
+  border-bottom: 1px solid var(--surface-container-highest);
+}
+.gu-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+}
+.gu-head .gu-sub { color: var(--gate-slate); font-size: 13px; margin-left: 6px; }
+.gu-close {
+  margin-left: auto;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: var(--r-full);
+  background: var(--sunny-yellow);
+  box-shadow: 0 4px 0 var(--sunny-yellow-press);
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--on-surface);
+}
+.gu-close:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--sunny-yellow-press); }
+
+.gu-tabs {
+  display: flex;
+  gap: 6px;
+  padding: var(--space-xs) var(--space-lg) 0;
+  background: var(--surface-container-lowest);
+  overflow-x: auto;
+}
+.gu-tab {
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: var(--r) var(--r) 0 0;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--on-surface-variant);
+  white-space: nowrap;
+}
+.gu-tab[aria-selected="true"] { background: var(--surface-container-low); color: var(--primary); }
+
+.gu-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: var(--space-lg); }
+.gu-panel { display: flex; flex-direction: column; gap: var(--space-md); }
+.gu-card {
+  background: var(--surface-container-lowest);
+  border-radius: var(--r-md);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-1);
+}
+.gu-card h3 {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+}
+.gu-card p.note { margin: 0 0 10px; color: var(--gate-slate); font-size: 13px; }
+
+.gu-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: 10px 0;
+  border-top: 1px solid var(--surface-container);
+}
+.gu-row:first-of-type { border-top: 0; }
+.gu-row .gu-label { font-weight: 800; font-size: 15px; }
+.gu-row .gu-desc { color: var(--gate-slate); font-size: 12.5px; font-weight: 600; }
+
+.seg { display: flex; gap: 4px; background: var(--surface-container); padding: 4px; border-radius: var(--r-full); flex-wrap: wrap; }
+.seg button {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: var(--r-full);
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--on-surface-variant);
+}
+.seg button[aria-pressed="true"] { background: var(--sunny-yellow); color: var(--on-surface); box-shadow: 0 2px 0 var(--sunny-yellow-press); }
+
+.switch {
+  width: 58px; height: 32px;
+  border-radius: var(--r-full);
+  background: var(--surface-container-highest);
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transition: background var(--dur-press);
+  flex: 0 0 auto;
+}
+.switch i { width: 26px; height: 26px; border-radius: var(--r-full); background: #fff; box-shadow: var(--shadow-1); transition: transform var(--dur-press); display: block; }
+.switch[aria-pressed="true"] { background: var(--mint-green); }
+.switch[aria-pressed="true"] i { transform: translateX(26px); }
+
+.gu-btn {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--r);
+  background: var(--surface-container);
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--on-surface-variant);
+}
+.gu-btn:hover { background: var(--surface-container-high); }
+.gu-btn--primary { background: var(--sunny-yellow); color: var(--on-surface); box-shadow: 0 3px 0 var(--sunny-yellow-press); }
+.gu-btn--danger { background: var(--coral-pop-tint); color: var(--coral-pop-press); }
+.gu-actions { display: flex; gap: var(--space-xs); flex-wrap: wrap; margin-top: 10px; }
+/* Reload to finish only exists after a hand-over. Spelled out, not left to the
+   UA sheet: the day .gu-btn grows a `display` this row stops hiding it. */
+.gu-btn[hidden] { display: none; }
+
+.gu-input {
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: var(--r-sm);
+  border: 2px solid var(--surface-container-highest);
+  background: var(--surface-container-lowest);
+  font-weight: 700;
+  font-size: 15px;
+  min-width: 0;
+}
+.gu-input:focus { outline: 3px solid var(--sky-blue); outline-offset: 1px; }
+
+.roster-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+.roster-item {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 8px 10px;
+  background: var(--surface-container-low);
+  border-radius: var(--r-sm);
+  font-weight: 700;
+  font-size: 14px;
+}
+.roster-item-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.roster-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.gu-note {
+  width: 100%;
+  min-height: 44px;
+  resize: vertical;
+  padding: 6px 8px;
+  border-radius: var(--r-sm);
+  border: 2px solid var(--surface-container-highest);
+  background: var(--surface-container-lowest);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+.gu-note:focus { outline: 3px solid var(--sky-blue); outline-offset: 1px; }
+/* The family note is read, not written: bigger type than a roster note,
+   and it never wraps mid-word on a cart Chromebook's narrow sheet. */
+.family-note {
+  min-height: 260px;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 600;
+  white-space: pre-wrap;
+  background: var(--surface-container-lowest);
+  cursor: text;
+}
+.version-pin {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-top: 8px;
+}
+.version-pin strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 14px;
+  word-break: break-all;
+}
+.roster-item .rf {
+  width: 32px; height: 32px;
+  border-radius: var(--r-full);
+  display: grid; place-items: center;
+  font-size: 18px;
+  flex: 0 0 auto;
+}
+.roster-item .rx {
+  margin-left: auto;
+  width: 30px; height: 30px;
+  border-radius: var(--r-full);
+  color: var(--gate-slate);
+  font-weight: 900;
+}
+.roster-item .rx:hover { background: var(--coral-pop-tint); color: var(--coral-pop-press); }
+.roster-item .played { color: var(--mint-green-press); font-size: 11px; font-weight: 800; }
+
+.progress-bar {
+  height: 12px;
+  border-radius: var(--r-full);
+  background: var(--surface-container-highest);
+  overflow: hidden;
+  margin-top: 10px;
+}
+.progress-bar i { display: block; height: 100%; width: 0; background: var(--mint-green); transition: width 160ms linear; }
+.gu-status { font-size: 13px; font-weight: 700; color: var(--gate-slate); margin-top: 6px; }
+.gu-status.is-ok { color: var(--mint-green-press); }
+.gu-status.is-bad { color: var(--coral-pop-press); }
+
+.letter-picker { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.letter-picker button {
+  width: 42px; height: 42px;
+  border-radius: var(--r-sm);
+  background: var(--surface-container);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+}
+.letter-picker button[aria-pressed="true"] { background: var(--sky-blue); color: #fff; }

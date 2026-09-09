@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="center" data-chrome="shown">
+<head>
+  <meta charset="utf-8">
+  <title>Ready Set ABC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, maximum-scale=1">
+  <meta name="theme-color" content="#FFB800">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Ready Set ABC">
+  <meta name="description" content="Pre-K phonics with Lucy. Two-tap letter matching, offline-first, teacher-controlled.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <!-- iOS Add-to-Home-Screen only takes a PNG; SVG covers everything else.
+       Regenerate the PNGs from app/: python3 icons/make-icons.py -->
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Comfortaa (letters/titles) + Nunito Sans (instructions) are self-hosted
+       OFL woff2 files in fonts/, declared by @font-face at the top of
+       css/tokens.css and precached in sw.js SHELL. There is deliberately no
+       fonts.googleapis link: first paint must never wait on a network a cart
+       Chromebook does not have. Preload the two faces the home screen paints
+       first so the swap happens before a child sees it; the rest arrive with
+       tokens.css. tokens.css still keeps rounded system fallbacks if a woff2
+       is ever evicted. See fonts/README.md. -->
+  <link rel="preload" href="fonts/Comfortaa-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/NunitoSans-ExtraBold.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/shell.css">
+  <link rel="stylesheet" href="css/play.css">
+  <link rel="stylesheet" href="css/grownups.css">
+  <link rel="stylesheet" href="css/print.css">
+</head>
+<body data-screen="home">
+  <!-- warm playground wash -->
+  <div class="blobs" aria-hidden="true"><i class="blob-1"></i><i class="blob-2"></i><i class="blob-3"></i></div>
+
+  <!-- Kid shell ------------------------------------------------------- -->
+  <div id="app" class="app">
+    <header class="chrome">
+      <button class="brand" id="brand" type="button" aria-label="Ready Set ABC — home. Hold for Grown-Ups.">
+        <span class="brand-paw" id="brand-paw"></span>
+        <span class="brand-words">
+          <span class="brand-title">Ready Set ABC</span>
+          <span class="brand-sub">Pre-K Phonics with Lucy</span>
+        </span>
+      </button>
+
+      <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+
+      <div class="chrome-right">
+        <div class="audio-cluster" id="audio-cluster" role="group" aria-label="Sound"></div>
+        <div id="who-slot"></div>
+        <button class="gate-btn" id="gate-btn" type="button" aria-label="Grown-Ups">
+          <span id="gate-lock-icon"></span><span class="gate-label">Grown-Ups</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="stage" id="screen" aria-live="polite"></main>
+
+    <footer class="foot">
+      <span id="foot-left"></span>
+      <span id="foot-copy">© Ready Set ABC · Lucy Play Learning Lab</span>
+    </footer>
+  </div>
+
+  <!-- Grown-Ups gate + settings (overlay) ------------------------------ -->
+  <div class="overlay" id="overlay" hidden></div>
+
+  <!-- Teacher printables (Grown-Ups → Print). Empty and display:none until a
+       Print button fills it; @media print in css/print.css hides everything
+       else on the page and shows only this. -->
+  <div id="print-root" aria-hidden="true"></div>
+
+  <!-- Rotate nudge ----------------------------------------------------- -->
+  <div class="rotate" id="rotate">
+    <div>
+      <div id="rotate-icon"></div>
+      <p>Turn the tablet sideways</p>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

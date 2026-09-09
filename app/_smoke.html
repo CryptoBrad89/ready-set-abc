@@ -1,0 +1,197 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Ready Set ABC — smoke bookmarks</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; padding: 28px clamp(16px, 5vw, 56px) 56px;
+         font: 15px/1.55 "Nunito Sans", "Segoe UI", system-ui, sans-serif;
+         color: #2f2a24; background: #FFF8EC; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  h2 { font-size: 14px; letter-spacing: .08em; text-transform: uppercase;
+       color: #8a7a63; margin: 28px 0 8px; }
+  p.lede { margin: 0 0 8px; max-width: 62ch; color: #6b5f4e; }
+  ul { list-style: none; margin: 0; padding: 0; max-width: 76ch; }
+  li { padding: 7px 0; border-bottom: 1px solid #efe2cc; }
+  a { color: #1d6fb8; font-weight: 700; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { background: #f3e7d2; border-radius: 5px; padding: 1px 5px; font-size: 13px; }
+  .say { display: block; color: #6b5f4e; font-weight: 400; }
+  .go { display: inline-block; margin-top: 10px; padding: 10px 18px; border-radius: 999px;
+        background: #FFB800; color: #2f2a24; font-weight: 800; }
+</style>
+<body>
+<script>
+/* Dev shortcut: set device state, then bounce into the app.
+   e.g. _smoke.html?classroom=1&to=#/home   ·   ?mode=whiteboard   ·   ?reset=1
+   Order matters: reset wipes first, then clearKid, then kid — so
+   ?classroom=1&clearKid=1 always lands on the face grid.
+   With no query at all this page lists every bookmark instead (the smoke
+   index), so the cart only ever needs the one URL. */
+const q = new URLSearchParams(location.search);
+const flag = (name) => {
+  const v = q.get(name);
+  return v !== null && v !== '0' && v !== 'false';
+};
+if (flag('reset')) Object.keys(localStorage).filter((k) => k.startsWith('rsabc.')).forEach((k) => localStorage.removeItem(k));
+/* clearKid (clearkid also accepted) drops who is playing without touching
+   stars, roster or settings — the "next child, please" bookmark. */
+if (flag('clearKid') || flag('clearkid')) localStorage.removeItem('rsabc.kid');
+if (q.get('kid')) localStorage.setItem('rsabc.kid', JSON.stringify(q.get('kid')));
+if (q.get('classroom')) localStorage.setItem('rsabc.classroom', q.get('classroom') === '0' ? 'false' : 'true');
+if (q.get('mode')) localStorage.setItem('rsabc.mode', JSON.stringify(q.get('mode')));
+if (q.get('hideChrome')) localStorage.setItem('rsabc.hideChrome', q.get('hideChrome') === '0' ? 'false' : 'true');
+if (q.get('pin')) localStorage.setItem('rsabc.pinnedLetter', JSON.stringify(q.get('pin').toUpperCase()));
+if (flag('unpin')) localStorage.removeItem('rsabc.pinnedLetter');
+/* bonus=off|rotate|hunt|sound|order pins the third step, so a tester can go
+   straight at one game instead of playing three letters to see it. */
+if (q.get('bonus')) {
+  let s = {};
+  try { s = JSON.parse(localStorage.getItem('rsabc.settings') || '{}') || {}; } catch (err) { s = {}; }
+  s.bonusMode = q.get('bonus');
+  localStorage.setItem('rsabc.settings', JSON.stringify(s));
+}
+/* outfit=bows|specs|bone|cap|rainbow|pack dresses Lucy from the closet;
+   an empty ?outfit= takes it off again. */
+if (q.has('outfit')) {
+  const wear = q.get('outfit');
+  if (wear) localStorage.setItem('rsabc.outfit', JSON.stringify(wear));
+  else localStorage.removeItem('rsabc.outfit');
+}
+/* stars=A3,B2,C3 banks stars on this device without playing the letters —
+   the only way to look at the Star Pouch at 5 stars, or at 24, in one tap.
+   An empty ?stars= empties the pouch (stickers too, so the shelves agree). */
+if (q.has('stars')) {
+  const spec = q.get('stars').trim();
+  if (!spec) {
+    localStorage.removeItem('rsabc.stars');
+    localStorage.removeItem('rsabc.stickers');
+  } else {
+    const owner = q.get('kid') || (localStorage.getItem('rsabc.kid') && q.get('classroom') !== '0'
+      ? JSON.parse(localStorage.getItem('rsabc.kid')) : '_device');
+    const mine = {};
+    spec.split(',').forEach((bit) => {
+      const m = /^([A-Za-z])\s*([0-3])$/.exec(bit.trim());
+      if (m) mine[m[1].toUpperCase()] = Number(m[2]);
+    });
+    let all = {};
+    try { all = JSON.parse(localStorage.getItem('rsabc.stars') || '{}') || {}; } catch (err) { all = {}; }
+    all[owner] = mine;
+    localStorage.setItem('rsabc.stars', JSON.stringify(all));
+  }
+}
+/* progress=none|stars|stars-save is Grown-Ups → Play → Stars from a URL —
+   `none` is the pouch with nothing being kept. */
+if (q.get('progress')) {
+  let s = {};
+  try { s = JSON.parse(localStorage.getItem('rsabc.settings') || '{}') || {}; } catch (err) { s = {}; }
+  s.progressMode = q.get('progress');
+  localStorage.setItem('rsabc.settings', JSON.stringify(s));
+}
+/* `play=A` is a round bookmark: #/letter/A starts that letter (classroom
+   without a kid still lands on the face pick first). Every letter A–Z is
+   awake, so any of the 26 opens a real round; a value the content file does
+   not have lands on the ABC Trail instead of silently starting A. */
+const play = q.get('play');
+/* gu=play|sound|class|print|device opens the Grown-Ups gate straight onto one
+   tab. Still gated — PIN 1234, or the sum. */
+const gu = q.get('gu');
+const to = q.get('to')
+  || (play ? `#/letter/${encodeURIComponent(play)}` : '')
+  || (gu ? `#/grownups/${encodeURIComponent(gu)}` : '');
+
+/* --- the smoke index: every URL this project is tested with ------------- */
+const BOOKMARKS = [
+  ['A round, start to finish', [
+    ['classroom=1&kid=k01&play=A', 'named child, letter A — case → picture → bonus → celebrate'],
+    ['classroom=1&clearKid=1', 'face grid, nobody playing'],
+    ['classroom=0&play=B', 'no face pick (demo / wall board), straight into B'],
+    ['play=E', 'letter E — a woken letter opens a real round, same as A'],
+    ['play=Z', 'letter Z — the far end of the trail runs too'],
+    ['play=9', 'not a letter — lands on the ABC Trail and Lucy names the letter that is up'],
+    ['to=%23/trail', 'ABC Trail'],
+    ['to=%23/pouch', 'Star Pouch and Lucy’s closet'],
+    ['to=%23/grownups', 'opens the Grown-Ups gate (PIN 1234)'],
+  ]],
+  ['Letter of the day', [
+    ['pin=C&to=%23/trail', 'pin C — blue ring and flag on the trail'],
+    ['pin=Z&to=%23/trail', 'pin Z — the pin follows the trail all the way to the end'],
+    ['unpin=1&to=%23/trail', 'clear the pin, back to the ABC cursor'],
+  ]],
+  ['Bonus round (the third step)', [
+    ['bonus=hunt&play=A', 'Letter Hunt'],
+    ['bonus=sound&play=A', 'Sound Sort — yes / no, one picture at a time'],
+    ['bonus=order&play=A', 'ABC Order — the one game that says letter names'],
+    ['bonus=rotate&play=A', 'back to the default (the letter picks the game)'],
+    ['bonus=off&play=A', 'bonus off — a letter is two steps again'],
+  ]],
+  ['The Star Pouch, at every filling', [
+    ['stars=&to=%23/pouch', 'empty pouch — nothing earned yet'],
+    ['stars=A3&to=%23/pouch', '3 stars, no sticker yet — Party bows just opened'],
+    ['stars=A3,B2&to=%23/pouch', '5 stars — one open treat, Teacher specs 1 star away'],
+    ['stars=A3,B3,C3,D3&to=%23/pouch', '12 stars — four treats open'],
+    ['stars=A3,B3,C3,D3,E3,F3,G3,H3&to=%23/pouch', '24 stars — the whole closet is open'],
+    ['progress=none&to=%23/pouch', 'stars off — the pouch is resting, Lucy is plain'],
+    ['progress=stars-save&stars=&to=%23/pouch', 'stars back on, pouch emptied'],
+  ]],
+  ['Lucy’s closet', [
+    ['outfit=cap', 'ball cap'],
+    ['outfit=specs', 'teacher specs'],
+    ['outfit=rainbow', 'rainbow collar'],
+    ['outfit=', 'take it off'],
+  ]],
+  ['Device modes', [
+    ['mode=center', 'Center — 88px taps'],
+    ['mode=small-group', 'Small group — 104px'],
+    ['mode=whiteboard', 'Whiteboard — 140px taps, 220px cards'],
+    ['mode=whiteboard&hideChrome=1', 'Whiteboard with the bars hidden (Shift+H)'],
+    ['hideChrome=0&mode=center', 'back to a normal tablet'],
+  ]],
+  ['Grown-Ups (PIN 1234)', [
+    ['gu=play', 'Play — pinned letter, bonus, stars'],
+    ['gu=sound', 'Sound — the three voice channels'],
+    ['gu=class', 'Class — roster, notes, CSV export / import'],
+    ['gu=print', 'Print — certificates, small-group sheet, roster cards'],
+    ['gu=device', 'Device — mode, version pin, Set up / Get update / Check offline files'],
+    ['reset=1&gu=device', 'Device on a tablet that has never been set up'],
+  ]],
+  ['Start over', [
+    ['reset=1', 'wipe every rsabc. key on this browser and open Home'],
+    ['reset=1&classroom=1&kid=k01&play=A', 'wipe, then a clean named round (reset runs first)'],
+  ]],
+];
+
+if ([...q.keys()].length) {
+  location.replace('index.html' + to);
+} else {
+  const frag = document.createDocumentFragment();
+  const add = (tag, text, attrs) => {
+    const node = document.createElement(tag);
+    if (text) node.textContent = text;
+    Object.entries(attrs || {}).forEach(([k, v]) => node.setAttribute(k, v));
+    frag.append(node);
+    return node;
+  };
+  add('h1', 'Ready Set ABC — smoke bookmarks');
+  add('p', 'Every URL this project is tested with. Each one sets the tablet up, then drops you into the app. They write real localStorage on this browser — use a spare profile, or finish with Start over.', { class: 'lede' });
+  add('a', 'Open the app →', { class: 'go', href: 'index.html' });
+  BOOKMARKS.forEach(([heading, rows]) => {
+    add('h2', heading);
+    const ul = add('ul');
+    rows.forEach(([query, say]) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `_smoke.html?${query}`;
+      const code = document.createElement('code');
+      code.textContent = `?${query}`;
+      a.append(code);
+      const note = document.createElement('span');
+      note.className = 'say';
+      note.textContent = say;
+      li.append(a, note);
+      ul.append(li);
+    });
+  });
+  document.body.append(frag);
+}
+</script>

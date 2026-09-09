@@ -1,0 +1,321 @@
+/* Ready Set ABC — teacher printables (Grown-Ups → Print).
+
+   Pure HTML/CSS. The sheets are built into #print-root and handed to
+   window.print(). There is no server, no PDF library and no popup window:
+   a cart Chromebook that is offline can still print to the hall printer.
+
+   Sheet geometry lives OUTSIDE @media print so the on-screen preview inside
+   the Grown-Ups sheet is the same object the printer gets. @media print only
+   hides the app, drops the paper chrome, and sets page breaks. */
+
+@page { size: letter portrait; margin: 12mm; }
+/* Certificates read better sideways. Named pages are Chrome 110+ / Safari 18+;
+   Firefox and older engines simply fall back to the portrait @page above, so
+   nothing on the certificate may depend on 11in of width. Explicit dimensions
+   first for engines that parse `size` but not the `landscape` keyword. */
+@page rsabc-cert { size: 11in 8.5in; size: letter landscape; margin: 10mm; }
+
+#print-root { display: none; }
+
+/* --------------------------------------------------------------- paper */
+.sheet {
+  --ink: #251911;
+  --ink-soft: #514532;
+  --rule: #d5c4ab;
+  --tint: #FFF8E1;
+  --gold: #7c5800;
+
+  box-sizing: border-box;
+  width: 8.5in;
+  min-height: 11in;
+  padding: 12mm;
+  margin: 0 auto 12px;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 11pt;
+  line-height: 1.35;
+  box-shadow: 0 4px 12px rgba(74, 59, 50, .18);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.sheet * { box-sizing: border-box; }
+.sheet--cert { width: 11in; min-height: 8.5in; page: rsabc-cert; }
+
+/* ------------------------------------------------------- shared blocks */
+.sheet-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8mm;
+  padding-bottom: 3mm;
+  border-bottom: 2pt solid var(--ink);
+}
+.sheet-brand { font-family: var(--font-display); font-weight: 700; font-size: 13pt; }
+.sheet-brand span { display: block; font-family: var(--font-body); font-weight: 700; font-size: 9pt; color: var(--ink-soft); }
+.sheet-title { font-family: var(--font-display); font-weight: 700; font-size: 20pt; text-align: right; }
+.sheet-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4mm 8mm;
+  margin-top: 3mm;
+  font-size: 10pt;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+.sheet-meta b { color: var(--ink); }
+.sheet-foot {
+  margin-top: 6mm;
+  padding-top: 2mm;
+  border-top: 1pt solid var(--rule);
+  font-size: 8.5pt;
+  color: var(--ink-soft);
+  display: flex;
+  justify-content: space-between;
+  gap: 6mm;
+}
+
+/* A ruled blank a teacher writes on. */
+.fill { display: inline-block; min-width: 34mm; min-height: 5mm; border-bottom: 1pt solid var(--ink); }
+
+/* The big Aa tile used on every sheet. */
+.tile {
+  display: inline-grid;
+  grid-auto-flow: column;
+  align-items: baseline;
+  gap: 2mm;
+  padding: 2mm 6mm;
+  border: 2.5pt solid var(--ink);
+  border-radius: 6mm;
+  background: var(--tint);
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1;
+}
+.tile b { font-size: 34pt; font-weight: 700; }
+.tile i { font-size: 26pt; font-style: normal; color: var(--gold); }
+.tile--big b { font-size: 76pt; }
+.tile--big i { font-size: 56pt; }
+
+/* Three stars: earned ones are solid gold, the rest are hollow to colour in.
+   Glyphs, not shapes — a printer with Background graphics OFF drops fills and
+   box-shadows, and a certificate with three invisible stars is a bad day. */
+.pstars { display: flex; gap: 3mm; line-height: 1; }
+.pstars i {
+  font-style: normal;
+  font-size: 26pt;
+  color: var(--rule);
+}
+.pstars i.on { color: #D99B00; }
+
+/* -------------------------------------------------------- certificate */
+.cert-frame {
+  min-height: 7.4in;
+  border: 4pt double var(--ink);
+  border-radius: 8mm;
+  padding: 8mm 12mm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4mm;
+  text-align: center;
+  background:
+    radial-gradient(circle at 12% 12%, var(--tint) 0 18mm, transparent 18mm),
+    radial-gradient(circle at 88% 88%, var(--tint) 0 18mm, transparent 18mm);
+}
+.cert-eyebrow {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12pt;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.cert-title { font-family: var(--font-display); font-weight: 700; font-size: 30pt; margin: 0; }
+.cert-lede { font-size: 11pt; color: var(--ink-soft); margin: 0; font-weight: 700; }
+.cert-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 30pt;
+  min-width: 60%;
+  padding: 0 6mm 2mm;
+  border-bottom: 2pt solid var(--ink);
+  min-height: 16mm;
+}
+.cert-name.is-blank { min-height: 18mm; }
+.cert-because { font-size: 13pt; font-weight: 800; margin: 0; }
+.cert-sound { font-size: 11pt; color: var(--ink-soft); margin: 0; font-weight: 700; }
+.cert-sign {
+  margin-top: 4mm;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 12mm;
+  font-size: 9.5pt;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+.cert-sign > div { flex: 1 1 0; text-align: center; }
+.cert-sign u { display: block; border-bottom: 1pt solid var(--ink); height: 9mm; text-decoration: none; }
+
+/* -------------------------------------------------- small-group sheet */
+.group-hero {
+  display: flex;
+  align-items: center;
+  gap: 8mm;
+  margin-top: 5mm;
+  padding: 4mm 6mm;
+  border: 1.5pt solid var(--rule);
+  border-radius: 5mm;
+  background: var(--tint);
+  break-inside: avoid;
+}
+.group-hero dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 1mm 4mm; font-size: 11pt; }
+.group-hero dt { font-weight: 800; color: var(--ink-soft); }
+.group-hero dd { margin: 0; font-weight: 700; }
+
+.pblock { margin-top: 5mm; break-inside: avoid; }
+.pblock--flow { break-inside: auto; }
+.pblock h3 {
+  margin: 0 0 2mm;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12.5pt;
+}
+.pblock h3 small { font-family: var(--font-body); font-weight: 700; font-size: 9pt; color: var(--ink-soft); }
+.pscript { margin: 0; padding-left: 6mm; font-size: 10.5pt; }
+.pscript li { margin-bottom: 1.4mm; }
+.pscript b { font-weight: 800; }
+
+.wordbank { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6mm 6mm; margin: 0; padding: 0; list-style: none; }
+.wordbank li { display: flex; align-items: center; gap: 2.5mm; font-size: 10.5pt; font-weight: 700; }
+.wordbank li::before {
+  content: "";
+  width: 4mm; height: 4mm;
+  border: 1.2pt solid var(--ink);
+  border-radius: 1mm;
+  flex: 0 0 auto;
+}
+
+.ptable { width: 100%; border-collapse: collapse; font-size: 10pt; }
+.ptable th, .ptable td { border: 1pt solid var(--rule); padding: 2mm 2.5mm; text-align: left; }
+.ptable th { background: var(--tint); font-weight: 800; font-size: 9pt; text-transform: uppercase; letter-spacing: .06em; }
+.ptable td.tick { width: 16mm; text-align: center; color: var(--rule); font-size: 13pt; }
+.ptable td.who { font-weight: 700; width: 38mm; }
+.ptable td.notes { width: auto; }
+.ptable tr { break-inside: avoid; }
+
+/* ------------------------------------------------------- roster cards */
+.cardgrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4mm;
+  margin-top: 5mm;
+}
+.rcard {
+  border: 1.2pt dashed var(--ink);
+  border-radius: 4mm;
+  padding: 4mm;
+  height: 44mm;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5mm;
+  break-inside: avoid;
+}
+.rcard-top { display: flex; gap: 4mm; align-items: center; }
+.rcard-face {
+  width: 18mm; height: 18mm;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12pt;
+  border: 1.2pt solid var(--ink);
+  flex: 0 0 auto;
+}
+.rcard-body { min-width: 0; flex: 1 1 auto; }
+.rcard-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14pt;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+.rcard-class { font-size: 8pt; color: var(--ink-soft); font-weight: 700; margin-top: 0.5mm; }
+/* 26 boxes, 13 to a row: A–M over N–Z. A fixed column count (not a wrap) keeps
+   the break in the same place on every card, so a stack of them reads down. */
+.rcard-letters {
+  display: grid;
+  grid-template-columns: repeat(13, 1fr);
+  gap: 0.8mm;
+}
+.rcard-letters span {
+  border: 1pt solid var(--rule);
+  border-radius: 1mm;
+  padding: 0.5mm 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 7pt;
+  line-height: 1.15;
+}
+.rcard-letters span b {
+  display: block;
+  font-size: 5pt;
+  font-weight: 800;
+  color: var(--ink-soft);
+  letter-spacing: -0.4pt;
+  line-height: 1.2;
+  min-height: 1.9mm;
+}
+.rcard-letters span.done { background: var(--tint); }
+.rcard-cut { font-size: 8pt; color: var(--ink-soft); margin-top: 4mm; font-weight: 700; }
+
+/* -------------------------------------------- on-screen preview (only) */
+.print-preview {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: var(--r-sm);
+  background: var(--surface-container-highest);
+  max-height: 420px;
+  overflow: auto;
+}
+/* zoom (not transform) so the scaled sheet still reserves its own box. */
+.sheet-scale { zoom: .42; }
+.print-count { font-size: 12px; font-weight: 800; color: var(--gate-slate); margin: 0 0 6px; }
+
+/* ------------------------------------------------------------- print */
+@media print {
+  /* shell.css pins the kid shell to one non-scrolling viewport
+     (html, body { height: 100%; overflow: hidden }). Left alone, Chrome
+     clips the whole print job to a single page — so unpin it here. */
+  html, body {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  body > *:not(#print-root) { display: none !important; }
+  #print-root { display: block !important; }
+
+  .sheet {
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+  }
+  .sheet:last-child { break-after: auto; page-break-after: auto; }
+
+  /* Landscape letter minus the 10mm @page margin leaves ~7.7in of height —
+     but plenty of drivers enforce their own wider hardware margins, and a
+     frame taller than the page it lands on spills one line onto a second,
+     near-blank sheet FOR EVERY CHILD. 6.8in still fills a 10mm-margin page
+     and survives a driver that forces 0.75in. The frame centres its content,
+     so the slack shows up as even air, not a gap at the bottom. */
+  .cert-frame { min-height: 6.8in; break-inside: avoid; }
+}

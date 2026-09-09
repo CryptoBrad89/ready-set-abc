@@ -1,0 +1,197 @@
+/* Ready Set ABC — design tokens
+   Frozen from stitch/.../ready_set_abc/DESIGN.md. Nothing else in the app may
+   invent a colour, a radius or a shadow: it comes from here or it doesn't ship. */
+
+/* Ready Set ABC — self-hosted type (OFL, files in app/fonts/)
+   Comfortaa (letters, titles) and Nunito Sans (instructions) ship inside the
+   app so the Stitch look survives a cart Chromebook with the radio off. No
+   fonts.googleapis request, so first paint never waits on a network that is
+   not there. `font-display: swap` means a missing or evicted face falls back
+   to the rounded system stacks below instead of blanking the letters.
+   Licences sit beside the files: fonts/Comfortaa-OFL.txt, fonts/NunitoSans-OFL.txt.
+   Add a face here → add it to SHELL in sw.js and bump both version pins,
+   or it 404s offline. `node _check.mjs` fails if you forget. */
+@font-face {
+  font-family: "Comfortaa";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/Comfortaa-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Comfortaa";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/Comfortaa-Bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/NunitoSans-SemiBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/NunitoSans-Bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("../fonts/NunitoSans-ExtraBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("../fonts/NunitoSans-Black.woff2") format("woff2");
+}
+
+
+:root {
+  /* --- surfaces: warm cream, never sterile white ------------------- */
+  --surface:                 #fff8f5;
+  --surface-dim:             #edd5c9;
+  --surface-container-lowest:#ffffff;
+  --surface-container-low:   #fff1ea;
+  --surface-container:       #ffeadf;
+  --surface-container-high:  #fbe4d7;
+  --surface-container-highest:#f6ded1;
+  --canvas-cream:            #FFFDF5;
+  --card-cloud:              #FFFFFF;
+  --stage-lavender:          #F3EDFC;
+
+  /* --- ink: warm cocoa, never pure black --------------------------- */
+  --on-surface:              #251911;
+  --on-surface-variant:      #514532;
+  --outline:                 #837560;
+  --outline-variant:         #d5c4ab;
+  --inverse-surface:         #3b2d25;
+
+  /* --- brand ------------------------------------------------------- */
+  --primary:                 #7c5800;   /* deep gold, for text on cream   */
+  --sunny-yellow:            #FFB800;   /* primary CTA face               */
+  --sunny-yellow-press:      #D99B00;   /* CTA extrusion lip              */
+  --sunny-yellow-tint:       #FFF8E1;
+
+  --sky-blue:                #29B6F6;   /* selection / active stage       */
+  --sky-blue-press:          #0288D1;
+  --sky-blue-tint:           #E1F5FE;
+  --secondary:               #00658d;   /* deep sky ink: Selected badge, glyphs */
+  --secondary-fixed:         #c6e7ff;   /* Hear Again face                */
+  --secondary-fixed-dim:     #81cfff;   /* Hear Again lip                 */
+  --on-secondary-fixed:      #001e2d;   /* ink on the two above           */
+
+  --mint-green:              #26C281;   /* success / locked match         */
+  --mint-green-press:        #1E9C67;
+  --mint-green-tint:         #E8F8F1;
+  --tertiary:                #006c44;
+
+  --coral-pop:               #FF5252;   /* soft wobble, never punishment  */
+  --coral-pop-press:         #D32F2F;
+  --coral-pop-tint:          #FFEBEE;
+
+  --lucy-gold:               #E69138;
+  --lucy-ear:                #C26D20;
+  --lucy-cream:              #FFE3BF;
+  --star-gold:               #FFD54F;
+  --gate-slate:              #78909C;
+  --on-primary-container:    #6b4c00;   /* ink on sunny-yellow CTAs / tabs */
+
+  /* --- type -------------------------------------------------------- */
+  /* Comfortaa / Nunito Sans are self-hosted above (@font-face, app/fonts/) and
+     precached in sw.js SHELL — no network, online or off. The system names
+     that follow are still real fallbacks: they are what a child sees if a
+     woff2 is evicted mid-term, so never let a stack end at the webfont.
+     Never add googleapis URLs here or to SHELL — they 404 offline. */
+  --font-display: "Comfortaa", "Quicksand", "Varela Round", "Trebuchet MS", system-ui, sans-serif;
+  --font-body:    "Nunito Sans", "Nunito", "Segoe UI", system-ui, sans-serif;
+
+  /* --- spacing ----------------------------------------------------- */
+  --space-2xs: 4px;
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --gutter: clamp(16px, 2.4vw, 40px);
+
+  /* --- ergonomics: 88px is the floor, everywhere -------------------- */
+  --target-min: 88px;          /* absolute minimum kid tap target */
+  --target-card: 140px;        /* tablet answer card */
+  --target-card-board: 220px;  /* whiteboard answer card */
+
+  /* --- shape: hyper-round squircles, no sharp corners --------------- */
+  --r-sm:   12px;
+  --r:      20px;
+  --r-md:   28px;
+  --r-lg:   36px;
+  --r-xl:   48px;
+  --r-full: 9999px;
+
+  /* --- depth: extruded pillows, not hazy shadows -------------------- */
+  --lip: 6px;                                    /* card bottom depth lip */
+  --lip-cta: 8px;                                /* Match / Next CTA lip  */
+  --lip-play: 10px;                              /* giant PLAY lip        */
+  --lip-pressed: 2px;
+  --press: 4px;                                  /* translateY on press  */
+  --press-cta: 6px;                              /* Play / Next depress  */
+  --lip-idle: #d5c4ab;                           /* Stitch idle rim = outline-variant */
+  --shadow-1: 0 4px 12px rgba(74, 59, 50, .06);
+  --shadow-2: 0 8px 16px rgba(74, 59, 50, .12);
+  --shadow-4: 0 16px 36px rgba(74, 59, 50, .22);
+  --ring-select: 0 0 0 4px var(--sky-blue), inset 0 0 0 3px rgba(41, 182, 246, .28);
+  --ring-correct: 0 0 0 4px var(--mint-green), 0 8px 16px rgba(30, 156, 103, .28);
+  /* Solid lip lives in the first box-shadow layer so squircles keep a
+     chunky underside (border-bottom vanishes on 48px radii). */
+  --pillow-shadow: 0 var(--lip) 0 var(--edge, var(--lip-idle)), var(--shadow-2);
+  --pillow-shadow-pressed: 0 var(--lip-pressed) 0 var(--edge, var(--lip-idle)), var(--shadow-1);
+
+  /* --- motion ------------------------------------------------------ */
+  --ease-pillow: cubic-bezier(.2, .9, .3, 1.2);
+  --dur-press: 120ms;
+}
+
+/* Whiteboards get bigger everything; small-group sits between.
+   High-contrast ink: cocoa letters and lips so a kid on the rug can read. */
+html[data-mode="whiteboard"] {
+  --target-min: 140px;
+  --target-card: var(--target-card-board);
+  --lip: 8px;
+  --lip-cta: 10px;
+  --press: 6px;
+  --press-cta: 8px;
+  --gutter: 40px;
+  --lip-idle: var(--on-surface);
+  --on-surface-variant: var(--on-surface);
+  --outline: var(--on-surface);
+  --ring-select: 0 0 0 6px var(--sky-blue), inset 0 0 0 4px rgba(41, 182, 246, .35);
+  --ring-correct: 0 0 0 6px var(--mint-green), 0 8px 16px rgba(30, 156, 103, .28);
+}
+html[data-mode="small-group"] {
+  --target-min: 104px;
+  --target-card: 170px;
+}
+
+/* DESIGN.md: above 1440px, answer cards scale to the board size even in
+   center mode so a wall display is tappable from a step back. */
+@media (min-width: 1440px) {
+  :root { --target-card: var(--target-card-board); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
