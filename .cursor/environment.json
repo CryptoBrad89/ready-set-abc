@@ -1,0 +1,17 @@
+{
+  "name": "Ready Set ABC",
+  "install": "cd app && node _check.mjs && node _flow.mjs",
+  "terminals": [
+    {
+      "name": "web",
+      "command": "python3 -m http.server 8080 --directory app --bind 0.0.0.0",
+      "description": "Static file server for the Ready Set ABC PWA. Open http://localhost:8080/ for the app, or _smoke.html for the test-link index."
+    }
+  ],
+  "ports": [
+    {
+      "name": "web",
+      "port": 8080
+    }
+  ]
+}
