@@ -429,8 +429,8 @@ function soundPanel() {
     ),
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Recorded voice'),
-      el('p', { class: 'note' }, 'Not recorded yet. Names, letter sounds, and words stay silent until a clip is dropped in. Lucy’s lines still show on screen. Success chimes are sound effects, not speech.'),
-      el('p', { class: 'note' }, `data/audio.json lists every clip Lucy still owes, as a silent placeholder: ${letters().length} letter names, ${letters().length} letter sounds, the ${pictureCount()} picture words, 6 cheers and 4 nudges. To ship one, drop the file in app/audio/, move its id into "clips", pin the file in sw.js, and bump the version.`),
+      el('p', { class: 'note' }, 'Cheers and nudges are mapped. Names, letter sounds, and words stay silent until a clip is dropped in. Lucy’s lines still show on screen. Success chimes are sound effects, not speech.'),
+      el('p', { class: 'note' }, `data/audio.json lists every clip Lucy still owes, as a silent placeholder: ${letters().length} letter names, ${letters().length} letter sounds, and the ${pictureCount()} picture words. To ship one, drop the file in app/audio/, move its id into "clips", pin the file in sw.js, and bump the version.`),
       el('p', { class: 'note' }, 'Three separate channels, three separate keys: name-A is the letter NAME (board appear), phoneme-A is the SOUND and never the name (letter-choice tap), word-A-apple is the picture word. A phoneme key pointing at a name recording is thrown away rather than played.'),
       el('p', { class: 'gu-status' }, audio.clipCount() === 0
         ? 'No recorded clips on this tablet — names, sounds, and words stay silent until they land.'

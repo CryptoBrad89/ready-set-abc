@@ -1,7 +1,7 @@
 {
   "note": "Recorded-voice hook AND Lucy's recording checklist. Every id below is a SILENT PLACEHOLDER: the value is null, so nothing is fetched and nothing 404s. Names, words, and Lucy lines stay silent until a clip is mapped. The success jingle is an SFX bed, not Voice. To ship a voice clip: drop the file in app/audio/, move the id out of `placeholders` into `clips` with the filename, add the file to SHELL in sw.js, and bump VERSION in sw.js + js/version.js.",
   "base": "audio/",
-  "recorded": 0,
+  "recorded": 10,
   "channels": {
     "music": "Quiet playground wander. Web Audio only — no clip, no file. Ducks to 16% while voice plays.",
     "sfx": "Short musical UI hits: tap, select, match chord, miss, star, pop, woof (CC0 beds from audio/make-ui-bed.py) plus an ElevenLabs Sound Effects v2 celebrate chime. Independent of voice: mute one, the other keeps going.",
@@ -509,25 +509,26 @@
     "cheer": {
       "say": "In CHEERS order (js/audio.js): 1 Yes! · 2 You got it! · 3 Excellent! · 4 Nice job! · 5 Woohoo! · 6 High five!",
       "ids": {
-        "cheer": null,
-        "cheer-1": null,
-        "cheer-2": null,
-        "cheer-3": null,
-        "cheer-4": null,
-        "cheer-5": null,
-        "cheer-6": null
+        "cheer": null
       }
     },
     "nudge": {
       "say": "In NUDGES order (js/audio.js): 1 Not quite! · 2 Try again! · 3 Almost! · 4 Keep going! Never cross — always an invitation to tap again.",
       "ids": {
-        "nudge": null,
-        "nudge-1": null,
-        "nudge-2": null,
-        "nudge-3": null,
-        "nudge-4": null
+        "nudge": null
       }
     }
   },
-  "clips": {}
+  "clips": {
+    "cheer-1": "lucy-cheer-1.mp3",
+    "cheer-2": "lucy-cheer-2.mp3",
+    "cheer-3": "lucy-cheer-3.mp3",
+    "cheer-4": "lucy-cheer-4.mp3",
+    "cheer-5": "lucy-cheer-5.mp3",
+    "cheer-6": "lucy-cheer-6.mp3",
+    "nudge-1": "lucy-nudge-1.mp3",
+    "nudge-2": "lucy-nudge-2.mp3",
+    "nudge-3": "lucy-nudge-3.mp3",
+    "nudge-4": "lucy-nudge-4.mp3"
+  }
 }

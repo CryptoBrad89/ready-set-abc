@@ -407,6 +407,10 @@ assert(/kind === 'phoneme'/.test(audioSrc), 'phoneme speak path is distinct from
 assert(/silentUnlockPulse/.test(audioSrc), 'PLAY unlocks with a silent buffer, not a second music loop');
 assert(/CLIP_WATCHDOG_MS/.test(audioSrc), 'a stalled clip cannot leave the music ducked');
 assert(/function firstClip/.test(audioSrc), 'clip lookup walks a candidate chain (word-A-apple → word-A)');
+assert(/speak\(line, \{ clip: \[clipId\.cheer\(i\), 'cheer'\]/.test(audioSrc),
+  'cheer() speaks clipId.cheer then the cheer fallback');
+assert(/speak\(line, \{ clip: \[clipId\.nudge\(i\), 'nudge'\]/.test(audioSrc),
+  'nudge() speaks clipId.nudge then the nudge fallback');
 
 /* --- three voice channels, three id namespaces ------------------------- */
 const ALPHABET = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
@@ -436,13 +440,22 @@ assert(audio.hasClip('phoneme-B'), 'an honest phoneme clip is kept');
 assert(!audio.hasClip('word-A-apple') && !audio.hasClip('cheer-1'),
   'null / blank placeholders never become clips');
 
-/* --- data/audio.json: silent placeholders, real Lucy later ------------- */
+/* --- data/audio.json: ten Lucy lines mapped, names still silent -------- */
 const audioFile = JSON.parse(readFileSync(join(root, 'data/audio.json'), 'utf8'));
 const ph = audioFile.placeholders || {};
-assert(audioFile.clips && Object.keys(audioFile.clips).length === 0,
-  'no Lucy clip is mapped yet — the tablet speech voice stands in');
+assert(audioFile.recorded === 10, 'audio.json recorded count is the ten Lucy lines');
+assert(Object.keys(audioFile.clips || {}).length === 10, 'clips has exactly the ten Lucy lines');
+CHEERS.forEach((_, i) => {
+  const id = clipId.cheer(i);
+  assert(audioFile.clips[id] === `lucy-cheer-${i + 1}.mp3`, `${id} maps to lucy-cheer-${i + 1}.mp3`);
+});
+NUDGES.forEach((_, i) => {
+  const id = clipId.nudge(i);
+  assert(audioFile.clips[id] === `lucy-nudge-${i + 1}.mp3`, `${id} maps to lucy-nudge-${i + 1}.mp3`);
+});
 audio.setClips(audioFile.clips);
-assert(audio.clipCount() === 0, 'the shipped audio.json maps zero clips');
+assert(audio.clipCount() === 10, 'the shipped audio.json maps the ten Lucy lines');
+assert(audio.hasClip('cheer-1'), 'cheer-1 is a real clip after setClips');
 assert(['name', 'phoneme', 'word', 'cheer', 'nudge'].every((k) => ph[k] && ph[k].ids && ph[k].say),
   'audio.json documents name / phoneme / word / cheer / nudge, each with what to say');
 const phIds = Object.assign({}, ...['name', 'phoneme', 'word', 'cheer', 'nudge'].map((k) => ph[k].ids));
@@ -461,12 +474,10 @@ assert(awakeWordIds.length === 390 && missingWord.length === 0,
 const missingWordFallback = ALPHABET.filter((L) => !(clipId.word(L) in ph.word.ids));
 assert(missingWordFallback.length === 0,
   `and every letter has a word-<L> fallback for a plate with no clip of its own (missing ${missingWordFallback.join('') || 'none'})`);
-const missingCheer = CHEERS.map((_, i) => clipId.cheer(i)).filter((id) => !(id in ph.cheer.ids));
-const missingNudge = NUDGES.map((_, i) => clipId.nudge(i)).filter((id) => !(id in ph.nudge.ids));
-assert(missingCheer.length === 0 && 'cheer' in ph.cheer.ids,
-  `cheer placeholders cover every line plus the catch-all (missing ${missingCheer.join(', ') || 'none'})`);
-assert(missingNudge.length === 0 && 'nudge' in ph.nudge.ids,
-  `nudge placeholders cover every line plus the catch-all (missing ${missingNudge.join(', ') || 'none'})`);
+assert(Object.keys(ph.cheer.ids).join() === 'cheer' && ph.cheer.ids.cheer === null,
+  'cheer catch-all stays a silent placeholder');
+assert(Object.keys(ph.nudge.ids).join() === 'nudge' && ph.nudge.ids.nudge === null,
+  'nudge catch-all stays a silent placeholder');
 assert(/never the name/i.test(JSON.stringify(ph.phoneme.say)),
   'the phoneme recording note spells out: the sound, never the name');
 

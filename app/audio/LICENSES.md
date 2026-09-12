@@ -10,8 +10,14 @@ converted to 22.05 kHz mono WAV and peak-normalized to match the other
 hits. Instrumental xylophone chime. No speech. Running `make-ui-bed.py`
 does not replace this file.
 
+`lucy-cheer-1.mp3` through `lucy-cheer-6.mp3` and `lucy-nudge-1.mp3`
+through `lucy-nudge-4.mp3` are ElevenLabs multilingual v2
+(`eleven_multilingual_v2`), voice Flicker (`piI8Kku0DcvcL6TTSeQt`).
+MPEG layer III, 128 kbps, 44.1 kHz, mono, under 2s.
+
 Phoneme / name / word recordings, when they land, must be files Bradley
-drops in — never generated here as English speech.
+drops in — never generated here as English speech. Isolated phonemes are
+never TTS.
 
 Never scrape Logic of English, Starfall, or other commercial phonics sites.
 

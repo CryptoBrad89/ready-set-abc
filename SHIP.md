@@ -4,13 +4,12 @@ Bradley — this is the whole job. It is a folder of files. There is nothing to
 install, no database, no build step, no account. Copy the folder up, open it
 once on Wi-Fi, done.
 
-Shell pin for this drop: **`rsabc-shell-v36-login-satpin`**
+Shell pin for this drop: **`rsabc-shell-v37-lucy-voice`**
 
-**What is new in this one:** Home matches the Stitch comic-arena layout.
-Yellow header, ben-day blue field, cream hero, tall 4+4 cards, red selected
-tabs. Lucy stays our photo plates. Grown-Ups keeps the PIN. Music / SFX /
-Voice mutes stay. Celebrate still uses the ElevenLabs xylophone chime. Tablets
-that already have an older pin need step 4 below.
+**What is new in this one:** Lucy speaks the ten mapped cheer and nudge
+clips. The xylophone celebrate sting still plays. Names, letter sounds, and
+words stay silent. Home, Grown-Ups PIN, and Music / SFX / Voice mutes stay.
+Tablets that already have an older pin need step 4 below.
 
 ---
 
@@ -50,7 +49,7 @@ a room with no signal.
 2. Hold or tap into **Grown-Ups** — the PIN is **`1234`**.
 3. Tap the **Device** tab.
 4. Tap **Set up this device**. Watch the bar fill.
-5. Wait for it to say **Pinned `rsabc-shell-v36-login-satpin`**.
+5. Wait for it to say **Pinned `rsabc-shell-v37-lucy-voice`**.
 
 That tablet now has the whole app — screens, pictures, and the letter fonts —
 stored on it. You can turn the Wi-Fi off and it still opens and still looks
@@ -58,7 +57,7 @@ right. Skip this step and the app will look fine on Wi-Fi and be blank in the
 classroom, which is the one failure nobody catches until it matters.
 
 Tap **Check offline files** any time to make it re-count what is really stored.
-It should say all **83** files. Chrome sometimes throws files away when a
+It should say all **93** files. Chrome sometimes throws files away when a
 tablet's disk fills up; this is how you find out before a teacher does.
 
 ## 4. When you put up a new version later
@@ -119,7 +118,7 @@ not upload — check `fonts/` on the server.
 | Blank white page | Files uploaded into the wrong folder, or folder shapes flattened |
 | Works on Wi-Fi, blank offline | Step 3 was never done on that tablet, or the site is not https |
 | Plain flat letters instead of round ones | `fonts/` did not upload, or uploaded in text mode |
-| "Only 66 of 83 files are cached" | Chrome evicted some. Back on Wi-Fi, tap **Set up this device** |
+| "Only 66 of 93 files are cached" | Chrome evicted some. Back on Wi-Fi, tap **Set up this device** |
 | Tablet stuck on an old version | Nobody tapped **Get update** then **Reload to finish** |
 | Icons missing / broken | `icons/` did not upload, or uploaded in text mode |
 

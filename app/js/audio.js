@@ -6,20 +6,19 @@
 
    Voice resolves in this order:
      1. a recorded clip listed in data/audio.json  (audio/<file>)
-     2. silence. No speechSynthesis. Names, words, Lucy lines, spoken cheers
-        and nudges wait for Bradley’s later clips (website phonemes + ElevenLabs).
+     2. silence. No speechSynthesis. Names, words, and other Lucy lines wait
+        for mapped clips. Cheers and nudges speak when their ids are mapped.
      3. phonemes: clip only. No TTS, no oscillator “puh”. Silence + Lucy’s line.
 
    Music and SFX are WAV beds in audio/ (see audio/LICENSES.md).
-   The celebrate sting is SFX, not Voice. No spoken English.
+   The celebrate sting is SFX. Lucy also speaks the mapped cheer clip.
 
    Phoneme ≠ name ≠ word. The three live in three clip namespaces that cannot
    overlap (see `clipId`), sayPhoneme() never sends a letter name to the
    speaker, and setClips() drops a phoneme id that points at a name file.
 
-   data/audio.json ships every id as a SILENT PLACEHOLDER (null): the file
-   documents what Lucy still has to record without mapping anything, so no
-   clip is fetched and nothing 404s offline. */
+   data/audio.json maps a clip only when `clips` has a filename. A null
+   placeholder is not fetched, so unmapped ids stay silent offline. */
 
 import { store } from './store.js';
 
@@ -364,16 +363,19 @@ export const audio = {
     const chain = picture.id ? [clipId.word(L, picture.id), clipId.word(L)] : [clipId.word(L)];
     audio.speak(picture.word, { clip: chain, kind: 'word', letter: L });
   },
-  /* Celebrate sting is SFX, not spoken English. Caption still rotates for Lucy. */
+  /* SFX bed still plays. Lucy also speaks the mapped line. */
   cheer() {
     const i = Math.floor(Math.random() * CHEERS.length);
     const line = CHEERS[i];
     audio.sfx('cheer');
+    audio.speak(line, { clip: [clipId.cheer(i), 'cheer'], kind: 'line' });
     return line;
   },
   nudge() {
     const i = Math.floor(Math.random() * NUDGES.length);
-    return NUDGES[i];
+    const line = NUDGES[i];
+    audio.speak(line, { clip: [clipId.nudge(i), 'nudge'], kind: 'line' });
+    return line;
   },
 
   /* Header / Grown-Ups mute dots. Prefs are already in the store. */

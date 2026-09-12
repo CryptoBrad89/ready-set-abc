@@ -133,7 +133,7 @@ Do this **once per tablet, on school Wi-Fi**, before the cart goes into a dead-z
 2. Open **Grown-Ups** (see PIN below).
 3. Tap **Device**.
 4. Tap **Set up this device**. Watch the bar fill.
-5. When it says **Pinned** plus the shell version (Grown-Ups → Device, currently `rsabc-shell-v36-login-satpin`), you can turn the radio off.
+5. When it says **Pinned** plus the shell version (Grown-Ups → Device, currently `rsabc-shell-v37-lucy-voice`), you can turn the radio off.
 
 The tablet now keeps this exact shell. It will **not** silently update mid-week. If someone drops a newer copy of the files on the server, the tablet quietly downloads it and then **waits** — the swap only happens when a grown-up taps **Get update**. No child has ever had the app change under them mid-round, and that is on purpose.
 
@@ -152,7 +152,7 @@ Off Wi-Fi, **Get update** and **Set up this device** both say so and stop. They 
 | It says | What it means | What to do |
 |---|---|---|
 | *Checked just now · all N files cached* | Genuinely ready. | Turn the radio off. |
-| *Only 66 of 83 files are cached…* | Chrome evicted part of it (usually a full disk). | Back on Wi-Fi, tap **Set up this device**. |
+| *Only 66 of 93 files are cached…* | Chrome evicted part of it (usually a full disk). | Back on Wi-Fi, tap **Set up this device**. |
 | *Nothing is cached on this tablet* | It was never set up, or site data was cleared. | Back on Wi-Fi, tap **Set up this device**. |
 | *All N files cached on `…`, but this page is running `…`* | A **Get update** finished and nobody tapped **Reload to finish**. | Reload the tablet. Nothing is wrong with the files. |
 
@@ -236,9 +236,9 @@ Lucy talks in three separate channels and they never borrow from each other:
 
 The one place Lucy says a letter **name** on a tap is the **ABC Order** bonus, because that game is the alphabet song, not a sound match. Letter Hunt taps say the **sound**; Sound Sort taps say the **word**.
 
-Lucy’s recorded clips are **not in the folder yet**. Names, letter sounds, and words stay silent until a clip is mapped. The words are always on screen as well, so nothing in a round is waiting on a recording. Success chimes are sound effects, not speech.
+Lucy’s ten cheer and nudge clips are mapped. Names, letter sounds, and words stay silent until a clip is mapped. The words are always on screen as well, so nothing in a round is waiting on a recording. Success chimes are sound effects, and a mapped cheer also speaks.
 
-`data/audio.json` is the recording checklist. Every clip she still owes is listed there as a **silent placeholder** (`null`): 26 letter names, 26 letter sounds, the 390 picture words (plus a `word-<L>` fallback per letter), 6 cheers, 4 nudges. Nothing is fetched, so nothing 404s offline. `node _check.mjs` fails if a picture in `data/letters.json` has no placeholder, so a letter can never be woken without being added to Lucy's list.
+`data/audio.json` is the recording checklist. Every clip she still owes is listed there as a **silent placeholder** (`null`): 26 letter names, 26 letter sounds, the 390 picture words (plus a `word-<L>` fallback per letter). The ten cheer and nudge lines live in `clips`. Nothing unmapped is fetched, so nothing 404s offline. `node _check.mjs` fails if a picture in `data/letters.json` has no placeholder, so a letter can never be woken without being added to Lucy's list.
 
 To ship a real clip: drop the file in `app/audio/`, move its id out of `placeholders` into `clips` with the filename, add the file to `SHELL` in `sw.js`, then bump `VERSION` in `sw.js` and `APP_VERSION` in `js/version.js`. `node _check.mjs` fails if a mapped clip has no file or is not pinned for offline.
 
@@ -505,7 +505,7 @@ One page. Print it, or copy it onto an index card and tape it inside the cart li
 ## PIN, versions, storage (the sticky note)
 
 - PIN **`1234`**
-- Shell pin **`rsabc-shell-v36-login-satpin`** (Grown-Ups → Device)
+- Shell pin **`rsabc-shell-v37-lucy-voice`** (Grown-Ups → Device)
 - Content pin from `data/letters.json` (all 26 awake · 15-picture GAME-FLOW pool each · 390 plates, no two sharing an emoji)
 - Saved on the tablet under `rsabc.` keys: kid, classroom, roster, settings, audio, mode, hideChrome, pinnedLetter, cursor, nextAbcIndex, stars, stickers, outfit, progress, notes, cache
 - Tablet copy / backup: Grown-Ups → Class → **Export CSV** writes `ready-set-abc.csv` (format `rsabc-csv-v1`). Import replaces this tablet — it never merges.
@@ -532,8 +532,8 @@ Offline is `sw.js` + Grown-Ups → Device. `SHELL` is the whole precache list an
 
 `_check.mjs` does not trust the `SHELL` list against a directory scan alone: it walks the import graph from `js/app.js` and every module it reaches has to exist and be pinned, wherever it lives, and it resolves local `url()` in every stylesheet the same way. A new module in a folder nobody thought to scan is exactly how a shell goes half-offline.
 
-Audio is `js/audio.js`: three Web Audio buses (music / sfx / voice), one unlock gate behind the giant PLAY, music ducked to 16% for the length of a voice line, and three clip namespaces built only by `clipId` so a phoneme tap can never reach a name recording. `data/audio.json` + `audio/README.md` are the recording checklist — 128 silent placeholders, nothing mapped, nothing fetched.
+Audio is `js/audio.js`: three Web Audio buses (music / sfx / voice), one unlock gate behind the giant PLAY, music ducked to 16% for the length of a voice line, and three clip namespaces built only by `clipId` so a phoneme tap can never reach a name recording. `data/audio.json` + `audio/README.md` are the recording checklist. Ten cheer and nudge clips are mapped. Names, isolated sounds, and picture words stay silent placeholders.
 
-**Not yet:** recorded Lucy voice (the checklist is written — `audio/README.md`). Two-tablet copy is Export / Import CSV (replace, not a silent merge).
+**Not yet:** letter names, isolated sounds, and picture words (`audio/README.md`). Two-tablet copy is Export / Import CSV (replace, not a silent merge).
 
 Lucy is a drawn golden retriever. Glasses when she teaches. Bows when she celebrates. She talks and moves. A still photo of a dog is a failed Lucy. Her closet is `data-wear` on the same SVG (`css/shell.css`), independent of the pose — teaching Lucy in a ball cap is correct.

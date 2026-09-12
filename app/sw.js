@@ -5,7 +5,7 @@
    installs, then waits. Only Grown-Ups → Device → Get update sends
    SKIP_WAITING, so the pin never swaps under a child mid-round. */
 
-const VERSION = 'rsabc-shell-v36-login-satpin';
+const VERSION = 'rsabc-shell-v37-lucy-voice';
 const SHELL = [
   './',
   'index.html',
@@ -80,6 +80,16 @@ const SHELL = [
   'audio/sfx-pop.wav',
   'audio/sfx-woof.wav',
   'audio/music-loop.wav',
+  'audio/lucy-cheer-1.mp3',
+  'audio/lucy-cheer-2.mp3',
+  'audio/lucy-cheer-3.mp3',
+  'audio/lucy-cheer-4.mp3',
+  'audio/lucy-cheer-5.mp3',
+  'audio/lucy-cheer-6.mp3',
+  'audio/lucy-nudge-1.mp3',
+  'audio/lucy-nudge-2.mp3',
+  'audio/lucy-nudge-3.mp3',
+  'audio/lucy-nudge-4.mp3',
   'icons/icon.svg',
   'icons/icon-maskable.svg',
   'icons/icon-192.png',
