@@ -17,6 +17,7 @@ import { printPanel } from './printables.js';
 const PIN = '1234';
 const overlay = document.getElementById('overlay');
 let onChange = () => {};
+let paintAudioChrome = () => {};
 let open = false;
 let atGate = false;
 let gatePress = null;
@@ -24,6 +25,10 @@ let afterUnlock = 'sheet';
 let onUnlocked = () => {};
 
 export function isOpen() { return open; }
+
+export function setAudioChrome(fn) {
+  paintAudioChrome = typeof fn === 'function' ? fn : () => {};
+}
 
 /* `#/grownups/print` opens the gate and lands on that tab. The two panels D5
    is about — Print and Device — are otherwise five taps and a PIN deep, so a
@@ -393,9 +398,9 @@ function soundPanel() {
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Audio channels'),
       el('p', { class: 'note' }, 'Independent mutes. Music ducks while Lucy talks. Sound stays locked until a child taps the giant PLAY button — these Test buttons also unlock, because a grown-up needs to hear the cart.'),
-      row('Music', 'Quiet playground wander · ducks under voice', toggle(a.music, (v) => { store.setAudio('music', v); audio.applyMutes(); })),
-      row('Sound effects', 'Taps, matches, success chime, star hits — never Lucy\'s speech', toggle(a.sfx, (v) => { store.setAudio('sfx', v); audio.applyMutes(); })),
-      row('Voice', 'Lucy\'s recorded names, sounds, and words when clips land. Mute voice does not mute taps or chimes.', toggle(a.voice, (v) => { store.setAudio('voice', v); audio.applyMutes(); })),
+      row('Music', 'Quiet playground wander · ducks under voice', toggle(a.music, (v) => { store.setAudio('music', v); audio.applyMutes(); paintAudioChrome(); })),
+      row('Sound effects', 'Taps, matches, success chime, star hits — never Lucy\'s speech', toggle(a.sfx, (v) => { store.setAudio('sfx', v); audio.applyMutes(); paintAudioChrome(); })),
+      row('Voice', 'Lucy\'s recorded names, sounds, and words when clips land. Mute voice does not mute taps or chimes.', toggle(a.voice, (v) => { store.setAudio('voice', v); audio.applyMutes(); paintAudioChrome(); })),
       el('div', { class: 'gu-actions' },
         el('button', {
           class: 'gu-btn gu-btn--primary', type: 'button',

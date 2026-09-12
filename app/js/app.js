@@ -19,7 +19,7 @@ import * as arcade from './screens/arcade.js';
 import * as coming from './screens/coming.js';
 import * as match from './screens/match.js';
 import { mountLottie } from './motion.js';
-import { openGrownUps, isOpen as gateOpen } from './screens/grownups.js';
+import { openGrownUps, isOpen as gateOpen, setAudioChrome } from './screens/grownups.js';
 import { hasSession, isArcadeLocked, leaveSession, needsRoster } from './profile.js';
 import { nextTreat } from './closet.js';
 import { APP_VERSION } from './version.js';
@@ -309,6 +309,7 @@ async function boot() {
   const copy = document.getElementById('foot-copy');
   if (copy) copy.textContent = `READY SET ABC · Pre-K Phonics with Lucy · ${APP_VERSION}`;
   paintCluster();
+  setAudioChrome(paintCluster);
   wireGate();
   window.addEventListener('hashchange', render);
 
