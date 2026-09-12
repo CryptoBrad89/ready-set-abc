@@ -7,6 +7,8 @@ import { createLucy } from '../lucy.js';
 import { store } from '../store.js';
 import { audio } from '../audio.js';
 import { startRound, playStartLetter } from '../round.js';
+import { isLetterOpen } from '../profile.js';
+import { wobble } from '../motion.js';
 import {
   allClouds, openCloud, isCloudUnlocked, beatsFor, letterMastered, pinInOpenCloud,
 } from '../clouds.js';
@@ -65,13 +67,16 @@ export function render(ctx) {
     const entry = letterByChar(L) || { letter: L, lower: String(L).toLowerCase(), word: '', emoji: '' };
     const isCurrent = L === current;
     const isPinned = L === pinned;
+    const letterOpen = isLetterOpen(L, ctx.kid);
     const n = beatsFor(L);
-    const flags = `${isCurrent ? ' current' : ''}${isPinned ? ' pinned' : ''}${letterMastered(L) ? ' mastered' : ''}`;
+    const flags = `${letterOpen ? '' : ' is-locked'}${isCurrent ? ' current' : ''}${isPinned ? ' pinned' : ''}${letterMastered(L) ? ' mastered' : ''}`;
     const tile = el('button', {
       class: `pillow trail-tile${flags}`,
       type: 'button',
       'aria-current': isCurrent ? 'true' : null,
-      'aria-label': `Letter ${entry.letter}, ${entry.word}.${isPinned ? ' Letter of the day.' : ''}${isCurrent ? ' Starts next.' : ''} Play this letter. ${n} of 4.`,
+      'aria-label': letterOpen
+        ? `Letter ${entry.letter}, ${entry.word}.${isPinned ? ' Letter of the day.' : ''}${isCurrent ? ' Starts next.' : ''} Play this letter. ${n} of 4.`
+        : `Letter ${entry.letter}, locked.`,
     },
       isPinned ? el('span', { class: 't-pin' }, icon('flag')) : null,
       el('span', { class: 't-glyph' }, `${entry.letter}${entry.lower}`),
@@ -81,10 +86,16 @@ export function render(ctx) {
       isCurrent ? el('span', { class: 't-flag' }, pinned && isPinned ? 'Today' : 'Next up') : null,
     );
     pressable(tile, () => {
+      if (!letterOpen) {
+        audio.unlock();
+        audio.sfx('wrong');
+        wobble(tile);
+        return;
+      }
       audio.unlock();
       audio.sayLetterName(entry.letter);
       startRound({ startAt: entry.letter });
-      const next = store.isClassroom() && !ctx.kid ? 'faces' : 'play';
+      const next = 'play';
       setTimeout(() => ctx.go(next), 260);
     });
     board.append(tile);

@@ -41,7 +41,7 @@ const PATHS = {
   star: '<path d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5-5.9-3.1-5.9 3.1 1.2-6.5L2.5 9.5l6.6-.9z"/>',
   music: '<path d="M19 3.4l-9 2.1v9.9a3.3 3.3 0 1 0 2 3v-8.4l7-1.6v5.5a3.3 3.3 0 1 0 2 3z"/>',
   sfx: '<path d="M4 9.5v5h3.6L12 18.8V5.2L7.6 9.5z"/><path d="M15.4 8.2a5 5 0 0 1 0 7.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M18.2 5.6a8.6 8.6 0 0 1 0 12.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
-  voice: '<rect x="9.2" y="2.4" width="5.6" height="11.2" rx="2.8"/><path d="M5.6 11.4a6.4 6.4 0 0 0 12.8 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 17.8v3.6M8.6 21.4h6.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  voice: '<circle cx="8.2" cy="12" r="3.4"/><path d="M12.6 8.2c2.4 1.8 2.4 5.8 0 7.6M15.6 6c3.6 2.8 3.6 9.2 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6.4 10.4c.6-2.2 2.4-2.8 3.6-1.4"/>',
   lock: '<path d="M7 10V8a5 5 0 0 1 10 0v2" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="4.6" y="10" width="14.8" height="10.6" rx="3.2"/>',
   cards: '<rect x="2.6" y="6" width="8.2" height="13" rx="2.4"/><rect x="12.4" y="4.4" width="8.2" height="13" rx="2.4" opacity=".55"/>',
   trail: '<path d="M5 20c0-3 3-4 6-4s6-1 6-4-3-4-6-4H5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1 4.4"/><circle cx="5" cy="8" r="2.6"/><circle cx="19" cy="19" r="2.6"/>',

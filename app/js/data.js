@@ -37,8 +37,17 @@ export function shippedClassName() {
   const name = cache.roster ? String(cache.roster.className || '').trim() : '';
   return name || 'Class';
 }
-export function shippedKids() { return cache.roster ? cache.roster.kids : []; }
-export function kids() { return store.getRosterOverride() || shippedKids(); }
+export function shippedKids() { return (cache.roster ? cache.roster.kids : []).map(withKidDefaults); }
+export function kids() { return (store.getRosterOverride() || shippedKids()).map(withKidDefaults); }
+
+function withKidDefaults(kid) {
+  if (!kid || typeof kid !== 'object') return kid;
+  const workMode = ['satpin', 'assigned', 'free'].includes(kid.workMode) ? kid.workMode : 'satpin';
+  const assignedLetters = Array.isArray(kid.assignedLetters)
+    ? kid.assignedLetters.map((ch) => String(ch || '').toUpperCase()).filter((ch) => /^[A-Z]$/.test(ch))
+    : [];
+  return { ...kid, workMode, assignedLetters, arcadeLocked: !!kid.arcadeLocked };
+}
 export function kidById(id) { return kids().find((k) => k.id === id) || null; }
 
 /* True once there is a roster to check an id against — either the shipped

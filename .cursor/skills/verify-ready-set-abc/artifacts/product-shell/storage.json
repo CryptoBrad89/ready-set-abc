@@ -1,0 +1,30 @@
+{
+  "origin": "http://127.0.0.1:4174",
+  "pin": "rsabc-shell-v36-login-satpin",
+  "afterAvaHome": {
+    "rsabc.kid": "k01",
+    "rsabc.session": "child",
+    "rsabc.classroom": null,
+    "screen": "home",
+    "hash": "#/home"
+  },
+  "afterMilesAssigned": {
+    "rsabc.kid": "k24",
+    "rsabc.session": "child",
+    "screen": "home",
+    "hash": "#/home",
+    "miles": {
+      "workMode": "assigned",
+      "assignedLetters": ["S", "O", "J"],
+      "arcadeLocked": true
+    },
+    "playLabel": "Play letter S. Tap to start sound.",
+    "arcadeTab": "Arcade, locked"
+  },
+  "afterArcadeHash": {
+    "hash": "#/arcade",
+    "screen": "arcade",
+    "playLabel": "Arcade, locked",
+    "roundStarted": false
+  }
+}

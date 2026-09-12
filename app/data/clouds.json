@@ -1,11 +1,11 @@
 {
-  "contentVersion": "2026.09.11-satpin-clouds",
-  "note": "Cloud 1 is SATPIN. Later clouds stay locked until every letter in the open cloud has 4/4 beats, or a grown-up unlocks the next cloud.",
+  "contentVersion": "2026.09.12-satpin-classic",
+  "note": "Cloud 1 is classic SATPIN: S A T P I N. M lives in Cloud 2. Later clouds stay locked until every letter in the open cloud has 4/4 beats, or a grown-up unlocks the next cloud.",
   "clouds": [
-    { "id": 1, "name": "Cloud 1", "letters": ["S", "A", "T", "P", "M", "I"], "hint": "s a t p m i" },
-    { "id": 2, "name": "Cloud 2", "letters": ["F", "N", "O", "D", "C", "H"], "hint": "f n o d c h" },
+    { "id": 1, "name": "Cloud 1", "letters": ["S", "A", "T", "P", "I", "N"], "hint": "s a t p i n" },
+    { "id": 2, "name": "Cloud 2", "letters": ["F", "M", "O", "D", "C", "H"], "hint": "f m o d c h" },
     { "id": 3, "name": "Cloud 3", "letters": ["G", "U", "B", "L", "K", "E"], "hint": "g u b l k e" },
     { "id": 4, "name": "Cloud 4", "letters": ["R", "W", "J", "V", "Y", "Z", "Q", "X"], "hint": "r w j v y z q x" },
-    { "id": 5, "name": "Revision", "letters": ["S", "A", "T", "P", "M", "I", "F", "N", "O"], "hint": "mix the first two clouds" }
+    { "id": 5, "name": "Revision", "letters": ["S", "A", "T", "P", "I", "N", "F", "M", "O"], "hint": "mix the first two clouds" }
   ]
 }

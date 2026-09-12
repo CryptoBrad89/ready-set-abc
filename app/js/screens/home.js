@@ -8,9 +8,11 @@ import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
 import { store } from '../store.js';
 import { letterByChar, picturesFor } from '../data.js';
-import { openCloud, beatsFor, pinInOpenCloud, playStartLetter } from '../clouds.js';
+import { openCloud, beatsFor, pinInOpenCloud } from '../clouds.js';
 import { nextTreat, starsToNext, TREATS } from '../closet.js';
 import { previewLetters, startRound } from '../round.js';
+import { isArcadeLocked, startLetter, workLetters } from '../profile.js';
+import { wobble } from '../motion.js';
 
 export const chrome = { tabs: true, tab: 'home', who: true };
 
@@ -48,14 +50,22 @@ function helloPeeks(entry) {
 function beginPlay(ctx, { startAt = null, step = 'meet', mode = 'loop' } = {}) {
   audio.unlock();
   audio.sfx('select');
-  startRound({ startAt: startAt || playStartLetter(), step, mode });
-  ctx.go(store.isClassroom() && !ctx.kid ? 'faces' : 'play');
+  startRound({ startAt: startAt || startLetter(), step, mode });
+  ctx.go('play');
+}
+
+function refuseArcade(node) {
+  audio.unlock();
+  audio.sfx('wrong');
+  wobble(node);
 }
 
 export function render(ctx) {
   const root = el('div', { class: 'hub' });
   const name = ctx.kid ? ctx.kid.name : 'friend';
-  const pick = playStartLetter('P');
+  const pick = startLetter('P');
+  const pathLetters = workLetters(ctx.kid);
+  const arcadeOff = isArcadeLocked(ctx.kid);
   const pickEntry = letterByChar(pick) || { letter: pick, word: '', phoneme: '' };
   const cloud = openCloud();
   const preview = previewLetters();
@@ -193,7 +203,7 @@ export function render(ctx) {
     'aria-label': `Play letter ${pick}. Tap to start sound.`,
   },
     el('span', { class: 'hub-badge' }, "Today's Star Mission"),
-    el('span', { class: 'hub-title' }, `Letters ${pick} & M Workshop`),
+    el('span', { class: 'hub-title' }, `Letters ${pick} & ${pathLetters[1] || 'A'} Workshop`),
     el('span', { class: 'hub-sub' }, 'Meet Lucy, choose the letter, listen, then pictures.'),
     el('span', { class: 'hub-card-foot' },
       el('span', { class: 'hub-play-disc', 'aria-hidden': 'true' }, icon('play')),
@@ -227,20 +237,21 @@ export function render(ctx) {
   );
   pressable(soundCard, () => beginPlay(ctx, { startAt: pick, step: 'listen', mode: 'once' }));
 
+  const blend = pathLetters.slice(0, 3);
+  const blendJoin = blend.join(', ');
+  const satTones = ['hub-tile--red', 'hub-tile--cyan', 'hub-tile--gold'];
   const satCard = el('button', {
     class: 'hub-card',
     type: 'button',
-    'aria-label': 'Open cloud letters S, A, T',
+    'aria-label': `Open cloud letters ${blendJoin}`,
   },
     el('span', { class: 'hub-art hub-art--red' },
       el('span', { class: 'hub-sat' },
-        el('span', { class: 'hub-tile hub-tile--red' }, 'S'),
-        el('span', { class: 'hub-tile hub-tile--cyan' }, 'A'),
-        el('span', { class: 'hub-tile hub-tile--gold' }, 'T'),
+        ...blend.map((L, i) => el('span', { class: `hub-tile ${satTones[i] || satTones[0]}` }, L)),
       ),
       el('span', { class: 'hub-art-tag hub-art-tag--go' }, 'Cloud 1'),
     ),
-    el('span', { class: 'hub-title' }, 'Sounds S, A, T'),
+    el('span', { class: 'hub-title' }, `Sounds ${blendJoin}`),
     el('span', { class: 'hub-sub' }, 'Blend first sounds on the Letters & Phonics path.'),
     el('span', { class: 'hub-cta' }, 'Continue Stage'),
   );
@@ -265,24 +276,27 @@ export function render(ctx) {
   pressable(matchCard, () => beginPlay(ctx, { startAt: pick, step: 'case', mode: 'once' }));
 
   const later = [
-    ['stories', "Lucy's Picnic Day", 'Word pictures for this letter.', 'Open Book', 'hub-art--cyan', 'book'],
-    ['listen', 'Rhymes & Songs', 'This letter’s listen beat.', 'Listen & Sing', 'hub-art--yellow', 'music'],
-    ['pouch', 'Coloring Canvas', 'Closet dress-up lives here.', 'Open Closet', 'hub-art--red', 'pouch'],
-    ['arcade', 'Puppy Treat Match', 'Choose-letter beat in Arcade.', 'Play Memory', 'hub-art--cyan', 'arcade'],
+    ['stories', "Lucy's Picnic Day", 'A tiny picture story. Tap a word to hear it.', 'Open Book', 'hub-art--cyan', 'book', false],
+    ['coming/rhymes', 'Rhymes & Songs', 'A short Lucy song. Coming next week.', 'Coming soon', 'hub-art--yellow', 'music', false],
+    ['coming/color', 'Coloring Canvas', 'Tap-to-fill a picture. Coming next week.', 'Coming soon', 'hub-art--red', 'pouch', false],
+    ['arcade', 'Puppy Treat Match', 'Memory in Arcade. Uses first sounds.', 'Play Memory', 'hub-art--cyan', 'arcade', arcadeOff],
   ];
   const laterRow = el('div', { class: 'hub-row hub-row--later' });
-  later.forEach(([kind, title, sub, cta, art, ico]) => {
-    const card = el('button', { class: 'hub-card', type: 'button', 'aria-label': title },
-      el('span', { class: `hub-art ${art}` }, icon(ico)),
+  later.forEach(([kind, title, sub, cta, art, ico, locked]) => {
+    const card = el('button', {
+      class: locked ? 'hub-card is-locked' : 'hub-card',
+      type: 'button',
+      'aria-label': locked ? `${title}, locked` : title,
+    },
+      el('span', { class: `hub-art ${art}` }, icon(ico), locked ? el('span', { class: 'hub-lock' }, icon('lock')) : null),
       el('span', { class: 'hub-title' }, title),
-      el('span', { class: 'hub-sub' }, sub),
-      el('span', { class: 'hub-cta' }, cta),
+      el('span', { class: 'hub-sub' }, locked ? 'Locked for now. Ask a grown-up.' : sub),
+      el('span', { class: 'hub-cta' }, locked ? 'Locked' : cta),
     );
     pressable(card, () => {
-      if (kind === 'listen') beginPlay(ctx, { startAt: pick, step: 'listen', mode: 'once' });
-      else if (kind === 'pouch') ctx.go('pouch');
-      else if (kind === 'arcade') ctx.go('arcade');
-      else ctx.go('stories');
+      if (locked) { refuseArcade(card); return; }
+      if (kind === 'arcade') ctx.go('arcade');
+      else ctx.go(kind);
     });
     laterRow.append(card);
   });
@@ -340,7 +354,7 @@ export function render(ctx) {
               el('span', { class: 'hub-stat-ico', 'aria-hidden': 'true' }, level),
               el('span', {},
                 el('span', { class: 'hub-stat-num' }, `Level ${level}`),
-                el('span', { class: 'hub-stat-sub' }, preview.length ? preview.join(' · ') : 'S A T P M I'),
+                el('span', { class: 'hub-stat-sub' }, pathLetters.length ? pathLetters.join(' · ') : 'S A T P I N'),
               ),
             ),
           ),

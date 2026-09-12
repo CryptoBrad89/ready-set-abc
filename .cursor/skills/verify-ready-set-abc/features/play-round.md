@@ -22,7 +22,7 @@ A child starts an open-cloud letter, runs meet → choose → listen → payoff,
 
 Preconditions:
 
-- `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v35-stitch-hub`.
+- `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v36-login-satpin`.
 - Viewport is landscape 1280×800.
 - Face pick is off so PLAY goes straight into the letter.
 - Navigate to the URL from `verify-rsabc smoke 'reset=1&classroom=0&play=P'`.
@@ -36,7 +36,7 @@ Preconditions:
 ## Gotchas
 
 - `play=P` with `classroom=1` and no kid lands on **Who is playing?** first. This recipe uses `classroom=0`.
-- Letters outside the open cloud (default Cloud 1 = S A T P M I) do not start PLAY.
+- Letters outside the open cloud (default Cloud 1 = S A T P I N) do not start PLAY.
 - Isolated phonemes are files only. Missing clip = silence + Lucy’s bubble, never TTS “puh”.
 - Celebration auto-settles at 8 seconds. Skip only stops the party.
 - First PLAY also unlocks Web Audio.

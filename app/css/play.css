@@ -1729,6 +1729,7 @@
   gap: 1px;
   padding: 4px;
 }
+.trail-tile.is-locked { opacity: .45; filter: grayscale(.4); }
 .trail-tile .t-glyph {
   font-family: var(--font-display);
   font-weight: 700;
@@ -2651,6 +2652,25 @@ html[data-chrome="hidden"] .screen {
   color: #1a1a1a;
 }
 .hub-card--mission { background: #ffe600; min-height: 340px; }
+.hub-card.is-locked { opacity: 0.92; }
+.hub-lock {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: #1a1a1a;
+  color: #ffe600;
+  display: grid;
+  place-items: center;
+}
+.hub-lock svg { width: 20px; height: 20px; }
+.hub-art { position: relative; }
+.later-copy { font-weight: 800; color: var(--on-surface-variant); max-width: 36rem; }
+.face-card--adult { background: #e2e8f0; }
+.faces-lucy { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+.faces-lucy .lucy-stage { width: 72px; }
 .hub-kicker { font-size: 11px; font-weight: 800; text-transform: uppercase; opacity: .7; }
 .hub-title { font-family: var(--font-display); font-size: clamp(20px, 2.4vh, 26px); font-weight: 700; letter-spacing: 0.03em; }
 .hub-sub { font-size: 13px; font-weight: 700; opacity: .8; }

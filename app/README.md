@@ -133,7 +133,7 @@ Do this **once per tablet, on school Wi-Fi**, before the cart goes into a dead-z
 2. Open **Grown-Ups** (see PIN below).
 3. Tap **Device**.
 4. Tap **Set up this device**. Watch the bar fill.
-5. When it says **Pinned** plus the shell version (Grown-Ups → Device, currently `rsabc-shell-v35-stitch-hub`), you can turn the radio off.
+5. When it says **Pinned** plus the shell version (Grown-Ups → Device, currently `rsabc-shell-v36-login-satpin`), you can turn the radio off.
 
 The tablet now keeps this exact shell. It will **not** silently update mid-week. If someone drops a newer copy of the files on the server, the tablet quietly downloads it and then **waits** — the swap only happens when a grown-up taps **Get update**. No child has ever had the app change under them mid-round, and that is on purpose.
 
@@ -152,7 +152,7 @@ Off Wi-Fi, **Get update** and **Set up this device** both say so and stop. They 
 | It says | What it means | What to do |
 |---|---|---|
 | *Checked just now · all N files cached* | Genuinely ready. | Turn the radio off. |
-| *Only 66 of 81 files are cached…* | Chrome evicted part of it (usually a full disk). | Back on Wi-Fi, tap **Set up this device**. |
+| *Only 66 of 83 files are cached…* | Chrome evicted part of it (usually a full disk). | Back on Wi-Fi, tap **Set up this device**. |
 | *Nothing is cached on this tablet* | It was never set up, or site data was cleared. | Back on Wi-Fi, tap **Set up this device**. |
 | *All N files cached on `…`, but this page is running `…`* | A **Get update** finished and nobody tapped **Reload to finish**. | Reload the tablet. Nothing is wrong with the files. |
 
@@ -505,7 +505,7 @@ One page. Print it, or copy it onto an index card and tape it inside the cart li
 ## PIN, versions, storage (the sticky note)
 
 - PIN **`1234`**
-- Shell pin **`rsabc-shell-v35-stitch-hub`** (Grown-Ups → Device)
+- Shell pin **`rsabc-shell-v36-login-satpin`** (Grown-Ups → Device)
 - Content pin from `data/letters.json` (all 26 awake · 15-picture GAME-FLOW pool each · 390 plates, no two sharing an emoji)
 - Saved on the tablet under `rsabc.` keys: kid, classroom, roster, settings, audio, mode, hideChrome, pinnedLetter, cursor, nextAbcIndex, stars, stickers, outfit, progress, notes, cache
 - Tablet copy / backup: Grown-Ups → Class → **Export CSV** writes `ready-set-abc.csv` (format `rsabc-csv-v1`). Import replaces this tablet — it never merges.

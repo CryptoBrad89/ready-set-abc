@@ -1,12 +1,14 @@
-/* Face pick — classroom mode only, and only before play.
-   Grown-Ups → Class → Classroom mode turns this on; with it off a kid never
-   sees a roster at all and PLAY goes straight into the round. */
+/* Roster login. Always first. A child tap goes to that child's Home.
+   The adult tile opens the same PIN as Grown-Ups, then the adult Home. */
 
 import { el, icon, pressable } from '../ui.js';
 import { kids, className } from '../data.js';
 import { store } from '../store.js';
 import { audio } from '../audio.js';
-import { startRound, isActive, endRound } from '../round.js';
+import { endRound } from '../round.js';
+import { enterAdult, enterChild, hasSession } from '../profile.js';
+import { createLucy } from '../lucy.js';
+import { openGrownUps } from './grownups.js';
 
 export const chrome = { tabs: false, tab: 'home', who: false };
 
@@ -14,6 +16,27 @@ export function render(ctx) {
   const root = el('div', { class: 'faces' });
 
   const grid = el('div', { class: 'faces-grid' });
+  const adult = el('button', {
+    class: 'pillow face-card face-card--adult',
+    type: 'button',
+    'aria-label': 'Grown-Ups',
+  },
+    el('span', { class: 'face-disc', style: { background: '#334155' } }, icon('lock')),
+    el('span', { class: 'face-name' }, 'Grown-Ups'),
+  );
+  pressable(adult, () => {
+    audio.unlock();
+    audio.sfx('tap');
+    openGrownUps({
+      onChange: () => {},
+      afterUnlock: 'home',
+      onUnlocked: () => {
+        enterAdultHome(ctx);
+      },
+    });
+  });
+  grid.append(adult);
+
   kids().forEach((kid) => {
     const card = el('button', {
       class: 'pillow face-card',
@@ -27,25 +50,40 @@ export function render(ctx) {
     pressable(card, () => {
       audio.unlock();
       audio.sfx('select');
-      store.setKidId(kid.id);
+      endRound();
+      enterChild(kid.id);
       audio.speak(`Hi ${kid.name}!`);
-      if (!isActive()) startRound();   // a letter tapped before the face pick keeps its round
-      setTimeout(() => ctx.go('play'), 220);
+      setTimeout(() => ctx.go('home'), 220);
     });
     grid.append(card);
+  });
+
+  const lucy = createLucy({
+    state: 'idle',
+    cutout: true,
+    line: 'Tap your face. I will wait right here!',
+    paw: () => audio.speak('Tap your face. I will wait right here!'),
   });
 
   root.append(
     el('div', { class: 'faces-head' },
       el('h1', {}, 'Who is playing?'),
       el('p', {}, `Tap your face — ${className()}`),
+      el('div', { class: 'faces-lucy' }, lucy.stage, lucy.bubble),
     ),
     grid,
-    el('div', { style: { textAlign: 'center' } },
-      el('button', { class: 'chip', type: 'button', onclick: () => { endRound(); ctx.go('home'); } }, icon('home'), 'Back'),
-    ),
   );
+  if (hasSession()) {
+    root.append(el('div', { style: { textAlign: 'center' } },
+      el('button', { class: 'chip', type: 'button', onclick: () => ctx.go('home') }, icon('home'), 'Back'),
+    ));
+  }
   return root;
+}
+
+function enterAdultHome(ctx) {
+  enterAdult();
+  ctx.go('home');
 }
 
 export function footLeft() {

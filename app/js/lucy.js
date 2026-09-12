@@ -10,6 +10,9 @@
 import { el } from './ui.js';
 import { audio } from './audio.js';
 import { wornOutfitId } from './closet.js';
+import { mountLottie } from './motion.js';
+
+const IDLE_LOOPS = ['tail', 'wave', 'blink'];
 
 const SVG = `
 <svg class="lucy" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lucy the golden retriever">
@@ -202,7 +205,26 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
     }
   });
   const slot = el('div', { class: 'lucy-lottie-slot', hidden: true, 'aria-hidden': 'true' });
-  const stage = el('div', { class: `lucy-stage lucy-stage--${variant === 'card' ? 'card' : 'circle'}` }, well, slot);
+  const sparkle = el('div', { class: 'lucy-sparkle', 'aria-hidden': 'true' });
+  const idleName = IDLE_LOOPS[Math.floor(Math.random() * IDLE_LOOPS.length)];
+  const loop = el('video', {
+    class: 'lucy-idle-loop',
+    muted: true,
+    loop: true,
+    playsinline: '',
+    'aria-hidden': 'true',
+  });
+  loop.setAttribute('playsinline', '');
+  loop.src = `art/lucy/idle-${idleName}.mp4`;
+  loop.addEventListener('loadeddata', () => {
+    well.classList.add('has-loop');
+    loop.play().catch(() => {});
+  });
+  loop.addEventListener('error', () => { loop.remove(); });
+  well.append(loop);
+  const stage = el('div', { class: `lucy-stage lucy-stage--${variant === 'card' ? 'card' : 'circle'}` }, well, sparkle, slot);
+  stage.dataset.idle = idleName;
+  mountLottie(sparkle, 'sparkle', { loop: true });
   /* Callers still read .svg.dataset. The well holds pose/talk/wear. */
   const svg = well;
   svg.dataset.talking = 'false';

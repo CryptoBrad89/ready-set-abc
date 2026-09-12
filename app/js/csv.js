@@ -10,6 +10,7 @@ export const CSV_FORMAT = 'rsabc-csv-v1';
 const COLUMNS = [
   'kind', 'key', 'value',
   'id', 'name', 'emoji', 'color',
+  'workMode', 'assignedLetters', 'arcadeLocked',
   'letter', 'stars', 'rounds', 'bestStars', 'lastAt', 'notes',
   'stickerId', 'word', 'stickerEmoji',
 ];
@@ -175,6 +176,9 @@ export function snapshotToCsv(snap) {
       name: kid.name,
       emoji: kid.emoji,
       color: kid.color,
+      workMode: kid.workMode || '',
+      assignedLetters: Array.isArray(kid.assignedLetters) ? kid.assignedLetters.join(' ') : '',
+      arcadeLocked: boolCell(!!kid.arcadeLocked),
       lastAt: rec.lastPlayed || '',
       notes: notes[kid.id] || '',
     });
@@ -301,6 +305,9 @@ export function csvToSnapshot(textOrRows) {
         name,
         emoji: field(row, 'emoji') || '🐾',
         color: field(row, 'color') || '#5aa9f0',
+        workMode: field(row, 'workMode'),
+        assignedLetters: field(row, 'assignedLetters'),
+        arcadeLocked: field(row, 'arcadeLocked'),
       });
       const notes = field(row, 'notes');
       if (notes) snap.notes[id] = notes;

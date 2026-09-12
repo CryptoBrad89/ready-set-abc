@@ -4,8 +4,9 @@
 const NS = 'rsabc.';
 
 export const KEYS = {
-  kid: 'kid',                   // currently selected kid id (classroom mode)
-  classroom: 'classroom',       // face pick before play, on/off
+  kid: 'kid',                   // currently selected kid id
+  session: 'session',           // child | adult | null — roster is login
+  classroom: 'classroom',       // kept for CSV; roster always shows first
   roster: 'roster',             // teacher edits layered over data/roster.json
   className: 'className',       // teacher's name for this class, this device
   settings: 'settings',         // round size, choice count, case mode, words
@@ -27,6 +28,8 @@ export const KEYS = {
 
 const MODES = ['center', 'small-group', 'whiteboard'];
 const SKINS = ['comic', 'cosmic', 'violet'];
+const WORK_MODES = ['satpin', 'assigned', 'free'];
+const SESSIONS = ['child', 'adult'];
 const DEVICE = '_device';
 
 const DEFAULT_SETTINGS = {
@@ -106,8 +109,26 @@ export const store = {
     const clean = String(id ?? '').trim();
     if (!clean || clean === DEVICE) return store.clearKid();
     write(KEYS.kid, clean);
+    write(KEYS.session, 'child');
   },
-  clearKid() { localStorage.removeItem(NS + KEYS.kid); },
+  clearKid() {
+    localStorage.removeItem(NS + KEYS.kid);
+    if (read(KEYS.session, null) === 'child') localStorage.removeItem(NS + KEYS.session);
+  },
+  getSessionRole() {
+    const role = read(KEYS.session, null);
+    if (role === 'adult') return 'adult';
+    if (role === 'child' || store.getKidId()) return 'child';
+    return null;
+  },
+  setAdultSession() {
+    store.clearKid();
+    write(KEYS.session, 'adult');
+  },
+  clearSession() {
+    localStorage.removeItem(NS + KEYS.kid);
+    localStorage.removeItem(NS + KEYS.session);
+  },
 
   isClassroom() { return read(KEYS.classroom, false) === true; },
   setClassroom(on) {
@@ -117,7 +138,10 @@ export const store = {
 
   /* --- roster overrides (Grown-Ups → Class) -------------------------- */
   getRosterOverride() { return read(KEYS.roster, null); },
-  setRosterOverride(kids) { write(KEYS.roster, kids); },
+  setRosterOverride(kids) {
+    const list = Array.isArray(kids) ? kids.map(sanitizeKid).filter(Boolean) : [];
+    write(KEYS.roster, list);
+  },
   clearRosterOverride() { localStorage.removeItem(NS + KEYS.roster); },
 
   /* --- class name -----------------------------------------------------
@@ -202,7 +226,7 @@ export const store = {
        none        — play only; don't show or save
        stars       — show this session; do not persist
        stars-save  — show and persist per-letter best in localStorage (default) */
-  starsOwner() { return store.isClassroom() ? (store.getKidId() || DEVICE) : DEVICE; },
+  starsOwner() { return store.getKidId() || DEVICE; },
   progressMode() { return store.getSettings().progressMode || 'stars-save'; },
   getStars(owner = store.starsOwner()) {
     const mode = store.progressMode();
@@ -362,6 +386,7 @@ export const store = {
       mode: store.getMode(),
       hideChrome: store.getHideChrome(),
       classroom: store.isClassroom(),
+      session: store.getSessionRole(),
       outfit: store.getOutfit(),
       skin: store.getSkin(),
       pinnedLetter: store.getPinnedLetter(),
@@ -395,6 +420,9 @@ export const store = {
     applySkin(skin);
 
     write(KEYS.classroom, sanitizeBool(snap.classroom, false));
+    const session = SESSIONS.includes(snap.session) ? snap.session : null;
+    if (session) write(KEYS.session, session);
+    else localStorage.removeItem(NS + KEYS.session);
     /* Import replaces this tablet: clear first so a rejected outfit id cannot
        leave the old Lucy dressed in something the file never mentioned. */
     localStorage.removeItem(NS + KEYS.outfit);
@@ -422,8 +450,9 @@ export const store = {
     write(KEYS.beats, sanitizeBeatsMap(snap.beats));
 
     const kidId = typeof snap.kidId === 'string' && snap.kidId ? snap.kidId : null;
-    if (sanitizeBool(snap.classroom, false) && kidId) write(KEYS.kid, kidId);
+    if (kidId) write(KEYS.kid, kidId);
     else localStorage.removeItem(NS + KEYS.kid);
+    if (!session && kidId) write(KEYS.session, 'child');
   },
 
   reset() {
@@ -512,7 +541,23 @@ function sanitizeKid(raw) {
   if (!id || id === DEVICE || !/^[A-Za-z0-9_-]+$/.test(id)) return null;
   const emoji = String(raw.emoji || '🐾').trim().slice(0, 8) || '🐾';
   const color = String(raw.color || '#5aa9f0').trim().slice(0, 32) || '#5aa9f0';
-  return { id, name, emoji, color };
+  const workMode = WORK_MODES.includes(raw.workMode) ? raw.workMode : 'satpin';
+  const assignedLetters = sanitizeLetterList(raw.assignedLetters);
+  const arcadeLocked = sanitizeBool(raw.arcadeLocked, false);
+  return { id, name, emoji, color, workMode, assignedLetters, arcadeLocked };
+}
+
+function sanitizeLetterList(raw) {
+  const src = Array.isArray(raw) ? raw : String(raw || '').split(/[\s,]+/);
+  const seen = new Set();
+  const out = [];
+  src.forEach((ch) => {
+    const letter = sanitizeLetter(ch);
+    if (!letter || seen.has(letter)) return;
+    seen.add(letter);
+    out.push(letter);
+  });
+  return out;
 }
 
 function sanitizeNotes(raw = {}) {

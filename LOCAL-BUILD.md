@@ -34,6 +34,8 @@ isProject: false
 
 # Letters and Sounds — first-principles rebuild
 
+**Follow [PRODUCT.md](PRODUCT.md).** Cloud 1 in this note listed S A T P M I. Classic SATPIN is S A T P I N.
+
 ## What I will steal (from the walkthrough)
 
 - One product: Letters and Sounds. No catalog.

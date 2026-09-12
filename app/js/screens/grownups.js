@@ -18,6 +18,10 @@ const PIN = '1234';
 const overlay = document.getElementById('overlay');
 let onChange = () => {};
 let open = false;
+let atGate = false;
+let gatePress = null;
+let afterUnlock = 'sheet';
+let onUnlocked = () => {};
 
 export function isOpen() { return open; }
 
@@ -26,6 +30,8 @@ export function isOpen() { return open; }
    smoke bookmark could not reach them at all. The gate is still the gate. */
 export function openGrownUps(opts = {}) {
   onChange = opts.onChange || (() => {});
+  afterUnlock = opts.afterUnlock === 'home' ? 'home' : 'sheet';
+  onUnlocked = typeof opts.onUnlocked === 'function' ? opts.onUnlocked : () => {};
   if (opts.tab && TABS.some(([id]) => id === opts.tab)) activeTab = opts.tab;
   open = true;
   overlay.hidden = false;
@@ -35,17 +41,38 @@ export function openGrownUps(opts = {}) {
 
 export function closeGrownUps() {
   open = false;
+  atGate = false;
+  gatePress = null;
   overlay.hidden = true;
   clear(overlay);
   document.removeEventListener('keydown', onKey);
   onChange();
 }
 
-function onKey(event) { if (event.key === 'Escape') closeGrownUps(); }
+function gateDigit(event) {
+  if (event.key >= '0' && event.key <= '9') return event.key;
+  const pad = /^Numpad(\d)$/.exec(event.code);
+  return pad ? pad[1] : null;
+}
+
+function onKey(event) {
+  if (event.key === 'Escape') { closeGrownUps(); return; }
+  if (!atGate || !gatePress) return;
+  if (event.key === 'Backspace') {
+    event.preventDefault();
+    gatePress('clear');
+    return;
+  }
+  const digit = gateDigit(event);
+  if (!digit) return;
+  event.preventDefault();
+  gatePress(digit);
+}
 
 /* ----------------------------------------------------------------- gate */
 function renderGate() {
   clear(overlay);
+  atGate = true;
   const a = 2 + Math.floor(Math.random() * 6);
   const b = 2 + Math.floor(Math.random() * 6);
   const answer = String(a + b);
@@ -56,16 +83,31 @@ function renderGate() {
 
   const paint = () => { display.textContent = typed.replace(/./g, '•'); };
 
+  const unlock = () => {
+    typed = '';
+    atGate = false;
+    gatePress = null;
+    if (afterUnlock === 'home') {
+      const done = onUnlocked;
+      closeGrownUps();
+      done();
+      return;
+    }
+    renderSheet();
+  };
+
   const press = (key, btn) => {
-    if (key === 'clear') { typed = ''; paint(); return; }
+    if (key === 'clear') { typed = typed.slice(0, -1); paint(); return; }
     typed += key;
     paint();
-    if (typed === answer || typed === PIN) { typed = ''; renderSheet(); return; }
+    if (typed === answer || typed === PIN) { unlock(); return; }
     if (typed.length >= PIN.length) {
-      btn.classList.add('wrong');
-      setTimeout(() => { btn.classList.remove('wrong'); typed = ''; paint(); }, 380);
+      const mark = btn || pad;
+      mark.classList.add('wrong');
+      setTimeout(() => { mark.classList.remove('wrong'); typed = ''; paint(); }, 380);
     }
   };
+  gatePress = press;
 
   ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'clear', '0'].forEach((key) => {
     const btn = el('button', { class: 'gate-key', type: 'button' }, key === 'clear' ? '⌫' : key);
@@ -100,6 +142,8 @@ let csvNotice = {
 };
 
 function renderSheet() {
+  atGate = false;
+  gatePress = null;
   clear(overlay);
   const body = el('div', { class: 'gu-body' });
   const tabsRow = el('div', { class: 'gu-tabs', role: 'tablist' });
@@ -409,6 +453,34 @@ function classPanel() {
     note.value = store.getNote(kid.id);
     note.addEventListener('change', () => store.setNote(kid.id, note.value));
 
+    const modePick = el('select', {
+      class: 'gu-input',
+      'aria-label': `Work mode for ${kid.name}`,
+    },
+      el('option', { value: 'satpin' }, 'Default SATPIN'),
+      el('option', { value: 'assigned' }, 'Assigned letters'),
+      el('option', { value: 'free' }, 'Free play'),
+    );
+    modePick.value = kid.workMode || 'satpin';
+    const lettersInput = el('input', {
+      class: 'gu-input',
+      type: 'text',
+      maxlength: '51',
+      placeholder: 'S P O J',
+      'aria-label': `Assigned letters for ${kid.name}`,
+    });
+    lettersInput.value = (kid.assignedLetters || []).join(' ');
+    lettersInput.hidden = modePick.value !== 'assigned';
+    const saveKid = (patch) => {
+      store.setRosterOverride(kids().map((k) => (k.id === kid.id ? { ...k, ...patch } : k)));
+      repaint();
+    };
+    modePick.addEventListener('change', () => saveKid({ workMode: modePick.value }));
+    lettersInput.addEventListener('change', () => {
+      const assignedLetters = lettersInput.value.toUpperCase().split(/[\s,]+/).filter((ch) => /^[A-Z]$/.test(ch));
+      saveKid({ assignedLetters });
+    });
+    const arcadeOn = !kid.arcadeLocked;
     const item = el('div', { class: 'roster-item' },
       el('div', { class: 'roster-item-row' },
         el('span', { class: 'rf', style: { background: kid.color } }, kid.emoji),
@@ -422,6 +494,9 @@ function classPanel() {
           repaint();
         } }, '×'),
       ),
+      row('Work', modePick.value === 'satpin' ? 'SATPIN' : modePick.value === 'free' ? 'Any letter' : 'Assigned', modePick),
+      lettersInput,
+      row('Arcade', arcadeOn ? 'Open' : 'Locked', toggle(arcadeOn, (v) => saveKid({ arcadeLocked: !v }))),
       note,
     );
     list.append(item);
@@ -457,6 +532,9 @@ function classPanel() {
       name,
       emoji: emojiInput.value.trim() || '🐾',
       color: ['#ff8a5c', '#4ec3a5', '#c48cf0', '#7fd35f', '#ff7fa8', '#5aa9f0'][roster.length % 6],
+      workMode: 'satpin',
+      assignedLetters: [],
+      arcadeLocked: false,
     });
     store.setRosterOverride(roster);
     repaint();
@@ -472,9 +550,9 @@ function classPanel() {
 
   return el('div', { class: 'gu-panel' },
     el('div', { class: 'gu-card' },
-      el('h3', {}, 'Classroom mode'),
-      el('p', { class: 'note' }, 'On: the child picks a face before play, and stars are kept per child. Off: PLAY goes straight into the round and this device keeps one shared pouch.'),
-      row('Face pick before play', classroom ? 'On' : 'Off', toggle(classroom, (v) => store.setClassroom(v))),
+      el('h3', {}, 'This tablet'),
+      el('p', { class: 'note' }, 'The roster is always login. Stars stay with the child who is playing. The old classroom switch is still here so a copied CSV can round-trip.'),
+      row('Keep per-child stars flag', classroom ? 'On' : 'Off', toggle(classroom, (v) => store.setClassroom(v))),
       row('Who is playing now', (kids().find((k) => k.id === store.getKidId()) || {}).name || 'nobody', el('button', {
         class: 'gu-btn', type: 'button', onclick: () => { store.clearKid(); repaint(); },
       }, 'Clear')),

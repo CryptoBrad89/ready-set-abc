@@ -5,14 +5,12 @@ import { el, icon, pressable, picturePlate } from '../ui.js';
 import { letterByChar, picturesFor } from '../data.js';
 import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
-import { store } from '../store.js';
-import { playStartLetter } from '../clouds.js';
-import { startRound } from '../round.js';
+import { startLetter } from '../profile.js';
 
 export const chrome = { tabs: true, tab: 'stories', who: true };
 
 export function render(ctx) {
-  const L = playStartLetter();
+  const L = startLetter();
   const entry = letterByChar(L);
   const plates = picturesFor(L).slice(0, 4);
   const lucy = createLucy({
@@ -42,17 +40,7 @@ export function render(ctx) {
     });
     grid.append(card);
   });
-  const play = el('button', {
-    class: 'pillow play-btn',
-    type: 'button',
-    'aria-label': `Play letter ${L}`,
-  }, el('span', { class: 'play-big' }, `Play ${L}`));
-  pressable(play, () => {
-    audio.unlock();
-    startRound({ startAt: L, step: 'payoff' });
-    ctx.go(store.isClassroom() && !ctx.kid ? 'faces' : 'play');
-  });
-  root.append(grid, play);
+  root.append(grid);
   return root;
 }
 

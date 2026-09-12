@@ -251,7 +251,7 @@ for (const L of ALPHABET_STR) {
   assert(pool.every((p) => p.emoji.trim().length > 0), `${L} plates all carry a fallback emoji`);
 }
 assert(seenEmoji.size === 26 * 15, `all ${seenEmoji.size} plates carry their own emoji`);
-assert(awakeLetters().map((l) => l.letter).join('') === 'AIMPST', 'Cloud 1 SATPIN is the default open path');
+assert(awakeLetters().map((l) => l.letter).join('') === 'AINPST', 'Cloud 1 SATPIN is the default open path');
 setTeacherUnlock(5);
 assert(awakeLetters().map((l) => l.letter).join('') === ALPHABET_STR, 'teacher unlock 5 wakes the alphabet');
 assert(letterByChar('E') && letterByChar('E').awake === true, 'E is awake');
@@ -936,6 +936,25 @@ assert(store.getStars('_device').D === 1, '_device stars restored');
 assert(store.getStickerMap('_device').some((s) => s.id === 'dog'), '_device stickers restored');
 assert(store.getProgress()._device.letters.D.bestStars === 1, '_device progress restored');
 
+store.reset();
+store.setRosterOverride([{
+  id: 'k02',
+  name: 'Miles',
+  emoji: '🚀',
+  color: '#5aa9f0',
+  workMode: 'assigned',
+  assignedLetters: ['S', 'O', 'J'],
+  arcadeLocked: true,
+}]);
+const workCsv = csv.buildCsv();
+assert(/,assigned,S O J,true,/.test(workCsv),
+  'kid row exports workMode, space-separated assignedLetters, arcadeLocked');
+store.reset();
+assert(csv.applyCsv(workCsv).ok === true, 'assigned-kid backup imports');
+const miles = kids().find((k) => k.id === 'k02');
+assert(miles && miles.workMode === 'assigned' && miles.assignedLetters.join(' ') === 'S O J' && miles.arcadeLocked === true,
+  'assigned S O J + locked arcade round-trips on the kid row');
+
 /* ---- PASS C1: teacher printables (Grown-Ups → Print) ------------------ */
 const printables = await import('./js/screens/printables.js');
 
@@ -1167,7 +1186,7 @@ assert(activeKid().id === kids()[0].id, 'a shipped face can be picked again stra
 const appSrc = readFileSync(join(root, 'js/app.js'), 'utf8');
 assert(/activeKid\(\)/.test(appSrc), 'the router resolves who is playing through activeKid');
 assert(!/kidById\(store\.getKidId\(\)\)/.test(appSrc), 'the router no longer trusts a raw stored id');
-assert(/isClassroom\(\) && !activeKid\(\)/.test(appSrc), 'classroom with no valid kid routes to the face grid');
+assert(/needsRoster\(\)/.test(appSrc), 'no session routes to the roster');
 
 const guSrc2 = readFileSync(join(root, 'js/screens/grownups.js'), 'utf8');
 assert(/getKidId\(\) === kid\.id\) store\.clearKid\(\)/.test(guSrc2),
@@ -1220,9 +1239,14 @@ assert(/isCurrent \? ' current' : ''/.test(trailSrc) && /isPinned \? ' pinned' :
 assert(/'aria-current': isCurrent/.test(trailSrc), 'the current tile is aria-current for screen readers');
 assert(/Letter of the day/.test(trailSrc) && /Next up/.test(trailSrc), 'trail head says which is which');
 assert(!/nap|asleep|sleeping/i.test(trailSrc), 'no napping branch is left on the trail');
-assert(/startRound\(\{ startAt: entry\.letter \}\)/.test(trailSrc), 'every tile starts that letter');
+assert(/startRound\(\{ startAt: entry\.letter \}\)/.test(trailSrc), 'open tiles start that letter');
+assert(/isLetterOpen\(L, ctx\.kid\)/.test(trailSrc) && /sfx\('wrong'\)/.test(trailSrc) && /wobble\(tile\)/.test(trailSrc),
+  'closed tiles refuse');
 assert(/Letters & Phonics/.test(trailSrc), 'the path is Letters & Phonics');
 assert(!/napping/.test(appSrc), '#/letter still opens a round instead of being turned away');
+const playResolve = appSrc.slice(appSrc.indexOf("if (name === 'play')"), appSrc.indexOf("if (name === 'coming')"));
+assert(playResolve.includes('needsRoster()') && playResolve.indexOf('needsRoster()') < playResolve.indexOf('startRound'),
+  'resolve/play/letter consults needsRoster before startRound');
 assert(/!letterByChar\(at\)/.test(appSrc) && /strayLetter: at/.test(appSrc),
   'and only a bookmark that is not a letter at all lands on the trail');
 assert(/ctx\.strayLetter/.test(trailSrc), 'where Lucy names the letter that is up instead');
@@ -2376,7 +2400,7 @@ store.setPinnedLetter(null);
 
 origReset();
 setTeacherUnlock(1);
-assert(awakeLetters().map((l) => l.letter).join('') === 'AIMPST', 'lock 1 is SATPIN only');
+assert(awakeLetters().map((l) => l.letter).join('') === 'AINPST', 'lock 1 is SATPIN only');
 assert(isAwake('P') === true && isAwake('F') === false, 'Cloud 2 stays locked');
 assert(isCloudUnlocked(1) === true && isCloudUnlocked(2) === false, 'only cloud 1 is open');
 assert(openCloud().id === 1, 'the open cloud is Cloud 1');

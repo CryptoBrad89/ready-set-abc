@@ -5,7 +5,7 @@
    installs, then waits. Only Grown-Ups → Device → Get update sends
    SKIP_WAITING, so the pin never swaps under a child mid-round. */
 
-const VERSION = 'rsabc-shell-v35-stitch-hub';
+const VERSION = 'rsabc-shell-v36-login-satpin';
 const SHELL = [
   './',
   'index.html',
@@ -28,6 +28,7 @@ const SHELL = [
   'js/bonus.js',
   'js/closet.js',
   'js/clouds.js',
+  'js/profile.js',
   'js/motion.js',
   'js/version.js',
   'js/screens/home.js',
@@ -40,6 +41,7 @@ const SHELL = [
   'js/screens/pouch.js',
   'js/screens/stories.js',
   'js/screens/arcade.js',
+  'js/screens/coming.js',
   'js/screens/grownups.js',
   'js/screens/printables.js',
   'data/roster.json',

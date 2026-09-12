@@ -16,9 +16,11 @@ import * as trail from './screens/trail.js';
 import * as pouch from './screens/pouch.js';
 import * as stories from './screens/stories.js';
 import * as arcade from './screens/arcade.js';
+import * as coming from './screens/coming.js';
 import * as match from './screens/match.js';
 import { mountLottie } from './motion.js';
 import { openGrownUps, isOpen as gateOpen } from './screens/grownups.js';
+import { hasSession, isArcadeLocked, leaveSession, needsRoster } from './profile.js';
 import { nextTreat } from './closet.js';
 import { APP_VERSION } from './version.js';
 
@@ -61,7 +63,7 @@ const ALIASES = {
 const CHANNELS = [
   ['music', 'Music', 'music'],
   ['sfx', 'Sound effects', 'sfx'],
-  ['voice', 'Lucy voice', 'voice'],
+  ['voice', 'Lucy voice on or off', 'voice'],
 ];
 
 export function go(path) {
@@ -80,8 +82,7 @@ function parseRoute() {
    the class back to the face grid, not into a round nobody owns. */
 function resolvePlay() {
   const r = round.getRound();
-  if (!r) return { name: 'home', params: [] };
-  if (store.isClassroom() && !activeKid()) return { name: 'faces', params: [] };
+  if (!r) return needsRoster() ? { name: 'faces', params: [] } : { name: 'home', params: [] };
   return { name: 'play', params: [], step: r.step };
 }
 
@@ -94,14 +95,15 @@ function resolve(route) {
     /* #/grownups/device lands on that tab once the gate is answered. */
     const tab = route.params[0] ? String(route.params[0]).toLowerCase() : null;
     queueMicrotask(() => { if (!gateOpen()) openGrownUps({ onChange: render, tab }); });
-    return { name: 'home', params: [] };
+    return needsRoster() ? { name: 'faces', params: [] } : { name: 'home', params: [] };
   }
 
   if (name === 'faces') {
-    return store.isClassroom() ? { name: 'faces', params: [] } : { name: 'home', params: [] };
+    return { name: 'faces', params: [] };
   }
 
   if (name === 'play') {
+    if (needsRoster()) return { name: 'faces', params: [] };
     if (route.name === 'letter') {
       const at = route.params[0] ? String(route.params[0]).toUpperCase() : null;
       /* Playable letters live in an unlocked cloud. A bookmark that names a
@@ -111,6 +113,13 @@ function resolve(route) {
     }
     return resolvePlay();
   }
+
+  if (name === 'coming') {
+    if (needsRoster()) return { name: 'faces', params: [] };
+    return { name: 'coming', params: route.params };
+  }
+
+  if (needsRoster()) return { name: 'faces', params: [] };
 
   return ['home', 'trail', 'pouch', 'stories', 'arcade'].includes(name)
     ? { name, params: route.params }
@@ -128,6 +137,7 @@ function moduleFor(route) {
   if (route.name === 'pouch') return pouch;
   if (route.name === 'stories') return stories;
   if (route.name === 'arcade') return arcade;
+  if (route.name === 'coming') return coming;
   return home;
 }
 
@@ -168,11 +178,23 @@ function paintTabs(chrome) {
   tabsEl.hidden = chrome.tabs === false;
   if (chrome.tabs === false) return;
   TABS.forEach(([name, label, ico]) => {
+    const locked = name === 'arcade' && isArcadeLocked();
     const tab = el('button', {
-      class: 'tab',
+      class: locked ? 'tab is-locked' : 'tab',
       type: 'button',
-      onclick: () => { audio.sfx('tap'); go(name); },
-    }, icon(ico), el('span', { class: 'tab-label' }, label));
+      'aria-label': locked ? 'Arcade, locked' : label,
+      onclick: () => {
+        if (locked) {
+          audio.sfx('wrong');
+          tab.classList.remove('wobble');
+          void tab.offsetWidth;
+          tab.classList.add('wobble');
+          return;
+        }
+        audio.sfx('tap');
+        go(name);
+      },
+    }, icon(ico), el('span', { class: 'tab-label' }, label), locked ? icon('lock') : null);
     if ((chrome.tab || 'home') === name) tab.setAttribute('aria-current', 'page');
     tabsEl.append(tab);
   });
@@ -211,16 +233,17 @@ function paintStars() {
 
 function paintWho(chrome, kid) {
   clear(whoSlot);
+  if (chrome.who === false) return;
   const name = kid ? kid.name : 'friend';
   const stars = store.totalStars();
   const next = nextTreat(stars);
   const pct = next ? Math.round((Math.min(stars, next.need) / next.need) * 100) : 100;
-  const canSwitch = !!chrome.who && store.isClassroom() && !!kid;
+  const canSwitch = !!chrome.who && hasSession();
   const stamp = el(canSwitch ? 'button' : 'div', canSwitch ? {
     class: 'who-chip who-chip--stamp',
     type: 'button',
     'aria-label': `${name} is playing. Tap to pick a different friend.`,
-    onclick: () => { store.clearKid(); go('faces'); },
+    onclick: () => { leaveSession(); go('faces'); },
   } : {
     class: 'who-chip who-chip--stamp',
     'aria-label': `${name} is playing`,
@@ -270,6 +293,19 @@ async function boot() {
   document.getElementById('brand-paw').append(icon('paw'));
   document.getElementById('gate-lock-icon').append(icon('lock'));
   document.getElementById('rotate-icon').append(icon('rotate', { size: 96 }));
+  const rotateEl = document.getElementById('rotate');
+  const rotateQuery = window.matchMedia('(orientation: portrait) and (max-width: 900px)');
+  const syncRotate = () => {
+    if (rotateQuery.matches) {
+      rotateEl.removeAttribute('aria-hidden');
+      rotateEl.inert = false;
+    } else {
+      rotateEl.setAttribute('aria-hidden', 'true');
+      rotateEl.inert = true;
+    }
+  };
+  syncRotate();
+  rotateQuery.addEventListener('change', syncRotate);
   const copy = document.getElementById('foot-copy');
   if (copy) copy.textContent = `READY SET ABC · Pre-K Phonics with Lucy · ${APP_VERSION}`;
   paintCluster();
