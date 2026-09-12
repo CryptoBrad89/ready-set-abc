@@ -6,9 +6,12 @@
 
    Voice resolves in this order:
      1. a recorded clip listed in data/audio.json  (audio/<file>)
-     2. speechSynthesis                            (phase-2 stand-in)
-     3. a short Web Audio voicing for phonemes, else silence — Lucy's
-        on-screen line still shows.
+     2. silence. No speechSynthesis. Names, words, Lucy lines, spoken cheers
+        and nudges wait for Bradley’s later clips (website phonemes + ElevenLabs).
+     3. phonemes: clip only. No TTS, no oscillator “puh”. Silence + Lucy’s line.
+
+   Music and SFX are WAV beds in audio/ (see audio/LICENSES.md).
+   The celebrate sting is SFX, not Voice. No spoken English.
 
    Phoneme ≠ name ≠ word. The three live in three clip namespaces that cannot
    overlap (see `clipId`), sayPhoneme() never sends a letter name to the
@@ -27,9 +30,11 @@ let unlocked = false;
 let clips = {};
 let musicTimer = 0;
 let musicStep = 0;
+let musicSource = null;
 let duckCount = 0;
 let voiceGen = 0;
 let clipEl = null;
+const buffers = {};
 
 const listeners = new Set();
 
@@ -62,7 +67,7 @@ export const clipId = {
   nudge: (i) => `nudge-${i + 1}`,
 };
 
-/* First mapped id wins: word-A-apple, else word-A, else the synth stand-in. */
+/* First mapped id wins: word-A-apple, else word-A, else silence. */
 function firstClip(candidates) {
   const list = Array.isArray(candidates) ? candidates : [candidates];
   return list.find((id) => id && clips[id]) || null;
@@ -157,30 +162,44 @@ function tone({ freq = 523.25, type = 'triangle', dur = 0.28, gain = 0.16, delay
 export const CHEERS = ['Yes!', 'You got it!', 'Excellent!', 'Nice job!', 'Woohoo!', 'High five!'];
 export const NUDGES = ['Not quite!', 'Try again!', 'Almost!', 'Keep going!'];
 
-const SFX = {
-  tap:    () => tone({ freq: 660, dur: 0.1, gain: 0.09 }),
-  select: () => { tone({ freq: 587.33, dur: 0.14 }); tone({ freq: 880, dur: 0.16, delay: 0.07 }); },
-  right:  () => [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone({ freq: f, dur: 0.3, delay: i * 0.09 })),
-  wrong:  () => { tone({ freq: 300, type: 'sine', dur: 0.18, gain: 0.12 }); tone({ freq: 233, type: 'sine', dur: 0.26, gain: 0.12, delay: 0.12 }); },
-  star:   (i = 0) => tone({ freq: [659.25, 830.61, 1046.5][i] || 1046.5, dur: 0.45, gain: 0.18 }),
-  pop:    () => tone({ freq: 880, type: 'sine', dur: 0.12, gain: 0.12 }),
-  woof:   () => { tone({ freq: 196, type: 'sawtooth', dur: 0.16, gain: 0.1 }); tone({ freq: 147, type: 'sawtooth', dur: 0.2, gain: 0.09, delay: 0.13 }); },
+const SFX_FILES = {
+  tap: 'audio/sfx-tap.wav',
+  select: 'audio/sfx-select.wav',
+  right: 'audio/sfx-right.wav',
+  cheer: 'audio/sfx-cheer.wav',
+  wrong: 'audio/sfx-wrong.wav',
+  star: 'audio/sfx-star.wav',
+  pop: 'audio/sfx-pop.wav',
+  woof: 'audio/sfx-woof.wav',
 };
+const MUSIC_FILE = 'audio/music-loop.wav';
 
-/* Quiet playground wander on the music bus. One timer, never two loops. */
-const MUSIC_NOTES = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46, 880, 698.46];
-function musicTick() {
-  if (!store.getAudio().music || !unlocked) return;
-  const b = buses();
-  if (!b) return;
-  tone({
-    freq: MUSIC_NOTES[musicStep % MUSIC_NOTES.length],
-    type: 'sine',
-    dur: 0.55,
-    gain: 0.045,
-    dest: b.music,
+function playBuffer(name, dest = null, { loop = false } = {}) {
+  const ac = ensureCtx();
+  const buf = buffers[name];
+  if (!ac || !buf) return null;
+  const src = ac.createBufferSource();
+  src.buffer = buf;
+  src.loop = !!loop;
+  src.connect(dest || sfxGain || ac.destination);
+  try { src.start(); } catch (err) { return null; }
+  return src;
+}
+
+async function loadBuffers() {
+  const ac = ensureCtx();
+  if (!ac) return;
+  const jobs = Object.entries({ ...SFX_FILES, music: MUSIC_FILE }).map(async ([key, url]) => {
+    try {
+      const res = await fetch(url, { cache: 'force-cache' });
+      if (!res.ok) return;
+      const raw = await res.arrayBuffer();
+      buffers[key] = await ac.decodeAudioData(raw.slice(0));
+    } catch (err) {
+      console.warn('[audio] missing bed', url, err);
+    }
   });
-  musicStep += 1;
+  await Promise.all(jobs);
 }
 
 function silentUnlockPulse(ac) {
@@ -207,35 +226,14 @@ function stopVoice() {
   setMusicDuck(false);
 }
 
-function phonemeBlip(letter) {
-  const b = buses();
-  if (!b) return;
-  const freq = 280 + ((String(letter || 'A').toUpperCase().charCodeAt(0) - 65) % 26) * 18;
-  tone({ freq, type: 'sine', dur: 0.32, gain: 0.11, dest: b.sfx });
+function phonemeBlip() {
+  /* Isolated phonemes are files only. Never invent a “puh” with TTS or a tone. */
 }
 
 function speakSynth(text, { kind = 'line', letter = '', gen = voiceGen } = {}) {
+  /* English waits for a recorded clip. Never invent speechSynthesis words. */
   const done = () => { if (gen === voiceGen) endDuck(); };
-  if (!('speechSynthesis' in window)) {
-    if (kind === 'phoneme') phonemeBlip(letter);
-    setTimeout(done, kind === 'phoneme' ? 400 : 80);
-    return;
-  }
-  try {
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'en-US';
-    u.rate = kind === 'phoneme' ? 0.7 : 0.85;
-    u.pitch = kind === 'phoneme' ? 1.05 : 1.2;
-    const hold = Math.max(900, String(text).length * 90);
-    const watchdog = setTimeout(done, hold + 500);
-    u.onend = () => { clearTimeout(watchdog); done(); };
-    u.onerror = () => { clearTimeout(watchdog); done(); };
-    window.speechSynthesis.speak(u);
-  } catch (err) {
-    if (kind === 'phoneme') phonemeBlip(letter);
-    done();
-  }
+  setTimeout(done, 80);
 }
 
 export const audio = {
@@ -249,7 +247,7 @@ export const audio = {
     }
     unlocked = true;
     notify();
-    audio.syncMusic();
+    loadBuffers().then(() => audio.syncMusic());
     return true;
   },
   isUnlocked() { return unlocked; },
@@ -282,13 +280,14 @@ export const audio = {
   hasClip(id) { return !!(id && clips[id]); },
   clipCount() { return Object.keys(clips).length; },
 
-  sfx(name, arg) {
+  sfx(name) {
     if (!unlocked || !store.getAudio().sfx) return;
-    const fn = SFX[name];
-    if (fn) fn(arg);
+    if (!playBuffer(name)) {
+      /* Bed not decoded yet — skip rather than invent an oscillator hit. */
+    }
   },
 
-  /* Voice channel. Recorded clip if we have one, else the synth stand-in.
+  /* Voice channel. Recorded clip if we have one, else silence.
      Silent until PLAY (or a Grown-Ups test) unlocks audio.
      Mute Voice does not touch SFX; mute SFX does not touch Voice. */
   speak(text, { clip = null, kind = 'line', letter = '' } = {}) {
@@ -300,41 +299,41 @@ export const audio = {
     }
     if (!line) return;
 
+    const key = firstClip(clip);
+    if (!key) return;
+
     stopVoice();
     const gen = voiceGen;
     beginDuck();
     const done = () => { if (gen === voiceGen) endDuck(); };
 
-    const key = firstClip(clip);
-    if (key) {
-      try {
-        const a = new Audio(`audio/${clips[key]}`);
-        clipEl = a;
-        let handed = false;
-        const fallback = () => {
-          if (gen !== voiceGen || handed) return;
-          handed = true;
-          speakSynth(line, { kind, letter, gen });
-        };
-        /* A clip that stalls fires neither `ended` nor `error`. Without this
-           the music would stay ducked for the rest of the morning. */
-        const guard = setTimeout(() => {
-          if (gen !== voiceGen || handed) return;
-          handed = true;
-          done();
-        }, CLIP_WATCHDOG_MS);
-        a.addEventListener('ended', () => {
-          clearTimeout(guard);
-          if (handed) return;
-          handed = true;
-          done();
-        }, { once: true });
-        a.addEventListener('error', () => { clearTimeout(guard); fallback(); }, { once: true });
-        a.play().catch(() => { clearTimeout(guard); fallback(); });
-        return;
-      } catch (err) { /* fall through to synth */ }
+    try {
+      const a = new Audio(`audio/${clips[key]}`);
+      clipEl = a;
+      let handed = false;
+      const fallback = () => {
+        if (gen !== voiceGen || handed) return;
+        handed = true;
+        done();
+      };
+      /* A clip that stalls fires neither `ended` nor `error`. Without this
+         the music would stay ducked for the rest of the morning. */
+      const guard = setTimeout(() => {
+        if (gen !== voiceGen || handed) return;
+        handed = true;
+        done();
+      }, CLIP_WATCHDOG_MS);
+      a.addEventListener('ended', () => {
+        clearTimeout(guard);
+        if (handed) return;
+        handed = true;
+        done();
+      }, { once: true });
+      a.addEventListener('error', () => { clearTimeout(guard); fallback(); }, { once: true });
+      a.play().catch(() => { clearTimeout(guard); fallback(); });
+    } catch (err) {
+      done();
     }
-    speakSynth(line, { kind, letter, gen });
   },
 
   stopVoice,
@@ -353,7 +352,9 @@ export const audio = {
   sayPhoneme(entry) {
     if (!entry) return;
     const L = up(entry.letter);
-    audio.speak(phonemeText(entry), { clip: clipId.phoneme(L), kind: 'phoneme', letter: L });
+    const id = clipId.phoneme(L);
+    if (!audio.hasClip(id)) return;
+    audio.speak(phonemeText(entry), { clip: id, kind: 'phoneme', letter: L });
   },
   /* Per-picture clip first ("Apple!"), then one clip for the whole letter. */
   sayWord(picture) {
@@ -363,19 +364,16 @@ export const audio = {
     const chain = picture.id ? [clipId.word(L, picture.id), clipId.word(L)] : [clipId.word(L)];
     audio.speak(picture.word, { clip: chain, kind: 'word', letter: L });
   },
-  /* Recorded Lucy rotates with the on-screen line: cheer-3 for "Excellent!".
-     A single `cheer` clip still works as the catch-all for a short session. */
+  /* Celebrate sting is SFX, not spoken English. Caption still rotates for Lucy. */
   cheer() {
     const i = Math.floor(Math.random() * CHEERS.length);
     const line = CHEERS[i];
-    audio.speak(line, { clip: [clipId.cheer(i), 'cheer'], kind: 'cheer' });
+    audio.sfx('cheer');
     return line;
   },
   nudge() {
     const i = Math.floor(Math.random() * NUDGES.length);
-    const line = NUDGES[i];
-    audio.speak(line, { clip: [clipId.nudge(i), 'nudge'], kind: 'nudge' });
-    return line;
+    return NUDGES[i];
   },
 
   /* Header / Grown-Ups mute dots. Prefs are already in the store. */
@@ -386,14 +384,17 @@ export const audio = {
   },
 
   syncMusic() {
+    if (musicSource) {
+      try { musicSource.stop(); } catch (err) { /* already stopped */ }
+      musicSource = null;
+    }
     clearInterval(musicTimer);
     musicTimer = 0;
     const b = buses();
     const on = unlocked && store.getAudio().music;
     if (b) ramp(b.music, on ? (duckCount > 0 ? 0.16 : 1) : 0.0001, 0.08);
     if (on) {
-      musicTick();
-      musicTimer = setInterval(musicTick, 720);
+      musicSource = playBuffer('music', b.music, { loop: true });
     }
   },
   stopAll() {

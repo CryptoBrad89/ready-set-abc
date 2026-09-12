@@ -5,7 +5,7 @@
    installs, then waits. Only Grown-Ups → Device → Get update sends
    SKIP_WAITING, so the pin never swaps under a child mid-round. */
 
-const VERSION = 'rsabc-shell-v25-az-art';
+const VERSION = 'rsabc-shell-v34-eleven-sfx';
 const SHELL = [
   './',
   'index.html',
@@ -13,6 +13,7 @@ const SHELL = [
   'css/tokens.css',
   'css/shell.css',
   'css/play.css',
+  'css/skins.css',
   'css/grownups.css',
   'css/print.css',
   'js/app.js',
@@ -26,38 +27,67 @@ const SHELL = [
   'js/round.js',
   'js/bonus.js',
   'js/closet.js',
+  'js/clouds.js',
+  'js/motion.js',
   'js/version.js',
   'js/screens/home.js',
   'js/screens/faces.js',
   'js/screens/match.js',
   'js/screens/bonus.js',
   'js/screens/celebrate.js',
+  'js/screens/stage.js',
   'js/screens/trail.js',
   'js/screens/pouch.js',
+  'js/screens/stories.js',
+  'js/screens/arcade.js',
   'js/screens/grownups.js',
   'js/screens/printables.js',
   'data/roster.json',
   'data/letters.json',
   'data/audio.json',
+  'data/clouds.json',
+  'vendor/lottie.min.js',
+  'vendor/confetti.min.js',
+  'lottie/loader.json',
+  'lottie/sparkle.json',
+  'lottie/check.json',
+  'art/stage/workshop.png',
+  'art/words/p-pan.png',
+  'art/words/p-panda.png',
+  'art/lucy/lucy-default.jpg',
+  'art/lucy/lucy-bows.jpg',
+  'art/lucy/lucy-clip.jpg',
+  'art/lucy/lucy-bows-cutout.jpg',
+  'art/lucy/lucy-clip-cutout.jpg',
+  'art/lucy/lucy-cutout.jpg',
+  'art/lucy/lucy-cap.jpg',
+  'art/lucy/lucy-specs.jpg',
+  'art/lucy/lucy-bone.jpg',
+  'art/lucy/lucy-pack.jpg',
+  'art/lucy/lucy-rainbow.jpg',
+  'art/lucy/lucy-celebrate.jpg',
+  'art/lucy/layer-bows.png',
+  'art/lucy/layer-headband.png',
+  'art/lucy/layer-clip.png',
+  'audio/sfx-tap.wav',
+  'audio/sfx-select.wav',
+  'audio/sfx-right.wav',
+  'audio/sfx-cheer.wav',
+  'audio/sfx-wrong.wav',
+  'audio/sfx-star.wav',
+  'audio/sfx-pop.wav',
+  'audio/sfx-woof.wav',
+  'audio/music-loop.wav',
   'icons/icon.svg',
   'icons/icon-maskable.svg',
   'icons/icon-192.png',
   'icons/icon-512.png',
-  // Self-hosted fonts (OFL, see fonts/README.md). These are the Stitch look
-  // offline: index.html asks for no googleapis stylesheet, so if one of these
-  // is not pinned here the tablet silently drops to a system font. Adding or
-  // renaming a face means bumping VERSION here and APP_VERSION in
-  // js/version.js together. `node _check.mjs` fails if you forget.
   'fonts/Comfortaa-Medium.woff2',
   'fonts/Comfortaa-Bold.woff2',
   'fonts/NunitoSans-SemiBold.woff2',
   'fonts/NunitoSans-Bold.woff2',
   'fonts/NunitoSans-ExtraBold.woff2',
   'fonts/NunitoSans-Black.woff2',
-  // Recorded Lucy clips. Nothing to pin yet — data/audio.json ships every id
-  // as a silent placeholder. Add each file here as it is recorded (see
-  // audio/README.md) and bump VERSION, or the cart goes quiet offline while
-  // the tablet still says it is set up. `node _check.mjs` enforces this.
 ];
 /* Self-hosted fonts (fonts/README.md) are pinned above, never fetched from
    googleapis — an offline cart has no network to swap a face in from. The

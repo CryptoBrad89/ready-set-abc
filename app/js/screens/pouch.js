@@ -1,8 +1,9 @@
 /* Star Pouch — earned picture stickers plus Lucy's closet.
 
    The closet is the dress-up loop: a treat unlocks at a star count and stays
-   unlocked, and tapping an unlocked treat puts it on Lucy for real (she wears
-   it on every screen). Tap it again to take it off.
+   unlocked, and tapping an unlocked treat adds it to Lucy for real (she wears
+   the set on every screen). Tap it again to take that one off. Other treats
+   stay on.
 
    Two rules this screen exists to keep:
    1. It never scolds and never shows a wall of padlocked nothing. Every word
@@ -18,7 +19,7 @@ import { store } from '../store.js';
 import { audio } from '../audio.js';
 import { createLucy } from '../lucy.js';
 import {
-  TREATS, toggleWear, wornTreat, treatStatus, treatProgress, closetLine,
+  TREATS, toggleWear, wornTreats, treatStatus, treatProgress, closetLine,
 } from '../closet.js';
 
 export const chrome = { tabs: true, tab: 'pouch', who: true };
@@ -32,16 +33,18 @@ export function render(ctx) {
   const stickers = store.stickers();
   const root = el('div', { class: 'pouch' });
 
-  const worn = starsOff ? null : wornTreat(total);
+  const worn = starsOff ? [] : wornTreats(total);
+  const wornNames = worn.map((t) => t.name).join(', ');
   /* Never the celebrating pose here: that pose draws bows on Lucy's ears, and
      a child cannot read "tap to wear Party bows" off a Lucy who already has
      bows on. The pouch is a dressing room — what she wears is the closet's. */
   const lucy = createLucy({
     state: 'idle',
+    cutout: true,
     line: starsOff
       ? "Let's go play some letters!"
-      : worn
-        ? `${worn.name} on! How do I look?`
+      : worn.length
+        ? `${wornNames} on! How do I look?`
         : stickers.length
           ? `You have ${stickers.length} ${stickers.length === 1 ? 'sticker' : 'stickers'}!`
           : 'Play a letter to fill the pouch!',
@@ -74,7 +77,7 @@ export function render(ctx) {
        in it but no picture yet. Neither one is a dead end. */
     root.append(el('div', { class: 'quiet-note' }, total
       ? 'Your stars are here! Match a picture with Lucy to earn a sticker too.'
-      : 'Nothing here yet — tap Play Cards and match a letter with Lucy.'));
+      : 'Nothing here yet — tap Home and play a letter with Lucy.'));
   } else {
     const grid = el('div', { class: 'pouch-grid' });
     stickers.forEach((pic) => {
@@ -109,7 +112,7 @@ export function render(ctx) {
   const painters = [];
 
   TREATS.forEach((treat) => {
-    const first = treatStatus(treat, total, worn ? worn.id : '');
+    const first = treatStatus(treat, total, worn.map((t) => t.id).join('+'));
     /* An unreachable treat is a plain card, not a button: nothing to press,
        so nothing that can feel like a refused tap. */
     const card = el(first.open ? 'button' : 'div', {
@@ -136,18 +139,18 @@ export function render(ctx) {
       if (status.open) card.setAttribute('aria-pressed', String(status.state === 'worn'));
       card.setAttribute('aria-label', status.aria);
     };
-    paint(worn ? worn.id : '');
+    paint(worn.map((t) => t.id).join('+'));
     painters.push(paint);
 
     if (first.open) {
       pressable(card, () => {
         const now = toggleWear(treat.id, total);
         audio.sfx('pop');
-        lucy.setOutfit(now);
+        lucy.setOutfit();
         lucy.say(now === treat.id ? treat.line : 'Off it comes! Pick another one.');
-        /* In place: the shelf must not jump under the finger that tapped it. */
-        painters.forEach((fn) => fn(now));
-        closetChip.textContent = closetLine(total, wornTreat(total));
+        const ids = wornTreats(total).map((t) => t.id).join('+');
+        painters.forEach((fn) => fn(ids));
+        closetChip.textContent = closetLine(total, wornTreats(total));
         if (ctx.foot) ctx.foot();
       });
     }
@@ -159,9 +162,10 @@ export function render(ctx) {
 
 export function footLeft() {
   const mode = store.progressMode();
-  const worn = wornTreat();
+  const worn = wornTreats();
+  const names = worn.map((t) => t.name.toLowerCase()).join(', ');
   const line = mode === 'none' ? 'Stars are off'
     : mode === 'stars' ? 'Stars stay for this session'
     : 'Stars are saved on this device';
-  return el('span', {}, icon('star'), ` ${line}${worn ? ` · Lucy wears ${worn.name.toLowerCase()}` : ''}`);
+  return el('span', {}, icon('star'), ` ${line}${names ? ` · Lucy wears ${names}` : ''}`);
 }

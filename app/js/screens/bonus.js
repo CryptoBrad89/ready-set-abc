@@ -80,7 +80,7 @@ export function render(ctx) {
   ));
 
   /* --- Lucy asks -------------------------------------------------------- */
-  const lucy = createLucy({ state: 'teaching', variant: 'card', line: bonus.lucy });
+  const lucy = createLucy({ state: 'teaching', variant: 'card', cutout: true, line: bonus.lucy });
   const listenBtn = el('button', { class: 'pillow listen-btn', type: 'button' }, icon('sfx'), 'Listen');
   pressable(listenBtn, () => { audio.speak(`${bonus.title} ${bonus.ask}`); lucy.say(bonus.lucy, { voice: false }); });
 

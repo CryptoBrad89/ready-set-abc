@@ -2,8 +2,9 @@
    The roster a teacher edits in Grown-Ups is layered over the shipped file. */
 
 import { store } from './store.js';
+import { setClouds, isPlayable } from './clouds.js';
 
-const cache = { roster: null, letters: null, audio: null };
+const cache = { roster: null, letters: null, audio: null, clouds: null };
 
 async function loadJSON(path) {
   const res = await fetch(path, { cache: 'no-cache' });
@@ -12,15 +13,18 @@ async function loadJSON(path) {
 }
 
 export async function loadData() {
-  const [roster, letters, audioMap] = await Promise.all([
+  const [roster, letters, audioMap, cloudsFile] = await Promise.all([
     loadJSON('data/roster.json'),
     loadJSON('data/letters.json'),
     loadJSON('data/audio.json').catch(() => ({ clips: {} })),
+    loadJSON('data/clouds.json').catch(() => ({ clouds: [] })),
   ]);
   cache.roster = roster;
   cache.letters = letters;
   cache.audio = audioMap;
-  return { roster, letters, audio: audioMap };
+  cache.clouds = cloudsFile;
+  setClouds((cloudsFile && cloudsFile.clouds) || []);
+  return { roster, letters, audio: audioMap, clouds: cloudsFile };
 }
 
 /* What goes on the printed sheets and the face grid. A teacher who imports
@@ -61,12 +65,10 @@ export function audioClips() { return (cache.audio && cache.audio.clips) || {}; 
 
 export function letters() { return cache.letters ? cache.letters.letters : []; }
 export function letterByChar(ch) { return letters().find((l) => l.letter === ch) || null; }
-export function awakeLetters() { return letters().filter((l) => l.awake); }
+export function contentAwake() { return letters().filter((l) => l.awake); }
+export function awakeLetters() { return letters().filter((l) => isPlayable(l.letter)); }
 export function contentVersion() { return cache.letters ? cache.letters.contentVersion : 'unknown'; }
-export function isAwake(ch) {
-  const l = letterByChar(ch);
-  return !!(l && l.awake);
-}
+export function isAwake(ch) { return isPlayable(ch); }
 
 /* GAME-FLOW §15: each letter has a picture pool. Canonical word/emoji is the
    fallback so a letter with no pool still has one card. */

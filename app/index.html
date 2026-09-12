@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-mode="center" data-chrome="shown">
+<html lang="en" data-mode="center" data-chrome="shown" data-skin="comic">
 <head>
   <meta charset="utf-8">
   <title>Ready Set ABC</title>
@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Ready Set ABC">
-  <meta name="description" content="Pre-K phonics with Lucy. Two-tap letter matching, offline-first, teacher-controlled.">
+  <meta name="description" content="Pre-K phonics with Lucy. Letters and Sounds, offline-first, teacher-controlled.">
   <link rel="manifest" href="manifest.webmanifest">
   <!-- iOS Add-to-Home-Screen only takes a PNG; SVG covers everything else.
        Regenerate the PNGs from app/: python3 icons/make-icons.py -->
@@ -29,10 +29,14 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/shell.css">
   <link rel="stylesheet" href="css/play.css">
+  <link rel="stylesheet" href="css/skins.css">
   <link rel="stylesheet" href="css/grownups.css">
   <link rel="stylesheet" href="css/print.css">
 </head>
 <body data-screen="home">
+  <div id="boot-loader" class="boot-loader" aria-hidden="true">
+    <div id="boot-lottie" class="boot-lottie"></div>
+  </div>
   <!-- warm playground wash -->
   <div class="blobs" aria-hidden="true"><i class="blob-1"></i><i class="blob-2"></i><i class="blob-3"></i></div>
 
@@ -82,6 +86,8 @@
     </div>
   </div>
 
+  <script src="vendor/lottie.min.js" defer></script>
+  <script src="vendor/confetti.min.js" defer></script>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

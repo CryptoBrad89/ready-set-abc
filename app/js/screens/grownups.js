@@ -5,9 +5,10 @@
    Nothing in here is child-facing, so it is calm, small and scrollable. */
 
 import { el, icon, clear } from '../ui.js';
-import { store, applyMode } from '../store.js';
+import { store, applyMode, applySkin } from '../store.js';
 import { kids, shippedKids, letters, letterByChar, contentVersion, className, shippedClassName } from '../data.js';
 import { previewLetters } from '../round.js';
+import { teacherUnlock, setTeacherUnlock } from '../clouds.js';
 import { audio } from '../audio.js';
 import { APP_VERSION, APP_LABEL } from '../version.js';
 import { buildCsv, applyCsv, detectFormat, parseCsv } from '../csv.js';
@@ -191,7 +192,7 @@ function playPanel() {
   return el('div', { class: 'gu-panel' },
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Round'),
-      el('p', { class: 'note' }, 'Each letter runs case match → picture match → bonus → celebrate. The celebration settles itself in 8 seconds and can be skipped.'),
+      el('p', { class: 'note' }, 'Each letter runs meet → choose → listen → payoff → celebrate. The celebration settles itself in 8 seconds and can be skipped. (That used to be case match → picture match → bonus → celebrate.)'),
       row('Letters per round', 'Default 3 · applies on the next PLAY, not mid-round', seg([[1, '1'], [2, '2'], [3, '3'], [5, '5'], [8, '8']], s.roundSize, (v) => store.setSetting('roundSize', Number(v)))),
       row('Answer cards', '2–8 choices per step · applies on the next PLAY', seg([[2, '2'], [3, '3'], [4, '4'], [6, '6'], [8, '8']], s.choiceCount, (v) => store.setSetting('choiceCount', Number(v)))),
       row('Case hunt', 'Which case the child looks for (mix is 50/50)', seg([['lower', 'Little'], ['upper', 'Big'], ['both', 'Mix']], s.caseMode, (v) => store.setSetting('caseMode', v))),
@@ -204,12 +205,15 @@ function playPanel() {
       row('Stars', 'none · this session · save on this device',
         seg([['none', 'Off'], ['stars', 'Session'], ['stars-save', 'Save']], s.progressMode || 'stars-save',
           (v) => store.setSetting('progressMode', v))),
+      row('Open clouds', 'Highest cloud a class may play. Kids still earn the next cloud by finishing 4/4 on every letter.',
+        seg([[1, '1'], [2, '2'], [3, '3'], [4, '4'], [5, '5']], teacherUnlock(),
+          (v) => { setTeacherUnlock(Number(v)); repaint(); })),
     ),
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Letter of the day'),
       el('p', { class: 'note' }, pinned
-        ? `Pinned: rounds start at ${pinned} (${pinLetter ? `${pinned} is for ${pinLetter.word}` : pinned}). Tap it again to unpin.`
-        : `Not pinned — next PLAY starts at ${store.getCursor()} (ABC cursor ${store.getNextAbcIndex()}). All ${letters().length} letters are awake, so any tile opens a round.`),
+        ? `Pinned: ${pinned} is highlighted inside the open cloud (${pinLetter ? `${pinned} is for ${pinLetter.word}` : pinned}). If that letter is locked, PLAY starts the open cloud instead. Tap it again to unpin.`
+        : `Not pinned — next PLAY starts the first unfinished letter in the open cloud (${previewLetters()[0] || 'P'}).`),
       picker,
       familyNoteCard(),
     ),
@@ -346,8 +350,8 @@ function soundPanel() {
       el('h3', {}, 'Audio channels'),
       el('p', { class: 'note' }, 'Independent mutes. Music ducks while Lucy talks. Sound stays locked until a child taps the giant PLAY button — these Test buttons also unlock, because a grown-up needs to hear the cart.'),
       row('Music', 'Quiet playground wander · ducks under voice', toggle(a.music, (v) => { store.setAudio('music', v); audio.applyMutes(); })),
-      row('Sound effects', 'Taps, matches, star chimes — never Lucy\'s speech', toggle(a.sfx, (v) => { store.setAudio('sfx', v); audio.applyMutes(); })),
-      row('Voice', 'Lucy\'s names, sounds, words, cheers, nudges. Mute voice does not mute taps.', toggle(a.voice, (v) => { store.setAudio('voice', v); audio.applyMutes(); })),
+      row('Sound effects', 'Taps, matches, success chime, star hits — never Lucy\'s speech', toggle(a.sfx, (v) => { store.setAudio('sfx', v); audio.applyMutes(); })),
+      row('Voice', 'Lucy\'s recorded names, sounds, and words when clips land. Mute voice does not mute taps or chimes.', toggle(a.voice, (v) => { store.setAudio('voice', v); audio.applyMutes(); })),
       el('div', { class: 'gu-actions' },
         el('button', {
           class: 'gu-btn gu-btn--primary', type: 'button',
@@ -381,11 +385,11 @@ function soundPanel() {
     ),
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Recorded voice'),
-      el('p', { class: 'note' }, 'Not recorded yet. Lucy borrows the tablet’s own speaking voice, and every line she says is on screen as well — nothing in a round waits on a clip.'),
+      el('p', { class: 'note' }, 'Not recorded yet. Names, letter sounds, and words stay silent until a clip is dropped in. Lucy’s lines still show on screen. Success chimes are sound effects, not speech.'),
       el('p', { class: 'note' }, `data/audio.json lists every clip Lucy still owes, as a silent placeholder: ${letters().length} letter names, ${letters().length} letter sounds, the ${pictureCount()} picture words, 6 cheers and 4 nudges. To ship one, drop the file in app/audio/, move its id into "clips", pin the file in sw.js, and bump the version.`),
       el('p', { class: 'note' }, 'Three separate channels, three separate keys: name-A is the letter NAME (board appear), phoneme-A is the SOUND and never the name (letter-choice tap), word-A-apple is the picture word. A phoneme key pointing at a name recording is thrown away rather than played.'),
       el('p', { class: 'gu-status' }, audio.clipCount() === 0
-        ? 'No recorded clips on this tablet — using the device speech voice.'
+        ? 'No recorded clips on this tablet — names, sounds, and words stay silent until they land.'
         : `${audio.clipCount()} recorded clip${audio.clipCount() === 1 ? '' : 's'} on this tablet.`),
     ),
   );
@@ -769,6 +773,9 @@ function devicePanel() {
       row('Mode', 'Center 88px · Small group 104px · Whiteboard 140px / 220px cards',
         seg([['center', 'Center'], ['small-group', 'Small group'], ['whiteboard', 'Whiteboard']], store.getMode(),
           (v) => { store.setMode(v); applyMode(v); })),
+      row('Kid look', 'Comic is the yellow/blue hub. Cosmic and Violet are the darker Stitch layouts. Same rooms, different paint.',
+        seg([['comic', 'Comic'], ['cosmic', 'Cosmic'], ['violet', 'Violet']], store.getSkin(),
+          (v) => { store.setSkin(v); applySkin(v); })),
       row('Hide chrome', 'Hides tabs, Grown-Ups, sound dots, and the footer. Lucy’s prompts stay. Shift+H also toggles. Hold the yellow paw for Grown-Ups.',
         toggle(store.getHideChrome(), (v) => store.setHideChrome(v))),
     ),

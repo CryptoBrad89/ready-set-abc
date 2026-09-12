@@ -9,7 +9,7 @@ const modules = [
   ...readdirSync('js/screens').filter((f) => f.endsWith('.js')).map((f) => `js/screens/${f}`),
   'sw.js',
 ];
-const data = ['data/letters.json', 'data/roster.json', 'data/audio.json', 'manifest.webmanifest'];
+const data = ['data/letters.json', 'data/roster.json', 'data/audio.json', 'data/clouds.json', 'manifest.webmanifest'];
 
 let fail = 0;
 function problem(msg) {
@@ -168,6 +168,12 @@ if (!shell) {
     ...listed('fonts', '.woff2'),
     ...listed('fonts', '.ttf'),
     ...listed('fonts', '.otf'),
+    ...listed('vendor', '.js'),
+    ...listed('lottie', '.json'),
+    ...listed('art/stage', '.png'),
+    ...listed('art/words', '.png'),
+    ...listed('art/lucy', '.jpg'),
+    ...listed('art/lucy', '.png'),
   ];
   for (const path of required) {
     if (!shellSet.has(path)) problem(`SW SHELL is missing runtime file: ${path}`);

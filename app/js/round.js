@@ -1,27 +1,26 @@
 /* The round engine.
 
-   A round is N letters (default 3, teacher-settable). Each letter runs
-   case match → picture match → bonus → celebrate. Both match steps are
-   TWO-TAP: tap a choice, then tap the prompt. Stars are 3 (clean), 2 (1–2
-   misses), 1 (3+ misses or a hint used).
+   Kid path (Cloud 1 first): one letter runs
+     meet → choose → listen → payoff → celebrate.
 
-   The bonus (js/bonus.js) is the one rotating step. It is a bonus in the
-   plain sense: its misses never touch the star count, and a stuck child can
-   always move on. Grown-Ups → Play can pin one game or switch it off, and
-   then a letter goes straight from the picture match to celebrate. */
+   Celebrate is still the existing skippable party (≤8s). The old two-tap
+   case/picture board and the rotating bonus are not on the kid PLAY path.
+   Bonus helpers stay so Grown-Ups CSV / leftover screens do not crash. */
 
-import { letterByChar, awakeLetters, distractors, shuffle, pickPicture } from './data.js';
+import { letterByChar, awakeLetters, distractors, shuffle, pickPicture, picturesFor } from './data.js';
 import { buildBonus, BONUS_MODES } from './bonus.js';
 import { newlyUnlocked } from './closet.js';
+import { playStartLetter, markBeat, firstIncomplete, isPlayable } from './clouds.js';
 import { store } from './store.js';
 
-export const STEPS = ['case', 'picture', 'bonus', 'celebrate'];
+export const STEPS = ['meet', 'choose', 'listen', 'payoff', 'celebrate'];
+export const BEATS = ['meet', 'choose', 'listen', 'payoff'];
 
 let round = null;
 
 function letterSequence(startAt, size) {
   const awake = awakeLetters().map((l) => l.letter);
-  const pool = awake.length ? awake : ['A'];
+  const pool = awake.length ? awake : ['P'];
   let i = pool.indexOf(startAt);
   if (i < 0) i = 0;
   const n = Math.max(1, Math.min(size, pool.length));
@@ -34,7 +33,7 @@ function freezeSettings() {
   const s = store.getSettings();
   return {
     roundSize: Math.max(1, Math.min(26, Number(s.roundSize) || 3)),
-    choiceCount: Math.max(2, Math.min(8, Number(s.choiceCount) || 3)),
+    choiceCount: Math.max(2, Math.min(8, Number(s.choiceCount) || 4)),
     caseMode: s.caseMode || 'both',
     hintAfter: Math.max(0, Math.min(5, Number(s.hintAfter) || 0)),
     showWords: s.showWords !== false,
@@ -42,13 +41,17 @@ function freezeSettings() {
   };
 }
 
-export function startRound({ startAt = null } = {}) {
+const MINIS = ['case', 'picture'];
+
+export function startRound({ startAt = null, step = 'meet', mode = 'loop' } = {}) {
   const frozen = freezeSettings();
-  const first = startAt || store.getPinnedLetter() || store.getCursor() || 'A';
+  const first = playStartLetter(startAt);
+  const wantStep = STEPS.includes(step) || MINIS.includes(step) ? step : 'meet';
   round = {
-    letters: letterSequence(first, frozen.roundSize),
+    letters: letterSequence(first, mode === 'once' ? 1 : frozen.roundSize),
     index: 0,
-    step: 'case',
+    step: wantStep,
+    mode: mode === 'once' ? 'once' : 'loop',
     misses: 0,
     hinted: false,
     results: {},
@@ -68,23 +71,15 @@ export function startRound({ startAt = null } = {}) {
   return round;
 }
 
-/* What the home strip shows before anyone has tapped PLAY. */
 export function previewLetters() {
   const frozen = freezeSettings();
-  const first = store.getPinnedLetter() || store.getCursor() || 'A';
+  const first = playStartLetter();
   return letterSequence(first, frozen.roundSize);
 }
 
-/* The letter the next CTA will really open.
-
-   Inside a round that is the next letter in the set. At the end of a round it
-   is the pin, else the ABC cursor (rsabc.nextAbcIndex, already stepped past the
-   letter we just banked) — run back through letterSequence so the CTA can only
-   ever name a letter the content file actually has. */
 export function upNextLetter() {
   if (round && round.index < round.letters.length - 1) return round.letters[round.index + 1];
-  const want = store.getPinnedLetter() || store.getCursor() || 'A';
-  return letterSequence(want, 1)[0];
+  return playStartLetter();
 }
 
 export function getRound() { return round; }
@@ -110,40 +105,108 @@ function advanceCursorPast(letter) {
   if (at >= 0) store.setCursor(awake[(at + 1) % awake.length]);
 }
 
-/* Which case the child hunts for. GAME-FLOW promptMode mix/upper/lower is
-   stored as hunt (the other case is the given prompt). Frozen on the trial
-   so a re-render never flips the board. */
 function huntFor(mode) {
   if (mode === 'upper' || mode === 'lower') return mode;
-  return Math.random() < 0.5 ? 'lower' : 'upper';   // both / mix
+  return Math.random() < 0.5 ? 'lower' : 'upper';
 }
 
-/* Choice cards for the current step. Case match shows letters, picture match
-   shows one random picture from each letter's pool (GAME-FLOW §15).
-   choiceCount is frozen on the round so Grown-Ups edits apply next PLAY. */
-export function buildTrial() {
-  if (!round) return null;
-  const entry = currentLetter();
-  const count = Math.max(2, Math.min(8, round.choiceCount || 3));
+function buildChooseTrial(entry) {
+    const count = Math.max(2, Math.min(8, round.choiceCount || 4));
   const others = distractors(entry.letter, count - 1);
-  const isPicture = round.step === 'picture';
-  const picture = isPicture
-    ? pickPicture(entry.letter, { exclude: round.matchedPicture ? [round.matchedPicture] : [] })
-    : null;
-  const choices = shuffle([entry, ...others]).map((item) => {
-    if (!isPicture) return { ...item };
-    const pic = item.letter === entry.letter ? picture : pickPicture(item.letter);
-    return { ...item, picture: pic };
+  const doubleUp = count >= 4 && others.length >= 2 && Math.random() < 0.45;
+  const letters = doubleUp
+    ? shuffle([entry.letter, entry.letter, ...others.slice(0, count - 2).map((o) => o.letter)])
+    : shuffle([entry.letter, ...others.slice(0, count - 1).map((o) => o.letter)]);
+  const targets = letters.filter((L) => L === entry.letter);
+  const choices = letters.map((L, i) => {
+    const item = letterByChar(L) || { letter: L, lower: String(L).toLowerCase(), word: '' };
+    return { ...item, id: `${L}-${i}`, target: L === entry.letter };
   });
   round.trial = {
+    kind: 'choose',
     answer: entry.letter,
-    picture,
+    targets,
+    found: [],
     selected: null,
     locked: false,
     choices,
     hunt: huntFor(round.caseMode),
   };
-  if (isPicture) round.matchedPicture = picture;
+  return round.trial;
+}
+
+function buildListenTrial(entry) {
+  const orbs = [
+    { id: 'orb-a', target: false },
+    { id: 'orb-b', target: false },
+    { id: 'orb-c', target: false },
+  ];
+  const hit = Math.floor(Math.random() * orbs.length);
+  orbs[hit].target = true;
+  round.trial = {
+    kind: 'listen',
+    answer: entry.letter,
+    orbs,
+    selected: null,
+    locked: false,
+    picture: pickPicture(entry.letter),
+  };
+  return round.trial;
+}
+
+function buildPayoffTrial(entry) {
+  const pool = picturesFor(entry.letter);
+  const first = pickPicture(entry.letter);
+  const second = pool.find((p) => p.id !== first.id) || pickPicture(entry.letter, { exclude: [first] });
+  const plates = [first, second].filter(Boolean);
+  round.matchedPicture = first;
+  round.trial = {
+    kind: 'payoff',
+    answer: entry.letter,
+    picture: first,
+    plates,
+    locked: false,
+  };
+  return round.trial;
+}
+
+function buildCaseTrial(entry) {
+  const count = Math.max(2, Math.min(8, round.choiceCount || 4));
+  const others = distractors(entry.letter, count - 1);
+  const letters = shuffle([entry.letter, ...others.slice(0, count - 1).map((o) => o.letter)]);
+  const hunt = huntFor(round.caseMode);
+  const choices = letters.map((L) => {
+    const item = letterByChar(L) || { letter: L, lower: String(L).toLowerCase(), word: '' };
+    return { ...item, target: L === entry.letter };
+  });
+  round.trial = {
+    kind: 'case',
+    answer: entry.letter,
+    selected: null,
+    locked: false,
+    choices,
+    hunt,
+  };
+  return round.trial;
+}
+
+export function buildTrial() {
+  if (!round) return null;
+  const entry = currentLetter();
+  if (!entry) return null;
+  if (round.step === 'choose') return buildChooseTrial(entry);
+  if (round.step === 'listen') return buildListenTrial(entry);
+  if (round.step === 'payoff') return buildPayoffTrial(entry);
+  if (round.step === 'case') return buildCaseTrial(entry);
+  round.trial = {
+    kind: round.step,
+    answer: entry.letter,
+    picture: pickPicture(entry.letter),
+    selected: null,
+    locked: false,
+    choices: [],
+    hunt: huntFor(round.caseMode),
+  };
   return round.trial;
 }
 
@@ -152,9 +215,51 @@ export function select(letter) {
   round.trial.selected = letter;
 }
 
-/* The second tap. Returns 'right' | 'wrong' | null (nothing selected yet). */
+export function tapChoose(letter) {
+  if (!round || round.step !== 'choose' || !round.trial || round.trial.locked) return null;
+  const L = String(letter || '').toUpperCase();
+  const remaining = round.trial.targets.length - round.trial.found.length;
+  if (L === round.trial.answer && remaining > 0) {
+    round.trial.found.push(L);
+    round.trial.selected = L;
+    if (round.trial.found.length >= round.trial.targets.length) {
+      round.trial.locked = true;
+      return 'right';
+    }
+    return 'collect';
+  }
+  round.misses += 1;
+  round.trial.selected = null;
+  maybeHint();
+  return 'wrong';
+}
+
+export function tapListen(id) {
+  if (!round || round.step !== 'listen' || !round.trial || round.trial.locked) return null;
+  const orb = round.trial.orbs.find((o) => o.id === id);
+  if (!orb) return null;
+  round.trial.selected = id;
+  if (orb.target) {
+    round.trial.locked = true;
+    return 'right';
+  }
+  round.misses += 1;
+  maybeHint();
+  return 'wrong';
+}
+
+export function continueBeat() {
+  if (!round || !round.trial || round.trial.locked) return null;
+  if (round.step !== 'meet' && round.step !== 'payoff') return null;
+  round.trial.locked = true;
+  return 'right';
+}
+
 export function submit() {
   if (!round || !round.trial || round.trial.locked) return null;
+  if (round.step === 'choose') return tapChoose(round.trial.selected);
+  if (round.step === 'listen') return tapListen(round.trial.selected);
+  if (round.step === 'meet' || round.step === 'payoff') return continueBeat();
   const { selected, answer } = round.trial;
   if (!selected) return null;
   if (selected === answer) {
@@ -173,7 +278,6 @@ export function useHint() {
   return round.trial ? round.trial.answer : null;
 }
 
-/* Auto-glow after N misses on this letter (default 2; 0 = off). */
 export function maybeHint() {
   if (!round) return null;
   const after = round.hintAfter;
@@ -188,10 +292,6 @@ export function starsEarned() {
   return 3;
 }
 
-/* ------------------------------------------------------------- bonus ---
-   One rotating game per letter (js/bonus.js builds the board). Misses here
-   are free: they are counted for the grown-up, never for the stars. */
-
 export function openBonus() {
   if (!round) return null;
   const spec = buildBonus(round.letters[round.index], { mode: round.bonusMode });
@@ -199,7 +299,7 @@ export function openBonus() {
   round.bonus = {
     ...spec,
     found: [],
-    at: 0,            // sound: which picture we are asking about
+    at: 0,
     misses: 0,
     done: false,
     skipped: false,
@@ -209,7 +309,6 @@ export function openBonus() {
 
 export function getBonus() { return round ? round.bonus : null; }
 
-/* The picture Sound Sort is asking about right now (null for the others). */
 export function bonusCurrent() {
   const b = round && round.bonus;
   if (!b || b.type !== 'sound') return null;
@@ -221,8 +320,6 @@ function finishBonus(b) {
   return b.done;
 }
 
-/* One tap. 'right' | 'wrong' | null (already used / not a tile).
-   Sound Sort sends 'yes' / 'no'; the others send an item id. */
 export function bonusTap(id) {
   const b = round && round.bonus;
   if (!b || b.done) return null;
@@ -243,7 +340,7 @@ export function bonusTap(id) {
 
   if (b.type === 'order') {
     if (item.rank !== b.found.length) { b.misses += 1; return 'wrong'; }
-  } else if (!item.target) {                     // hunt
+  } else if (!item.target) {
     b.misses += 1;
     return 'wrong';
   }
@@ -254,8 +351,6 @@ export function bonusTap(id) {
 
 export function bonusDone() { return !!(round && round.bonus && round.bonus.done); }
 
-/* Never a dead end: a stuck child (or the grown-up running the table) can
-   move on to the stars. The letter still banks — the bonus costs nothing. */
 export function skipBonus() {
   const b = round && round.bonus;
   if (!b) return null;
@@ -279,31 +374,41 @@ export function bonusSummary() {
   };
 }
 
-/* Advance after a locked-in match (or a finished bonus). Returns the next
-   step name, or 'done'. A bonus that cannot be built is stepped over, so
-   Grown-Ups → Play → Bonus Off is a two-step letter again. */
+function beatIndex(step) {
+  const at = BEATS.indexOf(step);
+  return at < 0 ? 0 : at + 1;
+}
+
+export function finishOnce() {
+  if (!round) return;
+  const letter = round.letters[round.index];
+  const beat = beatIndex(round.step) || 1;
+  markBeat(letter, beat);
+  endRound();
+}
+
 export function advance() {
   if (!round) return 'done';
+  if (round.mode === 'once') {
+    finishOnce();
+    return 'home';
+  }
   const at = STEPS.indexOf(round.step);
   if (at < 0 || at >= STEPS.length - 1) return 'done';
-  let next = STEPS[at + 1];
-  if (next === 'bonus' && !openBonus()) next = 'celebrate';
+  markBeat(round.letters[round.index], beatIndex(round.step));
+  const next = STEPS[at + 1];
   round.step = next;
-  if (next === 'case' || next === 'picture') buildTrial();
+  if (next !== 'celebrate') buildTrial();
   return next;
 }
 
-/* Called from the celebrate screen once the stars are banked.
-   ABC cursor advances here (once per letter) so Play again / Home / Next
-   all continue from the next awake letter. A pin freezes the cursor. */
 export function bankLetter() {
   if (!round) return 0;
   const entry = currentLetter();
   const stars = starsEarned();
   const firstBank = round.results[entry.letter] === undefined;
   round.results[entry.letter] = stars;
-  /* Stars first, then the sticker, then what those stars just opened in
-     Lucy's closet — celebrate reads all three off the round. */
+  markBeat(entry.letter, 4);
   const starsBefore = store.totalStars();
   store.awardStars(entry.letter, stars);
   const picture = round.matchedPicture || pickPicture(entry.letter);
@@ -319,12 +424,11 @@ export function bankLetter() {
   return stars;
 }
 
-/* Move to the next letter in the round. Returns false when the round is over. */
 export function nextLetter() {
   if (!round) return false;
   if (round.index >= round.letters.length - 1) return false;
   round.index += 1;
-  round.step = 'case';
+  round.step = 'meet';
   round.misses = 0;
   round.hinted = false;
   round.matchedPicture = null;
@@ -336,7 +440,6 @@ export function nextLetter() {
   return true;
 }
 
-/* Round-end Play again: next letters on the ABC cursor (or the pinned set). */
 export function playAgain() {
   endRound();
   return startRound();
@@ -346,13 +449,10 @@ export function goHome() {
   endRound();
 }
 
-/* Replay the letter we just finished, from step A, misses cleared.
-   The banked result is dropped so the replay can bank a fresh one.
-   Cursor already moved on the first bank and stays put. */
 export function replayLetter() {
   if (!round) return;
   delete round.results[round.letters[round.index]];
-  round.step = 'case';
+  round.step = 'meet';
   round.misses = 0;
   round.hinted = false;
   round.matchedPicture = null;
@@ -368,5 +468,8 @@ export function roundProgress() {
     letter: L,
     state: i < round.index ? 'done' : i === round.index ? 'active' : 'next',
     stars: round.results[L] || store.starsFor(L),
+    beats: store.beatsFor(L),
   }));
 }
+
+export { isPlayable, firstIncomplete, playStartLetter };

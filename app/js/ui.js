@@ -61,6 +61,8 @@ const PATHS = {
   trophy: '<path d="M7 3.4h10v5.2a5 5 0 0 1-10 0z"/><path d="M7 4.6H4.2v1.8A3.4 3.4 0 0 0 7.6 9.8M17 4.6h2.8v1.8a3.4 3.4 0 0 1-3.4 3.4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10.6 13.4h2.8v3.6h-2.8z"/><rect x="7.2" y="17.2" width="9.6" height="3.4" rx="1.6"/>',
   rotate: '<path d="M3.4 12a8.6 8.6 0 0 1 14.7-6.1l1.9-1.9v6h-6l2.2-2.2A6.4 6.4 0 0 0 5.6 12z"/><path d="M20.6 12a8.6 8.6 0 0 1-14.7 6.1L4 20v-6h6l-2.2 2.2A6.4 6.4 0 0 0 18.4 12z"/>',
   home: '<path d="M12 3.2L2.6 11h2.6v9.4h5V15h3.6v5.4h5V11h2.6z"/>',
+  book: '<path d="M5 4.2h6.4c2 0 3.6 1.4 3.6 3.4v12.2c0-1.6-1.4-2.8-3.2-2.8H5z"/><path d="M19 4.2h-6.4c-2 0-3.6 1.4-3.6 3.4v12.2c0-1.6 1.4-2.8 3.2-2.8H19z" opacity=".7"/>',
+  arcade: '<rect x="4" y="6" width="16" height="12" rx="3"/><circle cx="9" cy="12" r="1.8"/><circle cx="15" cy="12" r="1.8"/><rect x="8.5" y="18.4" width="7" height="2.2" rx="1"/>',
   sparkle: '<path d="M12 2.6l1.7 5.7 5.7 1.7-5.7 1.7L12 17.4l-1.7-5.7-5.7-1.7 5.7-1.7z"/>',
   cloud: '<ellipse cx="9" cy="14.2" rx="5.6" ry="4.6"/><ellipse cx="15.2" cy="13.2" rx="6.4" ry="5.4"/><ellipse cx="7.6" cy="11.4" rx="4.2" ry="3.6"/>',
   sun: '<circle cx="12" cy="12" r="4.2"/><path d="M12 3.2v2.2M12 18.6V21M3.2 12h2.2M18.6 12H21M5.8 5.8l1.6 1.6M16.6 16.6l1.6 1.6M5.8 18.2l1.6-1.6M16.6 7.4l1.6-1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
@@ -138,9 +140,15 @@ export function picturePlate(picture, { size = 'card' } = {}) {
   const letter = (picture && picture.letter) || word.charAt(0) || 'A';
   const tone = PIC_TONES[(letter.charCodeAt(0) + word.length) % PIC_TONES.length];
   const art = picture && pictureArt(picture.id);
-  const inner = art
-    ? el('span', { class: 'pic pic--svg', html: art })
-    : el('span', { class: 'pic' }, emoji);
+  const raster = picture && picture.id && /^[a-z0-9-]+$/.test(picture.id)
+    ? `art/words/${String(letter).toLowerCase()}-${picture.id}.png`
+    : '';
+  const knownRaster = raster && ['pan', 'panda'].includes(picture.id);
+  const inner = knownRaster
+    ? el('img', { class: 'pic pic--raster', src: raster, alt: word })
+    : art
+      ? el('span', { class: 'pic pic--svg', html: art })
+      : el('span', { class: 'pic' }, emoji);
   return el('span', {
     class: `pic-plate pic-plate--${size}`,
     role: 'img',

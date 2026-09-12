@@ -10,11 +10,14 @@ import { audio } from './audio.js';
 import * as round from './round.js';
 import * as home from './screens/home.js';
 import * as faces from './screens/faces.js';
-import * as match from './screens/match.js';
-import * as bonus from './screens/bonus.js';
+import * as stage from './screens/stage.js';
 import * as celebrate from './screens/celebrate.js';
 import * as trail from './screens/trail.js';
 import * as pouch from './screens/pouch.js';
+import * as stories from './screens/stories.js';
+import * as arcade from './screens/arcade.js';
+import * as match from './screens/match.js';
+import { mountLottie } from './motion.js';
 import { openGrownUps, isOpen as gateOpen } from './screens/grownups.js';
 import { APP_VERSION } from './version.js';
 
@@ -29,9 +32,11 @@ const brandBtn = document.getElementById('brand');
 const gateBtn = document.getElementById('gate-btn');
 
 const TABS = [
-  ['home', 'Play Cards', 'cards'],
-  ['trail', 'ABC Trail', 'trail'],
-  ['pouch', 'Star Pouch', 'pouch'],
+  ['home', 'Home', 'home'],
+  ['trail', 'Letters & Phonics', 'trail'],
+  ['pouch', "Lucy's Closet", 'pouch'],
+  ['stories', 'Storybooks', 'book'],
+  ['arcade', 'Arcade', 'arcade'],
 ];
 
 /* Phase-1 wireframe hashes still show up on cart bookmarks and old README
@@ -41,6 +46,10 @@ const ALIASES = {
   pick: 'faces',
   map: 'trail',
   letter: 'play',
+  stories: 'stories',
+  storybooks: 'stories',
+  arcade: 'arcade',
+  closet: 'pouch',
   end: 'play',
   teacher: 'grownups',
   'grown-ups': 'grownups',
@@ -93,30 +102,30 @@ function resolve(route) {
   if (name === 'play') {
     if (route.name === 'letter') {
       const at = route.params[0] ? String(route.params[0]).toUpperCase() : null;
-      /* Every letter is awake, so #/letter/E opens E. A bookmark that names
-         something the content file does not have (a typo, a stale URL) would
-         otherwise start letter A with no explanation — land on the trail and
-         let Lucy say which letter is up instead. */
+      /* Playable letters live in an unlocked cloud. A bookmark that names a
+         locked letter, or something that is not a letter, lands on the path. */
       if (at && !letterByChar(at)) return { name: 'trail', params: [], strayLetter: at };
       round.startRound({ startAt: at });
     }
     return resolvePlay();
   }
 
-  return ['home', 'trail', 'pouch'].includes(name) ? { name, params: route.params } : { name: 'home', params: [] };
+  return ['home', 'trail', 'pouch', 'stories', 'arcade'].includes(name)
+    ? { name, params: route.params }
+    : { name: 'home', params: [] };
 }
 
-/* 'play' resolves to the step the letter is sitting on: case / picture are
-   the same two-tap board, then the rotating bonus, then the stars. */
 function moduleFor(route) {
   if (route.name === 'play') {
     if (route.step === 'celebrate') return celebrate;
-    if (route.step === 'bonus') return bonus;
-    return match;
+    if (route.step === 'case' || route.step === 'picture') return match;
+    return stage;
   }
   if (route.name === 'faces') return faces;
   if (route.name === 'trail') return trail;
   if (route.name === 'pouch') return pouch;
+  if (route.name === 'stories') return stories;
+  if (route.name === 'arcade') return arcade;
   return home;
 }
 
@@ -229,6 +238,9 @@ function wireGate() {
 
 async function boot() {
   applyPresentation();
+  const bootEl = document.getElementById('boot-loader');
+  const bootLottie = document.getElementById('boot-lottie');
+  if (bootLottie) mountLottie(bootLottie, 'loader', { loop: true });
   document.getElementById('brand-paw').append(icon('paw'));
   document.getElementById('gate-lock-icon').append(icon('lock'));
   document.getElementById('rotate-icon').append(icon('rotate', { size: 96 }));
@@ -249,10 +261,12 @@ async function boot() {
         el('p', {}, 'Ask a grown-up to reload this page.'),
       ),
     ));
+    if (bootEl) bootEl.hidden = true;
     return;
   }
 
   render();
+  if (bootEl) bootEl.hidden = true;
 
   /* updateViaCache: 'none' — the HTTP cache must never hand back a stale
      sw.js, or Get update quietly re-pins the version the cart already has. */

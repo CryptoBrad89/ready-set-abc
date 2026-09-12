@@ -15,7 +15,7 @@ const COLUMNS = [
 ];
 
 const SETTING_KEYS = [
-  'roundSize', 'choiceCount', 'showWords', 'caseMode', 'hintAfter', 'progressMode', 'bonusMode',
+  'roundSize', 'choiceCount', 'showWords', 'caseMode', 'hintAfter', 'progressMode', 'bonusMode', 'cloudUnlock',
 ];
 
 const DEVICE = '_device';
@@ -145,6 +145,7 @@ export function snapshotToCsv(snap) {
   push({ kind: 'setting', key: 'hideChrome', value: boolCell(!!snap.hideChrome) });
   push({ kind: 'setting', key: 'classroom', value: boolCell(!!snap.classroom) });
   push({ kind: 'setting', key: 'outfit', value: snap.outfit || '' });
+  push({ kind: 'setting', key: 'skin', value: snap.skin || 'comic' });
   push({ kind: 'setting', key: 'pinnedLetter', value: snap.pinnedLetter || '' });
   push({ kind: 'setting', key: 'nextAbcIndex', value: snap.nextAbcIndex ?? 0 });
   push({ kind: 'setting', key: 'kidId', value: snap.kidId || '' });
@@ -237,6 +238,7 @@ export function csvToSnapshot(textOrRows) {
     hideChrome: false,
     classroom: false,
     outfit: '',
+    skin: 'comic',
     pinnedLetter: null,
     nextAbcIndex: 0,
     kidId: null,
@@ -274,6 +276,7 @@ export function csvToSnapshot(textOrRows) {
       else if (key === 'hideChrome') snap.hideChrome = value;
       else if (key === 'classroom') snap.classroom = value;
       else if (key === 'outfit') snap.outfit = String(value || '').trim();
+      else if (key === 'skin') snap.skin = String(value || 'comic').trim();
       else if (key === 'pinnedLetter') snap.pinnedLetter = value || null;
       else if (key === 'nextAbcIndex') snap.nextAbcIndex = value;
       else if (key === 'kidId') snap.kidId = value || null;

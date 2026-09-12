@@ -133,7 +133,7 @@ Do this **once per tablet, on school Wi-Fi**, before the cart goes into a dead-z
 2. Open **Grown-Ups** (see PIN below).
 3. Tap **Device**.
 4. Tap **Set up this device**. Watch the bar fill.
-5. When it says **Pinned** plus the shell version (Grown-Ups → Device, currently `rsabc-shell-v25-az-art`), you can turn the radio off.
+5. When it says **Pinned** plus the shell version (Grown-Ups → Device, currently `rsabc-shell-v34-eleven-sfx`), you can turn the radio off.
 
 The tablet now keeps this exact shell. It will **not** silently update mid-week. If someone drops a newer copy of the files on the server, the tablet quietly downloads it and then **waits** — the swap only happens when a grown-up taps **Get update**. No child has ever had the app change under them mid-round, and that is on purpose.
 
@@ -152,7 +152,7 @@ Off Wi-Fi, **Get update** and **Set up this device** both say so and stop. They 
 | It says | What it means | What to do |
 |---|---|---|
 | *Checked just now · all N files cached* | Genuinely ready. | Turn the radio off. |
-| *Only 39 of 42 files are cached…* | Chrome evicted part of it (usually a full disk). | Back on Wi-Fi, tap **Set up this device**. |
+| *Only 66 of 81 files are cached…* | Chrome evicted part of it (usually a full disk). | Back on Wi-Fi, tap **Set up this device**. |
 | *Nothing is cached on this tablet* | It was never set up, or site data was cleared. | Back on Wi-Fi, tap **Set up this device**. |
 | *All N files cached on `…`, but this page is running `…`* | A **Get update** finished and nobody tapped **Reload to finish**. | Reload the tablet. Nothing is wrong with the files. |
 
@@ -236,13 +236,13 @@ Lucy talks in three separate channels and they never borrow from each other:
 
 The one place Lucy says a letter **name** on a tap is the **ABC Order** bonus, because that game is the alphabet song, not a sound match. Letter Hunt taps say the **sound**; Sound Sort taps say the **word**.
 
-Lucy’s recorded clips are **not in the folder yet**. She uses the tablet’s speaking voice, and the words are always on screen as well, so nothing in a round is waiting on a recording.
+Lucy’s recorded clips are **not in the folder yet**. Names, letter sounds, and words stay silent until a clip is mapped. The words are always on screen as well, so nothing in a round is waiting on a recording. Success chimes are sound effects, not speech.
 
 `data/audio.json` is the recording checklist. Every clip she still owes is listed there as a **silent placeholder** (`null`): 26 letter names, 26 letter sounds, the 390 picture words (plus a `word-<L>` fallback per letter), 6 cheers, 4 nudges. Nothing is fetched, so nothing 404s offline. `node _check.mjs` fails if a picture in `data/letters.json` has no placeholder, so a letter can never be woken without being added to Lucy's list.
 
 To ship a real clip: drop the file in `app/audio/`, move its id out of `placeholders` into `clips` with the filename, add the file to `SHELL` in `sw.js`, then bump `VERSION` in `sw.js` and `APP_VERSION` in `js/version.js`. `node _check.mjs` fails if a mapped clip has no file or is not pinned for offline.
 
-A `phoneme-` clip that points at the same recording as that letter’s `name-` clip is **dropped** rather than played, and the sound falls back to the tablet voice — saying “A” on a choice tap is the one mistake this app will not make.
+A `phoneme-` clip that points at the same recording as that letter’s `name-` clip is **dropped** rather than played — saying “A” on a choice tap is the one mistake this app will not make.
 
 ### Class tab — roster
 
@@ -505,7 +505,7 @@ One page. Print it, or copy it onto an index card and tape it inside the cart li
 ## PIN, versions, storage (the sticky note)
 
 - PIN **`1234`**
-- Shell pin **`rsabc-shell-v25-az-art`** (Grown-Ups → Device)
+- Shell pin **`rsabc-shell-v34-eleven-sfx`** (Grown-Ups → Device)
 - Content pin from `data/letters.json` (all 26 awake · 15-picture GAME-FLOW pool each · 390 plates, no two sharing an emoji)
 - Saved on the tablet under `rsabc.` keys: kid, classroom, roster, settings, audio, mode, hideChrome, pinnedLetter, cursor, nextAbcIndex, stars, stickers, outfit, progress, notes, cache
 - Tablet copy / backup: Grown-Ups → Class → **Export CSV** writes `ready-set-abc.csv` (format `rsabc-csv-v1`). Import replaces this tablet — it never merges.

@@ -1,10 +1,10 @@
 {
-  "note": "Recorded-voice hook AND Lucy's recording checklist. Every id below is a SILENT PLACEHOLDER: the value is null, so nothing is fetched and nothing 404s. The app runs today on the tablet's own speech voice — and the words are always on screen too. To ship real Lucy: drop the file in app/audio/, move the id out of `placeholders` into `clips` with the filename, add the file to SHELL in sw.js, and bump VERSION in sw.js + js/version.js.",
+  "note": "Recorded-voice hook AND Lucy's recording checklist. Every id below is a SILENT PLACEHOLDER: the value is null, so nothing is fetched and nothing 404s. Names, words, and Lucy lines stay silent until a clip is mapped. The success jingle is an SFX bed, not Voice. To ship a voice clip: drop the file in app/audio/, move the id out of `placeholders` into `clips` with the filename, add the file to SHELL in sw.js, and bump VERSION in sw.js + js/version.js.",
   "base": "audio/",
   "recorded": 0,
   "channels": {
     "music": "Quiet playground wander. Web Audio only — no clip, no file. Ducks to 16% while voice plays.",
-    "sfx": "Taps, matches, star chimes. Web Audio only. Independent of voice: mute one, the other keeps going.",
+    "sfx": "Short musical UI hits: tap, select, match chord, miss, star, pop, woof (CC0 beds from audio/make-ui-bed.py) plus an ElevenLabs Sound Effects v2 celebrate chime. Independent of voice: mute one, the other keeps going.",
     "voice": "Lucy. The only channel that uses the clips below."
   },
   "contract": {
@@ -17,7 +17,7 @@
   "rules": [
     "Three namespaces, three channels: name-* / phoneme-* / word-* never share an id and must never share a FILE. js/audio.js drops a phoneme id that points at that letter's name file, because that is the one mix-up that would say the letter name on a choice tap.",
     "A phoneme clip says the sound. Recording “A” into phoneme-A is a ship-blocker, not a typo.",
-    "Resolution order per line: clip → speechSynthesis → a short Web Audio blip (phonemes) or silence. Lucy's on-screen line shows either way.",
+    "Resolution order per line: clip if mapped, else silence. Lucy's on-screen line shows either way. Isolated phonemes are never TTS.",
     "Nothing plays before a user gesture. The giant PLAY button (and the Grown-Ups Test buttons) unlock the speaker; the header mute dots only set prefs.",
     "Keep clips under about 2s. A clip that stalls is let go of after 8s so the music duck cannot stick."
   ],

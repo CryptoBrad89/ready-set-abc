@@ -102,6 +102,7 @@ export function render(ctx) {
   const lucy = createLucy({
     state: 'teaching',
     variant: step === 'picture' ? 'circle' : 'card',
+    cutout: true,
     line: lucyPrompt(),
   });
 
@@ -379,7 +380,10 @@ export function render(ctx) {
       : `${cheer} Big ${entry.letter} and little ${entry.lower} make ${entry.say}!`,
     { voice: false });
     paintSockets();
-    setTimeout(() => { round.advance(); ctx.go('play'); }, 1250);
+    setTimeout(() => {
+      const next = round.advance();
+      ctx.go(next === 'home' ? 'home' : 'play');
+    }, 1250);
   }
 
   teardown();

@@ -1,0 +1,249 @@
+#!/usr/bin/env bash
+# Launch, doctor, and tear down an isolated Ready Set ABC verification server.
+# Drive the UI with a browser (ARIA + screenshots). This helper never kills
+# by process name — only the pid it recorded.
+set -euo pipefail
+
+DEFAULT_PORT="${RSABC_VERIFY_PORT:-4173}"
+STATE_DIR="${RSABC_VERIFY_STATE:-/tmp/rsabc-verify}"
+STATE_FILE="${STATE_DIR}/state"
+LOG_FILE="${STATE_DIR}/server.log"
+PID_FILE="${STATE_DIR}/server.pid"
+
+find_repo() {
+  local d
+  d="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  while [[ "$d" != / ]]; do
+    if [[ -f "$d/app/index.html" && -f "$d/app/_check.mjs" ]]; then
+      printf '%s\n' "$d"
+      return 0
+    fi
+    d="$(dirname "$d")"
+  done
+  echo "verify-rsabc: could not find repo root (app/index.html + app/_check.mjs)" >&2
+  return 1
+}
+
+REPO="$(find_repo)"
+APP="${REPO}/app"
+PORT="$DEFAULT_PORT"
+
+usage() {
+  cat <<'EOF'
+verify-rsabc — isolated Ready Set ABC verification helper
+
+Usage:
+  verify-rsabc launch [--port N]   Start python http.server on 127.0.0.1 (default 4173)
+  verify-rsabc doctor              Read-only: is THIS instance worth driving?
+  verify-rsabc url                 Print the instance URL
+  verify-rsabc smoke <query>       Print a seed URL (writes localStorage on this origin)
+  verify-rsabc cleanup             Stop the pid this helper started. Leaves artifacts.
+
+Never drive http://127.0.0.1:8000 or :8080 — those are the README demo and the
+Cursor environment server. This helper binds 127.0.0.1 only, on port 4173 by
+default, so localStorage and the service worker stay off the teacher's session.
+
+Environment:
+  RSABC_VERIFY_PORT    override listen port (default 4173)
+  RSABC_VERIFY_STATE   override state dir (default /tmp/rsabc-verify)
+EOF
+}
+
+read_state() {
+  [[ -f "$STATE_FILE" ]] || return 1
+  # shellcheck disable=SC1090
+  source "$STATE_FILE"
+}
+
+pid_alive() {
+  local pid="${1:-}"
+  [[ -n "$pid" ]] && kill -0 "$pid" 2>/dev/null
+}
+
+port_pid() {
+  local port="$1"
+  local line
+  line="$(lsof -nP -iTCP:"$port" -sTCP:LISTEN 2>/dev/null | awk 'NR==2 {print $2}')"
+  printf '%s\n' "$line"
+}
+
+http_ok() {
+  local url="$1"
+  local needle="${2:-Ready Set ABC}"
+  local body
+  body="$(curl -fsS --max-time 2 "$url" 2>/dev/null)" || return 1
+  printf '%s' "$body" | grep -q "$needle"
+}
+
+write_state() {
+  mkdir -p "$STATE_DIR"
+  cat >"$STATE_FILE" <<EOF
+PORT=$PORT
+PID=$PID
+URL=$URL
+REPO=$REPO
+STARTED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+EOF
+}
+
+cmd_launch() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --port) PORT="$2"; shift 2 ;;
+      *) echo "verify-rsabc launch: unknown arg: $1" >&2; return 2 ;;
+    esac
+  done
+  URL="http://127.0.0.1:${PORT}"
+
+  if read_state && pid_alive "${PID:-}" && [[ "${PORT:-}" == "$PORT" ]] && http_ok "$URL/"; then
+    echo "already running pid $PID at $URL"
+    echo "$URL"
+    return 0
+  fi
+
+  local existing
+  existing="$(port_pid "$PORT")"
+  if [[ -n "$existing" ]]; then
+    echo "verify-rsabc: port $PORT is already in use by pid $existing (not our instance)." >&2
+    echo "Pick another port: verify-rsabc launch --port 4174" >&2
+    echo "Do not reuse 8000 (README demo) or 8080 (Cursor environment)." >&2
+    return 1
+  fi
+
+  mkdir -p "$STATE_DIR"
+  : >"$LOG_FILE"
+  # nohup + disown: the launch shell exits; without this the server dies with it.
+  nohup python3 -m http.server "$PORT" --directory "$APP" --bind 127.0.0.1 >>"$LOG_FILE" 2>&1 &
+  PID=$!
+  disown "$PID" 2>/dev/null || true
+  echo "$PID" >"$PID_FILE"
+
+  local i
+  for i in 1 2 3 4 5 6 7 8 9 10; do
+    if http_ok "$URL/"; then
+      write_state
+      echo "ready $URL (pid $PID)"
+      echo "$URL"
+      return 0
+    fi
+    if ! pid_alive "$PID"; then
+      echo "verify-rsabc: server exited before answering. Log: $LOG_FILE" >&2
+      cat "$LOG_FILE" >&2 || true
+      return 1
+    fi
+    sleep 0.2
+  done
+  echo "verify-rsabc: timed out waiting for $URL/" >&2
+  kill "$PID" 2>/dev/null || true
+  return 1
+}
+
+cmd_doctor() {
+  if ! read_state; then
+    echo "FAIL no state file at $STATE_FILE — run verify-rsabc launch first" >&2
+    return 1
+  fi
+  local fail=0
+  say() { printf '  %s %s\n' "$1" "$2"; }
+  echo "doctor $URL (pid ${PID:-?} port ${PORT:-?})"
+
+  if pid_alive "${PID:-}"; then say OK "pid $PID is alive"; else say FAIL "pid ${PID:-?} is not running"; fail=1; fi
+
+  local owner
+  owner="$(port_pid "${PORT:-0}")"
+  if [[ -n "$owner" && "$owner" == "$PID" ]]; then
+    say OK "port $PORT is owned by pid $PID"
+  else
+    say FAIL "port ${PORT:-?} owner is '${owner:-none}', expected pid $PID"
+    fail=1
+  fi
+
+  if http_ok "${URL}/" "Ready Set ABC"; then
+    say OK "GET / is Ready Set ABC"
+  else
+    say FAIL "GET ${URL}/ did not return Ready Set ABC"
+    fail=1
+  fi
+
+  if http_ok "${URL}/js/version.js" "rsabc-shell-v34-eleven-sfx"; then
+    say OK "shell version rsabc-shell-v34-eleven-sfx"
+  else
+    say FAIL "GET /js/version.js missing APP_VERSION rsabc-shell-v34-eleven-sfx"
+    fail=1
+  fi
+
+  if http_ok "${URL}/_smoke.html" "smoke bookmarks"; then
+    say OK "GET /_smoke.html answers"
+  else
+    say FAIL "GET /_smoke.html failed"
+    fail=1
+  fi
+
+  if [[ "$PORT" == "8000" || "$PORT" == "8080" ]]; then
+    say FAIL "refusing to certify port $PORT (shared demo / environment server)"
+    fail=1
+  fi
+
+  if [[ $fail -ne 0 ]]; then
+    echo "FAIL this instance is not safe to drive"
+    return 1
+  fi
+  echo "OK drive ${URL}"
+}
+
+cmd_url() {
+  if read_state; then
+    echo "$URL"
+    return 0
+  fi
+  echo "http://127.0.0.1:${PORT}"
+}
+
+cmd_smoke() {
+  local query="${1:-}"
+  if [[ -z "$query" ]]; then
+    echo "verify-rsabc smoke: missing query (e.g. classroom=0&bonus=off&play=A)" >&2
+    return 2
+  fi
+  query="${query#\?}"
+  if ! read_state; then
+    echo "verify-rsabc smoke: launch first so the URL matches the instance" >&2
+    return 1
+  fi
+  echo "${URL}/_smoke.html?${query}"
+}
+
+cmd_cleanup() {
+  if ! read_state; then
+    echo "nothing to clean (no $STATE_FILE)"
+    return 0
+  fi
+  if pid_alive "${PID:-}"; then
+    kill "$PID"
+    local i
+    for i in 1 2 3 4 5 6 7 8 9 10; do
+      pid_alive "$PID" || break
+      sleep 0.1
+    done
+    if pid_alive "$PID"; then
+      kill -9 "$PID" 2>/dev/null || true
+    fi
+    echo "stopped pid $PID"
+  else
+    echo "pid ${PID:-?} already gone"
+  fi
+  rm -f "$STATE_FILE" "$PID_FILE"
+  echo "state cleared. proof artifacts were not touched."
+}
+
+cmd="${1:-}"
+shift || true
+case "$cmd" in
+  launch) cmd_launch "$@" ;;
+  doctor) cmd_doctor "$@" ;;
+  url) cmd_url "$@" ;;
+  smoke) cmd_smoke "$@" ;;
+  cleanup) cmd_cleanup "$@" ;;
+  -h|--help|help|"") usage ;;
+  *) echo "verify-rsabc: unknown command: $cmd" >&2; usage >&2; exit 2 ;;
+esac
