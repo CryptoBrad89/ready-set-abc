@@ -12,6 +12,7 @@ import { audio } from './audio.js';
 import { wornOutfitId } from './closet.js';
 import { mountLottie } from './motion.js';
 
+/* Named like clipId: art/lucy/idle-${id}.mp4. */
 const IDLE_LOOPS = ['tail', 'wave', 'blink'];
 
 const SVG = `
@@ -207,21 +208,31 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
   const slot = el('div', { class: 'lucy-lottie-slot', hidden: true, 'aria-hidden': 'true' });
   const sparkle = el('div', { class: 'lucy-sparkle', 'aria-hidden': 'true' });
   const idleName = IDLE_LOOPS[Math.floor(Math.random() * IDLE_LOOPS.length)];
-  const loop = el('video', {
-    class: 'lucy-idle-loop',
-    muted: true,
-    loop: true,
-    playsinline: '',
-    'aria-hidden': 'true',
-  });
-  loop.setAttribute('playsinline', '');
-  loop.src = `art/lucy/idle-${idleName}.mp4`;
-  loop.addEventListener('loadeddata', () => {
-    well.classList.add('has-loop');
-    loop.play().catch(() => {});
-  });
-  loop.addEventListener('error', () => { loop.remove(); });
-  well.append(loop);
+  const reduceMotion = typeof matchMedia === 'function'
+    && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let loop = null;
+  if (!reduceMotion && state !== 'celebrating') {
+    loop = el('video', {
+      class: 'lucy-idle-loop',
+      muted: true,
+      loop: true,
+      playsinline: '',
+      'aria-hidden': 'true',
+    });
+    loop.setAttribute('playsinline', '');
+    loop.src = `art/lucy/idle-${idleName}.mp4`;
+    loop.addEventListener('loadeddata', () => {
+      if (resting === 'celebrating') return;
+      well.classList.add('has-loop');
+      loop.play().catch(() => {});
+    });
+    loop.addEventListener('error', () => {
+      well.classList.remove('has-loop');
+      loop.remove();
+      loop = null;
+    });
+    well.append(loop);
+  }
   const stage = el('div', { class: `lucy-stage lucy-stage--${variant === 'card' ? 'card' : 'circle'}` }, well, sparkle, slot);
   stage.dataset.idle = idleName;
   mountLottie(sparkle, 'sparkle', { loop: true });
@@ -243,6 +254,12 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
     setState(next) {
       resting = next;
       paintLook(well, lucyLook({ outfit, cutout, pose: next }), next);
+      if (loop && loop.isConnected) {
+        const live = next !== 'celebrating';
+        well.classList.toggle('has-loop', live);
+        if (live) loop.play().catch(() => {});
+        else loop.pause();
+      }
     },
     setOutfit() {
       paintLook(well, lucyLook({ cutout, pose: resting }), resting);

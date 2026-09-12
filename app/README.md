@@ -152,7 +152,7 @@ Off Wi-Fi, **Get update** and **Set up this device** both say so and stop. They 
 | It says | What it means | What to do |
 |---|---|---|
 | *Checked just now · all N files cached* | Genuinely ready. | Turn the radio off. |
-| *Only 66 of 93 files are cached…* | Chrome evicted part of it (usually a full disk). | Back on Wi-Fi, tap **Set up this device**. |
+| *Only 66 of 96 files are cached…* | Chrome evicted part of it (usually a full disk). | Back on Wi-Fi, tap **Set up this device**. |
 | *Nothing is cached on this tablet* | It was never set up, or site data was cleared. | Back on Wi-Fi, tap **Set up this device**. |
 | *All N files cached on `…`, but this page is running `…`* | A **Get update** finished and nobody tapped **Reload to finish**. | Reload the tablet. Nothing is wrong with the files. |
 

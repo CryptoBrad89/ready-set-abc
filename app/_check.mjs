@@ -174,6 +174,7 @@ if (!shell) {
     ...listed('art/words', '.png'),
     ...listed('art/lucy', '.jpg'),
     ...listed('art/lucy', '.png'),
+    ...listed('art/lucy', '.mp4'),
   ];
   for (const path of required) {
     if (!shellSet.has(path)) problem(`SW SHELL is missing runtime file: ${path}`);
