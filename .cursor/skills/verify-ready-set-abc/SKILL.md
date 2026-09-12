@@ -49,7 +49,7 @@ Run this first whenever anything looks off:
 .cursor/skills/verify-ready-set-abc/bin/verify-rsabc doctor
 ```
 
-It is read-only. It must report: our pid alive, that pid owns the port, `GET /` is Ready Set ABC, `GET /js/version.js` contains `rsabc-shell-v34-eleven-sfx`, `_smoke.html` answers, and the port is not 8000 or 8080. If it fails, stop driving. Launch a fresh instance or pick another port. Never drive an instance this helper did not start.
+It is read-only. It must report: our pid alive, that pid owns the port, `GET /` is Ready Set ABC, `GET /js/version.js` contains `rsabc-shell-v35-stitch-hub`, `_smoke.html` answers, and the port is not 8000 or 8080. If it fails, stop driving. Launch a fresh instance or pick another port. Never drive an instance this helper did not start.
 
 ## Drive
 
@@ -69,9 +69,9 @@ Stable handles:
 
 | What | Handle |
 |---|---|
-| App identity | heading `Ready Set ABC!` on Home; brand button name `Ready Set ABC — home. Hold for Grown-Ups.` |
-| Play | button `Play. Tap to start sound.` (visible `PLAY!`) |
-| Tabs | `Play Cards`, `ABC Trail`, `Star Pouch` |
+| App identity | heading `Welcome back, friend!` on Home; brand button name `Ready Set ABC — home. Hold for Grown-Ups.` |
+| Play | button `Play letter P. Tap to start sound.` (mission card) |
+| Tabs | `Home`, `Letters & Phonics`, `Lucy's Closet`, `Storybooks`, `Arcade` |
 | Grown-Ups | button `Grown-Ups` → dialog `Grown-up check` → PIN **1234** (keys `1` `2` `3` `4`) or the sum on the card |
 | Close gate | `Return to Letter Play` or Escape |
 | Home from logo | click the brand (hold 3s opens the gate instead) |

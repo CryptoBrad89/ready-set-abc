@@ -19,6 +19,7 @@ import * as arcade from './screens/arcade.js';
 import * as match from './screens/match.js';
 import { mountLottie } from './motion.js';
 import { openGrownUps, isOpen as gateOpen } from './screens/grownups.js';
+import { nextTreat } from './closet.js';
 import { APP_VERSION } from './version.js';
 
 const HOLD_MS = 3000;   // long-press the logo is the other way in
@@ -27,6 +28,7 @@ const screenEl = document.getElementById('screen');
 const tabsEl = document.getElementById('tabs');
 const clusterEl = document.getElementById('audio-cluster');
 const whoSlot = document.getElementById('who-slot');
+const starChip = document.getElementById('star-chip');
 const footLeft = document.getElementById('foot-left');
 const brandBtn = document.getElementById('brand');
 const gateBtn = document.getElementById('gate-btn');
@@ -156,6 +158,7 @@ function render() {
   document.body.dataset.screen = route.name === 'play' ? route.step : route.name;
   paintTabs(screen.chrome || {});
   paintWho(screen.chrome || {}, kid);
+  paintStars();
   paintFoot();
 }
 
@@ -198,19 +201,42 @@ function paintCluster() {
   });
 }
 
+function paintStars() {
+  if (!starChip) return;
+  clear(starChip);
+  const n = store.totalStars();
+  starChip.setAttribute('aria-label', `${n} Stars`);
+  starChip.append(icon('star'), `${n} Stars`);
+}
+
 function paintWho(chrome, kid) {
   clear(whoSlot);
-  if (!chrome.who || !store.isClassroom() || !kid) return;
-  const chip = el('button', {
-    class: 'who-chip',
+  const name = kid ? kid.name : 'friend';
+  const stars = store.totalStars();
+  const next = nextTreat(stars);
+  const pct = next ? Math.round((Math.min(stars, next.need) / next.need) * 100) : 100;
+  const canSwitch = !!chrome.who && store.isClassroom() && !!kid;
+  const stamp = el(canSwitch ? 'button' : 'div', canSwitch ? {
+    class: 'who-chip who-chip--stamp',
     type: 'button',
-    'aria-label': `${kid.name} is playing. Tap to pick a different friend.`,
+    'aria-label': `${name} is playing. Tap to pick a different friend.`,
     onclick: () => { store.clearKid(); go('faces'); },
+  } : {
+    class: 'who-chip who-chip--stamp',
+    'aria-label': `${name} is playing`,
   },
-    el('span', { class: 'who-face', style: { background: kid.color } }, kid.emoji),
-    el('span', {}, kid.name),
+    el('span', { class: 'who-face', style: { background: (kid && kid.color) || '#fde68a' } }, (kid && kid.emoji) || '🐾'),
+    el('span', { class: 'who-meta' },
+      el('span', { class: 'who-line' },
+        el('span', { class: 'who-name' }, name),
+        el('span', { class: 'who-grade' }, 'Pre-K'),
+      ),
+      el('span', { class: 'who-rail', 'aria-hidden': 'true' },
+        el('span', { class: 'who-fill', style: { width: `${pct}%` } }),
+      ),
+    ),
   );
-  whoSlot.append(chip);
+  whoSlot.append(stamp);
 }
 
 /* --- gate: the slate button, a 3s logo press, or Shift+T --------------- */
@@ -245,7 +271,7 @@ async function boot() {
   document.getElementById('gate-lock-icon').append(icon('lock'));
   document.getElementById('rotate-icon').append(icon('rotate', { size: 96 }));
   const copy = document.getElementById('foot-copy');
-  if (copy) copy.textContent = `© Ready Set ABC · Lucy Play Learning Lab · ${APP_VERSION}`;
+  if (copy) copy.textContent = `READY SET ABC · Pre-K Phonics with Lucy · ${APP_VERSION}`;
   paintCluster();
   wireGate();
   window.addEventListener('hashchange', render);

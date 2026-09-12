@@ -22,7 +22,7 @@ A child starts an open-cloud letter, runs meet → choose → listen → payoff,
 
 Preconditions:
 
-- `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v34-eleven-sfx`.
+- `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v35-stitch-hub`.
 - Viewport is landscape 1280×800.
 - Face pick is off so PLAY goes straight into the letter.
 - Navigate to the URL from `verify-rsabc smoke 'reset=1&classroom=0&play=P'`.

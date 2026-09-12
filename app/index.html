@@ -43,19 +43,22 @@
   <!-- Kid shell ------------------------------------------------------- -->
   <div id="app" class="app">
     <header class="chrome">
-      <button class="brand" id="brand" type="button" aria-label="Ready Set ABC — home. Hold for Grown-Ups.">
-        <span class="brand-paw" id="brand-paw"></span>
-        <span class="brand-words">
-          <span class="brand-title">Ready Set ABC</span>
-          <span class="brand-sub">Pre-K Phonics with Lucy</span>
-        </span>
-      </button>
+      <div class="chrome-left">
+        <button class="brand" id="brand" type="button" aria-label="Ready Set ABC — home. Hold for Grown-Ups.">
+          <span class="brand-paw" id="brand-paw"></span>
+          <span class="brand-words">
+            <span class="brand-title">Ready Set ABC</span>
+            <span class="brand-sub">Pre-K Phonics with Lucy</span>
+          </span>
+        </button>
+        <div id="who-slot"></div>
+      </div>
 
       <nav class="tabs" id="tabs" aria-label="Sections"></nav>
 
       <div class="chrome-right">
+        <div class="star-chip" id="star-chip" aria-label="Stars"></div>
         <div class="audio-cluster" id="audio-cluster" role="group" aria-label="Sound"></div>
-        <div id="who-slot"></div>
         <button class="gate-btn" id="gate-btn" type="button" aria-label="Grown-Ups">
           <span id="gate-lock-icon"></span><span class="gate-label">Grown-Ups</span>
         </button>
@@ -66,7 +69,7 @@
 
     <footer class="foot">
       <span id="foot-left"></span>
-      <span id="foot-copy">© Ready Set ABC · Lucy Play Learning Lab</span>
+      <span id="foot-copy">READY SET ABC · Pre-K Phonics with Lucy</span>
     </footer>
   </div>
 

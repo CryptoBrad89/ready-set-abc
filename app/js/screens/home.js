@@ -108,6 +108,18 @@ export function render(ctx) {
       el('span', { class: 'play-big' }, `Play Letter ${pick}`),
     ),
   );
+  const sayLucy = el('button', {
+    class: 'chip chip--sky',
+    type: 'button',
+    'aria-label': 'Say Lucy',
+  }, icon('voice'), 'Say "Lucy"');
+  sayLucy.addEventListener('click', () => { audio.speak('Lucy!'); lucy.say('Lucy!', { voice: false }); });
+  const woofBtn = el('button', {
+    class: 'chip chip--gold',
+    type: 'button',
+    'aria-label': 'Friendly woof',
+  }, icon('sfx'), 'Friendly Woof');
+  woofBtn.addEventListener('click', () => { audio.sfx('woof'); lucy.say('Woof woof!', { voice: false }); });
   const peekRow = el('div', { class: 'lucy-hello-peeks' });
   peeks.forEach((pic) => {
     const card = el('button', {
@@ -138,6 +150,7 @@ export function render(ctx) {
     el('p', { class: 'lucy-hello-line' }, helloLine),
     soundChip,
     peekRow,
+    el('div', { class: 'home-lucy-row' }, sayLucy, woofBtn),
     playHello,
   );
   const overlay = el('div', {
@@ -174,14 +187,14 @@ export function render(ctx) {
   helloLayer = overlay;
 
   const playBtn = el('button', {
-    class: 'pillow hub-card hub-card--mission',
+    class: 'hub-card hub-card--mission',
     type: 'button',
     id: 'play-btn',
     'aria-label': `Play letter ${pick}. Tap to start sound.`,
   },
-    el('span', { class: 'hub-kicker' }, "Today's Star Mission"),
+    el('span', { class: 'hub-badge' }, "Today's Star Mission"),
     el('span', { class: 'hub-title' }, `Letters ${pick} & M Workshop`),
-    el('span', { class: 'hub-sub' }, 'Meet, choose, listen, then pictures.'),
+    el('span', { class: 'hub-sub' }, 'Meet Lucy, choose the letter, listen, then pictures.'),
     el('span', { class: 'hub-card-foot' },
       el('span', { class: 'hub-play-disc', 'aria-hidden': 'true' }, icon('play')),
       el('span', { class: 'hub-xp' }, '+ stars'),
@@ -193,72 +206,77 @@ export function render(ctx) {
   });
 
   const closetBtn = el('button', {
-    class: 'pillow hub-closet-btn',
+    class: 'hub-closet-btn',
     type: 'button',
     'aria-label': "Lucy's Closet",
-  }, icon('pouch'), ' Puppy Closet');
+  }, icon('pouch'), ' Puppy Closet', el('span', { class: 'hub-shop' }, 'Shop'));
   pressable(closetBtn, () => ctx.go('pouch'));
 
-  const sayLucy = el('button', {
-    class: 'chip chip--sky',
-    type: 'button',
-    'aria-label': 'Say Lucy',
-  }, icon('voice'), 'Say "Lucy"');
-  sayLucy.addEventListener('click', () => { audio.speak('Lucy!'); lucy.say('Lucy!', { voice: false }); });
-  const woofBtn = el('button', {
-    class: 'chip chip--gold',
-    type: 'button',
-    'aria-label': 'Friendly woof',
-  }, icon('sfx'), 'Friendly Woof');
-  woofBtn.addEventListener('click', () => { audio.sfx('woof'); lucy.say('Woof woof!', { voice: false }); });
-
   const soundCard = el('button', {
-    class: 'pillow hub-card',
+    class: 'hub-card',
     type: 'button',
     'aria-label': `The sound of ${pick}`,
   },
-    el('span', { class: 'hub-kicker' }, 'Phonics'),
-    el('span', { class: 'hub-letter-stamp' }, pick),
+    el('span', { class: 'hub-art hub-art--yellow' },
+      el('span', { class: 'hub-letter-stamp' }, pick),
+      el('span', { class: 'hub-art-tag' }, '4 beats'),
+    ),
     el('span', { class: 'hub-title' }, `The Sound of ${pick}`),
     el('span', { class: 'hub-sub' }, pickEntry.phoneme || `/${String(pick).toLowerCase()}/`),
+    el('span', { class: 'hub-cta hub-cta--cyan' }, `Play Letter ${pick}`),
   );
   pressable(soundCard, () => beginPlay(ctx, { startAt: pick, step: 'listen', mode: 'once' }));
 
   const satCard = el('button', {
-    class: 'pillow hub-card',
+    class: 'hub-card',
     type: 'button',
     'aria-label': 'Open cloud letters S, A, T',
   },
-    el('span', { class: 'hub-kicker' }, 'Blend'),
-    el('span', { class: 'hub-sat' }, 'S A T'),
+    el('span', { class: 'hub-art hub-art--red' },
+      el('span', { class: 'hub-sat' },
+        el('span', { class: 'hub-tile hub-tile--red' }, 'S'),
+        el('span', { class: 'hub-tile hub-tile--cyan' }, 'A'),
+        el('span', { class: 'hub-tile hub-tile--gold' }, 'T'),
+      ),
+      el('span', { class: 'hub-art-tag hub-art-tag--go' }, 'Cloud 1'),
+    ),
     el('span', { class: 'hub-title' }, 'Sounds S, A, T'),
-    el('span', { class: 'hub-sub' }, 'Letters and Phonics path'),
+    el('span', { class: 'hub-sub' }, 'Blend first sounds on the Letters & Phonics path.'),
+    el('span', { class: 'hub-cta' }, 'Continue Stage'),
   );
   pressable(satCard, () => ctx.go('trail'));
 
   const matchCard = el('button', {
-    class: 'pillow hub-card',
+    class: 'hub-card',
     type: 'button',
     'aria-label': 'Start letter match',
   },
-    el('span', { class: 'hub-kicker' }, 'Tap letters'),
+    el('span', { class: 'hub-art hub-art--yellow' },
+      el('span', { class: 'hub-case' },
+        el('span', { class: 'hub-case-big' }, pick),
+        el('span', { class: 'hub-case-small' }, String(pick).toLowerCase()),
+      ),
+      el('span', { class: 'hub-art-tag' }, 'New game'),
+    ),
     el('span', { class: 'hub-title' }, 'Case Match Arena'),
-    el('span', { class: 'hub-sub' }, `Find ${pick}${String(pick).toLowerCase()}`),
+    el('span', { class: 'hub-sub' }, `Find ${pick} and ${String(pick).toLowerCase()}.`),
+    el('span', { class: 'hub-cta hub-cta--gold' }, 'Start Match'),
   );
   pressable(matchCard, () => beginPlay(ctx, { startAt: pick, step: 'case', mode: 'once' }));
 
   const later = [
-    ['stories', "Lucy's Picnic Day", 'P is for pictures today.', 'stories'],
-    ['listen', 'Rhymes & Songs', 'This letter’s listen beat.', 'listen'],
-    ['pouch', 'Coloring Canvas', 'Closet dress-up lives here.', 'pouch'],
-    ['arcade', 'Puppy Treat Match', 'Choose-letter beat in Arcade.', 'arcade'],
+    ['stories', "Lucy's Picnic Day", 'Word pictures for this letter.', 'Open Book', 'hub-art--cyan', 'book'],
+    ['listen', 'Rhymes & Songs', 'This letter’s listen beat.', 'Listen & Sing', 'hub-art--yellow', 'music'],
+    ['pouch', 'Coloring Canvas', 'Closet dress-up lives here.', 'Open Closet', 'hub-art--red', 'pouch'],
+    ['arcade', 'Puppy Treat Match', 'Choose-letter beat in Arcade.', 'Play Memory', 'hub-art--cyan', 'arcade'],
   ];
   const laterRow = el('div', { class: 'hub-row hub-row--later' });
-  later.forEach(([, title, sub, kind]) => {
-    const card = el('button', { class: 'pillow hub-card hub-card--later', type: 'button' },
-      el('span', { class: 'hub-kicker' }, 'Storybooks & Fun'),
+  later.forEach(([kind, title, sub, cta, art, ico]) => {
+    const card = el('button', { class: 'hub-card', type: 'button', 'aria-label': title },
+      el('span', { class: `hub-art ${art}` }, icon(ico)),
       el('span', { class: 'hub-title' }, title),
       el('span', { class: 'hub-sub' }, sub),
+      el('span', { class: 'hub-cta' }, cta),
     );
     pressable(card, () => {
       if (kind === 'listen') beginPlay(ctx, { startAt: pick, step: 'listen', mode: 'once' });
@@ -278,11 +296,17 @@ export function render(ctx) {
   const online = audio.isUnlocked();
 
   const discover = el('button', {
-    class: 'pillow hub-discover',
+    class: 'hub-discover',
     type: 'button',
     'aria-label': 'Discover more letters',
-  }, 'Discover more');
+  }, 'Discover more', icon('next'));
   pressable(discover, () => ctx.go('trail'));
+  const discoverStories = el('button', {
+    class: 'hub-discover',
+    type: 'button',
+    'aria-label': 'Open storybooks',
+  }, 'Discover more', icon('next'));
+  pressable(discoverStories, () => ctx.go('stories'));
 
   root.append(
     el('section', { class: 'hub-hero-panel' },
@@ -295,27 +319,33 @@ export function render(ctx) {
           lucy.stage,
           el('span', { class: 'hub-lucy-badge' }, pick),
           closetBtn,
-          el('div', { class: 'home-lucy-row' }, sayLucy, woofBtn),
         ),
         el('div', { class: 'hub-hero-copy' },
-          el('p', { class: 'hub-welcome' }, `Welcome back, ${name}!`),
+          el('h1', { class: 'hub-welcome' }, `Welcome back, ${name}!`),
           el('div', { class: 'hub-chips' },
             el('span', { class: 'chip chip--sky' }, 'English: Pre-K'),
             el('span', { class: 'chip chip--gold' }, cloud ? cloud.name : 'Cloud 1'),
             pin ? el('span', { class: 'chip' }, icon('flag'), `Today: ${pin}`) : null,
-            today ? el('span', { class: 'chip' }, `${today}★ today`) : null,
+            today ? el('span', { class: 'chip' }, `+${today} today`) : null,
           ),
           el('div', { class: 'hub-stats' },
             el('div', { class: 'hub-stat hub-stat--stars' },
-              el('span', { class: 'hub-stat-num' }, `${stars} Stars`),
-              el('span', { class: 'hub-stat-sub' }, 'Golden Star Bank'),
+              el('span', { class: 'hub-stat-ico', 'aria-hidden': 'true' }, icon('star')),
+              el('span', {},
+                el('span', { class: 'hub-stat-num' }, `${stars} Stars`),
+                el('span', { class: 'hub-stat-sub' }, 'Golden Star Bank'),
+              ),
             ),
             el('div', { class: 'hub-stat hub-stat--level' },
-              el('span', { class: 'hub-stat-num' }, `Level ${level}`),
-              el('span', { class: 'hub-stat-sub' }, preview.length ? preview.join(' · ') : 'S A T P M I'),
+              el('span', { class: 'hub-stat-ico', 'aria-hidden': 'true' }, level),
+              el('span', {},
+                el('span', { class: 'hub-stat-num' }, `Level ${level}`),
+                el('span', { class: 'hub-stat-sub' }, preview.length ? preview.join(' · ') : 'S A T P M I'),
+              ),
             ),
           ),
           el('div', { class: 'hub-meter' },
+            el('span', { class: 'hub-meter-ico', 'aria-hidden': 'true' }, icon('paw')),
             el('span', { class: 'hub-meter-label' }, 'Daily Bone Treat Meter'),
             el('span', { class: 'hub-meter-copy' },
               boneLeft ? `${boneLeft} more to ${next ? next.name : 'the next treat'}` : 'Every treat is open!',
@@ -327,11 +357,20 @@ export function render(ctx) {
       ),
     ),
     el('div', { class: 'hub-section-row' },
-      el('h2', { class: 'hub-section' }, 'Phonics & Alphabet'),
+      el('h2', { class: 'hub-section' },
+        el('span', { class: 'hub-section-ico hub-section-ico--gold', 'aria-hidden': 'true' }, icon('flag')),
+        'Phonics & Alphabet',
+      ),
       discover,
     ),
     el('div', { class: 'hub-row hub-row--phonics' }, playBtn, soundCard, satCard, matchCard),
-    el('h2', { class: 'hub-section' }, 'Storybooks & Fun Games'),
+    el('div', { class: 'hub-section-row' },
+      el('h2', { class: 'hub-section' },
+        el('span', { class: 'hub-section-ico hub-section-ico--red', 'aria-hidden': 'true' }, icon('book')),
+        'Storybooks & Fun Games',
+      ),
+      discoverStories,
+    ),
     laterRow,
   );
   lucy.bubble.classList.add('hub-lucy-bubble');

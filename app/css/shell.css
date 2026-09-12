@@ -61,7 +61,8 @@ button { border: 0; background: none; cursor: pointer; padding: 0; }
   box-shadow: 0 4px 16px rgba(74, 59, 50, .06);
 }
 
-.brand { display: flex; align-items: center; gap: var(--space-sm); background: none; }
+.chrome-left { display: flex; align-items: center; gap: 10px; flex: 0 1 auto; min-width: 0; }
+.brand { display: flex; align-items: center; gap: var(--space-sm); background: none; flex: 0 0 auto; }
 .brand-paw {
   width: clamp(44px, 6.4vh, 56px);
   height: clamp(44px, 6.4vh, 56px);
@@ -74,7 +75,7 @@ button { border: 0; background: none; cursor: pointer; padding: 0; }
   flex: 0 0 auto;
 }
 .brand-paw svg { width: 62%; height: 62%; }
-.brand-words { display: flex; flex-direction: column; text-align: left; line-height: 1.1; }
+.brand-words { display: none; }
 .brand-title {
   font-family: var(--font-display);
   font-weight: 700;
@@ -115,7 +116,7 @@ button { border: 0; background: none; cursor: pointer; padding: 0; }
   white-space: nowrap;
 }
 .tab svg { width: 20px; height: 20px; flex: 0 0 auto; display: none; }
-.tab .tab-label { max-width: 11ch; overflow: hidden; text-overflow: ellipsis; }
+.tab .tab-label { max-width: none; overflow: visible; text-overflow: clip; }
 .tab:hover { background: var(--surface-container-high); color: var(--on-surface); }
 .tab[aria-current="page"] {
   background: var(--sunny-yellow);
@@ -133,8 +134,8 @@ button { border: 0; background: none; cursor: pointer; padding: 0; }
   .tab-label { display: none; }
 }
 
-.chrome-right { display: flex; align-items: center; gap: var(--space-sm); margin-left: auto; flex-shrink: 0; }
-.tabs { min-width: 0; }
+.chrome-right { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
+.tabs { min-width: 0; flex: 1 1 auto; justify-content: center; }
 
 /* Independent Music / SFX / Voice toggles */
 .audio-cluster {
@@ -180,11 +181,45 @@ button { border: 0; background: none; cursor: pointer; padding: 0; }
   font-weight: 800;
   font-size: clamp(12px, 1.6vh, 17px);
 }
+.who-chip--stamp {
+  padding: 6px 10px 6px 6px;
+  border: 3.5px solid #000;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 3.5px 3.5px 0 #000;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.who-meta { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.who-line { display: flex; align-items: center; gap: 6px; }
+.who-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.who-grade {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  background: #06b6d4;
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 1px 6px;
+  box-shadow: 1.5px 1.5px 0 #000;
+  flex-shrink: 0;
+}
+.who-rail { display: none; }
 .who-face {
   width: 34px; height: 34px;
   border-radius: var(--r-full);
   display: grid; place-items: center;
   font-size: 19px;
+}
+.who-chip--stamp .who-face {
+  border: 2px solid #000;
+  background: #fde68a;
 }
 
 /* Grown-Ups: low contrast slate + lock, deliberately unattractive to a 3yo */
@@ -557,6 +592,7 @@ html[data-chrome="hidden"] .tabs,
 html[data-chrome="hidden"] .brand-words,
 html[data-chrome="hidden"] .audio-cluster,
 html[data-chrome="hidden"] .who-chip,
+html[data-chrome="hidden"] .star-chip,
 html[data-chrome="hidden"] .gate-btn,
 html[data-chrome="hidden"] .foot,
 html[data-chrome="hidden"] .home-status,

@@ -4,14 +4,13 @@ Bradley — this is the whole job. It is a folder of files. There is nothing to
 install, no database, no build step, no account. Copy the folder up, open it
 once on Wi-Fi, done.
 
-Shell pin for this drop: **`rsabc-shell-v34-eleven-sfx`**
+Shell pin for this drop: **`rsabc-shell-v35-stitch-hub`**
 
-**What is new in this one:** the celebrate sound is a 1-second xylophone
-chime from ElevenLabs Sound Effects v2. Taps and match hits stay original CC0
-beds from `audio/make-ui-bed.py`. Every letter still has its drawn pictures.
-A–Z play on flat SVG stickers, all 390 of them. Same rounds, same stars, same
-stickers, all 26 letters still awake. Tablets that already have v24 need step 4
-below — they will keep showing emoji plates until somebody taps **Get update**.
+**What is new in this one:** Home matches the Stitch comic-arena layout.
+Yellow header, ben-day blue field, cream hero, tall 4+4 cards, red selected
+tabs. Lucy stays our photo plates. Grown-Ups keeps the PIN. Music / SFX /
+Voice mutes stay. Celebrate still uses the ElevenLabs xylophone chime. Tablets
+that already have an older pin need step 4 below.
 
 ---
 
@@ -51,7 +50,7 @@ a room with no signal.
 2. Hold or tap into **Grown-Ups** — the PIN is **`1234`**.
 3. Tap the **Device** tab.
 4. Tap **Set up this device**. Watch the bar fill.
-5. Wait for it to say **Pinned `rsabc-shell-v34-eleven-sfx`**.
+5. Wait for it to say **Pinned `rsabc-shell-v35-stitch-hub`**.
 
 That tablet now has the whole app — screens, pictures, and the letter fonts —
 stored on it. You can turn the Wi-Fi off and it still opens and still looks
