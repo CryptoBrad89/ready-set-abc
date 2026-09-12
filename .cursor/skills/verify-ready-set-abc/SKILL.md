@@ -49,7 +49,7 @@ Run this first whenever anything looks off:
 .cursor/skills/verify-ready-set-abc/bin/verify-rsabc doctor
 ```
 
-It is read-only. It must report: our pid alive, that pid owns the port, `GET /` is Ready Set ABC, `GET /js/version.js` contains `rsabc-shell-v37-lucy-voice`, `_smoke.html` answers, and the port is not 8000 or 8080. If it fails, stop driving. Launch a fresh instance or pick another port. Never drive an instance this helper did not start.
+It is read-only. It must report: our pid alive, that pid owns the port, `GET /` is Ready Set ABC, `GET /js/version.js` contains `rsabc-shell-v38-el-beds`, `_smoke.html` answers, and the port is not 8000 or 8080. If it fails, stop driving. Launch a fresh instance or pick another port. Never drive an instance this helper did not start.
 
 ## Drive
 

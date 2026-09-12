@@ -1,7 +1,7 @@
 /* Dev-only gate. Parses every module as ESM and every data file as JSON.
    Run from app/:  node _check.mjs   (no dependencies, no network) */
 
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, readdirSync, rmSync, mkdirSync, existsSync } from 'node:fs';
 
 const modules = [
@@ -282,6 +282,35 @@ if (!existsSync('icons/make-icons.py')) problem('missing icons/make-icons.py');
 if (!existsSync('fonts/README.md')) problem('missing fonts/README.md');
 if (!existsSync('audio/README.md')) problem('missing audio/README.md (Lucy recording checklist)');
 if (!existsSync('_smoke.html')) problem('missing _smoke.html');
+
+/* make-ui-bed.py writes the same dest names and would clobber EL takes. */
+if (existsSync('audio/make-ui-bed.py')) {
+  problem('audio/make-ui-bed.py clobbers EL beds; delete it');
+}
+const baked = spawnSync('python3', ['audio/bake-beds.py', '--check'], { encoding: 'utf8' });
+if (baked.status !== 0) {
+  problem(`bake-beds --check failed: ${(baked.stderr || baked.stdout || '').trim()}`);
+}
+
+const audioSrc = readFileSync('js/audio.js', 'utf8');
+const sfxBlock = audioSrc.match(/const SFX_FILES = \{([\s\S]*?)\};/);
+const musicFile = (audioSrc.match(/const MUSIC_FILE = 'audio\/([^']+)'/) || [])[1];
+const bedNames = [
+  ...((sfxBlock && [...sfxBlock[1].matchAll(/'audio\/([^']+)'/g)]) || []).map((m) => m[1]),
+  ...(musicFile ? [musicFile] : []),
+];
+if (!sfxBlock || !musicFile || !bedNames.length) {
+  problem('js/audio.js must keep SFX_FILES and MUSIC_FILE');
+} else {
+  const licenses = existsSync('audio/LICENSES.md') ? readFileSync('audio/LICENSES.md', 'utf8') : '';
+  for (const name of bedNames) {
+    if (!licenses.includes(name)) problem(`audio/LICENSES.md does not name ${name}`);
+  }
+  const clipFiles = Object.values(JSON.parse(readFileSync('data/audio.json', 'utf8')).clips || {});
+  for (const name of bedNames) {
+    if (clipFiles.includes(name)) problem(`data/audio.json clips must not list bed ${name}`);
+  }
+}
 
 const fontsNote = existsSync('fonts/README.md') ? readFileSync('fonts/README.md', 'utf8') : '';
 if (fontsNote && (!/woff2/i.test(fontsNote) || !/SHELL/.test(fontsNote) || !/version\.js/.test(fontsNote))) {

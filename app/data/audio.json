@@ -3,8 +3,8 @@
   "base": "audio/",
   "recorded": 10,
   "channels": {
-    "music": "Quiet playground wander. Web Audio only — no clip, no file. Ducks to 16% while voice plays.",
-    "sfx": "Short musical UI hits: tap, select, match chord, miss, star, pop, woof (CC0 beds from audio/make-ui-bed.py) plus an ElevenLabs Sound Effects v2 celebrate chime. Independent of voice: mute one, the other keeps going.",
+    "music": "Quiet playground wander. Loops audio/music-loop.wav on the music bus. Ducks to 16% while voice plays.",
+    "sfx": "Short musical UI hits: tap, select, match chord, miss, star, pop, woof, plus a celebrate xylophone. ElevenLabs beds. Independent of voice: mute one, the other keeps going.",
     "voice": "Lucy. The only channel that uses the clips below."
   },
   "contract": {
