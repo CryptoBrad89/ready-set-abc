@@ -1,6 +1,3 @@
-/* Letters & Phonics — SATPIN cloud path.
-   Numbered islands, glow on the open cloud, locked neighbors, per-letter n/4. */
-
 import { el, icon, pressable } from '../ui.js';
 import { letterByChar, activeKid } from '../data.js';
 import { createLucy } from '../lucy.js';
