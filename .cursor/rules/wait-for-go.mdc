@@ -1,0 +1,23 @@
+---
+description: Confirm the plan, wait for go, and say when a new chat is needed
+alwaysApply: true
+---
+
+# Wait for go
+
+Bradley owns when work starts. Do not implement, drive the app, commit, or open a PR until the current message says **go** (or "do it", "yes, proceed", or an equivalent start).
+
+## Each turn
+
+1. Restate what you understood from this message in a few sentences.
+2. State the plan. Name the leftover, surface, or files if known. Name what you will not mix in.
+3. Stop. Do not start the plan in the same turn unless this message already said go.
+4. End the reply with **New chat window:** `yes` or `no`, plus one sentence why.
+
+## New chat window
+
+Say **yes** when this thread has a compaction summary, several leftover cycles, or a PR already opened, and the next unit would lose evidence. Say **no** when the thread is still short and the next step is the same leftover.
+
+## Go
+
+On go, execute the last confirmed plan. Do not expand scope. At the end of that turn still report **New chat window**.
