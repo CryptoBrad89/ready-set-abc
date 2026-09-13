@@ -1,0 +1,10 @@
+{
+  "rsabc.kid": "k24",
+  "rsabc.classroom": true,
+  "miles": {
+    "id": "k24",
+    "name": "Miles",
+    "workMode": "assigned",
+    "assignedLetters": ["S", "O", "J"]
+  }
+}

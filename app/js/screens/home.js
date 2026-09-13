@@ -7,11 +7,11 @@ import { el, icon, pressable, picturePlate } from '../ui.js';
 import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
 import { store } from '../store.js';
-import { letterByChar, picturesFor } from '../data.js';
+import { letterByChar, picturesFor, activeKid } from '../data.js';
 import { openCloud, beatsFor, pinInOpenCloud } from '../clouds.js';
 import { nextTreat, starsToNext, TREATS } from '../closet.js';
 import { previewLetters, startRound } from '../round.js';
-import { isArcadeLocked, startLetter, workLetters } from '../profile.js';
+import { isArcadeLocked, startLetter, workLetters, workModeOf } from '../profile.js';
 import { wobble } from '../motion.js';
 
 export const chrome = { tabs: true, tab: 'home', who: true };
@@ -66,6 +66,7 @@ export function render(ctx) {
   const pick = startLetter('P');
   const pathLetters = workLetters(ctx.kid);
   const arcadeOff = isArcadeLocked(ctx.kid);
+  const assigned = workModeOf(ctx.kid) === 'assigned';
   const pickEntry = letterByChar(pick) || { letter: pick, word: '', phoneme: '' };
   const cloud = openCloud();
   const preview = previewLetters();
@@ -243,13 +244,13 @@ export function render(ctx) {
   const satCard = el('button', {
     class: 'hub-card',
     type: 'button',
-    'aria-label': `Open cloud letters ${blendJoin}`,
+    'aria-label': assigned ? `Your letters ${blendJoin}` : `Open cloud letters ${blendJoin}`,
   },
     el('span', { class: 'hub-art hub-art--red' },
       el('span', { class: 'hub-sat' },
         ...blend.map((L, i) => el('span', { class: `hub-tile ${satTones[i] || satTones[0]}` }, L)),
       ),
-      el('span', { class: 'hub-art-tag hub-art-tag--go' }, 'Cloud 1'),
+      assigned ? null : el('span', { class: 'hub-art-tag hub-art-tag--go' }, 'Cloud 1'),
     ),
     el('span', { class: 'hub-title' }, `Sounds ${blendJoin}`),
     el('span', { class: 'hub-sub' }, 'Blend first sounds on the Letters & Phonics path.'),
@@ -338,7 +339,7 @@ export function render(ctx) {
           el('h1', { class: 'hub-welcome' }, `Welcome back, ${name}!`),
           el('div', { class: 'hub-chips' },
             el('span', { class: 'chip chip--sky' }, 'English: Pre-K'),
-            el('span', { class: 'chip chip--gold' }, cloud ? cloud.name : 'Cloud 1'),
+            assigned ? null : el('span', { class: 'chip chip--gold' }, cloud ? cloud.name : 'Cloud 1'),
             pin ? el('span', { class: 'chip' }, icon('flag'), `Today: ${pin}`) : null,
             today ? el('span', { class: 'chip' }, `+${today} today`) : null,
           ),
@@ -397,6 +398,13 @@ export function render(ctx) {
 }
 
 export function footLeft() {
+  const assigned = workModeOf(activeKid()) === 'assigned';
+  if (assigned) {
+    const letters = workLetters();
+    const n = letters.reduce((sum, L) => sum + Math.min(4, beatsFor(L)), 0);
+    const need = letters.length * 4;
+    return el('span', {}, icon('home'), ` Your letters · ${n}/${need}`);
+  }
   const cloud = openCloud();
   const n = (cloud && cloud.letters || []).reduce((sum, L) => sum + Math.min(4, beatsFor(L)), 0);
   const need = cloud ? cloud.letters.length * 4 : 24;

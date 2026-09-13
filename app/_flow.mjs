@@ -2404,6 +2404,7 @@ assert(e2Paint.length === 0,
 store.reset();
 store.setClassroom(false);
 const e2Trail = await import('./js/screens/trail.js');
+const e2Home = await import('./js/screens/home.js');
 const e2Node = e2Trail.render({ go: () => {}, kid: null, foot: () => {} });
 const e2Tiles = byClass(e2Node, 'trail-tile');
 assert(e2Tiles.length === 6, `the open cloud draws its letters (${e2Tiles.length})`);
@@ -2419,6 +2420,12 @@ assert(!/nap|sleep|asleep/i.test(textOf(e2Node)),
 assert(/Cloud 1 is open/.test(textOf(e2Node)), 'SATPIN trail Lucy still names the open cloud');
 assert(byClass(e2Node, 'cloud-island').length === 5, 'SATPIN trail still draws the cloud path');
 assert(/open cloud/.test(textOf(e2Trail.footLeft())), 'SATPIN trail foot still names the open cloud');
+const e2HomeNode = e2Home.render({ go: () => {}, kid: null, foot: () => {} });
+assert(/Cloud 1/.test(textOf(e2HomeNode)), 'SATPIN Home still names Cloud 1');
+const e2Blend = byClass(e2HomeNode, 'hub-card').find((n) => /Open cloud/.test(n.getAttribute('aria-label') || ''));
+assert(e2Blend && /Open cloud letters/.test(e2Blend.getAttribute('aria-label')),
+  'SATPIN Home blend still says open cloud');
+assert(/Cloud 1/.test(textOf(e2Home.footLeft())), 'SATPIN Home foot still names Cloud 1');
 
 store.setRosterOverride([{
   id: 'k24',
@@ -2448,6 +2455,13 @@ assert(byClass(sojNode, 'cloud-island').length === 0,
   'assigned trail does not draw SATPIN cloud islands');
 assert(!/open cloud/.test(textOf(e2Trail.footLeft())),
   'assigned trail foot does not say open cloud');
+const sojHome = e2Home.render({ go: () => {}, kid: activeKid(), foot: () => {} });
+assert(!/Cloud 1/.test(textOf(sojHome)),
+  'assigned Home does not tag Cloud 1');
+assert(!byClass(sojHome, 'hub-card').some((n) => /open cloud/i.test(n.getAttribute('aria-label') || '')),
+  'assigned Home blend does not say open cloud');
+assert(!/Cloud 1/.test(textOf(e2Home.footLeft())),
+  'assigned Home foot does not say Cloud 1');
 setTeacherUnlock(1);
 round.startRound({ startAt: 'O' });
 assert(round.getRound() && round.getRound().letters[0] === 'O',
