@@ -2453,6 +2453,8 @@ assert(!/open cloud/i.test(gu.letterOfDayNote()),
   'assigned Grown-Ups Play does not say open cloud');
 assert(/your letters/i.test(gu.letterOfDayNote()),
   'assigned Grown-Ups Play names your letters');
+assert(!/Open clouds/.test(textOf(gu.playPanel())),
+  'assigned Grown-Ups Play hides Open clouds');
 const sojNode = e2Trail.render({ go: () => {}, kid: activeKid(), foot: () => {} });
 const sojAria = byClass(sojNode, 'trail-tile').map((t) => t.getAttribute('aria-label') || '');
 assert(sojAria.some((a) => /^Letter O,/.test(a)) && sojAria.some((a) => /^Letter J,/.test(a)),
@@ -2504,6 +2506,8 @@ assert(round.previewLetters()[0] === 'A',
   'SATPIN unpinned Grown-Ups still names the open-cloud letter');
 assert(/open cloud/i.test(gu.letterOfDayNote()),
   'SATPIN Grown-Ups Play still names the open cloud');
+assert(/Open clouds/.test(textOf(gu.playPanel())),
+  'SATPIN Grown-Ups Play still shows Open clouds');
 const satArcade = e2Arcade.render({ go: () => {}, kid: activeKid(), foot: () => {} });
 const satPlay = byClass(satArcade, 'play-btn')[0];
 assert(satPlay && /Start match for A/.test(satPlay.getAttribute('aria-label')),

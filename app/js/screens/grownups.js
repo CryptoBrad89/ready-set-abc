@@ -237,7 +237,7 @@ export function letterOfDayNote() {
   return `Not pinned — next PLAY starts the first unfinished letter in the open cloud (${next}).`;
 }
 
-function playPanel() {
+export function playPanel() {
   const s = store.getSettings();
   const pinned = store.getPinnedLetter();
 
@@ -271,7 +271,7 @@ function playPanel() {
       row('Stars', 'none · this session · save on this device',
         seg([['none', 'Off'], ['stars', 'Session'], ['stars-save', 'Save']], s.progressMode || 'stars-save',
           (v) => store.setSetting('progressMode', v))),
-      row('Open clouds', 'Highest cloud a class may play. Kids still earn the next cloud by finishing 4/4 on every letter.',
+      workModeOf() === 'assigned' ? null : row('Open clouds', 'Highest cloud a class may play. Kids still earn the next cloud by finishing 4/4 on every letter.',
         seg([[1, '1'], [2, '2'], [3, '3'], [4, '4'], [5, '5']], teacherUnlock(),
           (v) => { setTeacherUnlock(Number(v)); repaint(); })),
     ),
