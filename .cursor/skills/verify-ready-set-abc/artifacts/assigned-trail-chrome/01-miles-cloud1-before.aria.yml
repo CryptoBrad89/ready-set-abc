@@ -1,0 +1,15 @@
+origin: http://127.0.0.1:4174
+hash: index.html?v=gu-next#/trail
+kid: Miles k24 assigned S O J
+viewport: 1280x800
+
+Board (leftover 4, correct):
+- Letter S, Sun. Starts next. Play this letter. 0 of 4.
+- Letter O, Owl. Play this letter. 0 of 4.
+- Letter J, Juice. Play this letter. 0 of 4.
+
+Chrome (this leftover):
+- Lucy: Tap letter S to start. Cloud 1 is open!
+- Chip: Next up: S
+- Islands: 1 Cloud 1, 2 Cloud 2, 3 Cloud 3, 4 Cloud 4, 5 Revision
+- Footer: Tap a letter in the open cloud

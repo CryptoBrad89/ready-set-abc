@@ -2416,6 +2416,9 @@ assert(e2Tiles.every((t) => /Play this letter\./.test(t.getAttribute('aria-label
   'and every tile tells a screen reader it can be played');
 assert(!/nap|sleep|asleep/i.test(textOf(e2Node)),
   'and nothing the rendered trail says mentions a sleeping letter');
+assert(/Cloud 1 is open/.test(textOf(e2Node)), 'SATPIN trail Lucy still names the open cloud');
+assert(byClass(e2Node, 'cloud-island').length === 5, 'SATPIN trail still draws the cloud path');
+assert(/open cloud/.test(textOf(e2Trail.footLeft())), 'SATPIN trail foot still names the open cloud');
 
 store.setRosterOverride([{
   id: 'k24',
@@ -2438,6 +2441,13 @@ const sojAria = byClass(sojNode, 'trail-tile').map((t) => t.getAttribute('aria-l
 assert(sojAria.some((a) => /^Letter O,/.test(a)) && sojAria.some((a) => /^Letter J,/.test(a)),
   'assigned trail board includes O and J');
 assert(sojAria.length === 3, `assigned trail board is the work list (${sojAria.length})`);
+assert(/Tap letter S to start/.test(textOf(sojNode)), 'assigned Lucy still names the start letter');
+assert(!/Cloud 1 is open/.test(textOf(sojNode)),
+  'assigned trail Lucy does not say Cloud 1 is open');
+assert(byClass(sojNode, 'cloud-island').length === 0,
+  'assigned trail does not draw SATPIN cloud islands');
+assert(!/open cloud/.test(textOf(e2Trail.footLeft())),
+  'assigned trail foot does not say open cloud');
 setTeacherUnlock(1);
 round.startRound({ startAt: 'O' });
 assert(round.getRound() && round.getRound().letters[0] === 'O',

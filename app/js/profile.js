@@ -20,7 +20,7 @@ export function alphabet() {
   return list.length ? list : [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
 }
 
-export function workModeOf(kid) {
+export function workModeOf(kid = activeKid()) {
   const mode = kid && kid.workMode;
   return WORK_MODES.includes(mode) ? mode : 'satpin';
 }

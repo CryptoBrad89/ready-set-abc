@@ -2,7 +2,7 @@
    Numbered islands, glow on the open cloud, locked neighbors, per-letter n/4. */
 
 import { el, icon, pressable } from '../ui.js';
-import { letterByChar } from '../data.js';
+import { letterByChar, activeKid } from '../data.js';
 import { createLucy } from '../lucy.js';
 import { store } from '../store.js';
 import { audio } from '../audio.js';
@@ -22,6 +22,7 @@ export function render(ctx) {
   const pinnedLetter = store.getPinnedLetter();
   const pinned = pinInOpenCloud();
   const clouds = allClouds();
+  const assigned = workModeOf(ctx.kid) === 'assigned';
 
   const lucy = createLucy({
     state: 'teaching',
@@ -29,7 +30,9 @@ export function render(ctx) {
     cutout: true,
     line: pinned
       ? `Letter ${pinned} is our letter today. Tap it to start!`
-      : `Tap letter ${current} to start. ${open ? open.name : 'Cloud 1'} is open!`,
+      : assigned
+        ? `Tap letter ${current} to start.`
+        : `Tap letter ${current} to start. ${open ? open.name : 'Cloud 1'} is open!`,
   });
 
   root.append(el('div', { class: 'trail-head' },
@@ -43,25 +46,27 @@ export function render(ctx) {
   ));
   root.append(el('div', { class: 'trail-say' }, lucy.stage, lucy.bubble));
 
-  const path = el('div', { class: 'cloud-path' });
-  clouds.forEach((cloud, i) => {
-    const unlocked = isCloudUnlocked(cloud.id);
-    const isOpen = open && cloud.id === open.id;
-    const island = el('div', {
-      class: `cloud-island${unlocked ? '' : ' is-locked'}${isOpen ? ' is-open' : ''}`,
-    },
-      el('span', { class: 'cloud-num' }, String(cloud.id)),
-      el('span', { class: 'cloud-name' }, cloud.name),
-    );
-    if (i < clouds.length - 1) {
-      path.append(island, el('span', { class: 'cloud-dots', 'aria-hidden': 'true' }));
-    } else {
-      path.append(island);
-    }
-  });
-  root.append(path);
+  if (!assigned) {
+    const path = el('div', { class: 'cloud-path' });
+    clouds.forEach((cloud, i) => {
+      const unlocked = isCloudUnlocked(cloud.id);
+      const isOpen = open && cloud.id === open.id;
+      const island = el('div', {
+        class: `cloud-island${unlocked ? '' : ' is-locked'}${isOpen ? ' is-open' : ''}`,
+      },
+        el('span', { class: 'cloud-num' }, String(cloud.id)),
+        el('span', { class: 'cloud-name' }, cloud.name),
+      );
+      if (i < clouds.length - 1) {
+        path.append(island, el('span', { class: 'cloud-dots', 'aria-hidden': 'true' }));
+      } else {
+        path.append(island);
+      }
+    });
+    root.append(path);
+  }
 
-  const letters = workModeOf(ctx.kid) === 'assigned'
+  const letters = assigned
     ? workLetters(ctx.kid)
     : ((open && open.letters) || []);
   const board = el('div', { class: 'trail-board cloud-letters' });
@@ -115,5 +120,6 @@ export function render(ctx) {
 }
 
 export function footLeft() {
-  return el('span', {}, icon('trail'), ' Tap a letter in the open cloud');
+  const assigned = workModeOf(activeKid()) === 'assigned';
+  return el('span', {}, icon('trail'), assigned ? ' Tap one of your letters' : ' Tap a letter in the open cloud');
 }
