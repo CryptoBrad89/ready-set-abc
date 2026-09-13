@@ -2422,6 +2422,8 @@ assert(byClass(e2Node, 'cloud-island').length === 5, 'SATPIN trail still draws t
 assert(/open cloud/.test(textOf(e2Trail.footLeft())), 'SATPIN trail foot still names the open cloud');
 const e2HomeNode = e2Home.render({ go: () => {}, kid: null, foot: () => {} });
 assert(/Cloud 1/.test(textOf(e2HomeNode)), 'SATPIN Home still names Cloud 1');
+const e2Level = byClass(e2HomeNode, 'hub-stat--level')[0];
+assert(e2Level && /Level 1/.test(textOf(e2Level)), 'SATPIN Home still names Level 1');
 const e2Blend = byClass(e2HomeNode, 'hub-card').find((n) => /Open cloud/.test(n.getAttribute('aria-label') || ''));
 assert(e2Blend && /Open cloud letters/.test(e2Blend.getAttribute('aria-label')),
   'SATPIN Home blend still says open cloud');
@@ -2466,6 +2468,13 @@ assert(!byClass(sojHome, 'hub-card').some((n) => /open cloud/i.test(n.getAttribu
   'assigned Home blend does not say open cloud');
 assert(!/Cloud 1/.test(textOf(e2Home.footLeft())),
   'assigned Home foot does not say Cloud 1');
+const sojLevel = byClass(sojHome, 'hub-stat--level')[0];
+assert(sojLevel && !/Level/.test(textOf(sojLevel)),
+  'assigned Home does not say Level 1');
+assert(/Your letters/.test(textOf(sojLevel)),
+  'assigned Home level stat names your letters');
+assert(/S · O · J/.test(textOf(sojLevel)),
+  'assigned Home still lists S O J');
 setTeacherUnlock(1);
 round.startRound({ startAt: 'O' });
 assert(round.getRound() && round.getRound().letters[0] === 'O',

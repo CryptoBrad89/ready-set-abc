@@ -1,0 +1,15 @@
+origin: http://127.0.0.1:4174
+hash: _smoke.html?kid=k24&v=level4 (after Get update)
+kid: Miles k24 assigned S O J
+viewport: 1280x800
+pin: rsabc-shell-v39-mute-dots
+
+Home:
+- heading: Welcome back, Miles!
+- button: Play letter S. Tap to start sound.
+- button: Your letters S, O, J
+- hub-stat-num: Your letters
+- hub-stat-sub: S · O · J
+- hub-stat-ico: 3
+- chips: English: Pre-K
+- footer: Your letters · 0/12
