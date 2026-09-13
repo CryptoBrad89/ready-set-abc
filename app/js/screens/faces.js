@@ -52,17 +52,17 @@ export function render(ctx) {
       audio.sfx('select');
       endRound();
       enterChild(kid.id);
-      audio.speak(`Hi ${kid.name}!`);
       setTimeout(() => ctx.go('home'), 220);
     });
     grid.append(card);
   });
 
+  const line = 'Tap your face. I will wait right here!';
   const lucy = createLucy({
     state: 'idle',
     cutout: true,
-    line: 'Tap your face. I will wait right here!',
-    paw: () => audio.speak('Tap your face. I will wait right here!'),
+    line,
+    paw: () => lucy.say(line, { voice: false }),
   });
 
   root.append(

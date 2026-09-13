@@ -265,9 +265,9 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
       paintLook(well, lucyLook({ cutout, pose: resting }), resting);
     },
     getOutfit() { return svg.dataset.wear || ''; },
-    /* Say a line: bubble + mouth + voice, all together. Never text alone.
+    /* Say a line: bubble + mouth. Voice is opt-in. Mapped clips live on audio.*.
        Talking is an overlay — glasses/bows stay with the resting pose. */
-    say(text, { voice = true, hold = 2200 } = {}) {
+    say(text, { voice = false, hold = 2200 } = {}) {
       const lineEl = bubble.querySelector('[data-line]') || bubble.querySelector('p');
       if (lineEl) lineEl.textContent = text;
       bubble.classList.remove('pulse');

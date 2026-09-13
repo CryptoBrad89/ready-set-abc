@@ -315,9 +315,6 @@ export function render(ctx) {
   ));
 
   wait(() => audio.cheer(), 400);
-  wait(() => {
-    audio.speak(`${stars} stars! ${entry.letter}${entry.lower} is for ${pic.word}.`);
-  }, 1100);
   if (treat) wait(() => lucy.say(`You opened ${treat.name} for me! Put it on?`), 2600);
 
   keyHandler = (event) => {

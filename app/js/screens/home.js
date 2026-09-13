@@ -123,7 +123,7 @@ export function render(ctx) {
     type: 'button',
     'aria-label': 'Say Lucy',
   }, icon('voice'), 'Say "Lucy"');
-  sayLucy.addEventListener('click', () => { audio.speak('Lucy!'); lucy.say('Lucy!', { voice: false }); });
+  sayLucy.addEventListener('click', () => { lucy.say('Lucy!', { voice: false }); });
   const woofBtn = el('button', {
     class: 'chip chip--gold',
     type: 'button',
@@ -177,7 +177,7 @@ export function render(ctx) {
   function openHello() {
     overlay.hidden = false;
     overlay.removeAttribute('aria-hidden');
-    lucy.say(helloLine);
+    lucy.say(helloLine, { voice: false });
     playHello.focus();
   }
 

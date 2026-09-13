@@ -1,0 +1,5 @@
+url: http://127.0.0.1:4174/index.html?v=silent-remain2#/play
+note: Case match Listen after deleting audio.speak(instructionText). Wrapped speak log [].
+name: Find the little letter!
+button: Listen
+screen: case

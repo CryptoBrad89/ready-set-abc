@@ -7,10 +7,11 @@
    case/picture board and the rotating bonus are not on the kid PLAY path.
    Bonus helpers stay so Grown-Ups CSV / leftover screens do not crash. */
 
-import { letterByChar, awakeLetters, distractors, shuffle, pickPicture, picturesFor } from './data.js';
+import { letterByChar, letters, awakeLetters, distractors, shuffle, pickPicture, picturesFor } from './data.js';
 import { buildBonus, BONUS_MODES } from './bonus.js';
 import { newlyUnlocked } from './closet.js';
 import { playStartLetter, markBeat, firstIncomplete, isPlayable } from './clouds.js';
+import { isLetterOpen, startLetter } from './profile.js';
 import { store } from './store.js';
 
 export const STEPS = ['meet', 'choose', 'listen', 'payoff', 'celebrate'];
@@ -19,7 +20,7 @@ export const BEATS = ['meet', 'choose', 'listen', 'payoff'];
 let round = null;
 
 function letterSequence(startAt, size) {
-  const awake = awakeLetters().map((l) => l.letter);
+  const awake = letters().map((l) => l.letter).filter((L) => isLetterOpen(L));
   const pool = awake.length ? awake : ['P'];
   let i = pool.indexOf(startAt);
   if (i < 0) i = 0;
@@ -45,7 +46,8 @@ const MINIS = ['case', 'picture'];
 
 export function startRound({ startAt = null, step = 'meet', mode = 'loop' } = {}) {
   const frozen = freezeSettings();
-  const first = playStartLetter(startAt);
+  const asked = String(startAt || '').toUpperCase();
+  const first = asked && isLetterOpen(asked) ? asked : playStartLetter(startAt);
   const wantStep = STEPS.includes(step) || MINIS.includes(step) ? step : 'meet';
   round = {
     letters: letterSequence(first, mode === 'once' ? 1 : frozen.roundSize),
@@ -73,7 +75,7 @@ export function startRound({ startAt = null, step = 'meet', mode = 'loop' } = {}
 
 export function previewLetters() {
   const frozen = freezeSettings();
-  const first = playStartLetter();
+  const first = startLetter(playStartLetter());
   return letterSequence(first, frozen.roundSize);
 }
 

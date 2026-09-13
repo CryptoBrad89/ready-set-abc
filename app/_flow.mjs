@@ -122,6 +122,7 @@ const { store } = await import('./js/store.js');
 const { loadData, kids, kidById, activeKid, isAwake, letterByChar, picturesFor, pickPicture, awakeLetters, className } = await import('./js/data.js');
 const round = await import('./js/round.js');
 const { setTeacherUnlock, isCloudUnlocked, openCloud } = await import('./js/clouds.js');
+const { startLetter } = await import('./js/profile.js');
 const origReset = store.reset.bind(store);
 store.reset = () => { origReset(); setTeacherUnlock(5); };
 const bonusMod = await import('./js/bonus.js');
@@ -699,7 +700,7 @@ assert(!/else audio\.sayLetterName/.test(match), 'choice tap is not the letter n
 
 const home = readFileSync(join(root, 'js/screens/home.js'), 'utf8');
 assert(/pressable\(playBtn[\s\S]{0,200}audio\.unlock\(\)/.test(home), 'PLAY unlocks audio');
-assert(/audio\.speak\('Lucy!'\)/.test(home), 'Say Lucy speaks if already unlocked');
+assert(!/audio\.speak\('Lucy!'\)/.test(home), 'Say Lucy does not speak an unmapped Lucy!');
 assert(!/audio\.unlock\(\); audio\.speak\('Lucy!'\)/.test(home), 'Say Lucy does not unlock');
 assert(!/audio\.unlock\(\); audio\.sfx\('woof'\)/.test(home), 'Friendly Woof does not unlock');
 assert(/role: 'dialog'/.test(home) && /Lucy says/.test(home), 'Home Lucy tap opens a Lucy says dialog');
@@ -1253,11 +1254,15 @@ assert(!/nap|asleep|sleeping/i.test(trailSrc), 'no napping branch is left on the
 assert(/startRound\(\{ startAt: entry\.letter \}\)/.test(trailSrc), 'open tiles start that letter');
 assert(/isLetterOpen\(L, ctx\.kid\)/.test(trailSrc) && /sfx\('wrong'\)/.test(trailSrc) && /wobble\(tile\)/.test(trailSrc),
   'closed tiles refuse');
+assert(/startLetter\(playStartLetter\(\)\)/.test(trailSrc),
+  'trail next letter runs playStartLetter through startLetter');
 assert(/Letters & Phonics/.test(trailSrc), 'the path is Letters & Phonics');
 assert(!/napping/.test(appSrc), '#/letter still opens a round instead of being turned away');
 const playResolve = appSrc.slice(appSrc.indexOf("if (name === 'play')"), appSrc.indexOf("if (name === 'coming')"));
 assert(playResolve.includes('needsRoster()') && playResolve.indexOf('needsRoster()') < playResolve.indexOf('startRound'),
   'resolve/play/letter consults needsRoster before startRound');
+assert(playResolve.includes('isLetterOpen') && playResolve.indexOf('isLetterOpen') < playResolve.indexOf('startRound'),
+  '#/letter consults isLetterOpen before startRound');
 assert(/!letterByChar\(at\)/.test(appSrc) && /strayLetter: at/.test(appSrc),
   'and only a bookmark that is not a letter at all lands on the trail');
 assert(/ctx\.strayLetter/.test(trailSrc), 'where Lucy names the letter that is up instead');
@@ -1274,6 +1279,9 @@ assert(/\.trail-say \{/.test(trailCss), 'Lucy has a place to speak on the trail'
    it names the letter the cursor is really sitting on. */
 assert(!/isAwake/.test(guSrc2), 'Grown-Ups has no sleeping-letter branch left to get wrong');
 assert(/previewLetters\(\)\[0\]/.test(guSrc2), 'and the family note still follows what PLAY opens');
+const roundSrc2 = readFileSync(join(root, 'js/round.js'), 'utf8');
+assert(/const first = startLetter\(playStartLetter\(\)\)/.test(roundSrc2),
+  'previewLetters runs playStartLetter through startLetter so Grown-Ups names what PLAY opens');
 assert(/is for \$\{pinLetter\.word\}/.test(guSrc2), 'a pinned letter is shown with its word');
 assert(/open cloud/.test(guSrc2),
   'and the unpinned note names the open cloud rather than A–D');
@@ -1466,6 +1474,14 @@ assert(/bonus\.type === 'order'\) audio\.sayLetterName/.test(bonusSrc),
   'only ABC Order says letter names — it is the alphabet game');
 assert(/audio\.nudge\(\)/.test(bonusSrc), 'a wrong bonus tap nudges, never scolds');
 assert(!/round\.misses/.test(bonusSrc), 'the bonus screen cannot touch the star count');
+assert(!/audio\.speak\(`\$\{bonus\.title\}/.test(bonusSrc),
+  'leftover bonus Listen does not speak an unmapped title+ask');
+assert(!/audio\.speak\(line\)/.test(bonusSrc),
+  'leftover bonus leave does not speak an unmapped line');
+assert(/lucy\.say\(bonus\.lucy, \{ voice: false \}\)/.test(bonusSrc),
+  'leftover bonus Listen still shows Lucy’s line');
+assert(/lucy\.say\(line, \{ voice: false \}\)/.test(bonusSrc),
+  'leftover bonus leave still shows Lucy’s line');
 
 const celebrateC4 = readFileSync(join(root, 'js/screens/celebrate.js'), 'utf8');
 assert(/CELEBRATE_MS = 8000/.test(celebrateC4), 'celebrate settles itself at 8 seconds (PLAN: ≤8s)');
@@ -1476,6 +1492,23 @@ assert(/bonusSummary\(\)/.test(celebrateC4), 'celebrate reports how the bonus we
 assert(/toggleWear/.test(celebrateC4) && /drop-card--treat/.test(celebrateC4),
   'an unlocked treat can be put on Lucy from the celebrate card');
 assert(/drop-card--sticker/.test(celebrateC4), 'the sticker that landed in the pouch is shown');
+assert(/wait\(\(\) => audio\.cheer\(\), 400\)/.test(celebrateC4),
+  'celebrate still speaks the mapped cheer');
+assert(!/audio\.speak\(`\$\{stars\} stars!/.test(celebrateC4),
+  'celebrate does not speak an unmapped stars line');
+assert(!/lucy\.say\(helloLine\);/.test(home),
+  'opening Lucy does not speak an unmapped hello line');
+assert(/lucy\.say\('Lucy!', \{ voice: false \}\)/.test(home),
+  'Say Lucy still shows Lucy’s line');
+const facesSilent = readFileSync(join(root, 'js/screens/faces.js'), 'utf8');
+assert(!/audio\.speak\(`Hi \$\{kid\.name\}!`\)/.test(facesSilent),
+  'roster tap does not speak an unmapped Hi name');
+assert(!/audio\.speak\('Tap your face/.test(facesSilent),
+  'Lucy paw on the roster does not speak an unmapped wait line');
+assert(/say\(line, \{ voice: false \}\)/.test(facesSilent),
+  'Lucy paw on the roster still shows the wait line');
+assert(!/audio\.speak\(instructionText\)/.test(match),
+  'match Listen / Replay do not speak an unmapped instruction');
 
 const pouchC4 = readFileSync(join(root, 'js/screens/pouch.js'), 'utf8');
 assert(/toggleWear/.test(pouchC4) && /Lucy's closet/.test(pouchC4), 'the Star Pouch is the closet');
@@ -1484,6 +1517,10 @@ assert(/ locked/.test(pouchC4) && /treatStatus/.test(pouchC4),
 assert(!/store\.setOutfit\(/.test(pouchC4), 'the pouch goes through closet.js, not straight at the key');
 
 const lucyC4 = readFileSync(join(root, 'js/lucy.js'), 'utf8');
+assert(/say\(text, \{ voice = false, hold = 2200 \}/.test(lucyC4),
+  'lucy.say does not speak an unmapped line unless voice is opted in');
+assert(/if \(voice\) audio\.speak\(text\)/.test(lucyC4),
+  'opt-in voice still goes through audio.speak');
 assert(/dataset\.wear/.test(lucyC4) && /wornOutfitId/.test(lucyC4), 'Lucy really wears the closet treat');
 ['lucy-cap', 'lucy-collar-rainbow', 'lucy-bone', 'lucy-pack'].forEach((g) =>
   assert(lucyC4.includes(g), `Lucy has a drawn ${g}`));
@@ -2380,10 +2417,42 @@ assert(e2Tiles.every((t) => /Play this letter\./.test(t.getAttribute('aria-label
 assert(!/nap|sleep|asleep/i.test(textOf(e2Node)),
   'and nothing the rendered trail says mentions a sleeping letter');
 
+store.setRosterOverride([{
+  id: 'k24',
+  name: 'Miles',
+  emoji: '🚀',
+  color: '#5aa9f0',
+  workMode: 'assigned',
+  assignedLetters: ['S', 'O', 'J'],
+}]);
+store.setKidId('k24');
+store.setPinnedLetter(null);
+store.setCursor('A');
+assert(startLetter('P') === 'S', 'Home PLAY starts S for assigned SOJ');
+assert(round.previewLetters()[0] === 'S',
+  'Grown-Ups next PLAY letter matches Home PLAY for assigned work, not catalog-order J');
+assert(/Ss/.test(gu.familyNoteText()) && /Sun/.test(gu.familyNoteText()),
+  'family note for Miles names S');
+const sojNode = e2Trail.render({ go: () => {}, kid: activeKid(), foot: () => {} });
+const sojAria = byClass(sojNode, 'trail-tile').map((t) => t.getAttribute('aria-label') || '');
+assert(sojAria.some((a) => /^Letter O,/.test(a)) && sojAria.some((a) => /^Letter J,/.test(a)),
+  'assigned trail board includes O and J');
+assert(sojAria.length === 3, `assigned trail board is the work list (${sojAria.length})`);
+setTeacherUnlock(1);
+round.startRound({ startAt: 'O' });
+assert(round.getRound() && round.getRound().letters[0] === 'O',
+  'tapping assigned O starts O, not a Cloud 1 remap');
+round.endRound();
+setTeacherUnlock(5);
+
 /* The printed roster card grew with the trail rather than staying at A–D. */
 store.setClassroom(true);
 store.setRosterOverride([{ id: 'k01', name: 'Ava', emoji: '🦊', color: '#ff8a5c' }]);
 store.setKidId('k01');
+store.setPinnedLetter(null);
+store.setCursor('A');
+assert(round.previewLetters()[0] === 'A',
+  'SATPIN unpinned Grown-Ups still names the open-cloud letter');
 store.awardStars('Z', 3);
 const e2Card = printables.rosterCardSheets({ stars: true })[0];
 const e2Boxes = byClass(e2Card, 'rcard-letters')[0].childNodes;

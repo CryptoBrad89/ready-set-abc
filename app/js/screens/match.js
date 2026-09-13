@@ -52,9 +52,6 @@ export function render(ctx) {
   const tapTarget = step === 'picture'
     ? `${entry.letter}${entry.lower}`
     : (huntLower ? `Big ${entry.letter}` : `little ${entry.lower}`);
-  const instructionText = step === 'picture'
-    ? `What starts with the ${entry.phoneme} sound? Tap a picture, then tap ${entry.letter}${entry.lower} to match!`
-    : `Find the ${huntLower ? 'little' : 'big'} letter! Tap your answer, then tap ${tapTarget} to match!`;
 
   const root = el('div', { class: `play play--${step}` });
 
@@ -107,7 +104,7 @@ export function render(ctx) {
   });
 
   const listenBtn = el('button', { class: 'pillow listen-btn', type: 'button' }, icon('sfx'), 'Listen');
-  pressable(listenBtn, () => { audio.speak(instructionText); lucy.say(lucyPrompt(), { voice: false }); });
+  pressable(listenBtn, () => { lucy.say(lucyPrompt(), { voice: false }); });
 
   const instructionP = step === 'picture'
     ? el('p', {}, 'What starts with the ', el('strong', {}, entry.phoneme), ' sound? Tap a picture, then tap ', el('strong', {}, `${entry.letter}${entry.lower}`), ' to match!')
@@ -136,7 +133,7 @@ export function render(ctx) {
           class: 'pillow listen-btn',
           type: 'button',
           'aria-label': 'Replay Lucy',
-          onclick: () => { audio.speak(instructionText); lucy.replay(); },
+          onclick: () => { lucy.say(lucyPrompt(), { voice: false }); },
         }, icon('sfx')),
       ),
     );

@@ -20,7 +20,7 @@ import * as coming from './screens/coming.js';
 import * as match from './screens/match.js';
 import { mountLottie } from './motion.js';
 import { openGrownUps, isOpen as gateOpen, setAudioChrome } from './screens/grownups.js';
-import { hasSession, isArcadeLocked, leaveSession, needsRoster } from './profile.js';
+import { hasSession, isArcadeLocked, isLetterOpen, leaveSession, needsRoster } from './profile.js';
 import { nextTreat } from './closet.js';
 import { APP_VERSION } from './version.js';
 
@@ -106,9 +106,10 @@ function resolve(route) {
     if (needsRoster()) return { name: 'faces', params: [] };
     if (route.name === 'letter') {
       const at = route.params[0] ? String(route.params[0]).toUpperCase() : null;
-      /* Playable letters live in an unlocked cloud. A bookmark that names a
-         locked letter, or something that is not a letter, lands on the path. */
+      /* Work-mode letters are this child's work. A bookmark that names a
+         closed letter, or something that is not a letter, lands on the path. */
       if (at && !letterByChar(at)) return { name: 'trail', params: [], strayLetter: at };
+      if (at && !isLetterOpen(at)) return { name: 'trail', params: [] };
       round.startRound({ startAt: at });
     }
     return resolvePlay();

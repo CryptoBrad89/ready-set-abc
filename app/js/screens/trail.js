@@ -7,7 +7,7 @@ import { createLucy } from '../lucy.js';
 import { store } from '../store.js';
 import { audio } from '../audio.js';
 import { startRound, playStartLetter } from '../round.js';
-import { isLetterOpen } from '../profile.js';
+import { isLetterOpen, startLetter, workLetters, workModeOf } from '../profile.js';
 import { wobble } from '../motion.js';
 import {
   allClouds, openCloud, isCloudUnlocked, beatsFor, letterMastered, pinInOpenCloud,
@@ -18,7 +18,7 @@ export const chrome = { tabs: true, tab: 'trail', who: true };
 export function render(ctx) {
   const root = el('div', { class: 'clouds' });
   const open = openCloud();
-  const current = playStartLetter();
+  const current = startLetter(playStartLetter());
   const pinnedLetter = store.getPinnedLetter();
   const pinned = pinInOpenCloud();
   const clouds = allClouds();
@@ -61,7 +61,9 @@ export function render(ctx) {
   });
   root.append(path);
 
-  const letters = (open && open.letters) || [];
+  const letters = workModeOf(ctx.kid) === 'assigned'
+    ? workLetters(ctx.kid)
+    : ((open && open.letters) || []);
   const board = el('div', { class: 'trail-board cloud-letters' });
   letters.forEach((L) => {
     const entry = letterByChar(L) || { letter: L, lower: String(L).toLowerCase(), word: '', emoji: '' };
