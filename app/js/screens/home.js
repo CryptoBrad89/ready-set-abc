@@ -1,8 +1,3 @@
-/* Home hub — light pop-art comic layout (Stitch screenshot), five tabs.
-   Primary CTAs start the SATPIN four-beat. Storybooks / Arcade are later slots
-   that still land on a real phonics beat. Lucy’s tap opens a hello dialog,
-   not a practice-deck overlay. */
-
 import { el, icon, pressable, picturePlate } from '../ui.js';
 import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
