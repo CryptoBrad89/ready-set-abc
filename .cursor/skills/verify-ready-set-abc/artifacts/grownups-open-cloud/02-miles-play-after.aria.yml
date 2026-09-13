@@ -1,0 +1,16 @@
+origin: http://127.0.0.1:4174
+hash: index.html (smoke kid=k24, recache)
+kid: Miles k24 assigned S O J
+viewport: 1280x800
+pin: rsabc-shell-v39-mute-dots
+
+Home:
+- heading: Welcome back, Miles!
+- button: Play letter S. Tap to start sound.
+- button: Your letters S, O, J
+
+Grown-Ups Play:
+- heading: Letter of the day
+- note: Not pinned — next PLAY starts the first unfinished of your letters (S).
+- row: Open clouds still present (class SATPIN unlock, not this leftover)
+- Copy family note — S is for Sun

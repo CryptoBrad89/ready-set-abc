@@ -2443,6 +2443,10 @@ assert(round.previewLetters()[0] === 'S',
   'Grown-Ups next PLAY letter matches Home PLAY for assigned work, not catalog-order J');
 assert(/Ss/.test(gu.familyNoteText()) && /Sun/.test(gu.familyNoteText()),
   'family note for Miles names S');
+assert(!/open cloud/i.test(gu.letterOfDayNote()),
+  'assigned Grown-Ups Play does not say open cloud');
+assert(/your letters/i.test(gu.letterOfDayNote()),
+  'assigned Grown-Ups Play names your letters');
 const sojNode = e2Trail.render({ go: () => {}, kid: activeKid(), foot: () => {} });
 const sojAria = byClass(sojNode, 'trail-tile').map((t) => t.getAttribute('aria-label') || '');
 assert(sojAria.some((a) => /^Letter O,/.test(a)) && sojAria.some((a) => /^Letter J,/.test(a)),
@@ -2477,6 +2481,8 @@ store.setPinnedLetter(null);
 store.setCursor('A');
 assert(round.previewLetters()[0] === 'A',
   'SATPIN unpinned Grown-Ups still names the open-cloud letter');
+assert(/open cloud/i.test(gu.letterOfDayNote()),
+  'SATPIN Grown-Ups Play still names the open cloud');
 store.awardStars('Z', 3);
 const e2Card = printables.rosterCardSheets({ stars: true })[0];
 const e2Boxes = byClass(e2Card, 'rcard-letters')[0].childNodes;

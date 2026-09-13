@@ -9,6 +9,7 @@ import { store, applyMode, applySkin } from '../store.js';
 import { kids, shippedKids, letters, letterByChar, contentVersion, className, shippedClassName } from '../data.js';
 import { previewLetters } from '../round.js';
 import { teacherUnlock, setTeacherUnlock } from '../clouds.js';
+import { workModeOf } from '../profile.js';
 import { audio } from '../audio.js';
 import { APP_VERSION, APP_LABEL } from '../version.js';
 import { buildCsv, applyCsv, detectFormat, parseCsv } from '../csv.js';
@@ -219,10 +220,26 @@ function pictureCount() {
 }
 
 /* --- panels -------------------------------------------------------------- */
+export function letterOfDayNote() {
+  const pinned = store.getPinnedLetter();
+  const pinLetter = pinned ? letterByChar(pinned) : null;
+  const next = previewLetters()[0] || 'P';
+  const word = pinLetter ? `${pinned} is for ${pinLetter.word}` : pinned;
+  if (workModeOf() === 'assigned') {
+    if (pinned) {
+      return `Pinned: ${pinned} is highlighted in your letters (${word}). If that letter is locked, PLAY starts your letters instead. Tap it again to unpin.`;
+    }
+    return `Not pinned — next PLAY starts the first unfinished of your letters (${next}).`;
+  }
+  if (pinned) {
+    return `Pinned: ${pinned} is highlighted inside the open cloud (${word}). If that letter is locked, PLAY starts the open cloud instead. Tap it again to unpin.`;
+  }
+  return `Not pinned — next PLAY starts the first unfinished letter in the open cloud (${next}).`;
+}
+
 function playPanel() {
   const s = store.getSettings();
   const pinned = store.getPinnedLetter();
-  const pinLetter = pinned ? letterByChar(pinned) : null;
 
   const picker = el('div', { class: 'letter-picker' });
   letters().forEach((entry) => {
@@ -260,9 +277,7 @@ function playPanel() {
     ),
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Letter of the day'),
-      el('p', { class: 'note' }, pinned
-        ? `Pinned: ${pinned} is highlighted inside the open cloud (${pinLetter ? `${pinned} is for ${pinLetter.word}` : pinned}). If that letter is locked, PLAY starts the open cloud instead. Tap it again to unpin.`
-        : `Not pinned — next PLAY starts the first unfinished letter in the open cloud (${previewLetters()[0] || 'P'}).`),
+      el('p', { class: 'note' }, letterOfDayNote()),
       picker,
       familyNoteCard(),
     ),

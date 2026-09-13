@@ -1,0 +1,20 @@
+origin: http://127.0.0.1:4174
+hash: index.html (smoke kid=k24)
+kid: Miles k24 assigned S O J
+viewport: 1280x800
+pin: rsabc-shell-v39-mute-dots
+
+Home:
+- heading: Welcome back, Miles!
+- button: Play letter S. Tap to start sound.
+- button: Your letters S, O, J
+- footer: Your letters · 0/12
+- Lucy: Hi Miles! Let's find words that start with S!
+
+Grown-Ups Play (PIN 1234):
+- heading: Letter of the day
+- note: Not pinned — next PLAY starts the first unfinished letter in the open cloud (S).
+- row: Open clouds. Highest cloud a class may play. 1 pressed.
+- textbox: Ready Set ABC — Ss · Sunday, September 13
+- Written for Ss — the letter the next PLAY opens.
+- Copy family note — S is for Sun
