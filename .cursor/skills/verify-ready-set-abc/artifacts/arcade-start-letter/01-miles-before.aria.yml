@@ -1,0 +1,17 @@
+origin: http://127.0.0.1:4174
+hash: index.html#/arcade (smoke kid=k24, v=arcade1)
+kid: Miles k24 assigned S O J
+viewport: 1280x800
+pin: rsabc-shell-v39-mute-dots
+
+Home (before Arcade tap):
+- heading: Welcome back, Miles!
+- button: Play letter S. Tap to start sound.
+- button: Your letters S, O, J
+
+Arcade:
+- heading: Arcade
+- button: Start match for A
+- Lucy: Tap the As with me!
+- chip: Letter tap now · more games later
+- not locked

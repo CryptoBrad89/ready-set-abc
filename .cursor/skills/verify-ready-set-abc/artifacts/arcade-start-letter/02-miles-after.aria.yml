@@ -1,0 +1,11 @@
+origin: http://127.0.0.1:4174
+hash: index.html#/arcade (after Get update, smoke kid=k24 v=arcade2)
+kid: Miles k24 assigned S O J
+viewport: 1280x800
+pin: rsabc-shell-v39-mute-dots
+
+Arcade:
+- heading: Arcade
+- button: Start match for S
+- Lucy: Tap the Ss with me!
+- not locked

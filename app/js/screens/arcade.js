@@ -7,14 +7,14 @@ import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
 import { playStartLetter } from '../clouds.js';
 import { startRound } from '../round.js';
-import { isArcadeLocked } from '../profile.js';
+import { isArcadeLocked, startLetter } from '../profile.js';
 import { wobble } from '../motion.js';
 
 export const chrome = { tabs: true, tab: 'arcade', who: true };
 
 export function render(ctx) {
   const locked = isArcadeLocked(ctx.kid);
-  const L = playStartLetter();
+  const L = startLetter(playStartLetter());
   const entry = letterByChar(L);
   const lucy = createLucy({
     state: 'idle',

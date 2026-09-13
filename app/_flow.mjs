@@ -1256,6 +1256,9 @@ assert(/isLetterOpen\(L, ctx\.kid\)/.test(trailSrc) && /sfx\('wrong'\)/.test(tra
   'closed tiles refuse');
 assert(/startLetter\(playStartLetter\(\)\)/.test(trailSrc),
   'trail next letter runs playStartLetter through startLetter');
+const arcadeSrc = readFileSync(join(root, 'js/screens/arcade.js'), 'utf8');
+assert(/startLetter\(playStartLetter\(\)\)/.test(arcadeSrc),
+  'arcade start letter runs playStartLetter through startLetter');
 assert(/Letters & Phonics/.test(trailSrc), 'the path is Letters & Phonics');
 assert(!/napping/.test(appSrc), '#/letter still opens a round instead of being turned away');
 const playResolve = appSrc.slice(appSrc.indexOf("if (name === 'play')"), appSrc.indexOf("if (name === 'coming')"));
@@ -2405,6 +2408,7 @@ store.reset();
 store.setClassroom(false);
 const e2Trail = await import('./js/screens/trail.js');
 const e2Home = await import('./js/screens/home.js');
+const e2Arcade = await import('./js/screens/arcade.js');
 const e2Node = e2Trail.render({ go: () => {}, kid: null, foot: () => {} });
 const e2Tiles = byClass(e2Node, 'trail-tile');
 assert(e2Tiles.length === 6, `the open cloud draws its letters (${e2Tiles.length})`);
@@ -2475,6 +2479,14 @@ assert(/Your letters/.test(textOf(sojLevel)),
   'assigned Home level stat names your letters');
 assert(/S · O · J/.test(textOf(sojLevel)),
   'assigned Home still lists S O J');
+const sojArcade = e2Arcade.render({ go: () => {}, kid: activeKid(), foot: () => {} });
+const sojPlay = byClass(sojArcade, 'play-btn')[0];
+assert(sojPlay && /Start match for S/.test(sojPlay.getAttribute('aria-label')),
+  'assigned Arcade starts S, not the SATPIN cursor');
+assert(!/Start match for A/.test(sojPlay.getAttribute('aria-label') || ''),
+  'assigned Arcade does not start SATPIN A');
+assert(/Tap the Ss/.test(textOf(sojArcade)),
+  'assigned Arcade Lucy names S');
 setTeacherUnlock(1);
 round.startRound({ startAt: 'O' });
 assert(round.getRound() && round.getRound().letters[0] === 'O',
@@ -2492,6 +2504,10 @@ assert(round.previewLetters()[0] === 'A',
   'SATPIN unpinned Grown-Ups still names the open-cloud letter');
 assert(/open cloud/i.test(gu.letterOfDayNote()),
   'SATPIN Grown-Ups Play still names the open cloud');
+const satArcade = e2Arcade.render({ go: () => {}, kid: activeKid(), foot: () => {} });
+const satPlay = byClass(satArcade, 'play-btn')[0];
+assert(satPlay && /Start match for A/.test(satPlay.getAttribute('aria-label')),
+  'SATPIN Arcade still names the open-cloud letter');
 store.awardStars('Z', 3);
 const e2Card = printables.rosterCardSheets({ stars: true })[0];
 const e2Boxes = byClass(e2Card, 'rcard-letters')[0].childNodes;
