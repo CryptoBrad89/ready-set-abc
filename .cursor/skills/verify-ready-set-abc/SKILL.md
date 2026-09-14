@@ -86,9 +86,10 @@ Stable handles:
 | Letters & Phonics tile | SATPIN `Letter P, Pig. … Play this letter.` Assigned Miles tiles are S O J only. |
 | Lucy | image `Lucy the golden retriever` |
 | Lucy's Picnic Day | Home card `Lucy's Picnic Day`; Storybooks tab; cover heading `Lucy's Picnic Day`; `Next page` / `Previous page`; `body[data-screen]` is `stories` |
+| Rhymes & Songs | Home card `Rhymes & Songs`; heading `Rhymes & Songs`; `Play song` / `Play song again`; `body[data-screen]` is `rhymes` |
 | Lucy hello | button `Talk with Lucy` (Lucy's paw), then dialog `Lucy says`. Close is `Close Lucy` or Escape. Sound chip `Hear the sound of letter P` does not unlock audio. Peek plates `Pan` / `Panda`. Play in the dialog is `Play letter P with Lucy. Tap to start sound.` |
 
-`document.body.dataset.screen` is `home` · `faces` · `trail` · `pouch` · `stories` · `case` · `picture` · `bonus` · `celebrate`. Use it to know which step you are on.
+`document.body.dataset.screen` is `home` · `faces` · `trail` · `pouch` · `stories` · `rhymes` · `case` · `picture` · `bonus` · `celebrate`. Use it to know which step you are on.
 
 Two-tap match (case and picture). (1) tap a choice until `aria-pressed=true`. (2) tap the prompt. A wrong submit wobbles coral and clears the selection. Try another choice. Do not treat wobble as a hang. Nothing times out. Nothing punishes.
 
