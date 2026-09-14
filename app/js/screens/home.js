@@ -5,7 +5,7 @@ import { store } from '../store.js';
 import { letterByChar, picturesFor, activeKid } from '../data.js';
 import { openCloud, beatsFor, pinInOpenCloud } from '../clouds.js';
 import { nextTreat, starsToNext, TREATS } from '../closet.js';
-import { previewLetters, startRound } from '../round.js';
+import { startRound } from '../round.js';
 import { isArcadeLocked, startLetter, workLetters, workModeOf } from '../profile.js';
 import { wobble } from '../motion.js';
 
@@ -64,7 +64,6 @@ export function render(ctx) {
   const assigned = workModeOf(ctx.kid) === 'assigned';
   const pickEntry = letterByChar(pick) || { letter: pick, word: '', phoneme: '' };
   const cloud = openCloud();
-  const preview = previewLetters();
   const pin = pinInOpenCloud();
   const stars = store.totalStars();
   const today = store.starsToday();
