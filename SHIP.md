@@ -4,9 +4,9 @@ Bradley — this is the whole job. It is a folder of files. There is nothing to
 install, no database, no build step, no account. Copy the folder up, open it
 once on Wi-Fi, done.
 
-Shell pin for this drop: **`rsabc-shell-v39-mute-dots`**
+Shell pin for this drop: **`rsabc-shell-v40-nudge-home`**
 
-**What is new in this one:** Grown-Ups Sound mutes update the header Music / SFX / Voice dots. Music and the thin UI hits stay the ElevenLabs beds from the last pin. The xylophone celebrate sting still plays. Lucy still speaks the ten mapped cheer and nudge clips.
+**What is new in this one:** Choose and listen miss lines come from `audio.nudge()`. Home PLAY no longer binds unused `previewLetters()`. Tablets already on v39 need Grown-Ups → Device → Get update, then Reload.
 
 ---
 
@@ -46,7 +46,7 @@ a room with no signal.
 2. Hold or tap into **Grown-Ups** — the PIN is **`1234`**.
 3. Tap the **Device** tab.
 4. Tap **Set up this device**. Watch the bar fill.
-5. Wait for it to say **Pinned `rsabc-shell-v39-mute-dots`**.
+5. Wait for it to say **Pinned `rsabc-shell-v40-nudge-home`**.
 
 That tablet now has the whole app — screens, pictures, and the letter fonts —
 stored on it. You can turn the Wi-Fi off and it still opens and still looks

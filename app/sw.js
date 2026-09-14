@@ -5,7 +5,7 @@
    installs, then waits. Only Grown-Ups → Device → Get update sends
    SKIP_WAITING, so the pin never swaps under a child mid-round. */
 
-const VERSION = 'rsabc-shell-v39-mute-dots';
+const VERSION = 'rsabc-shell-v40-nudge-home';
 const SHELL = [
   './',
   'index.html',
