@@ -699,6 +699,8 @@ assert(/say\(`Listen:[\s\S]*\{ voice: false \}/.test(match), 'hint caption does 
 assert(!/else audio\.sayLetterName/.test(match), 'choice tap is not the letter name');
 
 const home = readFileSync(join(root, 'js/screens/home.js'), 'utf8');
+assert(/const pick = startLetter\('P'\)/.test(home), 'Home PLAY pick is startLetter P');
+assert(!/\bpreviewLetters\b/.test(home), 'Home does not bind unused previewLetters');
 assert(/pressable\(playBtn[\s\S]{0,200}audio\.unlock\(\)/.test(home), 'PLAY unlocks audio');
 assert(!/audio\.speak\('Lucy!'\)/.test(home), 'Say Lucy does not speak an unmapped Lucy!');
 assert(!/audio\.unlock\(\); audio\.speak\('Lucy!'\)/.test(home), 'Say Lucy does not unlock');
