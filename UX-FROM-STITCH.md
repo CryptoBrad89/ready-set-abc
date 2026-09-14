@@ -1,5 +1,7 @@
 # Ready Set ABC — UI/UX from Stitch (source of truth)
 
+**Follow [PRODUCT.md](PRODUCT.md) for login, SATPIN, and Home.** This file still describes the comic look.
+
 **Status:** Bradley 2026-09-07 — Stitch options/details are the look & feel target (not moodboard-only).  
 **Sources:** `stitch/.../ready_set_abc/DESIGN.md`, `design.md` (GAME-FLOW), screens `ready_set_abc_home_screen`, `step_a_*`, `step_b_*`, `step_c_*`, cleanshot celebration.
 

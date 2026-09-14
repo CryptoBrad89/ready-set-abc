@@ -1,16 +1,19 @@
 /* Lucy — the golden retriever who talks and moves.
-   States: idle · talking · teaching (spectacles) · celebrating (bows).
-   She is drawn, never photographed, and she is never silent-and-still: every
-   say() moves her mouth, pops the bubble and (when Voice is on) speaks.
+   States: idle · talking · teaching · celebrating.
+   Kid-facing Lucy is the Grok Imagine cartoon plates in art/lucy/.
+   The SVG is only a fallback if a plate 404s. Stitch's stick-dog is never used.
 
-   She also wears whatever the child put on her in the Star Pouch closet
-   (js/closet.js → rsabc.outfit): bows, specs, a bone, a cap, a rainbow
-   collar or the school pack. The pose still rules — teaching Lucy keeps her
-   spectacles — the outfit is drawn on top. */
+   Closet outfits pick one pose plate (bone wins over pack over cap, and so
+   on) then overlay party-bow PNG layers. Clip is an overlay sprite, not a
+   treat. Stitch's stick-dog is never used. */
 
 import { el } from './ui.js';
 import { audio } from './audio.js';
 import { wornOutfitId } from './closet.js';
+import { mountLottie } from './motion.js';
+
+/* Named like clipId: art/lucy/idle-${id}.mp4. */
+const IDLE_LOOPS = ['tail', 'wave', 'blink'];
 
 const SVG = `
 <svg class="lucy" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lucy the golden retriever">
@@ -114,16 +117,128 @@ const SVG = `
   </g>
 </svg>`;
 
+const POSE_BASE = [
+  { id: 'bone', src: 'art/lucy/lucy-bone.jpg' },
+  { id: 'pack', src: 'art/lucy/lucy-pack.jpg' },
+  { id: 'cap', src: 'art/lucy/lucy-cap.jpg' },
+  { id: 'rainbow', src: 'art/lucy/lucy-rainbow.jpg' },
+  { id: 'specs', src: 'art/lucy/lucy-specs.jpg' },
+];
+
+function wearIds(outfit) {
+  if (outfit === undefined) return wornOutfitId().split(/[+,\s]+/).filter(Boolean);
+  if (Array.isArray(outfit)) return outfit.map(String).filter(Boolean);
+  return String(outfit || '').split(/[+,\s]+/).filter(Boolean);
+}
+
+export function lucyLook({ outfit, cutout = false, pose = 'idle' } = {}) {
+  const ids = wearIds(outfit);
+  const set = new Set(ids);
+  let src;
+  let baseId = '';
+  if (pose === 'celebrating') {
+    src = 'art/lucy/lucy-celebrate.jpg';
+    baseId = 'celebrate';
+  } else {
+    const hit = POSE_BASE.find((p) => set.has(p.id));
+    if (hit) {
+      src = hit.src;
+      baseId = hit.id;
+    } else if (set.has('bows')) {
+      src = cutout ? 'art/lucy/lucy-bows-cutout.jpg' : 'art/lucy/lucy-bows.jpg';
+      baseId = 'bows';
+    } else {
+      src = cutout ? 'art/lucy/lucy-cutout.jpg' : 'art/lucy/lucy-default.jpg';
+    }
+  }
+  const layers = [];
+  if (set.has('bows') && baseId !== 'bows') {
+    layers.push({ id: 'bows', src: 'art/lucy/layer-headband.png' });
+  }
+  return { src, layers, wear: ids.join(' ') };
+}
+
+export function lucySrc(opts = {}) {
+  return lucyLook(opts).src;
+}
+
 /* A Lucy box = speech bubble + mascot stage + optional paw nudge button. */
-export function createLucy({ state = 'idle', line = '', paw = null, variant = 'circle', outfit } = {}) {
+function paintLook(well, look, pose) {
+  well.dataset.wear = look.wear;
+  well.dataset.pose = pose;
+  const photo = well.querySelector('img.lucy-photo');
+  if (photo) photo.src = look.src;
+  well.querySelectorAll('.lucy-layer').forEach((node) => node.remove());
+  look.layers.forEach((layer) => {
+    well.append(el('img', {
+      class: `lucy-layer lucy-layer--${layer.id}`,
+      src: layer.src,
+      alt: '',
+    }));
+  });
+  const drawn = well.querySelector('svg.lucy');
+  if (drawn) {
+    drawn.dataset.wear = look.wear;
+    drawn.dataset.pose = pose;
+  }
+}
+
+export function createLucy({ state = 'idle', line = '', paw = null, variant = 'circle', outfit, cutout = false } = {}) {
   const bubble = el('div', { class: 'bubble lucy-prompt' }, el('p', { dataset: { line: '1' } }, line));
-  const well = el('div', { class: 'lucy-well', html: SVG });
-  const stage = el('div', { class: `lucy-stage lucy-stage--${variant === 'card' ? 'card' : 'circle'}` }, well);
-  const svg = stage.querySelector('.lucy');
-  svg.dataset.pose = state;
+  let resting = state;
+  let timer = 0;
+  const first = lucyLook({ outfit, cutout, pose: state });
+  const img = el('img', {
+    class: 'lucy-photo',
+    alt: 'Lucy the golden retriever',
+    src: first.src,
+  });
+  const well = el('div', { class: 'lucy-well lucy-well--photo' }, img);
+  paintLook(well, first, state);
+  img.addEventListener('error', () => {
+    if (well.querySelector('svg.lucy')) return;
+    well.innerHTML = SVG;
+    const drawn = well.querySelector('.lucy');
+    if (drawn) {
+      drawn.dataset.pose = resting;
+      drawn.dataset.talking = well.dataset.talking || 'false';
+      drawn.dataset.wear = well.dataset.wear || '';
+    }
+  });
+  const slot = el('div', { class: 'lucy-lottie-slot', hidden: true, 'aria-hidden': 'true' });
+  const sparkle = el('div', { class: 'lucy-sparkle', 'aria-hidden': 'true' });
+  const idleName = IDLE_LOOPS[Math.floor(Math.random() * IDLE_LOOPS.length)];
+  const reduceMotion = typeof matchMedia === 'function'
+    && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let loop = null;
+  if (!reduceMotion && state !== 'celebrating') {
+    loop = el('video', {
+      class: 'lucy-idle-loop',
+      muted: true,
+      loop: true,
+      playsinline: '',
+      'aria-hidden': 'true',
+    });
+    loop.setAttribute('playsinline', '');
+    loop.src = `art/lucy/idle-${idleName}.mp4`;
+    loop.addEventListener('loadeddata', () => {
+      if (resting === 'celebrating') return;
+      well.classList.add('has-loop');
+      loop.play().catch(() => {});
+    });
+    loop.addEventListener('error', () => {
+      well.classList.remove('has-loop');
+      loop.remove();
+      loop = null;
+    });
+    well.append(loop);
+  }
+  const stage = el('div', { class: `lucy-stage lucy-stage--${variant === 'card' ? 'card' : 'circle'}` }, well, sparkle, slot);
+  stage.dataset.idle = idleName;
+  mountLottie(sparkle, 'sparkle', { loop: true });
+  /* Callers still read .svg.dataset. The well holds pose/talk/wear. */
+  const svg = well;
   svg.dataset.talking = 'false';
-  /* Default = whatever the closet says. Pass outfit: '' for plain Lucy. */
-  svg.dataset.wear = outfit === undefined ? wornOutfitId() : String(outfit || '');
 
   if (paw) {
     const btn = el('button', { class: 'paw-nudge', type: 'button', 'aria-label': 'Lucy paws' });
@@ -132,23 +247,27 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
     stage.append(btn);
   }
 
-  let resting = state;
-  let timer = 0;
-
   const api = {
     bubble,
     stage,
     svg,
     setState(next) {
       resting = next;
-      svg.dataset.pose = next;
+      paintLook(well, lucyLook({ outfit, cutout, pose: next }), next);
+      if (loop && loop.isConnected) {
+        const live = next !== 'celebrating';
+        well.classList.toggle('has-loop', live);
+        if (live) loop.play().catch(() => {});
+        else loop.pause();
+      }
     },
-    /* Put a closet treat on (or '' to take it off) without a re-render. */
-    setOutfit(id) { svg.dataset.wear = String(id || ''); },
+    setOutfit() {
+      paintLook(well, lucyLook({ cutout, pose: resting }), resting);
+    },
     getOutfit() { return svg.dataset.wear || ''; },
-    /* Say a line: bubble + mouth + voice, all together. Never text alone.
+    /* Say a line: bubble + mouth. Voice is opt-in. Mapped clips live on audio.*.
        Talking is an overlay — glasses/bows stay with the resting pose. */
-    say(text, { voice = true, hold = 2200 } = {}) {
+    say(text, { voice = false, hold = 2200 } = {}) {
       const lineEl = bubble.querySelector('[data-line]') || bubble.querySelector('p');
       if (lineEl) lineEl.textContent = text;
       bubble.classList.remove('pulse');
@@ -156,8 +275,13 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
       bubble.classList.add('pulse');
       svg.dataset.talking = 'true';
       svg.dataset.pose = resting;
+      const photo = well.querySelector('img.lucy-photo');
+      if (photo) photo.classList.add('is-talking');
       clearTimeout(timer);
-      timer = setTimeout(() => { svg.dataset.talking = 'false'; }, hold);
+      timer = setTimeout(() => {
+        svg.dataset.talking = 'false';
+        if (photo) photo.classList.remove('is-talking');
+      }, hold);
       if (voice) audio.speak(text);
       api.lastLine = text;
     },

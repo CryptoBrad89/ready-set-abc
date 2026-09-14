@@ -10,12 +10,18 @@ import { audio } from './audio.js';
 import * as round from './round.js';
 import * as home from './screens/home.js';
 import * as faces from './screens/faces.js';
-import * as match from './screens/match.js';
-import * as bonus from './screens/bonus.js';
+import * as stage from './screens/stage.js';
 import * as celebrate from './screens/celebrate.js';
 import * as trail from './screens/trail.js';
 import * as pouch from './screens/pouch.js';
-import { openGrownUps, isOpen as gateOpen } from './screens/grownups.js';
+import * as stories from './screens/stories.js';
+import * as arcade from './screens/arcade.js';
+import * as coming from './screens/coming.js';
+import * as match from './screens/match.js';
+import { mountLottie } from './motion.js';
+import { openGrownUps, isOpen as gateOpen, setAudioChrome } from './screens/grownups.js';
+import { hasSession, isArcadeLocked, isLetterOpen, leaveSession, needsRoster } from './profile.js';
+import { nextTreat } from './closet.js';
 import { APP_VERSION } from './version.js';
 
 const HOLD_MS = 3000;   // long-press the logo is the other way in
@@ -24,14 +30,17 @@ const screenEl = document.getElementById('screen');
 const tabsEl = document.getElementById('tabs');
 const clusterEl = document.getElementById('audio-cluster');
 const whoSlot = document.getElementById('who-slot');
+const starChip = document.getElementById('star-chip');
 const footLeft = document.getElementById('foot-left');
 const brandBtn = document.getElementById('brand');
 const gateBtn = document.getElementById('gate-btn');
 
 const TABS = [
-  ['home', 'Play Cards', 'cards'],
-  ['trail', 'ABC Trail', 'trail'],
-  ['pouch', 'Star Pouch', 'pouch'],
+  ['home', 'Home', 'home'],
+  ['trail', 'Letters & Phonics', 'trail'],
+  ['pouch', "Lucy's Closet", 'pouch'],
+  ['stories', 'Storybooks', 'book'],
+  ['arcade', 'Arcade', 'arcade'],
 ];
 
 /* Phase-1 wireframe hashes still show up on cart bookmarks and old README
@@ -41,6 +50,10 @@ const ALIASES = {
   pick: 'faces',
   map: 'trail',
   letter: 'play',
+  stories: 'stories',
+  storybooks: 'stories',
+  arcade: 'arcade',
+  closet: 'pouch',
   end: 'play',
   teacher: 'grownups',
   'grown-ups': 'grownups',
@@ -50,7 +63,7 @@ const ALIASES = {
 const CHANNELS = [
   ['music', 'Music', 'music'],
   ['sfx', 'Sound effects', 'sfx'],
-  ['voice', 'Lucy voice', 'voice'],
+  ['voice', 'Lucy voice on or off', 'voice'],
 ];
 
 export function go(path) {
@@ -69,8 +82,7 @@ function parseRoute() {
    the class back to the face grid, not into a round nobody owns. */
 function resolvePlay() {
   const r = round.getRound();
-  if (!r) return { name: 'home', params: [] };
-  if (store.isClassroom() && !activeKid()) return { name: 'faces', params: [] };
+  if (!r) return needsRoster() ? { name: 'faces', params: [] } : { name: 'home', params: [] };
   return { name: 'play', params: [], step: r.step };
 }
 
@@ -83,40 +95,50 @@ function resolve(route) {
     /* #/grownups/device lands on that tab once the gate is answered. */
     const tab = route.params[0] ? String(route.params[0]).toLowerCase() : null;
     queueMicrotask(() => { if (!gateOpen()) openGrownUps({ onChange: render, tab }); });
-    return { name: 'home', params: [] };
+    return needsRoster() ? { name: 'faces', params: [] } : { name: 'home', params: [] };
   }
 
   if (name === 'faces') {
-    return store.isClassroom() ? { name: 'faces', params: [] } : { name: 'home', params: [] };
+    return { name: 'faces', params: [] };
   }
 
   if (name === 'play') {
+    if (needsRoster()) return { name: 'faces', params: [] };
     if (route.name === 'letter') {
       const at = route.params[0] ? String(route.params[0]).toUpperCase() : null;
-      /* Every letter is awake, so #/letter/E opens E. A bookmark that names
-         something the content file does not have (a typo, a stale URL) would
-         otherwise start letter A with no explanation — land on the trail and
-         let Lucy say which letter is up instead. */
+      /* Work-mode letters are this child's work. A bookmark that names a
+         closed letter, or something that is not a letter, lands on the path. */
       if (at && !letterByChar(at)) return { name: 'trail', params: [], strayLetter: at };
+      if (at && !isLetterOpen(at)) return { name: 'trail', params: [] };
       round.startRound({ startAt: at });
     }
     return resolvePlay();
   }
 
-  return ['home', 'trail', 'pouch'].includes(name) ? { name, params: route.params } : { name: 'home', params: [] };
+  if (name === 'coming') {
+    if (needsRoster()) return { name: 'faces', params: [] };
+    return { name: 'coming', params: route.params };
+  }
+
+  if (needsRoster()) return { name: 'faces', params: [] };
+
+  return ['home', 'trail', 'pouch', 'stories', 'arcade'].includes(name)
+    ? { name, params: route.params }
+    : { name: 'home', params: [] };
 }
 
-/* 'play' resolves to the step the letter is sitting on: case / picture are
-   the same two-tap board, then the rotating bonus, then the stars. */
 function moduleFor(route) {
   if (route.name === 'play') {
     if (route.step === 'celebrate') return celebrate;
-    if (route.step === 'bonus') return bonus;
-    return match;
+    if (route.step === 'case' || route.step === 'picture') return match;
+    return stage;
   }
   if (route.name === 'faces') return faces;
   if (route.name === 'trail') return trail;
   if (route.name === 'pouch') return pouch;
+  if (route.name === 'stories') return stories;
+  if (route.name === 'arcade') return arcade;
+  if (route.name === 'coming') return coming;
   return home;
 }
 
@@ -147,6 +169,7 @@ function render() {
   document.body.dataset.screen = route.name === 'play' ? route.step : route.name;
   paintTabs(screen.chrome || {});
   paintWho(screen.chrome || {}, kid);
+  paintStars();
   paintFoot();
 }
 
@@ -156,11 +179,23 @@ function paintTabs(chrome) {
   tabsEl.hidden = chrome.tabs === false;
   if (chrome.tabs === false) return;
   TABS.forEach(([name, label, ico]) => {
+    const locked = name === 'arcade' && isArcadeLocked();
     const tab = el('button', {
-      class: 'tab',
+      class: locked ? 'tab is-locked' : 'tab',
       type: 'button',
-      onclick: () => { audio.sfx('tap'); go(name); },
-    }, icon(ico), el('span', { class: 'tab-label' }, label));
+      'aria-label': locked ? 'Arcade, locked' : label,
+      onclick: () => {
+        if (locked) {
+          audio.sfx('wrong');
+          tab.classList.remove('wobble');
+          void tab.offsetWidth;
+          tab.classList.add('wobble');
+          return;
+        }
+        audio.sfx('tap');
+        go(name);
+      },
+    }, icon(ico), el('span', { class: 'tab-label' }, label), locked ? icon('lock') : null);
     if ((chrome.tab || 'home') === name) tab.setAttribute('aria-current', 'page');
     tabsEl.append(tab);
   });
@@ -189,19 +224,43 @@ function paintCluster() {
   });
 }
 
+function paintStars() {
+  if (!starChip) return;
+  clear(starChip);
+  const n = store.totalStars();
+  starChip.setAttribute('aria-label', `${n} Stars`);
+  starChip.append(icon('star'), `${n} Stars`);
+}
+
 function paintWho(chrome, kid) {
   clear(whoSlot);
-  if (!chrome.who || !store.isClassroom() || !kid) return;
-  const chip = el('button', {
-    class: 'who-chip',
+  if (chrome.who === false) return;
+  const name = kid ? kid.name : 'friend';
+  const stars = store.totalStars();
+  const next = nextTreat(stars);
+  const pct = next ? Math.round((Math.min(stars, next.need) / next.need) * 100) : 100;
+  const canSwitch = !!chrome.who && hasSession();
+  const stamp = el(canSwitch ? 'button' : 'div', canSwitch ? {
+    class: 'who-chip who-chip--stamp',
     type: 'button',
-    'aria-label': `${kid.name} is playing. Tap to pick a different friend.`,
-    onclick: () => { store.clearKid(); go('faces'); },
+    'aria-label': `${name} is playing. Tap to pick a different friend.`,
+    onclick: () => { leaveSession(); go('faces'); },
+  } : {
+    class: 'who-chip who-chip--stamp',
+    'aria-label': `${name} is playing`,
   },
-    el('span', { class: 'who-face', style: { background: kid.color } }, kid.emoji),
-    el('span', {}, kid.name),
+    el('span', { class: 'who-face', style: { background: (kid && kid.color) || '#fde68a' } }, (kid && kid.emoji) || '🐾'),
+    el('span', { class: 'who-meta' },
+      el('span', { class: 'who-line' },
+        el('span', { class: 'who-name' }, name),
+        el('span', { class: 'who-grade' }, 'Pre-K'),
+      ),
+      el('span', { class: 'who-rail', 'aria-hidden': 'true' },
+        el('span', { class: 'who-fill', style: { width: `${pct}%` } }),
+      ),
+    ),
   );
-  whoSlot.append(chip);
+  whoSlot.append(stamp);
 }
 
 /* --- gate: the slate button, a 3s logo press, or Shift+T --------------- */
@@ -229,12 +288,29 @@ function wireGate() {
 
 async function boot() {
   applyPresentation();
+  const bootEl = document.getElementById('boot-loader');
+  const bootLottie = document.getElementById('boot-lottie');
+  if (bootLottie) mountLottie(bootLottie, 'loader', { loop: true });
   document.getElementById('brand-paw').append(icon('paw'));
   document.getElementById('gate-lock-icon').append(icon('lock'));
   document.getElementById('rotate-icon').append(icon('rotate', { size: 96 }));
+  const rotateEl = document.getElementById('rotate');
+  const rotateQuery = window.matchMedia('(orientation: portrait) and (max-width: 900px)');
+  const syncRotate = () => {
+    if (rotateQuery.matches) {
+      rotateEl.removeAttribute('aria-hidden');
+      rotateEl.inert = false;
+    } else {
+      rotateEl.setAttribute('aria-hidden', 'true');
+      rotateEl.inert = true;
+    }
+  };
+  syncRotate();
+  rotateQuery.addEventListener('change', syncRotate);
   const copy = document.getElementById('foot-copy');
-  if (copy) copy.textContent = `© Ready Set ABC · Lucy Play Learning Lab · ${APP_VERSION}`;
+  if (copy) copy.textContent = `READY SET ABC · Pre-K Phonics with Lucy · ${APP_VERSION}`;
   paintCluster();
+  setAudioChrome(paintCluster);
   wireGate();
   window.addEventListener('hashchange', render);
 
@@ -249,10 +325,12 @@ async function boot() {
         el('p', {}, 'Ask a grown-up to reload this page.'),
       ),
     ));
+    if (bootEl) bootEl.hidden = true;
     return;
   }
 
   render();
+  if (bootEl) bootEl.hidden = true;
 
   /* updateViaCache: 'none' — the HTTP cache must never hand back a stale
      sw.js, or Get update quietly re-pins the version the cart already has. */

@@ -4,8 +4,9 @@
 const NS = 'rsabc.';
 
 export const KEYS = {
-  kid: 'kid',                   // currently selected kid id (classroom mode)
-  classroom: 'classroom',       // face pick before play, on/off
+  kid: 'kid',                   // currently selected kid id
+  session: 'session',           // child | adult | null — roster is login
+  classroom: 'classroom',       // kept for CSV; roster always shows first
   roster: 'roster',             // teacher edits layered over data/roster.json
   className: 'className',       // teacher's name for this class, this device
   settings: 'settings',         // round size, choice count, case mode, words
@@ -17,23 +18,29 @@ export const KEYS = {
   nextAbcIndex: 'nextAbcIndex', // GAME-FLOW ABC cursor, 0–25 (A=0)
   stars: 'stars',               // { kidId|_device: { A: 3, B: 2 } }  best result
   stickers: 'stickers',         // { kidId|_device: [ {letter,id,word,emoji} ] }
-  outfit: 'outfit',             // treat id Lucy is wearing (js/closet.js), '' = plain
+  outfit: 'outfit',             // treat ids Lucy is wearing (js/closet.js), [] = plain
   progress: 'progress',         // { kidId: { lastPlayed, letters: {...} } }
   cache: 'cache',               // { at, version, files }
   notes: 'notes',               // { kidId: string } roster notes, this device
+  beats: 'beats',               // { kidId|_device: { P: 4, S: 2 } } 0–4 SATPIN beats
+  skin: 'skin',                 // comic (light hub) | cosmic | violet
 };
 
 const MODES = ['center', 'small-group', 'whiteboard'];
+const SKINS = ['comic', 'cosmic', 'violet'];
+const WORK_MODES = ['satpin', 'assigned', 'free'];
+const SESSIONS = ['child', 'adult'];
 const DEVICE = '_device';
 
 const DEFAULT_SETTINGS = {
   roundSize: 3,        // letters per round (1–26)
-  choiceCount: 3,      // answer cards per step (2–8)
+  choiceCount: 4,      // hanging letters on choose (2–8)
   showWords: true,     // word print under picture cards
   caseMode: 'both',    // both (mix) | upper | lower — what the child hunts
   hintAfter: 2,        // auto-glow after N misses; 0 = off
   progressMode: 'stars-save', // none | stars (session) | stars-save (localStorage)
   bonusMode: 'rotate', // off | rotate | hunt | sound | order  (js/bonus.js)
+  cloudUnlock: 1,      // grown-up override: highest cloud id unlocked (1–5)
 };
 const BONUS_MODES = ['off', 'rotate', 'hunt', 'sound', 'order'];
 const DEFAULT_AUDIO = { music: false, sfx: true, voice: true };
@@ -48,6 +55,28 @@ function letterIndex(ch) {
 }
 function letterAt(index) {
   return String.fromCharCode(65 + (((index % 26) + 26) % 26));
+}
+
+const OUTFIT_SLUG = /^[a-z0-9-]{1,24}$/;
+function parseOutfits(raw) {
+  const parts = Array.isArray(raw)
+    ? raw
+    : String(raw || '').split('+');
+  const seen = new Set();
+  const out = [];
+  let rejected = false;
+  parts.forEach((part) => {
+    const id = String(part || '').trim();
+    if (!id) return;
+    if (!OUTFIT_SLUG.test(id) || seen.has(id)) {
+      rejected = true;
+      return;
+    }
+    seen.add(id);
+    out.push(id);
+  });
+  if (rejected) return [];
+  return out;
 }
 
 function read(key, fallback) {
@@ -80,8 +109,26 @@ export const store = {
     const clean = String(id ?? '').trim();
     if (!clean || clean === DEVICE) return store.clearKid();
     write(KEYS.kid, clean);
+    write(KEYS.session, 'child');
   },
-  clearKid() { localStorage.removeItem(NS + KEYS.kid); },
+  clearKid() {
+    localStorage.removeItem(NS + KEYS.kid);
+    if (read(KEYS.session, null) === 'child') localStorage.removeItem(NS + KEYS.session);
+  },
+  getSessionRole() {
+    const role = read(KEYS.session, null);
+    if (role === 'adult') return 'adult';
+    if (role === 'child' || store.getKidId()) return 'child';
+    return null;
+  },
+  setAdultSession() {
+    store.clearKid();
+    write(KEYS.session, 'adult');
+  },
+  clearSession() {
+    localStorage.removeItem(NS + KEYS.kid);
+    localStorage.removeItem(NS + KEYS.session);
+  },
 
   isClassroom() { return read(KEYS.classroom, false) === true; },
   setClassroom(on) {
@@ -91,7 +138,10 @@ export const store = {
 
   /* --- roster overrides (Grown-Ups → Class) -------------------------- */
   getRosterOverride() { return read(KEYS.roster, null); },
-  setRosterOverride(kids) { write(KEYS.roster, kids); },
+  setRosterOverride(kids) {
+    const list = Array.isArray(kids) ? kids.map(sanitizeKid).filter(Boolean) : [];
+    write(KEYS.roster, list);
+  },
   clearRosterOverride() { localStorage.removeItem(NS + KEYS.roster); },
 
   /* --- class name -----------------------------------------------------
@@ -136,6 +186,18 @@ export const store = {
     applyMode(mode);
   },
 
+  /* Kid chrome skin. comic = the light pop-art hub (default). cosmic / violet
+     are the darker Stitch layouts. Layout regions stay the same; tokens swap. */
+  getSkin() {
+    const s = read(KEYS.skin, 'comic');
+    return SKINS.includes(s) ? s : 'comic';
+  },
+  setSkin(skin) {
+    if (!SKINS.includes(skin)) return;
+    write(KEYS.skin, skin);
+    applySkin(skin);
+  },
+
   /* Hide tabs, Grown-Ups, audio dots, who-chip, footer. Lucy's prompts stay. */
   getHideChrome() { return read(KEYS.hideChrome, false) === true; },
   setHideChrome(on) {
@@ -164,7 +226,7 @@ export const store = {
        none        — play only; don't show or save
        stars       — show this session; do not persist
        stars-save  — show and persist per-letter best in localStorage (default) */
-  starsOwner() { return store.isClassroom() ? (store.getKidId() || DEVICE) : DEVICE; },
+  starsOwner() { return store.getKidId() || DEVICE; },
   progressMode() { return store.getSettings().progressMode || 'stars-save'; },
   getStars(owner = store.starsOwner()) {
     const mode = store.progressMode();
@@ -227,18 +289,28 @@ export const store = {
     return fresh;
   },
 
-  /* Lucy's closet: which treat she is wearing. The list of real treats lives
-     in js/closet.js — here it is only ever a slug, so a renamed treat falls
-     off Lucy instead of jamming the pouch. */
+  /* Lucy's closet: which treats she is wearing. Kids pick and choose.
+     Each id is a slug; closet.js owns the real treat list. A renamed treat
+     just falls off. Old tablets stored one slug string; that still reads. */
+  getOutfits() {
+    return parseOutfits(read(KEYS.outfit, ''));
+  },
   getOutfit() {
-    const id = read(KEYS.outfit, '');
-    return typeof id === 'string' && /^[a-z0-9-]{1,24}$/.test(id) ? id : '';
+    return store.getOutfits().join('+');
+  },
+  setOutfits(ids) {
+    const clean = parseOutfits(ids);
+    if (!clean.length) { localStorage.removeItem(NS + KEYS.outfit); return; }
+    write(KEYS.outfit, clean);
   },
   setOutfit(id) {
-    const clean = String(id ?? '').trim();
-    if (!clean) { localStorage.removeItem(NS + KEYS.outfit); return; }
-    if (!/^[a-z0-9-]{1,24}$/.test(clean)) return;
-    write(KEYS.outfit, clean);
+    if (id == null || String(id).trim() === '') {
+      localStorage.removeItem(NS + KEYS.outfit);
+      return;
+    }
+    const next = parseOutfits(id);
+    if (!next.length) return;
+    write(KEYS.outfit, next);
   },
 
   /* --- progress records ----------------------------------------------- */
@@ -270,6 +342,26 @@ export const store = {
       .reduce((sum, l) => sum + (l.bestStars || 0), 0);
   },
 
+  /* SATPIN beats: 0–4 per letter, per child on this tablet. */
+  getBeatsMap(owner = store.starsOwner()) {
+    return read(KEYS.beats, {})[owner] || {};
+  },
+  beatsFor(letter) {
+    const L = String(letter || '').toUpperCase();
+    const n = Number(store.getBeatsMap()[L]);
+    return Number.isFinite(n) ? Math.max(0, Math.min(4, n)) : 0;
+  },
+  setBeats(letter, n) {
+    const L = String(letter || '').toUpperCase();
+    if (!/^[A-Z]$/.test(L)) return;
+    const owner = store.starsOwner();
+    const all = read(KEYS.beats, {});
+    const mine = { ...(all[owner] || {}) };
+    mine[L] = Math.max(0, Math.min(4, Number(n) || 0));
+    all[owner] = mine;
+    write(KEYS.beats, all);
+  },
+
   /* --- roster notes (Grown-Ups Class tab, this device only, never synced) */
   getNotes() { return read(KEYS.notes, {}); },
   getNote(kidId) { return (read(KEYS.notes, {})[kidId] || ''); },
@@ -294,7 +386,9 @@ export const store = {
       mode: store.getMode(),
       hideChrome: store.getHideChrome(),
       classroom: store.isClassroom(),
+      session: store.getSessionRole(),
       outfit: store.getOutfit(),
+      skin: store.getSkin(),
       pinnedLetter: store.getPinnedLetter(),
       nextAbcIndex: store.getNextAbcIndex(),
       kidId: store.getKidId(),
@@ -305,6 +399,7 @@ export const store = {
       stars: clone(read(KEYS.stars, {})),
       stickers: clone(read(KEYS.stickers, {})),
       progress: clone(store.getProgress()),
+      beats: clone(read(KEYS.beats, {})),
     };
   },
   importSnapshot(snap) {
@@ -320,11 +415,18 @@ export const store = {
     write(KEYS.hideChrome, sanitizeBool(snap.hideChrome, false));
     applyPresentation();
 
+    const skin = SKINS.includes(snap.skin) ? snap.skin : 'comic';
+    write(KEYS.skin, skin);
+    applySkin(skin);
+
     write(KEYS.classroom, sanitizeBool(snap.classroom, false));
+    const session = SESSIONS.includes(snap.session) ? snap.session : null;
+    if (session) write(KEYS.session, session);
+    else localStorage.removeItem(NS + KEYS.session);
     /* Import replaces this tablet: clear first so a rejected outfit id cannot
        leave the old Lucy dressed in something the file never mentioned. */
     localStorage.removeItem(NS + KEYS.outfit);
-    store.setOutfit(typeof snap.outfit === 'string' ? snap.outfit.trim() : '');
+    store.setOutfit(Array.isArray(snap.outfit) ? snap.outfit : (typeof snap.outfit === 'string' ? snap.outfit.trim() : ''));
 
     const pin = sanitizeLetter(snap.pinnedLetter);
     if (pin) write(KEYS.pinnedLetter, pin);
@@ -345,10 +447,12 @@ export const store = {
     write(KEYS.stars, sanitizeStarsMap(snap.stars));
     write(KEYS.stickers, sanitizeStickerMap(snap.stickers));
     write(KEYS.progress, sanitizeProgressMap(snap.progress));
+    write(KEYS.beats, sanitizeBeatsMap(snap.beats));
 
     const kidId = typeof snap.kidId === 'string' && snap.kidId ? snap.kidId : null;
-    if (sanitizeBool(snap.classroom, false) && kidId) write(KEYS.kid, kidId);
+    if (kidId) write(KEYS.kid, kidId);
     else localStorage.removeItem(NS + KEYS.kid);
+    if (!session && kidId) write(KEYS.session, 'child');
   },
 
   reset() {
@@ -368,9 +472,14 @@ export function applyChrome(hidden) {
   document.documentElement.dataset.chrome = on ? 'hidden' : 'shown';
 }
 
+export function applySkin(skin) {
+  document.documentElement.dataset.skin = skin || store.getSkin();
+}
+
 export function applyPresentation() {
   applyMode(store.getMode());
   applyChrome(store.getHideChrome());
+  applySkin(store.getSkin());
 }
 
 function clone(value) {
@@ -411,6 +520,7 @@ function sanitizeSettings(raw = {}) {
     hintAfter: sanitizeInt(src.hintAfter, DEFAULT_SETTINGS.hintAfter, 0, 9),
     progressMode,
     bonusMode,
+    cloudUnlock: sanitizeInt(src.cloudUnlock, DEFAULT_SETTINGS.cloudUnlock, 1, 5),
   };
 }
 
@@ -431,7 +541,23 @@ function sanitizeKid(raw) {
   if (!id || id === DEVICE || !/^[A-Za-z0-9_-]+$/.test(id)) return null;
   const emoji = String(raw.emoji || '🐾').trim().slice(0, 8) || '🐾';
   const color = String(raw.color || '#5aa9f0').trim().slice(0, 32) || '#5aa9f0';
-  return { id, name, emoji, color };
+  const workMode = WORK_MODES.includes(raw.workMode) ? raw.workMode : 'satpin';
+  const assignedLetters = sanitizeLetterList(raw.assignedLetters);
+  const arcadeLocked = sanitizeBool(raw.arcadeLocked, false);
+  return { id, name, emoji, color, workMode, assignedLetters, arcadeLocked };
+}
+
+function sanitizeLetterList(raw) {
+  const src = Array.isArray(raw) ? raw : String(raw || '').split(/[\s,]+/);
+  const seen = new Set();
+  const out = [];
+  src.forEach((ch) => {
+    const letter = sanitizeLetter(ch);
+    if (!letter || seen.has(letter)) return;
+    seen.add(letter);
+    out.push(letter);
+  });
+  return out;
 }
 
 function sanitizeNotes(raw = {}) {
@@ -507,6 +633,22 @@ function sanitizeProgressMap(raw = {}) {
     const lastPlayed = typeof rec.lastPlayed === 'string' ? rec.lastPlayed.slice(0, 40) : null;
     if (!lastPlayed && !Object.keys(letters).length) return;
     out[owner] = { lastPlayed, letters };
+  });
+  return out;
+}
+
+function sanitizeBeatsMap(raw = {}) {
+  const out = {};
+  if (!raw || typeof raw !== 'object') return out;
+  Object.entries(raw).forEach(([owner, letters]) => {
+    if (!letters || typeof letters !== 'object') return;
+    const mine = {};
+    Object.entries(letters).forEach(([ch, count]) => {
+      const letter = sanitizeLetter(ch);
+      if (!letter) return;
+      mine[letter] = sanitizeInt(count, 0, 0, 4);
+    });
+    if (Object.keys(mine).length) out[owner] = mine;
   });
   return out;
 }

@@ -1,0 +1,17 @@
+# 06 roster bugs (1280x800, 4174, reset=1)
+# screen: faces  hash: (empty)  kid: null  session: null
+- document: Ready Set ABC
+- button: Ready Set ABC — home. Hold for Grown-Ups.
+- button: Music (released)
+- button: Sound effects (pressed)
+- button: Lucy voice on or off (pressed)
+- button: Grown-Ups (header)
+- button: Lucy paws
+- button: Grown-Ups (roster tile)
+- buttons: Ava … Miles
+- heading: Who is playing?
+- text: Tap your face — Ms. Brandy — Pre-K AM
+- text: Tap your face. I will wait right here!
+- text: Turn the tablet sideways   # bug: #rotate still in AX tree
+- who-slot text: friend Pre-K      # bug: chrome.who is false
+- stray text node under .faces: "null"  # bug: root.append(null)

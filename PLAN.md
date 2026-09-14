@@ -1,5 +1,7 @@
 # Ready Set ABC — Opinionated Plan (first slice)
 
+**Follow [PRODUCT.md](PRODUCT.md).** This file is the early classroom note. SATPIN here meant A–Z. That is no longer the story.
+
 **Status:** research done · plan for Bradley / Brandy review · **no build until go**  
 **Sources:** `/workspace/ready-set-abc/research/01`–`05` (Duolingo ABC, Khan Kids, peers)  
 **Date:** 2026-09-07

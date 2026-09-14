@@ -5,9 +5,11 @@
    Nothing in here is child-facing, so it is calm, small and scrollable. */
 
 import { el, icon, clear } from '../ui.js';
-import { store, applyMode } from '../store.js';
+import { store, applyMode, applySkin } from '../store.js';
 import { kids, shippedKids, letters, letterByChar, contentVersion, className, shippedClassName } from '../data.js';
 import { previewLetters } from '../round.js';
+import { teacherUnlock, setTeacherUnlock } from '../clouds.js';
+import { workModeOf } from '../profile.js';
 import { audio } from '../audio.js';
 import { APP_VERSION, APP_LABEL } from '../version.js';
 import { buildCsv, applyCsv, detectFormat, parseCsv } from '../csv.js';
@@ -16,15 +18,26 @@ import { printPanel } from './printables.js';
 const PIN = '1234';
 const overlay = document.getElementById('overlay');
 let onChange = () => {};
+let paintAudioChrome = () => {};
 let open = false;
+let atGate = false;
+let gatePress = null;
+let afterUnlock = 'sheet';
+let onUnlocked = () => {};
 
 export function isOpen() { return open; }
+
+export function setAudioChrome(fn) {
+  paintAudioChrome = typeof fn === 'function' ? fn : () => {};
+}
 
 /* `#/grownups/print` opens the gate and lands on that tab. The two panels D5
    is about — Print and Device — are otherwise five taps and a PIN deep, so a
    smoke bookmark could not reach them at all. The gate is still the gate. */
 export function openGrownUps(opts = {}) {
   onChange = opts.onChange || (() => {});
+  afterUnlock = opts.afterUnlock === 'home' ? 'home' : 'sheet';
+  onUnlocked = typeof opts.onUnlocked === 'function' ? opts.onUnlocked : () => {};
   if (opts.tab && TABS.some(([id]) => id === opts.tab)) activeTab = opts.tab;
   open = true;
   overlay.hidden = false;
@@ -34,17 +47,38 @@ export function openGrownUps(opts = {}) {
 
 export function closeGrownUps() {
   open = false;
+  atGate = false;
+  gatePress = null;
   overlay.hidden = true;
   clear(overlay);
   document.removeEventListener('keydown', onKey);
   onChange();
 }
 
-function onKey(event) { if (event.key === 'Escape') closeGrownUps(); }
+function gateDigit(event) {
+  if (event.key >= '0' && event.key <= '9') return event.key;
+  const pad = /^Numpad(\d)$/.exec(event.code);
+  return pad ? pad[1] : null;
+}
+
+function onKey(event) {
+  if (event.key === 'Escape') { closeGrownUps(); return; }
+  if (!atGate || !gatePress) return;
+  if (event.key === 'Backspace') {
+    event.preventDefault();
+    gatePress('clear');
+    return;
+  }
+  const digit = gateDigit(event);
+  if (!digit) return;
+  event.preventDefault();
+  gatePress(digit);
+}
 
 /* ----------------------------------------------------------------- gate */
 function renderGate() {
   clear(overlay);
+  atGate = true;
   const a = 2 + Math.floor(Math.random() * 6);
   const b = 2 + Math.floor(Math.random() * 6);
   const answer = String(a + b);
@@ -55,16 +89,31 @@ function renderGate() {
 
   const paint = () => { display.textContent = typed.replace(/./g, '•'); };
 
+  const unlock = () => {
+    typed = '';
+    atGate = false;
+    gatePress = null;
+    if (afterUnlock === 'home') {
+      const done = onUnlocked;
+      closeGrownUps();
+      done();
+      return;
+    }
+    renderSheet();
+  };
+
   const press = (key, btn) => {
-    if (key === 'clear') { typed = ''; paint(); return; }
+    if (key === 'clear') { typed = typed.slice(0, -1); paint(); return; }
     typed += key;
     paint();
-    if (typed === answer || typed === PIN) { typed = ''; renderSheet(); return; }
+    if (typed === answer || typed === PIN) { unlock(); return; }
     if (typed.length >= PIN.length) {
-      btn.classList.add('wrong');
-      setTimeout(() => { btn.classList.remove('wrong'); typed = ''; paint(); }, 380);
+      const mark = btn || pad;
+      mark.classList.add('wrong');
+      setTimeout(() => { mark.classList.remove('wrong'); typed = ''; paint(); }, 380);
     }
   };
+  gatePress = press;
 
   ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'clear', '0'].forEach((key) => {
     const btn = el('button', { class: 'gate-key', type: 'button' }, key === 'clear' ? '⌫' : key);
@@ -99,6 +148,8 @@ let csvNotice = {
 };
 
 function renderSheet() {
+  atGate = false;
+  gatePress = null;
   clear(overlay);
   const body = el('div', { class: 'gu-body' });
   const tabsRow = el('div', { class: 'gu-tabs', role: 'tablist' });
@@ -169,10 +220,26 @@ function pictureCount() {
 }
 
 /* --- panels -------------------------------------------------------------- */
-function playPanel() {
-  const s = store.getSettings();
+export function letterOfDayNote() {
   const pinned = store.getPinnedLetter();
   const pinLetter = pinned ? letterByChar(pinned) : null;
+  const next = previewLetters()[0] || 'P';
+  const word = pinLetter ? `${pinned} is for ${pinLetter.word}` : pinned;
+  if (workModeOf() === 'assigned') {
+    if (pinned) {
+      return `Pinned: ${pinned} is highlighted in your letters (${word}). If that letter is locked, PLAY starts your letters instead. Tap it again to unpin.`;
+    }
+    return `Not pinned — next PLAY starts the first unfinished of your letters (${next}).`;
+  }
+  if (pinned) {
+    return `Pinned: ${pinned} is highlighted inside the open cloud (${word}). If that letter is locked, PLAY starts the open cloud instead. Tap it again to unpin.`;
+  }
+  return `Not pinned — next PLAY starts the first unfinished letter in the open cloud (${next}).`;
+}
+
+export function playPanel() {
+  const s = store.getSettings();
+  const pinned = store.getPinnedLetter();
 
   const picker = el('div', { class: 'letter-picker' });
   letters().forEach((entry) => {
@@ -191,7 +258,7 @@ function playPanel() {
   return el('div', { class: 'gu-panel' },
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Round'),
-      el('p', { class: 'note' }, 'Each letter runs case match → picture match → bonus → celebrate. The celebration settles itself in 8 seconds and can be skipped.'),
+      el('p', { class: 'note' }, 'Each letter runs meet → choose → listen → payoff → celebrate. The celebration settles itself in 8 seconds and can be skipped. (That used to be case match → picture match → bonus → celebrate.)'),
       row('Letters per round', 'Default 3 · applies on the next PLAY, not mid-round', seg([[1, '1'], [2, '2'], [3, '3'], [5, '5'], [8, '8']], s.roundSize, (v) => store.setSetting('roundSize', Number(v)))),
       row('Answer cards', '2–8 choices per step · applies on the next PLAY', seg([[2, '2'], [3, '3'], [4, '4'], [6, '6'], [8, '8']], s.choiceCount, (v) => store.setSetting('choiceCount', Number(v)))),
       row('Case hunt', 'Which case the child looks for (mix is 50/50)', seg([['lower', 'Little'], ['upper', 'Big'], ['both', 'Mix']], s.caseMode, (v) => store.setSetting('caseMode', v))),
@@ -204,12 +271,13 @@ function playPanel() {
       row('Stars', 'none · this session · save on this device',
         seg([['none', 'Off'], ['stars', 'Session'], ['stars-save', 'Save']], s.progressMode || 'stars-save',
           (v) => store.setSetting('progressMode', v))),
+      workModeOf() === 'assigned' ? null : row('Open clouds', 'Highest cloud a class may play. Kids still earn the next cloud by finishing 4/4 on every letter.',
+        seg([[1, '1'], [2, '2'], [3, '3'], [4, '4'], [5, '5']], teacherUnlock(),
+          (v) => { setTeacherUnlock(Number(v)); repaint(); })),
     ),
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Letter of the day'),
-      el('p', { class: 'note' }, pinned
-        ? `Pinned: rounds start at ${pinned} (${pinLetter ? `${pinned} is for ${pinLetter.word}` : pinned}). Tap it again to unpin.`
-        : `Not pinned — next PLAY starts at ${store.getCursor()} (ABC cursor ${store.getNextAbcIndex()}). All ${letters().length} letters are awake, so any tile opens a round.`),
+      el('p', { class: 'note' }, letterOfDayNote()),
       picker,
       familyNoteCard(),
     ),
@@ -345,9 +413,9 @@ function soundPanel() {
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Audio channels'),
       el('p', { class: 'note' }, 'Independent mutes. Music ducks while Lucy talks. Sound stays locked until a child taps the giant PLAY button — these Test buttons also unlock, because a grown-up needs to hear the cart.'),
-      row('Music', 'Quiet playground wander · ducks under voice', toggle(a.music, (v) => { store.setAudio('music', v); audio.applyMutes(); })),
-      row('Sound effects', 'Taps, matches, star chimes — never Lucy\'s speech', toggle(a.sfx, (v) => { store.setAudio('sfx', v); audio.applyMutes(); })),
-      row('Voice', 'Lucy\'s names, sounds, words, cheers, nudges. Mute voice does not mute taps.', toggle(a.voice, (v) => { store.setAudio('voice', v); audio.applyMutes(); })),
+      row('Music', 'Quiet playground wander · ducks under voice', toggle(a.music, (v) => { store.setAudio('music', v); audio.applyMutes(); paintAudioChrome(); })),
+      row('Sound effects', 'Taps, matches, success chime, star hits — never Lucy\'s speech', toggle(a.sfx, (v) => { store.setAudio('sfx', v); audio.applyMutes(); paintAudioChrome(); })),
+      row('Voice', 'Lucy\'s recorded names, sounds, and words when clips land. Mute voice does not mute taps or chimes.', toggle(a.voice, (v) => { store.setAudio('voice', v); audio.applyMutes(); paintAudioChrome(); })),
       el('div', { class: 'gu-actions' },
         el('button', {
           class: 'gu-btn gu-btn--primary', type: 'button',
@@ -381,11 +449,11 @@ function soundPanel() {
     ),
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Recorded voice'),
-      el('p', { class: 'note' }, 'Not recorded yet. Lucy borrows the tablet’s own speaking voice, and every line she says is on screen as well — nothing in a round waits on a clip.'),
-      el('p', { class: 'note' }, `data/audio.json lists every clip Lucy still owes, as a silent placeholder: ${letters().length} letter names, ${letters().length} letter sounds, the ${pictureCount()} picture words, 6 cheers and 4 nudges. To ship one, drop the file in app/audio/, move its id into "clips", pin the file in sw.js, and bump the version.`),
+      el('p', { class: 'note' }, 'Cheers and nudges are mapped. Names, letter sounds, and words stay silent until a clip is dropped in. Lucy’s lines still show on screen. Success chimes are sound effects, not speech.'),
+      el('p', { class: 'note' }, `data/audio.json lists every clip Lucy still owes, as a silent placeholder: ${letters().length} letter names, ${letters().length} letter sounds, and the ${pictureCount()} picture words. To ship one, drop the file in app/audio/, move its id into "clips", pin the file in sw.js, and bump the version.`),
       el('p', { class: 'note' }, 'Three separate channels, three separate keys: name-A is the letter NAME (board appear), phoneme-A is the SOUND and never the name (letter-choice tap), word-A-apple is the picture word. A phoneme key pointing at a name recording is thrown away rather than played.'),
       el('p', { class: 'gu-status' }, audio.clipCount() === 0
-        ? 'No recorded clips on this tablet — using the device speech voice.'
+        ? 'No recorded clips on this tablet — names, sounds, and words stay silent until they land.'
         : `${audio.clipCount()} recorded clip${audio.clipCount() === 1 ? '' : 's'} on this tablet.`),
     ),
   );
@@ -405,6 +473,34 @@ function classPanel() {
     note.value = store.getNote(kid.id);
     note.addEventListener('change', () => store.setNote(kid.id, note.value));
 
+    const modePick = el('select', {
+      class: 'gu-input',
+      'aria-label': `Work mode for ${kid.name}`,
+    },
+      el('option', { value: 'satpin' }, 'Default SATPIN'),
+      el('option', { value: 'assigned' }, 'Assigned letters'),
+      el('option', { value: 'free' }, 'Free play'),
+    );
+    modePick.value = kid.workMode || 'satpin';
+    const lettersInput = el('input', {
+      class: 'gu-input',
+      type: 'text',
+      maxlength: '51',
+      placeholder: 'S P O J',
+      'aria-label': `Assigned letters for ${kid.name}`,
+    });
+    lettersInput.value = (kid.assignedLetters || []).join(' ');
+    lettersInput.hidden = modePick.value !== 'assigned';
+    const saveKid = (patch) => {
+      store.setRosterOverride(kids().map((k) => (k.id === kid.id ? { ...k, ...patch } : k)));
+      repaint();
+    };
+    modePick.addEventListener('change', () => saveKid({ workMode: modePick.value }));
+    lettersInput.addEventListener('change', () => {
+      const assignedLetters = lettersInput.value.toUpperCase().split(/[\s,]+/).filter((ch) => /^[A-Z]$/.test(ch));
+      saveKid({ assignedLetters });
+    });
+    const arcadeOn = !kid.arcadeLocked;
     const item = el('div', { class: 'roster-item' },
       el('div', { class: 'roster-item-row' },
         el('span', { class: 'rf', style: { background: kid.color } }, kid.emoji),
@@ -418,6 +514,9 @@ function classPanel() {
           repaint();
         } }, '×'),
       ),
+      row('Work', modePick.value === 'satpin' ? 'SATPIN' : modePick.value === 'free' ? 'Any letter' : 'Assigned', modePick),
+      lettersInput,
+      row('Arcade', arcadeOn ? 'Open' : 'Locked', toggle(arcadeOn, (v) => saveKid({ arcadeLocked: !v }))),
       note,
     );
     list.append(item);
@@ -453,6 +552,9 @@ function classPanel() {
       name,
       emoji: emojiInput.value.trim() || '🐾',
       color: ['#ff8a5c', '#4ec3a5', '#c48cf0', '#7fd35f', '#ff7fa8', '#5aa9f0'][roster.length % 6],
+      workMode: 'satpin',
+      assignedLetters: [],
+      arcadeLocked: false,
     });
     store.setRosterOverride(roster);
     repaint();
@@ -468,9 +570,9 @@ function classPanel() {
 
   return el('div', { class: 'gu-panel' },
     el('div', { class: 'gu-card' },
-      el('h3', {}, 'Classroom mode'),
-      el('p', { class: 'note' }, 'On: the child picks a face before play, and stars are kept per child. Off: PLAY goes straight into the round and this device keeps one shared pouch.'),
-      row('Face pick before play', classroom ? 'On' : 'Off', toggle(classroom, (v) => store.setClassroom(v))),
+      el('h3', {}, 'This tablet'),
+      el('p', { class: 'note' }, 'The roster is always login. Stars stay with the child who is playing. The old classroom switch is still here so a copied CSV can round-trip.'),
+      row('Keep per-child stars flag', classroom ? 'On' : 'Off', toggle(classroom, (v) => store.setClassroom(v))),
       row('Who is playing now', (kids().find((k) => k.id === store.getKidId()) || {}).name || 'nobody', el('button', {
         class: 'gu-btn', type: 'button', onclick: () => { store.clearKid(); repaint(); },
       }, 'Clear')),
@@ -769,6 +871,9 @@ function devicePanel() {
       row('Mode', 'Center 88px · Small group 104px · Whiteboard 140px / 220px cards',
         seg([['center', 'Center'], ['small-group', 'Small group'], ['whiteboard', 'Whiteboard']], store.getMode(),
           (v) => { store.setMode(v); applyMode(v); })),
+      row('Kid look', 'Comic is the yellow/blue hub. Cosmic and Violet are the darker Stitch layouts. Same rooms, different paint.',
+        seg([['comic', 'Comic'], ['cosmic', 'Cosmic'], ['violet', 'Violet']], store.getSkin(),
+          (v) => { store.setSkin(v); applySkin(v); })),
       row('Hide chrome', 'Hides tabs, Grown-Ups, sound dots, and the footer. Lucy’s prompts stay. Shift+H also toggles. Hold the yellow paw for Grown-Ups.',
         toggle(store.getHideChrome(), (v) => store.setHideChrome(v))),
     ),

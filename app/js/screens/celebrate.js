@@ -11,7 +11,8 @@ import { el, icon, pressable, picturePlate } from '../ui.js';
 import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
 import { store } from '../store.js';
-import { toggleWear, wornOutfitId, nextTreat, nextTreatNudge } from '../closet.js';
+import { toggleWear, wornHas, wornOutfitId, nextTreat, nextTreatNudge } from '../closet.js';
+import { burstConfetti } from '../motion.js';
 import * as round from '../round.js';
 
 export const chrome = { tabs: true, tab: 'home', who: true };
@@ -87,6 +88,7 @@ export function render(ctx) {
     }));
   }
   root.append(floaters);
+  burstConfetti({ y: 0.35, count: 64 });
 
   /* --- star tray ------------------------------------------------------- */
   const tray = el('div', { class: 'star-tray' });
@@ -137,6 +139,7 @@ export function render(ctx) {
   const lucy = createLucy({
     state: 'celebrating',
     variant: 'card',
+    cutout: true,
     line: `You matched letter ${entry.letter}!`,
     paw: () => {
       audio.sfx('woof');
@@ -211,14 +214,14 @@ export function render(ctx) {
     const wearBtn = el('button', { class: 'pillow drop-wear', type: 'button' });
     const paintWear = () => {
       wearBtn.textContent = '';
-      const on = wornOutfitId() === treat.id;
+      const on = wornHas(treat.id);
       wearBtn.append(icon(on ? 'verified' : 'touch'), on ? 'Lucy is wearing it' : `Put ${treat.name.toLowerCase()} on Lucy`);
       wearBtn.setAttribute('aria-pressed', String(on));
     };
     paintWear();
     pressable(wearBtn, () => {
       const now = toggleWear(treat.id);
-      lucy.setOutfit(now);
+      lucy.setOutfit();
       audio.sfx('pop');
       lucy.say(now === treat.id ? treat.line : 'Off it comes! Try another one in the pouch.');
       paintWear();
@@ -312,9 +315,6 @@ export function render(ctx) {
   ));
 
   wait(() => audio.cheer(), 400);
-  wait(() => {
-    audio.speak(`${stars} stars! ${entry.letter}${entry.lower} is for ${pic.word}.`);
-  }, 1100);
   if (treat) wait(() => lucy.say(`You opened ${treat.name} for me! Put it on?`), 2600);
 
   keyHandler = (event) => {

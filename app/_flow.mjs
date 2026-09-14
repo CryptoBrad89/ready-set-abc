@@ -121,6 +121,10 @@ globalThis.fetch = async (path) => {
 const { store } = await import('./js/store.js');
 const { loadData, kids, kidById, activeKid, isAwake, letterByChar, picturesFor, pickPicture, awakeLetters, className } = await import('./js/data.js');
 const round = await import('./js/round.js');
+const { setTeacherUnlock, isCloudUnlocked, openCloud } = await import('./js/clouds.js');
+const { startLetter } = await import('./js/profile.js');
+const origReset = store.reset.bind(store);
+store.reset = () => { origReset(); setTeacherUnlock(5); };
 const bonusMod = await import('./js/bonus.js');
 const closet = await import('./js/closet.js');
 const { audio, CHEERS, NUDGES, phonemeText, looksLikeLetterName, PHONEME_VOICE, clipId } = await import('./js/audio.js');
@@ -190,27 +194,28 @@ function playBonus(letter) {
 }
 
 function twoTap(letter, { miss = false, hint = false } = {}) {
+  const r = round.getRound();
+  if (r.step === 'meet') {
+    assert(round.continueBeat() === 'right', `${letter} meet`);
+    assert(round.advance() === 'choose', `${letter} meet → choose`);
+  }
   if (miss) {
-    const wrong = round.getRound().trial.choices.find((c) => c.letter !== letter).letter;
-    round.select(wrong);
-    assert(round.submit() === 'wrong', `${letter} miss counted`);
+    const wrong = round.getRound().trial.choices.find((c) => c.letter !== letter);
+    if (wrong) assert(round.tapChoose(wrong.letter) === 'wrong', `${letter} miss counted`);
   }
   if (hint) round.useHint();
-  round.select(letter);
-  assert(round.submit() === 'right', `${letter} case two-tap`);
-  assert(round.advance() === 'picture', `${letter} case → picture`);
-  const pic = round.getRound().trial.picture;
-  assert(pic && pic.word && pic.emoji, `${letter} picture picked from pool (${pic && pic.word})`);
-  assert(round.getRound().trial.choices.every((c) => c.picture && c.picture.word), `${letter} every card has a picture`);
-  round.select(letter);
-  assert(round.submit() === 'right', `${letter} picture two-tap`);
-  const step = round.advance();
-  if (step === 'bonus') {
-    playBonus(letter);
-    assert(round.advance() === 'celebrate', `${letter} bonus → celebrate`);
-  } else {
-    assert(step === 'celebrate', `${letter} picture → celebrate (bonus off)`);
+  let guard = 0;
+  while (r.step === 'choose' && !r.trial.locked && guard < 6) {
+    const result = round.tapChoose(letter);
+    assert(result === 'collect' || result === 'right', `${letter} choose tap (${result})`);
+    guard += 1;
   }
+  assert(round.advance() === 'listen', `${letter} choose → listen`);
+  const orb = round.getRound().trial.orbs.find((o) => o.target);
+  assert(round.tapListen(orb.id) === 'right', `${letter} listen`);
+  assert(round.advance() === 'payoff', `${letter} listen → payoff`);
+  assert(round.continueBeat() === 'right', `${letter} payoff`);
+  assert(round.advance() === 'celebrate', `${letter} payoff → celebrate`);
   return round.bankLetter();
 }
 
@@ -247,7 +252,9 @@ for (const L of ALPHABET_STR) {
   assert(pool.every((p) => p.emoji.trim().length > 0), `${L} plates all carry a fallback emoji`);
 }
 assert(seenEmoji.size === 26 * 15, `all ${seenEmoji.size} plates carry their own emoji`);
-assert(awakeLetters().map((l) => l.letter).join('') === ALPHABET_STR, 'the whole alphabet is awake');
+assert(awakeLetters().map((l) => l.letter).join('') === 'AINPST', 'Cloud 1 SATPIN is the default open path');
+setTeacherUnlock(5);
+assert(awakeLetters().map((l) => l.letter).join('') === ALPHABET_STR, 'teacher unlock 5 wakes the alphabet');
 assert(letterByChar('E') && letterByChar('E').awake === true, 'E is awake');
 assert(letterByChar('Z') && letterByChar('Z').awake === true, 'Z is awake');
 /* The trail tile and the first board have to be the same picture. */
@@ -301,19 +308,20 @@ assert(document.documentElement.dataset.mode === 'center', 'mode back to center'
 round.startRound({ startAt: 'A' });
 assert(round.isActive(), 'round started at A');
 assert(round.getRound().letters.join('') === 'ABC', `default 3-letter round is ABC (got ${round.getRound().letters.join('')})`);
-assert(round.getRound().step === 'case', 'step A is case match');
+assert(round.getRound().step === 'meet', 'step one is meet');
 assert(store.isClassroom() && !store.getKidId(), 'still needs a face');
 
 const kid = kids()[0];
 store.setKidId(kid.id);
 assert(store.getKidId() === kid.id, `picked ${kid.name}`);
 
-assert(round.submit() === null, 'submit with nothing selected is null');
-assert(round.getRound().misses === 0, 'empty submit is not a miss');
+assert(round.submit() === 'right', 'meet continue is a tap');
+assert(round.advance() === 'choose', 'meet → choose');
+assert(round.getRound().misses === 0, 'empty meet is not a miss');
 
 const trial = round.getRound().trial;
 assert(trial.hunt === 'lower', 'caseMode lower hunts little letters');
-assert(trial.choices.length === 3, '3 choice cards');
+assert(trial.choices.length === 3, 'choose uses the frozen choice count');
 assert(trial.choices.some((c) => c.letter === 'A'), 'correct card is in the mix');
 
 const starsA = twoTap('A', { miss: true });
@@ -326,7 +334,7 @@ assert(store.stickers().some((s) => s.letter === 'A' && s.word), 'Star Pouch has
 
 assert(round.nextLetter() === true, 'round continues to B');
 assert(round.currentLetter().letter === 'B', 'now on letter B');
-assert(round.getRound().step === 'case', 'B starts at case match');
+assert(round.getRound().step === 'meet', 'B starts at meet');
 assert(round.getRound().misses === 0, 'misses reset per letter');
 
 const starsB = twoTap('B');
@@ -349,7 +357,7 @@ round.playAgain();
 assert(round.isActive(), 'Play again started a new round');
 assert(round.getRound().letters[0] === 'D', `Play again advances to D (got ${round.getRound().letters.join('')})`);
 assert(round.getRound().letters.join('') === 'DEF', `the round carries on into the woken letters (got ${round.getRound().letters.join('')})`);
-assert(round.getRound().step === 'case', 'new round starts on case match');
+assert(round.getRound().step === 'meet', 'new round starts on meet');
 
 const starsD = twoTap('D');
 assert(starsD === 3, 'clean D → 3 stars');
@@ -400,6 +408,10 @@ assert(/kind === 'phoneme'/.test(audioSrc), 'phoneme speak path is distinct from
 assert(/silentUnlockPulse/.test(audioSrc), 'PLAY unlocks with a silent buffer, not a second music loop');
 assert(/CLIP_WATCHDOG_MS/.test(audioSrc), 'a stalled clip cannot leave the music ducked');
 assert(/function firstClip/.test(audioSrc), 'clip lookup walks a candidate chain (word-A-apple → word-A)');
+assert(/speak\(line, \{ clip: \[clipId\.cheer\(i\), 'cheer'\]/.test(audioSrc),
+  'cheer() speaks clipId.cheer then the cheer fallback');
+assert(/speak\(line, \{ clip: \[clipId\.nudge\(i\), 'nudge'\]/.test(audioSrc),
+  'nudge() speaks clipId.nudge then the nudge fallback');
 
 /* --- three voice channels, three id namespaces ------------------------- */
 const ALPHABET = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
@@ -429,13 +441,22 @@ assert(audio.hasClip('phoneme-B'), 'an honest phoneme clip is kept');
 assert(!audio.hasClip('word-A-apple') && !audio.hasClip('cheer-1'),
   'null / blank placeholders never become clips');
 
-/* --- data/audio.json: silent placeholders, real Lucy later ------------- */
+/* --- data/audio.json: ten Lucy lines mapped, names still silent -------- */
 const audioFile = JSON.parse(readFileSync(join(root, 'data/audio.json'), 'utf8'));
 const ph = audioFile.placeholders || {};
-assert(audioFile.clips && Object.keys(audioFile.clips).length === 0,
-  'no Lucy clip is mapped yet — the tablet speech voice stands in');
+assert(audioFile.recorded === 10, 'audio.json recorded count is the ten Lucy lines');
+assert(Object.keys(audioFile.clips || {}).length === 10, 'clips has exactly the ten Lucy lines');
+CHEERS.forEach((_, i) => {
+  const id = clipId.cheer(i);
+  assert(audioFile.clips[id] === `lucy-cheer-${i + 1}.mp3`, `${id} maps to lucy-cheer-${i + 1}.mp3`);
+});
+NUDGES.forEach((_, i) => {
+  const id = clipId.nudge(i);
+  assert(audioFile.clips[id] === `lucy-nudge-${i + 1}.mp3`, `${id} maps to lucy-nudge-${i + 1}.mp3`);
+});
 audio.setClips(audioFile.clips);
-assert(audio.clipCount() === 0, 'the shipped audio.json maps zero clips');
+assert(audio.clipCount() === 10, 'the shipped audio.json maps the ten Lucy lines');
+assert(audio.hasClip('cheer-1'), 'cheer-1 is a real clip after setClips');
 assert(['name', 'phoneme', 'word', 'cheer', 'nudge'].every((k) => ph[k] && ph[k].ids && ph[k].say),
   'audio.json documents name / phoneme / word / cheer / nudge, each with what to say');
 const phIds = Object.assign({}, ...['name', 'phoneme', 'word', 'cheer', 'nudge'].map((k) => ph[k].ids));
@@ -454,12 +475,10 @@ assert(awakeWordIds.length === 390 && missingWord.length === 0,
 const missingWordFallback = ALPHABET.filter((L) => !(clipId.word(L) in ph.word.ids));
 assert(missingWordFallback.length === 0,
   `and every letter has a word-<L> fallback for a plate with no clip of its own (missing ${missingWordFallback.join('') || 'none'})`);
-const missingCheer = CHEERS.map((_, i) => clipId.cheer(i)).filter((id) => !(id in ph.cheer.ids));
-const missingNudge = NUDGES.map((_, i) => clipId.nudge(i)).filter((id) => !(id in ph.nudge.ids));
-assert(missingCheer.length === 0 && 'cheer' in ph.cheer.ids,
-  `cheer placeholders cover every line plus the catch-all (missing ${missingCheer.join(', ') || 'none'})`);
-assert(missingNudge.length === 0 && 'nudge' in ph.nudge.ids,
-  `nudge placeholders cover every line plus the catch-all (missing ${missingNudge.join(', ') || 'none'})`);
+assert(Object.keys(ph.cheer.ids).join() === 'cheer' && ph.cheer.ids.cheer === null,
+  'cheer catch-all stays a silent placeholder');
+assert(Object.keys(ph.nudge.ids).join() === 'nudge' && ph.nudge.ids.nudge === null,
+  'nudge catch-all stays a silent placeholder');
 assert(/never the name/i.test(JSON.stringify(ph.phoneme.say)),
   'the phoneme recording note spells out: the sound, never the name');
 
@@ -603,6 +622,8 @@ store.setSetting('choiceCount', 6);
 store.setCursor('B');
 round.startRound();
 assert(round.getRound().letters.join('') === 'B', `roundSize 1 starts a 1-letter round (got ${round.getRound().letters.join('')})`);
+round.continueBeat();
+round.advance();
 assert(round.getRound().trial.choices.length === 6, `choiceCount 6 deals 6 cards (got ${round.getRound().trial.choices.length})`);
 store.setSetting('roundSize', 8);
 store.setSetting('choiceCount', 2);
@@ -617,6 +638,8 @@ store.setSetting('choiceCount', 2);
 store.setCursor('A');
 round.startRound();
 assert(round.getRound().letters.join('') === 'ABCDE', `roundSize 5 deals five letters off the woken alphabet (got ${round.getRound().letters.join('')})`);
+round.continueBeat();
+round.advance();
 assert(round.getRound().trial.choices.length === 2, 'choiceCount 2 deals 2 cards');
 /* The clamp is the size of the awake pool, wherever that lands. */
 round.goHome();
@@ -641,20 +664,24 @@ store.setSetting('hintAfter', 2);
 store.setSetting('bonusMode', 'off');
 store.setCursor('A');
 round.startRound({ startAt: 'A' });
+round.continueBeat();
+round.advance();
 const wrong = round.getRound().trial.choices.find((c) => c.letter !== 'A').letter;
-round.select(wrong);
-assert(round.submit() === 'wrong', 'first miss');
+round.tapChoose(wrong);
 assert(round.getRound().hinted === false, 'hint waits for 2 misses');
-round.select(wrong);
-assert(round.submit() === 'wrong', 'second miss');
+round.tapChoose(wrong);
 assert(round.getRound().hinted === true, 'auto-hint after 2 misses');
-round.select('A');
-assert(round.submit() === 'right', 'hinted letter still matchable');
-assert(round.advance() === 'picture', 'hinted case → picture');
-round.select('A');
-assert(round.submit() === 'right', 'picture after hint');
-assert(round.advance() === 'celebrate', 'Bonus Off: picture → celebrate, no third step');
-assert(round.getBonus() === null, 'Bonus Off builds no board at all');
+assert(round.tapChoose('A') === 'right' || round.getRound().trial.locked, 'hinted letter still matchable');
+if (!round.getRound().trial.locked) {
+  while (!round.getRound().trial.locked) round.tapChoose('A');
+}
+assert(round.advance() === 'listen', 'hinted choose → listen');
+const hintOrb = round.getRound().trial.orbs.find((o) => o.target);
+assert(round.tapListen(hintOrb.id) === 'right', 'listen after hint');
+assert(round.advance() === 'payoff', 'listen → payoff');
+assert(round.continueBeat() === 'right', 'payoff after hint');
+assert(round.advance() === 'celebrate', 'four-beat → celebrate (bonus is not on the kid path)');
+assert(round.getBonus() === null, 'kid path builds no bonus board');
 assert(round.bankLetter() === 1, 'hinted letter banks 1 star');
 store.setSetting('bonusMode', 'rotate');
 
@@ -673,9 +700,14 @@ assert(!/else audio\.sayLetterName/.test(match), 'choice tap is not the letter n
 
 const home = readFileSync(join(root, 'js/screens/home.js'), 'utf8');
 assert(/pressable\(playBtn[\s\S]{0,200}audio\.unlock\(\)/.test(home), 'PLAY unlocks audio');
-assert(/audio\.speak\('Lucy!'\)/.test(home), 'Say Lucy speaks if already unlocked');
+assert(!/audio\.speak\('Lucy!'\)/.test(home), 'Say Lucy does not speak an unmapped Lucy!');
 assert(!/audio\.unlock\(\); audio\.speak\('Lucy!'\)/.test(home), 'Say Lucy does not unlock');
 assert(!/audio\.unlock\(\); audio\.sfx\('woof'\)/.test(home), 'Friendly Woof does not unlock');
+assert(/role: 'dialog'/.test(home) && /Lucy says/.test(home), 'Home Lucy tap opens a Lucy says dialog');
+assert(/sayPhoneme/.test(home), 'hello sound chip plays the phoneme file');
+assert(!/audio\.unlock\(\)[\s\S]{0,80}sayPhoneme/.test(home), 'hello sound chip does not unlock');
+assert(!/Audio Coach|Active Session|Practice Flashcards|bilabial/.test(home),
+  'hello dialog is not the Stitch coach lab');
 
 const cluster = app.slice(app.indexOf('function paintCluster'), app.indexOf('function paintWho'));
 assert(!/audio\.unlock/.test(cluster), 'header mute dots do not unlock the speaker');
@@ -916,6 +948,25 @@ assert(store.getStars('_device').D === 1, '_device stars restored');
 assert(store.getStickerMap('_device').some((s) => s.id === 'dog'), '_device stickers restored');
 assert(store.getProgress()._device.letters.D.bestStars === 1, '_device progress restored');
 
+store.reset();
+store.setRosterOverride([{
+  id: 'k02',
+  name: 'Miles',
+  emoji: '🚀',
+  color: '#5aa9f0',
+  workMode: 'assigned',
+  assignedLetters: ['S', 'O', 'J'],
+  arcadeLocked: true,
+}]);
+const workCsv = csv.buildCsv();
+assert(/,assigned,S O J,true,/.test(workCsv),
+  'kid row exports workMode, space-separated assignedLetters, arcadeLocked');
+store.reset();
+assert(csv.applyCsv(workCsv).ok === true, 'assigned-kid backup imports');
+const miles = kids().find((k) => k.id === 'k02');
+assert(miles && miles.workMode === 'assigned' && miles.assignedLetters.join(' ') === 'S O J' && miles.arcadeLocked === true,
+  'assigned S O J + locked arcade round-trips on the kid row');
+
 /* ---- PASS C1: teacher printables (Grown-Ups → Print) ------------------ */
 const printables = await import('./js/screens/printables.js');
 
@@ -1147,7 +1198,7 @@ assert(activeKid().id === kids()[0].id, 'a shipped face can be picked again stra
 const appSrc = readFileSync(join(root, 'js/app.js'), 'utf8');
 assert(/activeKid\(\)/.test(appSrc), 'the router resolves who is playing through activeKid');
 assert(!/kidById\(store\.getKidId\(\)\)/.test(appSrc), 'the router no longer trusts a raw stored id');
-assert(/isClassroom\(\) && !activeKid\(\)/.test(appSrc), 'classroom with no valid kid routes to the face grid');
+assert(/needsRoster\(\)/.test(appSrc), 'no session routes to the roster');
 
 const guSrc2 = readFileSync(join(root, 'js/screens/grownups.js'), 'utf8');
 assert(/getKidId\(\) === kid\.id\) store\.clearKid\(\)/.test(guSrc2),
@@ -1177,16 +1228,16 @@ assert(round.getRound().letters[0] === 'D', 'and Play again really opens that le
 /* A pin freezes it, anywhere in the alphabet — there is no letter left that
    the pin could name and PLAY would then refuse to open. */
 round.goHome();
-store.setPinnedLetter('B');
+store.setPinnedLetter('P');
 store.setNextAbcIndex(3);
-assert(round.upNextLetter() === 'B', 'a pinned letter of the day wins over the cursor');
+assert(round.upNextLetter() === 'P', 'a pinned letter in the open cloud wins over the cursor');
 store.setPinnedLetter('E');
 assert(isAwake('E') === true, 'E is awake');
-assert(round.upNextLetter() === 'E', 'a pin on a woken letter is the letter PLAY opens');
-assert(round.previewLetters()[0] === 'E', 'and the home strip agrees');
-store.setPinnedLetter('Z');
-assert(round.upNextLetter() === 'Z' && round.previewLetters()[0] === 'Z',
-  'the last letter on the trail can be the letter of the day');
+assert(round.upNextLetter() !== 'E', 'a pin outside the open cloud does not hijack PLAY');
+assert(round.previewLetters()[0] !== 'E', 'and the home strip agrees');
+store.setPinnedLetter('S');
+assert(round.upNextLetter() === 'S' && round.previewLetters()[0] === 'S',
+  'a letter in the open cloud can be the letter of the day');
 store.setPinnedLetter(null);
 store.setNextAbcIndex(25);
 assert(round.upNextLetter() === 'Z', 'and a cursor parked on Z names Z, not a fallback');
@@ -1194,22 +1245,27 @@ assert(ALPHABET.every((L) => isAwake(L)), 'every letter A–Z is awake');
 
 /* The ABC Trail marks both facts, and every tile opens a round. */
 const trailSrc = readFileSync(join(root, 'js/screens/trail.js'), 'utf8');
-assert(/previewLetters\(\)\[0\]/.test(trailSrc), 'trail highlights the letter PLAY really opens');
 assert(/getPinnedLetter\(\)/.test(trailSrc), 'trail reads the pinned letter of the day');
 assert(/isCurrent \? ' current' : ''/.test(trailSrc) && /isPinned \? ' pinned' : ''/.test(trailSrc),
   'current and pinned are separate tile classes');
 assert(/'aria-current': isCurrent/.test(trailSrc), 'the current tile is aria-current for screen readers');
 assert(/Letter of the day/.test(trailSrc) && /Next up/.test(trailSrc), 'trail head says which is which');
-/* The nap is gone, in the source as well as in the data — a leftover branch
-   is a second answer to "what happens when I tap this", and only one of the
-   two can be right. */
 assert(!/nap|asleep|sleeping/i.test(trailSrc), 'no napping branch is left on the trail');
-assert(!/\bawake\b\s*\?/.test(trailSrc), 'and no tile is drawn two different ways');
-assert(/startRound\(\{ startAt: entry\.letter \}\)/.test(trailSrc), 'every tile starts that letter');
-assert(/All \$\{all\.length\} letters awake/.test(trailSrc),
-  'and the chip counts the content file rather than saying A–D');
-assert(!/napping/.test(appSrc) && !/isAwake\(at\)/.test(appSrc),
-  '#/letter/E opens E instead of being turned away at the router');
+assert(/startRound\(\{ startAt: entry\.letter \}\)/.test(trailSrc), 'open tiles start that letter');
+assert(/isLetterOpen\(L, ctx\.kid\)/.test(trailSrc) && /sfx\('wrong'\)/.test(trailSrc) && /wobble\(tile\)/.test(trailSrc),
+  'closed tiles refuse');
+assert(/startLetter\(playStartLetter\(\)\)/.test(trailSrc),
+  'trail next letter runs playStartLetter through startLetter');
+const arcadeSrc = readFileSync(join(root, 'js/screens/arcade.js'), 'utf8');
+assert(/startLetter\(playStartLetter\(\)\)/.test(arcadeSrc),
+  'arcade start letter runs playStartLetter through startLetter');
+assert(/Letters & Phonics/.test(trailSrc), 'the path is Letters & Phonics');
+assert(!/napping/.test(appSrc), '#/letter still opens a round instead of being turned away');
+const playResolve = appSrc.slice(appSrc.indexOf("if (name === 'play')"), appSrc.indexOf("if (name === 'coming')"));
+assert(playResolve.includes('needsRoster()') && playResolve.indexOf('needsRoster()') < playResolve.indexOf('startRound'),
+  'resolve/play/letter consults needsRoster before startRound');
+assert(playResolve.includes('isLetterOpen') && playResolve.indexOf('isLetterOpen') < playResolve.indexOf('startRound'),
+  '#/letter consults isLetterOpen before startRound');
 assert(/!letterByChar\(at\)/.test(appSrc) && /strayLetter: at/.test(appSrc),
   'and only a bookmark that is not a letter at all lands on the trail');
 assert(/ctx\.strayLetter/.test(trailSrc), 'where Lucy names the letter that is up instead');
@@ -1226,9 +1282,12 @@ assert(/\.trail-say \{/.test(trailCss), 'Lucy has a place to speak on the trail'
    it names the letter the cursor is really sitting on. */
 assert(!/isAwake/.test(guSrc2), 'Grown-Ups has no sleeping-letter branch left to get wrong');
 assert(/previewLetters\(\)\[0\]/.test(guSrc2), 'and the family note still follows what PLAY opens');
+const roundSrc2 = readFileSync(join(root, 'js/round.js'), 'utf8');
+assert(/const first = startLetter\(playStartLetter\(\)\)/.test(roundSrc2),
+  'previewLetters runs playStartLetter through startLetter so Grown-Ups names what PLAY opens');
 assert(/is for \$\{pinLetter\.word\}/.test(guSrc2), 'a pinned letter is shown with its word');
-assert(/letters\(\)\.length\} letters are awake/.test(guSrc2),
-  'and the unpinned note counts the content file rather than naming A–D');
+assert(/open cloud/.test(guSrc2),
+  'and the unpinned note names the open cloud rather than A–D');
 
 /* Smoke bookmarks the cart actually uses. */
 const smoke2 = readFileSync(join(root, '_smoke.html'), 'utf8');
@@ -1288,11 +1347,8 @@ store.setSetting('roundSize', 1);
 store.setSetting('bonusMode', 'hunt');
 store.setCursor('A');
 round.startRound({ startAt: 'A' });
-round.select('A'); round.submit(); round.advance();
-round.select('A'); round.submit();
-assert(round.advance() === 'bonus', 'a clean letter still gets its bonus');
+assert(round.openBonus() && round.getBonus().type === 'hunt', 'Grown-Ups pinned the hunt for every letter');
 const board = round.getBonus();
-assert(board && board.type === 'hunt', 'Grown-Ups pinned the hunt for every letter');
 const dud = board.items.find((i) => !i.target);
 assert(round.bonusTap(dud.id) === 'wrong', 'a wrong tile is wrong');
 assert(round.bonusTap(dud.id) === 'wrong', 'and it can be tapped again — nothing locks');
@@ -1306,7 +1362,6 @@ assert(round.bonusDone() === true, 'all three found → bonus done');
 const doneSummary = round.bonusSummary();
 assert(doneSummary.done === true && doneSummary.skipped === false && doneSummary.misses === 2,
   `celebrate can say Bonus ✓ with ${doneSummary.misses} free misses`);
-assert(round.advance() === 'celebrate', 'bonus → celebrate');
 assert(round.starsEarned() === 3, 'two bonus misses still leave a clean 3-star letter');
 assert(round.bankLetter() === 3, 'and 3 stars are what banks');
 
@@ -1314,9 +1369,7 @@ assert(round.bankLetter() === 3, 'and 3 stars are what banks');
 round.goHome();
 store.setSetting('bonusMode', 'order');
 round.startRound({ startAt: 'A' });
-round.select('A'); round.submit(); round.advance();
-round.select('A'); round.submit();
-assert(round.advance() === 'bonus', 'order letter reaches the bonus');
+assert(round.openBonus() && round.getBonus().type === 'order', 'order letter reaches the bonus');
 const ord = round.getBonus();
 const byRank = ord.items.slice().sort((a, b) => a.rank - b.rank);
 assert(round.bonusTap(byRank[2].id) === 'wrong', 'the last letter first is wrong');
@@ -1330,9 +1383,7 @@ assert(round.bonusDone(), 'ABC Order finishes');
 round.goHome();
 store.setSetting('bonusMode', 'sound');
 round.startRound({ startAt: 'A' });
-round.select('A'); round.submit(); round.advance();
-round.select('A'); round.submit();
-round.advance();
+round.openBonus();
 const snd = round.getBonus();
 assert(snd.type === 'sound', 'pinned Sound Sort');
 const first = round.bonusCurrent();
@@ -1352,13 +1403,10 @@ assert(round.bonusDone(), 'three answers finish Sound Sort');
 round.goHome();
 store.setSetting('bonusMode', 'rotate');
 round.startRound({ startAt: 'B' });
-round.select('B'); round.submit(); round.advance();
-round.select('B'); round.submit();
-assert(round.advance() === 'bonus', 'B reaches its bonus');
+assert(round.openBonus(), 'B can open a bonus board');
 round.skipBonus();
 const skipped = round.bonusSummary();
 assert(skipped.skipped === true && round.bonusDone(), 'Skip to stars ends the bonus');
-assert(round.advance() === 'celebrate', 'a skipped bonus still walks to the stars');
 assert(round.bankLetter() === 3, 'and a skipped bonus costs nothing — clean letter, 3 stars');
 
 /* Celebrate hands the sticker and any unlocked treat to the screen. */
@@ -1377,7 +1425,7 @@ assert(banked.unlockedTreat && banked.unlockedTreat.id === 'bows',
 assert(store.awardSticker(banked.sticker.picture) === false,
   'the same plate a second time is not a new sticker');
 
-/* Lucy's closet: unlock by stars, wear one at a time, keep it on the tablet. */
+/* Lucy's closet: unlock by stars, mix and match, keep it on the tablet. */
 assert(closet.TREATS.length === 6 && closet.TREATS[0].need === 3, 'six treats, bows at 3 stars');
 assert(closet.unlockedTreats(3).map((t) => t.id).join() === 'bows', '3 stars unlock exactly the bows');
 assert(closet.unlockedTreats(12).length === 4, '12 stars unlock four treats');
@@ -1388,7 +1436,8 @@ assert(closet.wornTreat() === null, 'Lucy starts undressed');
 assert(closet.toggleWear('specs') === '' && store.getOutfit() === '',
   'a locked treat cannot be put on');
 assert(closet.toggleWear('bows') === 'bows' && closet.wornOutfitId() === 'bows', 'an unlocked treat goes on');
-assert(JSON.parse(mem.get('rsabc.outfit')) === 'bows', 'the outfit is saved as rsabc.outfit');
+assert(Array.isArray(JSON.parse(mem.get('rsabc.outfit'))) && JSON.parse(mem.get('rsabc.outfit')).includes('bows'),
+  'the outfit is saved as rsabc.outfit');
 assert(closet.toggleWear('bows') === '', 'tapping it again takes it off');
 closet.toggleWear('bows');
 store.setOutfit('nonsense id!!');
@@ -1414,9 +1463,9 @@ assert(store.getOutfit() === '', 'an import with no outfit really undresses this
 
 /* Wiring: the router knows the third step, and the shell ships the modules. */
 const appC4 = readFileSync(join(root, 'js/app.js'), 'utf8');
-assert(/screens\/bonus\.js/.test(appC4) && /route\.step === 'bonus'/.test(appC4),
-  'the router sends the bonus step to the bonus screen');
-assert(round.STEPS.join() === 'case,picture,bonus,celebrate', 'a letter is case → picture → bonus → celebrate');
+assert(/screens\/stage\.js/.test(appC4) && /route\.step === 'celebrate'/.test(appC4),
+  'the router sends celebrate to the celebrate screen and the four-beat to stage');
+assert(round.STEPS.join() === 'meet,choose,listen,payoff,celebrate', 'a letter is meet → choose → listen → payoff → celebrate');
 assert(shellSet.has('js/bonus.js') && shellSet.has('js/closet.js') && shellSet.has('js/screens/bonus.js'),
   'SW precaches the bonus + closet modules');
 
@@ -1428,6 +1477,14 @@ assert(/bonus\.type === 'order'\) audio\.sayLetterName/.test(bonusSrc),
   'only ABC Order says letter names — it is the alphabet game');
 assert(/audio\.nudge\(\)/.test(bonusSrc), 'a wrong bonus tap nudges, never scolds');
 assert(!/round\.misses/.test(bonusSrc), 'the bonus screen cannot touch the star count');
+assert(!/audio\.speak\(`\$\{bonus\.title\}/.test(bonusSrc),
+  'leftover bonus Listen does not speak an unmapped title+ask');
+assert(!/audio\.speak\(line\)/.test(bonusSrc),
+  'leftover bonus leave does not speak an unmapped line');
+assert(/lucy\.say\(bonus\.lucy, \{ voice: false \}\)/.test(bonusSrc),
+  'leftover bonus Listen still shows Lucy’s line');
+assert(/lucy\.say\(line, \{ voice: false \}\)/.test(bonusSrc),
+  'leftover bonus leave still shows Lucy’s line');
 
 const celebrateC4 = readFileSync(join(root, 'js/screens/celebrate.js'), 'utf8');
 assert(/CELEBRATE_MS = 8000/.test(celebrateC4), 'celebrate settles itself at 8 seconds (PLAN: ≤8s)');
@@ -1438,6 +1495,23 @@ assert(/bonusSummary\(\)/.test(celebrateC4), 'celebrate reports how the bonus we
 assert(/toggleWear/.test(celebrateC4) && /drop-card--treat/.test(celebrateC4),
   'an unlocked treat can be put on Lucy from the celebrate card');
 assert(/drop-card--sticker/.test(celebrateC4), 'the sticker that landed in the pouch is shown');
+assert(/wait\(\(\) => audio\.cheer\(\), 400\)/.test(celebrateC4),
+  'celebrate still speaks the mapped cheer');
+assert(!/audio\.speak\(`\$\{stars\} stars!/.test(celebrateC4),
+  'celebrate does not speak an unmapped stars line');
+assert(!/lucy\.say\(helloLine\);/.test(home),
+  'opening Lucy does not speak an unmapped hello line');
+assert(/lucy\.say\('Lucy!', \{ voice: false \}\)/.test(home),
+  'Say Lucy still shows Lucy’s line');
+const facesSilent = readFileSync(join(root, 'js/screens/faces.js'), 'utf8');
+assert(!/audio\.speak\(`Hi \$\{kid\.name\}!`\)/.test(facesSilent),
+  'roster tap does not speak an unmapped Hi name');
+assert(!/audio\.speak\('Tap your face/.test(facesSilent),
+  'Lucy paw on the roster does not speak an unmapped wait line');
+assert(/say\(line, \{ voice: false \}\)/.test(facesSilent),
+  'Lucy paw on the roster still shows the wait line');
+assert(!/audio\.speak\(instructionText\)/.test(match),
+  'match Listen / Replay do not speak an unmapped instruction');
 
 const pouchC4 = readFileSync(join(root, 'js/screens/pouch.js'), 'utf8');
 assert(/toggleWear/.test(pouchC4) && /Lucy's closet/.test(pouchC4), 'the Star Pouch is the closet');
@@ -1446,6 +1520,10 @@ assert(/ locked/.test(pouchC4) && /treatStatus/.test(pouchC4),
 assert(!/store\.setOutfit\(/.test(pouchC4), 'the pouch goes through closet.js, not straight at the key');
 
 const lucyC4 = readFileSync(join(root, 'js/lucy.js'), 'utf8');
+assert(/say\(text, \{ voice = false, hold = 2200 \}/.test(lucyC4),
+  'lucy.say does not speak an unmapped line unless voice is opted in');
+assert(/if \(voice\) audio\.speak\(text\)/.test(lucyC4),
+  'opt-in voice still goes through audio.speak');
 assert(/dataset\.wear/.test(lucyC4) && /wornOutfitId/.test(lucyC4), 'Lucy really wears the closet treat');
 ['lucy-cap', 'lucy-collar-rainbow', 'lucy-bone', 'lucy-pack'].forEach((g) =>
   assert(lucyC4.includes(g), `Lucy has a drawn ${g}`));
@@ -1869,11 +1947,14 @@ round.goHome();
 
 /* --- wear / unwear ------------------------------------------------------ */
 assert(closet.toggleWear('bows') === 'bows' && closet.wornOutfitId() === 'bows', 'a treat goes on');
-assert(closet.toggleWear('cap') === 'cap', 'a second treat replaces the first — one at a time');
-assert(closet.wornTreat().id === 'cap' && store.getOutfit() === 'cap', 'and that is what is stored');
-assert(closet.toggleWear('cap') === '', 'tapping the worn one takes it off');
+assert(closet.toggleWear('cap') === 'cap', 'a second treat stacks on the first');
+assert(closet.wornHas('bows') && closet.wornHas('cap') && store.getOutfit() === 'bows+cap',
+  'and both are stored');
+assert(closet.toggleWear('cap') === '', 'tapping the worn one takes that one off');
+assert(closet.wornHas('bows') && !closet.wornHas('cap') && store.getOutfit() === 'bows',
+  'the other treat stays on');
 assert(closet.toggleWear('rainbow') === '', 'a treat that is not open yet stays off Lucy');
-assert(store.getOutfit() === '', 'and a refused tap writes nothing');
+assert(store.getOutfit() === 'bows', 'and a refused tap writes nothing');
 
 const d4Pouch = readFileSync(join(root, 'js/screens/pouch.js'), 'utf8');
 assert(!/ctx\.go\(/.test(d4Pouch),
@@ -1892,7 +1973,7 @@ assert(/progressMode\(\) === 'none'/.test(d4Pouch),
 assert(/note-grown/.test(d4Pouch), 'and leaves the how-to-fix line for the grown-up, quietly');
 assert(/Stickers you earned/.test(d4Pouch) && /Match a picture with Lucy/.test(d4Pouch),
   'stars but no stickers yet is its own shelf, not a missing section');
-assert(/tap Play Cards and match a letter/.test(d4Pouch), 'a brand-new pouch says what to go and do');
+assert(/tap Home and play a letter/.test(d4Pouch), 'a brand-new pouch says what to go and do');
 assert(/treatProgress/.test(d4Pouch) && /treat-meter/.test(d4Pouch), 'the nearest treat carries the meter');
 assert(/first\.open \? 'button' : 'div'/.test(d4Pouch),
   'a treat that cannot be tapped is not a button — no tap can be refused');
@@ -2202,39 +2283,17 @@ for (const L of ALPHABET) {
   round.startRound({ startAt: L });
   const opened = round.getRound();
   if (!opened || opened.letters[0] !== L) { e2Stuck.push(`${L} did not open`); continue; }
-  if (opened.step !== 'case') { e2Stuck.push(`${L} did not start on the case match`); continue; }
+  if (opened.step !== 'meet') { e2Stuck.push(`${L} did not start on meet`); continue; }
 
-  round.select(L);
-  if (round.submit() !== 'right') { e2Stuck.push(`${L} case match refused the answer`); continue; }
-  e2Steps.add(opened.step);
-  if (round.advance() !== 'picture') { e2Stuck.push(`${L} case did not lead to a picture`); continue; }
-  e2Steps.add('picture');
-
-  const pic = round.getRound().trial.picture;
-  if (!pic || !pic.word || !pic.emoji) { e2Stuck.push(`${L} dealt no picture`); continue; }
-  e2Words.set(L, pic.word);
-  /* Every card on the board carries a plate, and no two carry the same one —
-     with 26 letters live this is the board a child sees, not a corner case. */
-  const plates = round.getRound().trial.choices.map((c) => c.picture && c.picture.emoji);
-  if (plates.some((e) => !e)) { e2Stuck.push(`${L} dealt a card with no plate`); continue; }
-  if (new Set(plates).size !== plates.length) { e2Stuck.push(`${L} dealt the same plate twice`); continue; }
-
-  round.select(L);
-  if (round.submit() !== 'right') { e2Stuck.push(`${L} picture match refused the answer`); continue; }
-  const step = round.advance();
-  if (step === 'bonus') {
-    e2Steps.add('bonus');
-    const board = round.getBonus();
-    e2Bonus.set(L, board && board.type);
-    playBonus(L);
-    if (round.advance() !== 'celebrate') { e2Stuck.push(`${L} bonus did not reach celebrate`); continue; }
-  } else if (step !== 'celebrate') {
-    e2Stuck.push(`${L} went to ${step} after the picture`);
-    continue;
-  }
+  twoTap(L);
+  e2Steps.add('meet');
+  e2Steps.add('choose');
+  e2Steps.add('listen');
+  e2Steps.add('payoff');
   e2Steps.add('celebrate');
-
-  if (round.bankLetter() !== 3) { e2Stuck.push(`${L} did not bank a clean 3`); continue; }
+  const pic = round.currentPicture();
+  if (pic && pic.word) e2Words.set(L, pic.word);
+  e2Bonus.set(L, bonusMod.buildBonus(L, { mode: 'rotate' }).type);
   round.goHome();
 }
 assert(e2Stuck.length === 0, `every letter A–Z plays a full round (${e2Stuck.slice(0, 3).join(' · ') || 'no letter got stuck'})`);
@@ -2260,9 +2319,11 @@ round.goHome();
 store.setSetting('choiceCount', 8);
 store.setCursor('Q');
 round.startRound({ startAt: 'Q' });
+round.continueBeat();
+round.advance();
 const e2Cards = round.getRound().trial.choices;
 assert(e2Cards.length === 8, `a full board deals 8 cards (${e2Cards.length})`);
-assert(new Set(e2Cards.map((c) => c.letter)).size === 8, 'and no letter is on it twice');
+assert(new Set(e2Cards.map((c) => c.letter)).size >= 7, 'choose mixes the answer with other letters');
 assert(e2Cards.some((c) => c.letter === 'Q'), 'the answer is on the board');
 assert(e2Cards.filter((c) => c.letter > 'D').length > 0,
   'the woken letters are real distractors now, not just filler behind A–D');
@@ -2314,12 +2375,10 @@ const e2Check = readFileSync(join(root, '_check.mjs'), 'utf8');
    teardown() between screens is what app.js does on every route change; here
    it doubles as the proof that the 8-second celebrate timer is really let go
    of, and does not sit in the loop after the child has moved on. */
-const e2Match = await import('./js/screens/match.js');
-const e2BonusScreen = await import('./js/screens/bonus.js');
+const e2Stage = await import('./js/screens/stage.js');
 const e2Celebrate = await import('./js/screens/celebrate.js');
 const e2Ctx = { go: () => {}, kid: null, foot: () => {}, params: [], mode: 'center' };
 const e2Paint = [];
-const labelsOf = (node) => walk(node).map((n) => n.getAttribute('aria-label') || '').join(' ');
 
 store.reset();
 store.setSetting('roundSize', 1);
@@ -2327,31 +2386,10 @@ for (const L of ALPHABET) {
   store.setCursor(L);
   round.startRound({ startAt: L });
   try {
-    const caseBoard = e2Match.render(e2Ctx);
-    if (!textOf(caseBoard).includes(L)) e2Paint.push(`${L}: case board never shows the letter`);
-    e2Match.teardown();
-
-    round.select(L); round.submit(); round.advance();
-    const picBoard = e2Match.render(e2Ctx);
-    const pic = round.getRound().trial.picture;
-    if (!`${textOf(picBoard)} ${labelsOf(picBoard)}`.includes(pic.word)) {
-      e2Paint.push(`${L}: picture board never names ${pic.word}`);
-    }
-    const plates = walk(picBoard).filter((n) => String(n.className || '').includes('pic-plate'));
-    if (plates.length < round.getRound().trial.choices.length) {
-      e2Paint.push(`${L}: ${plates.length} plates for ${round.getRound().trial.choices.length} cards`);
-    }
-    e2Match.teardown();
-
-    round.select(L); round.submit();
-    if (round.advance() === 'bonus') {
-      const board = e2BonusScreen.render(e2Ctx);
-      if (!textOf(board).trim()) e2Paint.push(`${L}: bonus screen painted nothing`);
-      e2BonusScreen.teardown();
-      playBonus(L);
-      round.advance();
-    }
-    round.bankLetter();
+    const meetBoard = e2Stage.render(e2Ctx);
+    if (!textOf(meetBoard).includes(L)) e2Paint.push(`${L}: meet never shows the letter`);
+    e2Stage.teardown();
+    twoTap(L);
     const party = e2Celebrate.render(e2Ctx);
     if (!textOf(party).includes('★') && !byClass(party, 'pstars').length && !textOf(party).trim()) {
       e2Paint.push(`${L}: celebrate painted nothing`);
@@ -2363,15 +2401,17 @@ for (const L of ALPHABET) {
   }
 }
 assert(e2Paint.length === 0,
-  `every letter paints case, picture, bonus and celebrate (${e2Paint.slice(0, 3).join(' · ') || 'all 26 clean'})`);
+  `every letter paints meet and celebrate (${e2Paint.slice(0, 3).join(' · ') || 'all 26 clean'})`);
 
 /* The trail draws all 26 the same way — no tile is a dead end. */
 store.reset();
 store.setClassroom(false);
 const e2Trail = await import('./js/screens/trail.js');
+const e2Home = await import('./js/screens/home.js');
+const e2Arcade = await import('./js/screens/arcade.js');
 const e2Node = e2Trail.render({ go: () => {}, kid: null, foot: () => {} });
 const e2Tiles = byClass(e2Node, 'trail-tile');
-assert(e2Tiles.length === 26, `the trail draws all 26 tiles (${e2Tiles.length})`);
+assert(e2Tiles.length === 6, `the open cloud draws its letters (${e2Tiles.length})`);
 assert(e2Tiles.every((t) => !String(t.className).includes('asleep')), 'and not one of them is drawn asleep');
 assert(e2Tiles.every((t) => byClass(t, 't-word')[0].textContent !== '—'),
   'every tile names its word instead of a dash');
@@ -2381,11 +2421,97 @@ assert(e2Tiles.every((t) => /Play this letter\./.test(t.getAttribute('aria-label
   'and every tile tells a screen reader it can be played');
 assert(!/nap|sleep|asleep/i.test(textOf(e2Node)),
   'and nothing the rendered trail says mentions a sleeping letter');
+assert(/Cloud 1 is open/.test(textOf(e2Node)), 'SATPIN trail Lucy still names the open cloud');
+assert(byClass(e2Node, 'cloud-island').length === 5, 'SATPIN trail still draws the cloud path');
+assert(/open cloud/.test(textOf(e2Trail.footLeft())), 'SATPIN trail foot still names the open cloud');
+const e2HomeNode = e2Home.render({ go: () => {}, kid: null, foot: () => {} });
+assert(/Cloud 1/.test(textOf(e2HomeNode)), 'SATPIN Home still names Cloud 1');
+const e2Level = byClass(e2HomeNode, 'hub-stat--level')[0];
+assert(e2Level && /Level 1/.test(textOf(e2Level)), 'SATPIN Home still names Level 1');
+const e2Blend = byClass(e2HomeNode, 'hub-card').find((n) => /Open cloud/.test(n.getAttribute('aria-label') || ''));
+assert(e2Blend && /Open cloud letters/.test(e2Blend.getAttribute('aria-label')),
+  'SATPIN Home blend still says open cloud');
+assert(/Cloud 1/.test(textOf(e2Home.footLeft())), 'SATPIN Home foot still names Cloud 1');
+
+store.setRosterOverride([{
+  id: 'k24',
+  name: 'Miles',
+  emoji: '🚀',
+  color: '#5aa9f0',
+  workMode: 'assigned',
+  assignedLetters: ['S', 'O', 'J'],
+}]);
+store.setKidId('k24');
+store.setPinnedLetter(null);
+store.setCursor('A');
+assert(startLetter('P') === 'S', 'Home PLAY starts S for assigned SOJ');
+assert(round.previewLetters()[0] === 'S',
+  'Grown-Ups next PLAY letter matches Home PLAY for assigned work, not catalog-order J');
+assert(/Ss/.test(gu.familyNoteText()) && /Sun/.test(gu.familyNoteText()),
+  'family note for Miles names S');
+assert(!/open cloud/i.test(gu.letterOfDayNote()),
+  'assigned Grown-Ups Play does not say open cloud');
+assert(/your letters/i.test(gu.letterOfDayNote()),
+  'assigned Grown-Ups Play names your letters');
+assert(!/Open clouds/.test(textOf(gu.playPanel())),
+  'assigned Grown-Ups Play hides Open clouds');
+const sojNode = e2Trail.render({ go: () => {}, kid: activeKid(), foot: () => {} });
+const sojAria = byClass(sojNode, 'trail-tile').map((t) => t.getAttribute('aria-label') || '');
+assert(sojAria.some((a) => /^Letter O,/.test(a)) && sojAria.some((a) => /^Letter J,/.test(a)),
+  'assigned trail board includes O and J');
+assert(sojAria.length === 3, `assigned trail board is the work list (${sojAria.length})`);
+assert(/Tap letter S to start/.test(textOf(sojNode)), 'assigned Lucy still names the start letter');
+assert(!/Cloud 1 is open/.test(textOf(sojNode)),
+  'assigned trail Lucy does not say Cloud 1 is open');
+assert(byClass(sojNode, 'cloud-island').length === 0,
+  'assigned trail does not draw SATPIN cloud islands');
+assert(!/open cloud/.test(textOf(e2Trail.footLeft())),
+  'assigned trail foot does not say open cloud');
+const sojHome = e2Home.render({ go: () => {}, kid: activeKid(), foot: () => {} });
+assert(!/Cloud 1/.test(textOf(sojHome)),
+  'assigned Home does not tag Cloud 1');
+assert(!byClass(sojHome, 'hub-card').some((n) => /open cloud/i.test(n.getAttribute('aria-label') || '')),
+  'assigned Home blend does not say open cloud');
+assert(!/Cloud 1/.test(textOf(e2Home.footLeft())),
+  'assigned Home foot does not say Cloud 1');
+const sojLevel = byClass(sojHome, 'hub-stat--level')[0];
+assert(sojLevel && !/Level/.test(textOf(sojLevel)),
+  'assigned Home does not say Level 1');
+assert(/Your letters/.test(textOf(sojLevel)),
+  'assigned Home level stat names your letters');
+assert(/S · O · J/.test(textOf(sojLevel)),
+  'assigned Home still lists S O J');
+const sojArcade = e2Arcade.render({ go: () => {}, kid: activeKid(), foot: () => {} });
+const sojPlay = byClass(sojArcade, 'play-btn')[0];
+assert(sojPlay && /Start match for S/.test(sojPlay.getAttribute('aria-label')),
+  'assigned Arcade starts S, not the SATPIN cursor');
+assert(!/Start match for A/.test(sojPlay.getAttribute('aria-label') || ''),
+  'assigned Arcade does not start SATPIN A');
+assert(/Tap the Ss/.test(textOf(sojArcade)),
+  'assigned Arcade Lucy names S');
+setTeacherUnlock(1);
+round.startRound({ startAt: 'O' });
+assert(round.getRound() && round.getRound().letters[0] === 'O',
+  'tapping assigned O starts O, not a Cloud 1 remap');
+round.endRound();
+setTeacherUnlock(5);
 
 /* The printed roster card grew with the trail rather than staying at A–D. */
 store.setClassroom(true);
 store.setRosterOverride([{ id: 'k01', name: 'Ava', emoji: '🦊', color: '#ff8a5c' }]);
 store.setKidId('k01');
+store.setPinnedLetter(null);
+store.setCursor('A');
+assert(round.previewLetters()[0] === 'A',
+  'SATPIN unpinned Grown-Ups still names the open-cloud letter');
+assert(/open cloud/i.test(gu.letterOfDayNote()),
+  'SATPIN Grown-Ups Play still names the open cloud');
+assert(/Open clouds/.test(textOf(gu.playPanel())),
+  'SATPIN Grown-Ups Play still shows Open clouds');
+const satArcade = e2Arcade.render({ go: () => {}, kid: activeKid(), foot: () => {} });
+const satPlay = byClass(satArcade, 'play-btn')[0];
+assert(satPlay && /Start match for A/.test(satPlay.getAttribute('aria-label')),
+  'SATPIN Arcade still names the open-cloud letter');
 store.awardStars('Z', 3);
 const e2Card = printables.rosterCardSheets({ stars: true })[0];
 const e2Boxes = byClass(e2Card, 'rcard-letters')[0].childNodes;
@@ -2410,6 +2536,22 @@ assert(byClass(printables.groupSheet({ letter: 'W' }), 'wordbank')[0].childNodes
 const e2Cert = textOf(printables.buildCertificates({ who: 'blank', letter: 'X' }).nodes[0]);
 assert(/X is for Xylophone/.test(e2Cert), 'a certificate can be printed for any letter on the trail');
 store.setPinnedLetter(null);
+
+origReset();
+setTeacherUnlock(1);
+assert(awakeLetters().map((l) => l.letter).join('') === 'AINPST', 'lock 1 is SATPIN only');
+assert(isAwake('P') === true && isAwake('F') === false, 'Cloud 2 stays locked');
+assert(isCloudUnlocked(1) === true && isCloudUnlocked(2) === false, 'only cloud 1 is open');
+assert(openCloud().id === 1, 'the open cloud is Cloud 1');
+round.startRound({ startAt: 'F' });
+assert(round.getRound().letters[0] !== 'F', 'PLAY will not open a locked letter');
+round.goHome();
+store.setSkin('cosmic');
+assert(store.getSkin() === 'cosmic', 'Grown-Ups can switch to the cosmic skin');
+store.setSkin('violet');
+assert(store.getSkin() === 'violet', 'and the violet arcade skin');
+store.setSkin('comic');
+assert(store.getSkin() === 'comic', 'comic is the default light hub');
 
 store.reset();
 

@@ -1,0 +1,27 @@
+{
+  "origin": "http://127.0.0.1:4174",
+  "pin": "rsabc-shell-v38-el-beds",
+  "fetched": {
+    "music-loop.wav": { "bytes": 441044, "duration": 10 },
+    "sfx-cheer.wav": { "bytes": 44144, "duration": 1 }
+  },
+  "headerMusicBeforeUnlock": { "music": true, "sfx": true, "voice": true, "unlocked": false },
+  "afterPlay": {
+    "unlocked": true,
+    "musicLoop": { "loop": true, "duration": 10, "frames": 480000, "rate": 48000 }
+  },
+  "testCheerBothOn": {
+    "starts": [1.0, 0.7],
+    "plays": ["audio/lucy-cheer-6.mp3"]
+  },
+  "testCheerSfxOff": {
+    "hitDurations": [],
+    "plays": ["audio/lucy-cheer-2.mp3"]
+  },
+  "testCheerVoiceOff": {
+    "starts": [1.0, 0.7],
+    "plays": []
+  },
+  "testNudgeVoiceOff": { "starts": [0.7], "plays": [] },
+  "testStars": { "starts": [0.709, 0.709, 0.709] }
+}

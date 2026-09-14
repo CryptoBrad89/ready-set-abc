@@ -52,7 +52,7 @@ if (q.get('bonus')) {
   localStorage.setItem('rsabc.settings', JSON.stringify(s));
 }
 /* outfit=bows|specs|bone|cap|rainbow|pack dresses Lucy from the closet;
-   an empty ?outfit= takes it off again. */
+   plus-joined ids mix (outfit=bows+cap). An empty ?outfit= takes it off. */
 if (q.has('outfit')) {
   const wear = q.get('outfit');
   if (wear) localStorage.setItem('rsabc.outfit', JSON.stringify(wear));

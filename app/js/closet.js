@@ -1,14 +1,15 @@
 /* Lucy's closet — the Star Pouch reward shelf.
 
    Stars are the only currency and they are never spent: a treat unlocks at a
-   star count and stays unlocked. One treat at a time can be WORN, and Lucy
-   really wears it (js/lucy.js draws it) on every screen — that is the whole
-   dress-up loop. No store, no coins, no timers (PLAN §research: durable
+   star count and stays unlocked. Kids mix and match. Each unlocked treat is
+   on or off on its own, and Lucy really wears the set (js/lucy.js paints it)
+   on every screen. No store, no coins, no timers (PLAN §research: durable
    dress-ups, not currency shops).
 
-   The worn id lives in rsabc.outfit. store.js only checks that it is a slug —
-   the list of real treats is here, so a treat that is renamed or removed just
-   falls off Lucy instead of breaking the pouch. */
+   The worn ids live in rsabc.outfit as a JSON array. Old tablets stored one
+   slug string; store.js still reads that. store.js only checks that each id
+   is a slug — the list of real treats is here, so a treat that is renamed
+   or removed just falls off Lucy instead of breaking the pouch. */
 
 import { store } from './store.js';
 
@@ -57,26 +58,41 @@ export function newlyUnlocked(before, after) {
   return TREATS.filter((t) => before < t.need && after >= t.need);
 }
 
-/* What Lucy is actually wearing. A stored id the child has not unlocked (or
-   that no longer exists) wears nothing — stars off means plain Lucy. */
+function asIdList(worn) {
+  if (Array.isArray(worn)) return worn.map((part) => (typeof part === 'string' ? part : part?.id || '')).filter(Boolean);
+  return String(worn || '').split(/[+,\s]+/).filter(Boolean);
+}
+
+/* What Lucy is actually wearing. Stored ids the child has not unlocked (or
+   that no longer exist) wear nothing — stars off means plain Lucy. */
+export function wornTreats(total = store.totalStars()) {
+  const ids = new Set(store.getOutfits());
+  return TREATS.filter((t) => ids.has(t.id) && total >= t.need);
+}
+
 export function wornTreat(total = store.totalStars()) {
-  const treat = treatById(store.getOutfit());
-  if (!treat || total < treat.need) return null;
-  return treat;
+  return wornTreats(total)[0] || null;
 }
 
 export function wornOutfitId(total = store.totalStars()) {
-  const treat = wornTreat(total);
-  return treat ? treat.id : '';
+  return wornTreats(total).map((t) => t.id).join('+');
 }
 
-/* Tap an unlocked treat to put it on; tap the worn one to take it off.
-   Returns the id Lucy is wearing after the tap ('' = plain Lucy). */
+export function wornHas(id, total = store.totalStars()) {
+  return wornTreats(total).some((t) => t.id === id);
+}
+
+/* Tap an unlocked treat to add or take it off. Other worn treats stay.
+   Returns the tapped id when that treat is now on, else '' so pouch and
+   celebrate can still say `now === treat.id`. */
 export function toggleWear(id, total = store.totalStars()) {
-  if (!isUnlocked(id, total)) return wornOutfitId(total);
-  const next = store.getOutfit() === id ? '' : id;
-  store.setOutfit(next);
-  return wornOutfitId(total);
+  if (!isUnlocked(id, total)) return '';
+  const next = wornTreats(total).map((t) => t.id);
+  const i = next.indexOf(id);
+  if (i >= 0) next.splice(i, 1);
+  else next.push(id);
+  store.setOutfits(next);
+  return next.includes(id) ? id : '';
 }
 
 /* --------------------------------------------------------- kid-facing words
@@ -91,7 +107,7 @@ const plural = (n) => (n === 1 ? 'star' : 'stars');
 export function treatStatus(treat, total = store.totalStars(), worn = wornOutfitId(total)) {
   if (!treat) return null;
   if (total >= treat.need) {
-    const on = worn === treat.id;
+    const on = asIdList(worn).includes(treat.id);
     return {
       state: on ? 'worn' : 'ready',
       open: true,
@@ -129,8 +145,13 @@ export function treatProgress(treat, total = store.totalStars()) {
 
 /* The one line above the shelf. It always has something true and warm to say,
    including at nought stars and with all six open. */
-export function closetLine(total = store.totalStars(), worn = wornTreat(total)) {
-  if (worn) return `Lucy is wearing: ${worn.name} · tap it again to take it off`;
+export function closetLine(total = store.totalStars(), worn = wornTreats(total)) {
+  const list = Array.isArray(worn) ? worn : (worn ? [worn] : []);
+  if (list.length === 1) return `Lucy is wearing: ${list[0].name} · tap it again to take it off`;
+  if (list.length > 1) {
+    const names = list.map((t) => t.name).join(', ');
+    return `Lucy is wearing: ${names} · tap to add or take off`;
+  }
   const next = nextTreat(total);
   if (!next) return 'Every treat is open! Tap one to dress Lucy';
   const need = starsToNext(total);

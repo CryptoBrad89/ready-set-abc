@@ -10,12 +10,13 @@ export const CSV_FORMAT = 'rsabc-csv-v1';
 const COLUMNS = [
   'kind', 'key', 'value',
   'id', 'name', 'emoji', 'color',
+  'workMode', 'assignedLetters', 'arcadeLocked',
   'letter', 'stars', 'rounds', 'bestStars', 'lastAt', 'notes',
   'stickerId', 'word', 'stickerEmoji',
 ];
 
 const SETTING_KEYS = [
-  'roundSize', 'choiceCount', 'showWords', 'caseMode', 'hintAfter', 'progressMode', 'bonusMode',
+  'roundSize', 'choiceCount', 'showWords', 'caseMode', 'hintAfter', 'progressMode', 'bonusMode', 'cloudUnlock',
 ];
 
 const DEVICE = '_device';
@@ -145,6 +146,7 @@ export function snapshotToCsv(snap) {
   push({ kind: 'setting', key: 'hideChrome', value: boolCell(!!snap.hideChrome) });
   push({ kind: 'setting', key: 'classroom', value: boolCell(!!snap.classroom) });
   push({ kind: 'setting', key: 'outfit', value: snap.outfit || '' });
+  push({ kind: 'setting', key: 'skin', value: snap.skin || 'comic' });
   push({ kind: 'setting', key: 'pinnedLetter', value: snap.pinnedLetter || '' });
   push({ kind: 'setting', key: 'nextAbcIndex', value: snap.nextAbcIndex ?? 0 });
   push({ kind: 'setting', key: 'kidId', value: snap.kidId || '' });
@@ -174,6 +176,9 @@ export function snapshotToCsv(snap) {
       name: kid.name,
       emoji: kid.emoji,
       color: kid.color,
+      workMode: kid.workMode || '',
+      assignedLetters: Array.isArray(kid.assignedLetters) ? kid.assignedLetters.join(' ') : '',
+      arcadeLocked: boolCell(!!kid.arcadeLocked),
       lastAt: rec.lastPlayed || '',
       notes: notes[kid.id] || '',
     });
@@ -237,6 +242,7 @@ export function csvToSnapshot(textOrRows) {
     hideChrome: false,
     classroom: false,
     outfit: '',
+    skin: 'comic',
     pinnedLetter: null,
     nextAbcIndex: 0,
     kidId: null,
@@ -274,6 +280,7 @@ export function csvToSnapshot(textOrRows) {
       else if (key === 'hideChrome') snap.hideChrome = value;
       else if (key === 'classroom') snap.classroom = value;
       else if (key === 'outfit') snap.outfit = String(value || '').trim();
+      else if (key === 'skin') snap.skin = String(value || 'comic').trim();
       else if (key === 'pinnedLetter') snap.pinnedLetter = value || null;
       else if (key === 'nextAbcIndex') snap.nextAbcIndex = value;
       else if (key === 'kidId') snap.kidId = value || null;
@@ -298,6 +305,9 @@ export function csvToSnapshot(textOrRows) {
         name,
         emoji: field(row, 'emoji') || '🐾',
         color: field(row, 'color') || '#5aa9f0',
+        workMode: field(row, 'workMode'),
+        assignedLetters: field(row, 'assignedLetters'),
+        arcadeLocked: field(row, 'arcadeLocked'),
       });
       const notes = field(row, 'notes');
       if (notes) snap.notes[id] = notes;
