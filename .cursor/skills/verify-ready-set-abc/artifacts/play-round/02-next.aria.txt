@@ -1,0 +1,14 @@
+url: http://127.0.0.1:4173/index.html#/play
+body[data-screen]: case
+Ready Set ABC chrome visible. Footer: rsabc-shell-v25-az-art
+
+- text: Tap Big Letter / Tap b
+- text: Round 2/3
+- paragraph: Find the big letter! Tap your answer, then tap little b to match!
+- text: Sounds like: /b/ as in Ball
+- img "Lucy the golden retriever"
+- button "Little Letter b. Tap here to complete the match."
+- button "Letter K, /k/ as in Key"
+- button "Letter U, /ʌ/ as in Umbrella"
+- button "Letter B, /b/ as in Ball"
+- button "Match B & b!"

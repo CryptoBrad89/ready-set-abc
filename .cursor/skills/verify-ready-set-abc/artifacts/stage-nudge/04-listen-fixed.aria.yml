@@ -1,0 +1,11 @@
+feature: stage-nudge
+entry: same round listen miss
+origin: http://127.0.0.1:4174
+screen: listen
+body[data-screen]: listen
+miss: Not this sound
+after:
+  bubble: Not quite!
+  voice: http://127.0.0.1:4174/audio/lucy-nudge-1.mp3
+  NUDGES[0]: Not quite!
+  match: true

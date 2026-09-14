@@ -1,0 +1,8 @@
+{
+  "tap": {
+    "generation_id": "KnEI3WPa8UR5pc9MQS9m",
+    "session_id": "WI4LTripSbjQXIna5QQF",
+    "max_s": 0.22,
+    "url": "https://storage.googleapis.com/xi-backend/database/workspace/f6b8388b0f594989a6bcd0355a6b6e15/content_generation/WI4LTripSbjQXIna5QQF/KnEI3WPa8UR5pc9MQS9m/content.mp3?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=xi-backend-prod%40xi-labs.iam.gserviceaccount.com%2F20260912%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260912T015113Z&X-Goog-Expires=7200&X-Goog-SignedHeaders=host&X-Goog-Signature=b5cae3d1dd0aae2b5cbb6f939584b49b43d62b0e071c7e91291439b404e8a216bd6a31d67ef75ff29c29c7e91291439b404e8a216bd6a31d67ef75ff29c29c7a64ef5211f2928b14a7d31eb59c6a8687bbf64353c7daf28a052e3560152c2abc144d527ca98cb030cc5385ed1ffb86a893460ab2c9952139db977ded08bd381eaaee0ca63ee012c95a8f840fae6b52601984295aa9fbcb9910bc0033a17563a504b05f556d70af02d17fadfe8db6a086c45792c6fe35287069876b5ef2a6e58ddec01f52702450457a1fb74afe42fd5a1928e90dd37909d9db854d589ccf49f3bddf282549eddbf7b1605844543219d82a01b149e4c5eb02815b279a0bc02a889cc0ea0aaca18bd28f3e2b66b8f87c71bfa18bcca"
+  }
+}

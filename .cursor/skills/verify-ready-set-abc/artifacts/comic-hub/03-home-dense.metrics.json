@@ -1,0 +1,22 @@
+{
+  "ts": "2026-09-12T00:31:11.078Z",
+  "origin": "http://127.0.0.1:4173",
+  "w": 1280,
+  "h": 800,
+  "skin": "comic",
+  "screen": "home",
+  "outfit": "bows+cap",
+  "lucySrc": "art/lucy/lucy-cap.jpg",
+  "layers": ["art/lucy/layer-headband.png"],
+  "svgLucy": false,
+  "cards": [
+    {"title": "Letters P & M Workshop", "top": 546, "bottom": 670, "inView": true},
+    {"title": "The Sound of P", "top": 552, "bottom": 664, "inView": true},
+    {"title": "Sounds S, A, T", "top": 552, "bottom": 664, "inView": true},
+    {"title": "Case Match Arena", "top": 569, "bottom": 647, "inView": true},
+    {"title": "Lucy's Picnic Day", "top": 709, "bottom": 783, "inView": true},
+    {"title": "Rhymes & Songs", "top": 709, "bottom": 783, "inView": true},
+    {"title": "Coloring Canvas", "top": 709, "bottom": 783, "inView": true},
+    {"title": "Puppy Treat Match", "top": 709, "bottom": 783, "inView": true}
+  ]
+}

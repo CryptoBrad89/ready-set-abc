@@ -1,0 +1,22 @@
+{
+  "name": "Ready Set ABC",
+  "short_name": "ReadySetABC",
+  "description": "A high-energy phonics and letter-recognition adventure for preschoolers with Lucy the golden retriever.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#facc15",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "{{DATA:IMAGE:IMAGE_203}}",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "{{DATA:IMAGE:IMAGE_204}}",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

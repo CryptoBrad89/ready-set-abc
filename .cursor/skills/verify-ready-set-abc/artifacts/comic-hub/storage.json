@@ -1,0 +1,23 @@
+{
+  "feature": "comic-hub",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": "1280x800",
+  "shell": "rsabc-shell-v28-closet",
+  "pouchTapOutfit": ["bows", "cap"],
+  "smokePlusOutfit": "bows+cap",
+  "lucySrc": "art/lucy/lucy-cap.jpg",
+  "layers": ["art/lucy/layer-headband.png"],
+  "svgLucy": false,
+  "giantPlay": false,
+  "skinsTapped": ["comic", "cosmic", "violet"],
+  "cardsInViewAt1280x800": [
+    "Letters P & M Workshop",
+    "The Sound of P",
+    "Sounds S, A, T",
+    "Case Match Arena",
+    "Lucy's Picnic Day",
+    "Rhymes & Songs",
+    "Coloring Canvas",
+    "Puppy Treat Match"
+  ]
+}

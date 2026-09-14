@@ -1,0 +1,34 @@
+- generic [ref=f1e2]:
+  - banner [ref=f1e3]:
+    - button "Ready Set ABC — home. Hold for Grown-Ups." [ref=f1e4] [cursor=pointer]:
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: Ready Set ABC
+        - generic [ref=f1e14]: Pre-K Phonics with Lucy
+    - navigation "Sections" [ref=f1e15]:
+      - button "Home" [ref=f1e217] [cursor=pointer]
+      - button "Letters & Phonics" [ref=f1e219] [cursor=pointer]
+      - button "Lucy's Closet" [ref=f1e221] [cursor=pointer]
+      - button "Storybooks" [ref=f1e223] [cursor=pointer]
+      - button "Arcade" [ref=f1e225] [cursor=pointer]
+    - generic [ref=f1e26]:
+      - group "Sound" [ref=f1e27]:
+        - button "Music" [ref=f1e28] [cursor=pointer]
+        - button "Sound effects" [pressed] [ref=f1e31] [cursor=pointer]
+        - button "Lucy voice" [pressed] [ref=f1e36] [cursor=pointer]
+      - button "Grown-Ups" [ref=f1e41] [cursor=pointer]
+  - main [ref=f1e47]:
+    - generic [ref=f1e227]:
+      - generic [ref=f1e228]:
+        - generic [ref=f1e229]: 0 today
+        - generic [ref=f1e232]: P
+        - generic [ref=f1e233]: 1 / 4
+      - button "Letter P. Continue." [ref=f1e237] [cursor=pointer]: PPpTap to play
+      - generic [ref=f1e238]:
+        - generic [ref=f1e239]:
+          - generic [ref=f1e240] [cursor=pointer]:
+            - img "Lucy the golden retriever"
+          - button "Lucy paws" [active] [ref=f1e241] [cursor=pointer]
+        - paragraph [ref=f1e249]: This is P. It says /p/.
+  - contentinfo [ref=f1e100]:
+    - generic [ref=f1e101]: P · meet
+    - generic [ref=f1e105]: © Ready Set ABC · Lucy Play Learning Lab · rsabc-shell-v28-closet

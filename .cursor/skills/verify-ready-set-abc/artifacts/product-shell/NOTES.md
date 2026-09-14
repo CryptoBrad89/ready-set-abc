@@ -17,15 +17,25 @@ Smoke `_smoke.html?reset=1`. Doctor OK on pid 75960.
 - Locked Arcade wobble. Tab `Arcade, locked` stays on `#/home`, class `tab is-locked wobble`. Puppy Treat Match stays on Home, CTA Locked. `09-arcade-lock-wobble.png`.
 - `#/arcade` with lock. Lands on Arcade heading, Lucy `Arcade is locked. Ask a grown-up.`, play `Arcade, locked`. Does not start a round. `10-arcade-hash-locked.png`.
 
-## Not yet closed in code
+## Closed after writer (re-proof on 4174)
 
-- CSV drop of work fields. `csv.js` kid rows still omit `workMode`, `assignedLetters`, `arcadeLocked`. Import would fall back to SATPIN / Arcade open.
-- SAT blend card still says `Sounds S, A, T` / `Open cloud letters S, A, T` on Miles Home. Assigned path is S O J.
-- Trail still starts any open-cloud letter. It does not consult `workLetters`.
-- `#/letter/P` with empty session starts meet. `rsabc.kid` null, `rsabc.session` null, `body[data-screen]=meet`. Skips roster. `11-letter-skip-roster.png`.
+Hard-reset `_smoke.html?reset=1` after unregistering the service worker (pin stayed v36). Same origin, same viewport.
 
-## Bugs seen (reproduced)
+- Roster. No text node `null`. `#who-slot` empty. No Friend chip. `12-roster-fixed.png`.
+- `#rotate` at 1280×800. `aria-hidden="true"`, `inert=true`, `display:none`. Cursor snapshot still lists the string. The attributes are set.
+- `#/letter/P` with empty session. `body[data-screen]=faces`, heading `Who is playing?`, no meet. Hash stays `#/letter/P`. `13-letter-p-roster.png`.
+- Class path. Miles work mode Assigned, letters `S O J`, Arcade switch released (locked). Kid row in `rsabc.roster` is `{ workMode: assigned, assignedLetters: [S,O,J], arcadeLocked: true }`.
+- CSV after that save. Kid line `kid,,,k24,Miles,…,assigned,S O J,true,…`. Header includes `workMode,assignedLetters,arcadeLocked`.
+- Miles Home. `Welcome back, Miles!` PLAY `Play letter S`. Blend aria `Open cloud letters S, O, J`. Arcade tab `Arcade, locked`. Puppy Treat Match locked. `15-miles-home-soj.png`.
+- Trail. S playable. A T P I N `is-locked`. Tap A stays `#/trail`, no round. `16-miles-trail-locked.png`.
+- Locked Arcade tab from trail stays `#/trail`. `#/arcade` with lock. Heading Arcade, Lucy `Arcade is locked. Ask a grown-up.`, card Locked. Hash does not bounce. `17-miles-arcade-locked.png`.
 
-- Roster footer prints the word `null` under Miles. Root cause measured: `faces.js` calls native `root.append(..., hasSession() ? back : null)`. `Element.append(null)` becomes the text `null`. `06-roster-bugs.png`.
-- Roster still shows a FRIEND who-chip. `paintWho` always paints. `chrome.who: false` only switches button vs div. `who-slot` text `friend Pre-K`.
-- Accessibility tree still names `Turn the tablet sideways` at 1280×800. `#rotate` is `display:none` with no `aria-hidden` / `inert`.
+## Still open (not this slice)
+
+None for assigned work on the trail board. Other clip-less `audio.speak` callers are a different leftover.
+
+## Bugs seen (reproduced, then fixed)
+
+- Roster footer printed the word `null` under Miles. `faces.js` called native `root.append(..., hasSession() ? back : null)`. `Element.append(null)` became the text `null`. Fixed. Was `06-roster-bugs.png`.
+- Roster showed a FRIEND who-chip. `paintWho` now clears `#who-slot` when `chrome.who === false`.
+- `#rotate` had `display:none` with no `aria-hidden` / `inert`. Now both are set on landscape.

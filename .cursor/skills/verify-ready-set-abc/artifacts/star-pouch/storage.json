@@ -1,0 +1,12 @@
+{
+  "feature": "star-pouch",
+  "entry": "_smoke.html?reset=1&classroom=0&stars=A3,B3,C3,D3&to=#/pouch",
+  "viewport": "1280x800",
+  "origin": "http://127.0.0.1:4173",
+  "shell": "rsabc-shell-v28-closet",
+  "rsabc.outfit": ["bows", "cap"],
+  "lucySrc": "art/lucy/lucy-cap.jpg",
+  "layers": ["art/lucy/layer-headband.png"],
+  "wear": "bows cap",
+  "notes": "Tapped Party bows then Ball cap. Both aria-pressed true. Cap plate plus headband overlay."
+}

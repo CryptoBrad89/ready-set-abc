@@ -1,0 +1,15 @@
+url: http://127.0.0.1:4173/index.html#/play
+body[data-screen]: picture
+Ready Set ABC chrome visible.
+
+- heading "Letter Trail: Aa"
+- text: Unit 1 · Phoneme Initial /æ/
+- generic "3 of 3 stars"
+- text: 0 Misses
+- img "Lucy the golden retriever"
+- paragraph: What starts with the /æ/ sound?
+- button "Letter Pair Aa. Tap here to complete the match."
+- button "Ambulance, starts with /æ/"
+- button "Rocket, starts with /r/"
+- button "Snake, starts with /s/"
+- button "Check Aa"

@@ -1,0 +1,83 @@
+- generic [ref=f6e2]:
+  - banner [ref=f6e3]:
+    - button "Ready Set ABC — home. Hold for Grown-Ups." [ref=f6e4] [cursor=pointer]:
+      - generic [ref=f6e12]:
+        - generic [ref=f6e13]: Ready Set ABC
+        - generic [ref=f6e14]: Pre-K Phonics with Lucy
+    - navigation "Sections" [ref=f6e15]:
+      - button "Home" [ref=f6e16] [cursor=pointer]
+      - button "Letters & Phonics" [ref=f6e18] [cursor=pointer]
+      - button "Lucy's Closet" [ref=f6e20] [cursor=pointer]
+      - button "Storybooks" [ref=f6e22] [cursor=pointer]
+      - button "Arcade" [ref=f6e24] [cursor=pointer]
+    - generic [ref=f6e26]:
+      - group "Sound" [ref=f6e27]:
+        - button "Music" [ref=f6e28] [cursor=pointer]
+        - button "Sound effects" [pressed] [ref=f6e31] [cursor=pointer]
+        - button "Lucy voice" [pressed] [ref=f6e36] [cursor=pointer]
+      - button "Grown-Ups" [ref=f6e41] [cursor=pointer]
+  - main [ref=f6e47]:
+    - generic [ref=f6e48]:
+      - generic [ref=f6e49]:
+        - generic [ref=f6e50]:
+          - paragraph [ref=f6e51]: Welcome back, friend!
+          - generic [ref=f6e52]:
+            - generic [ref=f6e53]: Pre-K Phonics
+            - generic [ref=f6e57]: Ready to play
+        - generic [ref=f6e60]:
+          - generic [ref=f6e61]: "0"
+          - generic [ref=f6e64]: Cloud 1
+          - generic [ref=f6e65]: Sound waits for PLAY
+      - generic [ref=f6e67]:
+        - generic [ref=f6e68]:
+          - generic [ref=f6e69]:
+            - generic:
+              - img "Lucy the golden retriever"
+            - button "Talk with Lucy" [ref=f6e70] [cursor=pointer]
+          - paragraph [ref=f6e78]: Hi friend! Let's find words that start with P!
+          - generic [ref=f6e79]: P
+          - generic [ref=f6e80]:
+            - button "Say \"Lucy\"" [ref=f6e81] [cursor=pointer]
+            - button "Friendly Woof" [ref=f6e86] [cursor=pointer]
+        - generic [ref=f6e91]:
+          - button "Play letter P. Tap to start sound." [ref=f6e92] [cursor=pointer]:
+            - generic [ref=f6e96]:
+              - generic [ref=f6e97]: Lucy's Pick
+              - generic [ref=f6e98]: Play Letter P
+              - generic [ref=f6e99]: Tap to Start Sound
+          - generic [aria-hidden] [ref=f6e100]: Lucy's treats
+      - heading "Phonics & Alphabet" [level=2] [ref=f6e102]
+      - generic [ref=f6e103]:
+        - button "Continue this cloud" [ref=f6e104] [cursor=pointer]:
+          - generic [ref=f6e105]: Cloud 1
+          - generic [ref=f6e106]: Continue Stage
+          - generic [ref=f6e107]: A · I · M
+        - button "The sound of P" [ref=f6e108] [cursor=pointer]:
+          - generic [ref=f6e109]: Phonics
+          - generic [ref=f6e110]: The Sound of P
+          - generic [ref=f6e111]: /p/
+        - button "Open cloud letters" [ref=f6e112] [cursor=pointer]:
+          - generic [ref=f6e113]: Cloud 1
+          - generic [ref=f6e114]: Sounds S, A, T
+          - generic [ref=f6e115]: Letters and Phonics path
+        - button "Start letter match" [ref=f6e116] [cursor=pointer]:
+          - generic [ref=f6e117]: Tap letters
+          - generic [ref=f6e118]: Case Match Arena
+          - generic [ref=f6e119]: Find P
+      - heading "Play more later" [level=2] [ref=f6e120]
+      - generic [ref=f6e121]:
+        - 'button "Coming soon Storybooks Later: read along. Today: P is for pictures." [ref=f6e122] [cursor=pointer]':
+          - generic [ref=f6e123]: Coming soon
+          - generic [ref=f6e124]: Storybooks
+          - generic [ref=f6e125]: "Later: read along. Today: P is for pictures."
+        - button "Coming soon Listen & Sing Plays this letter’s listen beat." [ref=f6e126] [cursor=pointer]:
+          - generic [ref=f6e127]: Coming soon
+          - generic [ref=f6e128]: Listen & Sing
+          - generic [ref=f6e129]: Plays this letter’s listen beat.
+        - button "Coming soon Lucy's Canvas Closet dress-up lives here for now." [ref=f6e130] [cursor=pointer]:
+          - generic [ref=f6e131]: Coming soon
+          - generic [ref=f6e132]: Lucy's Canvas
+          - generic [ref=f6e133]: Closet dress-up lives here for now.
+  - contentinfo [ref=f6e134]:
+    - generic [ref=f6e135]: Cloud 1 · 0/24
+    - generic [ref=f6e139]: © Ready Set ABC · Lucy Play Learning Lab · rsabc-shell-v26-satpin

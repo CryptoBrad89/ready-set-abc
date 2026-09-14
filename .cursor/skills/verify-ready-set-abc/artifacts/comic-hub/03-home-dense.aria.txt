@@ -1,0 +1,15 @@
+- button "Home" [current]
+- button "Letters & Phonics"
+- button "Lucy's Closet"
+- button "Storybooks"
+- button "Arcade"
+- button "Play letter P. Tap to start sound."
+- button "The sound of P"
+- button "Open cloud letters S, A, T"
+- button "Start letter match"
+- heading "Phonics & Alphabet"
+- heading "Storybooks & Fun Games"
+entry: http://127.0.0.1:4173/_smoke.html?reset=1&classroom=0&stars=A3,B3,C3,D3&outfit=bows%2Bcap
+viewport: 1280x800
+screen: home
+skin: comic

@@ -1,0 +1,61 @@
+- generic [ref=f1e2]:
+  - banner [ref=f1e3]:
+    - button "Ready Set ABC — home. Hold for Grown-Ups." [ref=f1e4] [cursor=pointer]:
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: Ready Set ABC
+        - generic [ref=f1e14]: Pre-K Phonics with Lucy
+    - navigation "Sections" [ref=f1e15]:
+      - button "Home" [ref=f1e16] [cursor=pointer]
+      - button "Letters & Phonics" [ref=f1e18] [cursor=pointer]
+      - button "Lucy's Closet" [ref=f1e20] [cursor=pointer]
+      - button "Storybooks" [ref=f1e22] [cursor=pointer]
+      - button "Arcade" [ref=f1e24] [cursor=pointer]
+    - generic [ref=f1e26]:
+      - group "Sound" [ref=f1e27]:
+        - button "Music" [ref=f1e28] [cursor=pointer]
+        - button "Sound effects" [pressed] [ref=f1e31] [cursor=pointer]
+        - button "Lucy voice" [pressed] [ref=f1e36] [cursor=pointer]
+      - button "Grown-Ups" [ref=f1e41] [cursor=pointer]
+  - main [ref=f1e47]:
+    - generic [ref=f1e48]:
+      - generic [ref=f1e49]:
+        - generic [ref=f1e54]:
+          - generic [ref=f1e55]: "12"
+          - generic [ref=f1e56]: stars in the pouch
+        - generic [ref=f1e57]:
+          - paragraph [ref=f1e59]: Cap on! Ready, set, ABC!
+          - generic [ref=f1e62] [cursor=pointer]:
+            - img "Lucy the golden retriever"
+      - heading "Stickers you earned" [level=2] [ref=f1e63]
+      - generic [ref=f1e66]: Your stars are here! Match a picture with Lucy to earn a sticker too.
+      - generic [ref=f1e67]:
+        - heading "Lucy's closet" [level=2] [ref=f1e68]
+        - generic [ref=f1e72]: "Lucy is wearing: Party bows, Ball cap · tap to add or take off"
+      - generic [ref=f1e73]:
+        - button "Party bows. Lucy is wearing this. Tap to take it off." [pressed] [ref=f1e106] [cursor=pointer]:
+          - generic [ref=f1e75]: 🎀
+          - generic [ref=f1e76]: Party bows
+          - generic [ref=f1e77]: Lucy is wearing it!
+        - button "Teacher specs. Tap to put it on Lucy." [ref=f1e78] [cursor=pointer]:
+          - generic [ref=f1e79]: 👓
+          - generic [ref=f1e80]: Teacher specs
+          - generic [ref=f1e81]: Tap to wear
+        - button "Big bone. Tap to put it on Lucy." [ref=f1e82] [cursor=pointer]:
+          - generic [ref=f1e83]: 🦴
+          - generic [ref=f1e84]: Big bone
+          - generic [ref=f1e85]: Tap to wear
+        - button "Ball cap. Lucy is wearing this. Tap to take it off." [active] [pressed] [ref=f1e110] [cursor=pointer]:
+          - generic [ref=f1e87]: 🧢
+          - generic [ref=f1e88]: Ball cap
+          - generic [ref=f1e89]: Lucy is wearing it!
+        - generic "Rainbow collar. 6 more stars and it opens. You have 12 so far." [ref=f1e90]:
+          - generic [ref=f1e91]: 🌈
+          - generic [ref=f1e92]: Rainbow collar
+          - generic [ref=f1e93]: 6 more stars
+        - generic "School pack. Opens at 24 stars. You have 12 so far." [ref=f1e96]:
+          - generic [ref=f1e97]: 🎒
+          - generic [ref=f1e98]: School pack
+          - generic [ref=f1e99]: 24 stars opens it
+  - contentinfo [ref=f1e100]:
+    - generic [ref=f1e101]: Stars are saved on this device · Lucy wears party bows, ball cap
+    - generic [ref=f1e105]: © Ready Set ABC · Lucy Play Learning Lab · rsabc-shell-v28-closet

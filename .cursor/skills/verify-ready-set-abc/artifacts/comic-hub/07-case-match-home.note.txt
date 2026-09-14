@@ -1,0 +1,5 @@
+after: case-match
+screen: home
+hash: "#/home"
+origin: http://127.0.0.1:4173
+cdp: /Users/bradley/.cursor/browser-logs/cdp-response-Page.captureScreenshot-2026-09-12T00-33-16-959Z.json

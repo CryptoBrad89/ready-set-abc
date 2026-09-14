@@ -1,0 +1,18 @@
+{
+  "voice_id": "piI8Kku0DcvcL6TTSeQt",
+  "voice_name": "Flicker - Cheerful Fairy & Sparkly Sweetness",
+  "model_id": "eleven_multilingual_v2",
+  "flow_id": "xFFze2Za2mIB43Ktte58",
+  "clips": [
+    {"id": "cheer-1", "file": "lucy-cheer-1.mp3", "prompt": "Yes!", "generation_id": "JC8XhjqUwPhIq4KxCNsq", "session_id": "p8CoZUxbEPjrPk1OaSnS"},
+    {"id": "cheer-2", "file": "lucy-cheer-2.mp3", "prompt": "You got it!", "generation_id": "J1e3ONUAJY6GUdvvLWiF", "session_id": "99TKz0koYLF5wtUhzHza"},
+    {"id": "cheer-3", "file": "lucy-cheer-3.mp3", "prompt": "Excellent!", "generation_id": "dGcPO2eeYzpz2x5zbZoZ", "session_id": "lKvjyf8AUfGqM9P4LFIz"},
+    {"id": "cheer-4", "file": "lucy-cheer-4.mp3", "prompt": "Nice job!", "generation_id": "hXGPHtRHoiGrPynDlb6x", "session_id": "Oz2DbiO1jzrfVK4NzcbJ"},
+    {"id": "cheer-5", "file": "lucy-cheer-5.mp3", "prompt": "Woohoo!", "generation_id": "jzacDYWM7fbarwKNw7fi", "session_id": "IyAna4klfhA8Ag56tiJm"},
+    {"id": "cheer-6", "file": "lucy-cheer-6.mp3", "prompt": "High five!", "generation_id": "FtfbZAjpOpZ9EAYawOk4", "session_id": "Sz0kNpvcIoruDzuAcr4t"},
+    {"id": "nudge-1", "file": "lucy-nudge-1.mp3", "prompt": "Not quite!", "generation_id": "EpiG5S36JzdzxQbcWoTC", "session_id": "uBQd9lWkECAadSy0XrEt"},
+    {"id": "nudge-2", "file": "lucy-nudge-2.mp3", "prompt": "Try again!", "generation_id": "ZvGROQhbeY7H4oomAHp2", "session_id": "NMBIcnUSIS8GLcid4JFA"},
+    {"id": "nudge-3", "file": "lucy-nudge-3.mp3", "prompt": "Almost!", "generation_id": "TtGwYFa4aKzx4IJI4djq", "session_id": "9qzi4cxQvVPdy0vl0TNX"},
+    {"id": "nudge-4", "file": "lucy-nudge-4.mp3", "prompt": "Keep going!", "generation_id": "eqmk2YgV3EAc4QZFRxCy", "session_id": "ADXpnvRHxVhBgVntLuR0"}
+  ]
+}

@@ -1,0 +1,91 @@
+- generic [ref=f1e2]:
+  - banner [ref=f1e3]:
+    - button "Ready Set ABC — home. Hold for Grown-Ups." [ref=f1e4] [cursor=pointer]:
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: Ready Set ABC
+        - generic [ref=f1e14]: Pre-K Phonics with Lucy
+    - navigation "Sections" [ref=f1e15]:
+      - button "Home" [ref=f1e114] [cursor=pointer]
+      - button "Letters & Phonics" [ref=f1e116] [cursor=pointer]
+      - button "Lucy's Closet" [ref=f1e118] [cursor=pointer]
+      - button "Storybooks" [ref=f1e120] [cursor=pointer]
+      - button "Arcade" [ref=f1e122] [cursor=pointer]
+    - generic [ref=f1e26]:
+      - group "Sound" [ref=f1e27]:
+        - button "Music" [ref=f1e28] [cursor=pointer]
+        - button "Sound effects" [pressed] [ref=f1e31] [cursor=pointer]
+        - button "Lucy voice" [pressed] [ref=f1e36] [cursor=pointer]
+      - button "Grown-Ups" [ref=f1e41] [cursor=pointer]
+  - main [ref=f1e47]:
+    - generic [ref=f1e124]:
+      - generic [ref=f1e125]:
+        - generic [ref=f1e126]: Sound waits for PLAY
+        - generic [ref=f1e127]:
+          - generic [ref=f1e128]:
+            - paragraph [ref=f1e130]: Hi friend! Let's find words that start with P!
+            - generic [ref=f1e131]:
+              - generic [ref=f1e132] [cursor=pointer]:
+                - img "Lucy the golden retriever"
+              - button "Talk with Lucy" [ref=f1e133] [cursor=pointer]
+            - generic [ref=f1e140]: P
+            - button "Lucy's Closet" [ref=f1e141] [cursor=pointer]: Puppy Closet
+            - generic [ref=f1e145]:
+              - button "Say Lucy" [ref=f1e146] [cursor=pointer]: Say "Lucy"
+              - button "Friendly woof" [ref=f1e151] [cursor=pointer]: Friendly Woof
+          - generic [ref=f1e156]:
+            - paragraph [ref=f1e157]: Welcome back, friend!
+            - generic [ref=f1e158]:
+              - generic [ref=f1e159]: "English: Pre-K"
+              - generic [ref=f1e160]: Cloud 1
+            - generic [ref=f1e161]:
+              - generic [ref=f1e162]:
+                - generic [ref=f1e163]: 12 Stars
+                - text: Golden Star Bank
+              - generic [ref=f1e164]:
+                - generic [ref=f1e165]: Level 1
+                - text: A · I · M
+            - generic [ref=f1e166]: Daily Bone Treat Meter6 more to Rainbow collar12 / 18
+      - generic [ref=f1e169]:
+        - heading "Phonics & Alphabet" [level=2] [ref=f1e170]
+        - button "Discover more letters" [ref=f1e171] [cursor=pointer]: Discover more
+      - generic [ref=f1e172]:
+        - button "Play letter P. Tap to start sound." [ref=f1e173] [cursor=pointer]:
+          - generic [ref=f1e174]: Today's Star Mission
+          - generic [ref=f1e175]: Letters P & M Workshop
+          - generic [ref=f1e176]: Meet, choose, listen, then pictures.
+          - generic [ref=f1e177]: + stars
+        - button "The sound of P" [ref=f1e182] [cursor=pointer]:
+          - generic [ref=f1e183]: Phonics
+          - generic [ref=f1e184]: P
+          - generic [ref=f1e185]: The Sound of P
+          - generic [ref=f1e186]: /p/
+        - button "Open cloud letters S, A, T" [ref=f1e187] [cursor=pointer]:
+          - generic [ref=f1e188]: Blend
+          - generic [ref=f1e189]: S A T
+          - generic [ref=f1e190]: Sounds S, A, T
+          - generic [ref=f1e191]: Letters and Phonics path
+        - button "Start letter match" [ref=f1e192] [cursor=pointer]:
+          - generic [ref=f1e193]: Tap letters
+          - generic [ref=f1e194]: Case Match Arena
+          - generic [ref=f1e195]: Find Pp
+      - heading "Storybooks & Fun Games" [level=2] [ref=f1e196]
+      - generic [ref=f1e197]:
+        - button "Storybooks & Fun Lucy's Picnic Day P is for pictures today." [ref=f1e198] [cursor=pointer]:
+          - generic [ref=f1e199]: Storybooks & Fun
+          - generic [ref=f1e200]: Lucy's Picnic Day
+          - generic [ref=f1e201]: P is for pictures today.
+        - button "Storybooks & Fun Rhymes & Songs This letter’s listen beat." [ref=f1e202] [cursor=pointer]:
+          - generic [ref=f1e203]: Storybooks & Fun
+          - generic [ref=f1e204]: Rhymes & Songs
+          - generic [ref=f1e205]: This letter’s listen beat.
+        - button "Storybooks & Fun Coloring Canvas Closet dress-up lives here." [ref=f1e206] [cursor=pointer]:
+          - generic [ref=f1e207]: Storybooks & Fun
+          - generic [ref=f1e208]: Coloring Canvas
+          - generic [ref=f1e209]: Closet dress-up lives here.
+        - button "Storybooks & Fun Puppy Treat Match Choose-letter beat in Arcade." [ref=f1e210] [cursor=pointer]:
+          - generic [ref=f1e211]: Storybooks & Fun
+          - generic [ref=f1e212]: Puppy Treat Match
+          - generic [ref=f1e213]: Choose-letter beat in Arcade.
+  - contentinfo [ref=f1e100]:
+    - generic [ref=f1e101]: Cloud 1 · 0/24
+    - generic [ref=f1e105]: © Ready Set ABC · Lucy Play Learning Lab · rsabc-shell-v28-closet

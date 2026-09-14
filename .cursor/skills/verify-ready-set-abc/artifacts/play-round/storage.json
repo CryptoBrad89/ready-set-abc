@@ -1,0 +1,7 @@
+{
+  "rsabc.stars": {"_device": {"A": 3}},
+  "rsabc.settings": {"bonusMode": "off"},
+  "rsabc.classroom": false,
+  "document.title": "Ready Set ABC",
+  "body.dataset.screen_after_next": "case"
+}

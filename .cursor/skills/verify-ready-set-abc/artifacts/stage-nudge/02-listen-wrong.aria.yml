@@ -1,0 +1,13 @@
+feature: stage-nudge
+entry: continue same round after choose miss
+origin: http://127.0.0.1:4174
+screen: listen
+body[data-screen]: listen
+
+Before miss: Lucy "Find the sound /p/."
+Miss tap: button "Not this sound"
+After miss:
+  bubble: "Not that one — try another orb!"
+  voice clip: http://127.0.0.1:4174/audio/lucy-nudge-1.mp3
+  NUDGES[0]: "Not quite!"
+  mismatch: true

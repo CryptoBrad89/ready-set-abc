@@ -1,0 +1,2 @@
+ts	phase	decision	why	evidence	result
+2026-09-11T16:30:29Z	frame	keep existing SATPIN slice and prove it in a real browser instead of rewriting from empty	smallest change that still runs poteto. comic default plus cosmic/violet switch stay.	app/_check.mjs ALL-OK; app/_flow.mjs ALL-OK	gates green

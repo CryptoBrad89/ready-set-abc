@@ -1,0 +1,19 @@
+url: http://127.0.0.1:4173/index.html#/letter/A
+body[data-screen]: case
+Ready Set ABC chrome visible.
+
+- button "Ready Set ABC — home. Hold for Grown-Ups."
+- button "Play Cards"
+- button "ABC Trail"
+- button "Star Pouch"
+- button "Grown-Ups"
+- text: Tap Big Letter / Tap a
+- text: Round 1/3
+- paragraph: Find the big letter! Tap your answer, then tap little a to match!
+- img "Lucy the golden retriever"
+- text: Sounds like: /æ/ as in Apple
+- button "Little Letter a. Tap here to complete the match."
+- button "Letter A, /æ/ as in Apple"
+- button "Letter V, /v/ as in Van"
+- button "Letter C, /k/ as in Cat"
+- button "Match A & a!"

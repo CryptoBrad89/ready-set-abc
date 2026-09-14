@@ -1,0 +1,16 @@
+feature: stage-nudge
+entry: roster Ava then Home card "Play letter P"
+origin: http://127.0.0.1:4174
+viewport: 1280x800 landscape (Emulation.setDeviceMetricsOverride)
+shell_file: rsabc-shell-v39-mute-dots
+shell_footer_observed: rsabc-shell-v38-el-beds (service worker cache)
+screen: choose
+body[data-screen]: choose
+
+Before miss: Lucy "Lucy wants P! Tap the P."
+Miss tap: button "Letter I"
+After miss:
+  bubble: "Try another one!"
+  voice clip: http://127.0.0.1:4174/audio/lucy-nudge-3.mp3
+  NUDGES[2]: "Almost!"
+  mismatch: true

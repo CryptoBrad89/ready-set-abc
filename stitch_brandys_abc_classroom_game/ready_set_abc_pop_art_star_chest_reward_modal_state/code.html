@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<!-- Bold Action Pop-Art / Roy Lichtenstein Typography: Bangers + Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Bangers&amp;family=Plus+Jakarta+Sans:wght@600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: "#000000",
+            primaryYellow: "#ffe600",
+            poppyRed: "#ef4444",
+            electricCyan: "#06b6d4",
+            cobaltBlue: "#1d4ed8",
+            royalIndigo: "#2563eb",
+            comicWhite: "#ffffff",
+            comicPaper: "#fffdf0",
+          },
+          fontFamily: {
+            display: ['"Bangers"', 'cursive', 'impact', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          boxShadow: {
+            'pop-xs': '2px 2px 0px #000000',
+            'pop-sm': '3.5px 3.5px 0px #000000',
+            'pop': '6px 6px 0px #000000',
+            'pop-lg': '8px 8px 0px #000000',
+            'pop-xl': '12px 12px 0px #000000',
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    /* Lichtenstein Ben-Day Dot Halftone Pattern - Refined 25% lighter sky cerulean blue */
+    .bended-canvas {
+      background-color: #3b82f6;
+      background-image: radial-gradient(#bae6fd 2.2px, transparent 2.2px), radial-gradient(#93c5fd 1.5px, #3b82f6 1.5px);
+      background-size: 18px 18px;
+      background-position: 0 0, 9px 9px;
+    }
+    .halftone-red {
+      background-color: #fef2f2;
+      background-image: radial-gradient(#ef4444 1.8px, transparent 1.8px);
+      background-size: 10px 10px;
+    }
+    .halftone-yellow {
+      background-color: #fefce8;
+      background-image: radial-gradient(#eab308 1.8px, transparent 1.8px);
+      background-size: 10px 10px;
+    }
+    .halftone-cyan {
+      background-color: #ecfeff;
+      background-image: radial-gradient(#06b6d4 1.8px, transparent 1.8px);
+      background-size: 10px 10px;
+    }
+    .halftone-slate {
+      background-image: radial-gradient(#000000 1.2px, transparent 1.2px);
+      background-size: 8px 8px;
+    }
+    .comic-border {
+      border: 3.5px solid #000000;
+    }
+    .comic-border-thick {
+      border: 4.5px solid #000000;
+    }
+    .text-pop-shadow {
+      text-shadow: 2.5px 2.5px 0px #000000;
+    }
+    .text-pop-shadow-lg {
+      text-shadow: 3.5px 3.5px 0px #000000;
+    }
+
+    /* Idle subtle breathing animation for Lucy */
+    @keyframes lucy-idle {
+      0%, 100% { transform: translateY(0px) scale(1, 1); }
+      50% { transform: translateY(-4px) scale(1.015, 0.985); }
+    }
+    .animate-lucy-idle {
+      animation: lucy-idle 3s ease-in-out infinite;
+    }
+
+    /* Excited Puppy Bounce */
+    @keyframes excited-bounce {
+      0% { transform: scale(1) translateY(0); }
+      20% { transform: scale(1.15, 0.85) translateY(4px) rotate(-4deg); }
+      40% { transform: scale(0.9, 1.15) translateY(-14px) rotate(4deg); }
+      60% { transform: scale(1.05, 0.95) translateY(-4px) rotate(-2deg); }
+      80% { transform: scale(0.98, 1.02) translateY(0) rotate(1deg); }
+      100% { transform: scale(1) translateY(0) rotate(0deg); }
+    }
+    .animate-excited {
+      animation: excited-bounce 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Tactile Comic Card Physics */
+    .comic-card-interactive {
+      transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.25, 1), box-shadow 0.18s ease;
+      cursor: pointer;
+    }
+    .comic-card-interactive:hover {
+      transform: translateY(-5px);
+      box-shadow: 8px 8px 0px #000000 !important;
+    }
+    .comic-card-interactive:active {
+      transform: translate(2px, 2px) !important;
+      box-shadow: 2px 2px 0px #000000 !important;
+    }
+
+    /* Floating Pop Particles */
+    @keyframes float-sparkle {
+      0% { opacity: 1; transform: translate(0, 0) scale(0.8) rotate(0deg); }
+      100% { opacity: 0; transform: translate(var(--dx, 0px), var(--dy, -60px)) scale(1.3) rotate(var(--rot, 35deg)); }
+    }
+    .pop-particle {
+      position: absolute;
+      pointer-events: none;
+      animation: float-sparkle 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      z-index: 60;
+    }
+
+    /* Lever handle pull animation */
+    .lever-bar {
+      transform-origin: bottom center;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .lever-pulled .lever-bar {
+      transform: rotate(48deg);
+    }
+  </style>
+</head>
+<body class="bended-canvas text-ink font-sans antialiased min-h-screen selection:bg-primaryYellow selection:text-ink">
+<!-- TOP HEADER BANNER (Lichtenstein Pop-Art Navigation Bar - Segmented Grouped Layout) -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-primaryYellow border-b-4 border-ink shadow-[0_5px_0_0_#000000]">
+<div class="h-20 w-full max-w-[1500px] mx-auto px-3 sm:px-4 md:px-6 flex items-center justify-between gap-2 lg:gap-3">
+<!-- 1. Left Group: Child Info Stamp & Streak -->
+<div class="flex items-center gap-2 md:gap-2.5 shrink-0">
+<!-- Badge Card -->
+<div class="flex items-center gap-2 bg-comicWhite comic-border px-2.5 py-1.5 rounded-2xl shadow-pop-sm hover:-translate-y-0.5 active:translate-y-0.5 transition-all cursor-pointer" id="badge-stamp-card">
+<div class="relative flex items-center justify-center shrink-0">
+<img alt="Cute 2D vector cartoon mascot of Lucy the golden retriever puppy for a preschool alphabet game" class="h-8 w-8 object-contain bg-amber-200 rounded-full border-2 border-ink" src="https://lh3.googleusercontent.com/aida/AEtjO1XCz-UwYuGsmKvwaNz768KxrOnWt8HhBoWcO0Usn3aCKFKxYfU8QOFIJjFBWRpo3M7Bp9SS2X4E6ibOwHydfRYq80kgSPLfzTxcI2r_Ojs63GeGWYr_K1Rue3PIc8Cr7AW7jFMxP-E5Sp-U60A4QXkbGP5CjPvBUhvsc2tvbx9d0fM8-S6IDfX-asiDV5nRzAMGgDkTdG-hIarObfADYlGC54IP8toJ6znSuImTI1_9uqhkkDypzlvmKg"/>
+<div class="absolute -bottom-1 -right-1 bg-poppyRed text-comicWhite px-1 py-0.2 rounded font-display text-[11px] border border-ink leading-none tracking-wider">LV 1</div>
+</div>
+<div class="flex flex-col pr-0.5">
+<div class="flex items-center gap-1.5">
+<span class="font-display text-[15px] tracking-wider text-ink leading-tight whitespace-nowrap">CHILDS NAME HERE</span>
+<span class="bg-electricCyan text-ink font-display text-[12px] px-1.5 py-0.5 rounded border-2 border-ink shadow-[1.5px_1.5px_0_#000000] tracking-wider">Pre-K</span>
+</div>
+<div class="w-20 sm:w-24 bg-gray-100 comic-border h-2.5 rounded-full overflow-hidden mt-0.5 p-0.5">
+<div class="bg-poppyRed h-full w-3/5 rounded-full border border-ink"></div>
+</div>
+</div>
+</div>
+<!-- 3 Day Streak Comic Pill (Interactive with fire burst) -->
+<button class="hidden xl:flex items-center gap-1.5 bg-comicWhite comic-border px-2.5 py-1.5 rounded-2xl shadow-pop-sm shrink-0 hover:-translate-y-0.5 active:translate-y-0.5 transition-all text-left" id="streak-pill">
+<span class="material-symbols-outlined text-poppyRed text-[20px] transition-transform duration-300" id="streak-icon" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-display text-[16px] tracking-wide text-ink whitespace-nowrap">3 Day Streak</span>
+<span class="material-symbols-outlined text-ink text-[16px]">notifications</span>
+</button>
+</div>
+<!-- 2. Center Group: Core Game Navigation Tabs Pill Container -->
+<nav class="hidden lg:flex items-center gap-1.5 bg-comicWhite/90 comic-border p-1.5 rounded-2xl shadow-pop-sm shrink-0">
+<a aria-current="page" class="nav-interactive px-3.5 py-1 rounded-xl comic-border bg-poppyRed text-comicWhite font-display text-[16px] tracking-wider shadow-[2px_2px_0px_#000000] hover:-translate-y-0.5 active:translate-y-0.5 transition-transform whitespace-nowrap" data-path="home" href="#">Home</a>
+<a class="nav-interactive px-3 py-1 rounded-xl comic-border bg-comicWhite hover:bg-yellow-200 text-ink font-display text-[16px] tracking-wider shadow-[2px_2px_0px_#000000] hover:-translate-y-0.5 active:translate-y-0.5 transition-transform whitespace-nowrap" data-path="letters-and-phonics" href="#">Letters &amp; Phonics</a>
+<a class="nav-interactive px-3 py-1 rounded-xl comic-border bg-comicWhite hover:bg-yellow-200 text-ink font-display text-[16px] tracking-wider shadow-[2px_2px_0px_#000000] hover:-translate-y-0.5 active:translate-y-0.5 transition-transform whitespace-nowrap" data-path="lucys-closet" href="#">Lucy's Closet</a>
+<a class="nav-interactive px-3 py-1 rounded-xl comic-border bg-comicWhite hover:bg-yellow-200 text-ink font-display text-[16px] tracking-wider shadow-[2px_2px_0px_#000000] hover:-translate-y-0.5 active:translate-y-0.5 transition-transform whitespace-nowrap" data-path="storybooks" href="#">Storybooks</a>
+<a class="nav-interactive px-3 py-1 rounded-xl comic-border bg-comicWhite hover:bg-yellow-200 text-ink font-display text-[16px] tracking-wider shadow-[2px_2px_0px_#000000] hover:-translate-y-0.5 active:translate-y-0.5 transition-transform whitespace-nowrap" data-path="arcade" href="#">Arcade</a>
+</nav>
+<!-- 3. Right Group: Rewards Bank + Adult/Settings Controls -->
+<div class="flex items-center gap-1.5 md:gap-2 shrink-0">
+<!-- Star Counter (Interactive) -->
+<button class="flex items-center gap-1.5 bg-comicWhite comic-border px-2.5 py-1.5 rounded-2xl shadow-pop-sm shrink-0 hover:-translate-y-0.5 active:translate-y-0.5 transition-transform" id="nav-star-counter">
+<span class="material-symbols-outlined text-amber-500 text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-display text-[16px] tracking-wider text-ink whitespace-nowrap" id="nav-star-num">24 Stars</span>
+</button>
+<a aria-label="Learning Analytics" class="w-9 h-9 rounded-2xl bg-comicWhite comic-border flex items-center justify-center text-ink shadow-pop-sm hover:-translate-y-0.5 active:translate-y-0.5 transition-transform shrink-0" data-path="learning-analytics" href="#">
+<span class="material-symbols-outlined text-[19px]">insights</span>
+</a>
+<a class="hidden sm:flex items-center gap-1 bg-comicWhite comic-border px-2.5 py-1.5 rounded-2xl text-ink font-display text-[15px] tracking-wider shadow-pop-sm hover:-translate-y-0.5 active:translate-y-0.5 transition-transform whitespace-nowrap shrink-0" data-path="parents-dashboard" href="#">
+<span class="material-symbols-outlined text-[17px]">lock</span>
+<span class="">Parents</span>
+</a>
+<div class="w-9 h-9 rounded-2xl bg-poppyRed comic-border flex items-center justify-center text-comicWhite shadow-pop-sm shrink-0 cursor-pointer hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[19px]">person</span>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN EDITORIAL CONTENT -->
+<main class="w-full pt-28 pb-16 min-h-[calc(100vh-80px)]">
+<div class="w-full max-w-[1360px] mx-auto px-4 md:px-8 flex flex-col gap-12">
+<!-- 1. POP ART HERO COMIC STRIP (Massive Asymmetric Comic Panel) -->
+<section class="relative bg-comicWhite comic-border-thick rounded-3xl p-6 md:p-10 shadow-pop-xl overflow-hidden">
+<!-- Corner Burst Glow -->
+<div class="absolute -top-24 -left-24 w-80 h-80 bg-primaryYellow/60 rounded-full blur-2xl pointer-events-none -z-0"></div>
+<!-- Spacious Explorer Station Online Badge -->
+<div class="absolute top-0 right-0 min-w-[280px] sm:min-w-[310px] px-7 py-2.5 bg-primaryYellow border-l-4 border-b-4 border-ink flex items-center justify-center gap-3 transform rotate-1 translate-x-2 -translate-y-1 shadow-pop-sm z-20 select-none">
+<span class="inline-flex w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-ink animate-ping shrink-0"></span>
+<span class="text-ink font-display text-[19px] tracking-wider leading-none">Explorer Station Online</span>
+</div>
+<div class="relative z-10 flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 pt-2">
+<!-- Left Column: Lucy's Pop-Art Cutout Frame with Mechanical Lever -->
+<div class="flex flex-col items-center shrink-0 w-full sm:w-auto">
+<div class="relative bg-amber-100 comic-border-thick rounded-3xl p-4 shadow-pop-lg flex flex-col items-center rotate-[-1.5deg] hover:rotate-0 transition-all duration-300" id="hero-mascot-panel">
+<!-- Dot halftone pattern inside frame -->
+<div class="absolute inset-2 halftone-slate opacity-40 rounded-2xl pointer-events-none"></div>
+<!-- Character Mascot & Lever in Comic Window -->
+<div class="relative z-10 w-52 h-52 sm:w-60 sm:h-60 flex items-center justify-center select-none overflow-visible">
+<!-- Lucy Pup Avatar (Animated Idle & Clickable) -->
+<img alt="Lucy the Golden Retriever Mascot" class="max-h-full max-w-full object-contain filter drop-shadow-[4px_6px_0px_rgba(0,0,0,1)] animate-lucy-idle cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95" id="hero-lucy-img" src="https://lh3.googleusercontent.com/aida/AEtjO1XCz-UwYuGsmKvwaNz768KxrOnWt8HhBoWcO0Usn3aCKFKxYfU8QOFIJjFBWRpo3M7Bp9SS2X4E6ibOwHydfRYq80kgSPLfzTxcI2r_Ojs63GeGWYr_K1Rue3PIc8Cr7AW7jFMxP-E5Sp-U60A4QXkbGP5CjPvBUhvsc2tvbx9d0fM8-S6IDfX-asiDV5nRzAMGgDkTdG-hIarObfADYlGC54IP8toJ6znSuImTI1_9uqhkkDypzlvmKg" title="Pet Lucy!"/>
+<!-- Mechanical Clickable Red Lever Mechanism -->
+<div class="absolute right-2 bottom-3 flex flex-col items-center cursor-pointer group z-20" id="interactive-lever" title="Pull the Bone Treat Lever!">
+<!-- Lever Knob & Shaft -->
+<div class="lever-bar flex flex-col items-center transition-transform duration-300">
+<div class="w-6 h-6 rounded-full bg-poppyRed comic-border shadow-pop-xs group-hover:scale-110 active:scale-95 transition-transform flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-white/60"></div>
+</div>
+<div class="w-2 h-7 bg-ink -mt-1 rounded-t-sm"></div>
+</div>
+<!-- Lever Base Box -->
+<div class="w-10 h-6 bg-poppyRed comic-border rounded-md shadow-pop-xs -mt-1 flex items-center justify-center">
+<div class="w-3 h-1 bg-primaryYellow rounded-full"></div>
+</div>
+<span class="text-[10px] font-display text-ink bg-primaryYellow px-1 py-0.2 rounded border border-ink mt-0.5 tracking-wider">PULL!</span>
+</div>
+<!-- Pop Letter Starburst Sticker -->
+<div class="absolute -top-3 -right-3 bg-primaryYellow text-ink w-13 h-13 px-3 py-1.5 rounded-2xl comic-border shadow-pop-sm flex items-center justify-center font-display text-3xl rotate-12 select-none">
+  P
+</div>
+</div>
+<!-- Comic Button Under Mascot Frame -->
+<a class="relative z-10 mt-3 group flex items-center justify-center gap-2 w-full py-2 px-4 bg-poppyRed hover:bg-red-600 text-comicWhite font-display text-[19px] tracking-wider rounded-2xl comic-border shadow-pop-sm active:translate-x-1 active:translate-y-1 active:shadow-none transition-all" data-path="lucys-closet" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:rotate-12 transition-transform">shopping_bag</span>
+<span class="">Puppy Closet</span>
+<span class="bg-primaryYellow text-ink text-[14px] font-display px-2 py-0.5 rounded-lg comic-border ml-1 tracking-wider">Shop</span>
+</a>
+</div>
+</div>
+<!-- Right Column: Child Gamer Profile Editorial Layout -->
+<div class="flex-1 flex flex-col justify-center w-full">
+<!-- Child Header & Edit Button -->
+<div class="flex flex-wrap items-center justify-between gap-3 border-b-4 border-ink pb-4">
+<div>
+<div class="flex items-center gap-3">
+<h1 class="font-display text-5xl sm:text-6xl md:text-7xl text-ink tracking-wider uppercase drop-shadow-[3px_3px_0px_#ffe600]">Welcome Back, Leo!</h1>
+<button aria-label="Edit Child Profile" class="w-11 h-11 rounded-2xl bg-comicWhite comic-border flex items-center justify-center text-ink hover:bg-primaryYellow transition-colors shadow-pop-sm active:translate-x-1 active:translate-y-1 active:shadow-none" id="edit-profile-btn">
+<span class="material-symbols-outlined text-[22px]">edit</span>
+</button>
+</div>
+<!-- Comic Pill Tags -->
+<div class="flex flex-wrap items-center gap-2 mt-3">
+<span class="font-display text-base tracking-wider bg-electricCyan text-ink comic-border px-3.5 py-1 rounded-xl shadow-[2.5px_2.5px_0_#000000] hover:scale-105 transition-transform cursor-pointer">English: Pre-K</span>
+<span class="font-display text-base tracking-wider bg-primaryYellow text-ink comic-border px-3.5 py-1 rounded-xl shadow-[2.5px_2.5px_0_#000000] hover:scale-105 transition-transform cursor-pointer">Phonics Trail Stage 1</span>
+<span class="font-display text-base tracking-wider bg-comicWhite text-ink comic-border px-3.5 py-1 rounded-xl shadow-[2.5px_2.5px_0_#000000] hover:scale-105 transition-transform cursor-pointer">Age 4</span>
+</div>
+</div>
+</div>
+<!-- Two Pop Art Stat Cards (Star Bank + Shield) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+<!-- Plaque 1: Star Bank (Tactile Interactive Sparkler) -->
+<div class="comic-card-interactive bg-primaryYellow comic-border-thick rounded-2xl p-4 flex items-center gap-4 shadow-pop relative overflow-hidden select-none" id="star-bank-card">
+<div class="relative w-16 h-16 rounded-2xl bg-comicWhite comic-border flex items-center justify-center shrink-0 shadow-pop-sm">
+<span class="material-symbols-outlined text-amber-500 text-[46px] transition-transform duration-300" id="star-bank-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<div class="absolute -top-2 -right-2 bg-poppyRed text-comicWhite text-[11px] font-display px-1.5 py-0.5 rounded comic-border leading-none tracking-wider">+3 Today</div>
+</div>
+<div class="flex flex-col">
+<span class="font-display text-4xl text-ink leading-tight tracking-wider" id="main-star-count">24 Stars</span>
+<span class="font-bold text-xs uppercase tracking-wider text-ink/80 mt-0.5">Golden Star Bank</span>
+<span class="font-extrabold text-sm text-ink mt-0.5">Top 5% Phonics Pup!</span>
+</div>
+</div>
+<!-- Plaque 2: Shield Plaque -->
+<div class="comic-card-interactive bg-electricCyan comic-border-thick rounded-2xl p-4 flex items-center gap-4 shadow-pop relative overflow-hidden select-none" id="level-shield-card">
+<div class="relative w-16 h-16 rounded-2xl bg-comicWhite comic-border flex items-center justify-center shrink-0 shadow-pop-sm">
+<span class="material-symbols-outlined text-cyan-600 text-[46px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+<span class="absolute font-display text-2xl text-ink z-10">2</span>
+</div>
+<div class="flex flex-col">
+<span class="font-display text-4xl text-ink leading-tight tracking-wider">Level 2</span>
+<span class="font-bold text-xs uppercase tracking-wider text-ink/80 mt-0.5">Certified Star Pup</span>
+<span class="font-extrabold text-sm text-ink mt-0.5">Rank: Adventurer</span>
+</div>
+</div>
+</div>
+<!-- Daily Bone Treat Reward Meter (Interactive comic progress booster) -->
+<div class="comic-card-interactive mt-6 bg-comicPaper comic-border-thick rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-pop select-none" id="bone-meter-card" title="Click to feed Lucy a bone treat!">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-2xl bg-poppyRed comic-border flex items-center justify-center text-comicWhite shadow-pop-sm shrink-0 transition-transform duration-300" id="bone-paw-icon">
+<span class="material-symbols-outlined text-[28px]">pets</span>
+</div>
+<div>
+<p class="font-display text-2xl text-ink leading-tight tracking-wide">Daily Bone Treat Meter</p>
+<p class="font-bold text-xs text-red-600 mt-0.5" id="bone-meter-hint">6 more bones to unlock Lucy's Captain Hat!</p>
+</div>
+</div>
+<div class="w-full sm:w-60 flex flex-col gap-1.5">
+<div class="flex justify-between font-display text-base tracking-wider text-ink">
+<span class="">Progress</span>
+<span class="text-poppyRed transition-colors duration-200" id="bone-count-text">4 / 10 Bones</span>
+</div>
+<div class="w-full h-4 bg-comicWhite comic-border rounded-full overflow-hidden p-0.5 relative">
+<div class="h-full bg-poppyRed rounded-full w-[40%] transition-all duration-500 border border-ink" id="bone-progress-bar"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. GAME ARENA ROW 1: Phonics & Alphabet (Comic Strip Panels) -->
+<section class="flex flex-col gap-5">
+<!-- Section Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-2xl bg-primaryYellow comic-border flex items-center justify-center text-ink shadow-pop-sm">
+<span class="material-symbols-outlined text-[28px]">spellcheck</span>
+</div>
+<h2 class="font-display text-4xl md:text-5xl text-comicWhite tracking-wider text-pop-shadow">Phonics &amp; Alphabet</h2>
+</div>
+<a class="group flex items-center gap-1.5 bg-comicWhite comic-border px-5 py-2 rounded-2xl font-display text-lg tracking-wider text-ink hover:bg-primaryYellow transition-colors shadow-pop-sm active:translate-x-0.5 active:translate-y-0.5" data-path="letters-and-phonics" href="#">
+<span class="">Discover More</span>
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+<!-- 4 Comic Game Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1: Star Mission (Pop Hero Panel) -->
+<div class="game-activity-card comic-card-interactive relative bg-primaryYellow comic-border-thick rounded-3xl p-5 shadow-pop-lg flex flex-col justify-between overflow-hidden group min-h-[340px]">
+<div class="absolute -right-8 -top-8 w-36 h-36 bg-white/50 rounded-full blur-xl pointer-events-none"></div>
+<div>
+<div class="inline-flex items-center gap-1 bg-comicWhite comic-border text-ink font-display text-sm tracking-wider px-3 py-1 rounded-xl shadow-pop-sm mb-3">
+<span class="material-symbols-outlined text-[16px] text-amber-500">auto_awesome</span>
+<span class="">Today's Star Mission</span>
+</div>
+<h3 class="font-display text-3xl text-ink leading-tight tracking-wide">Letters P &amp; M Workshop</h3>
+<p class="font-bold text-xs text-ink/90 mt-2 leading-relaxed">Sound matching &amp; bubble popping games with puppy rewards.</p>
+</div>
+<div class="relative z-10 flex items-center justify-between mt-6 pt-4 border-t-3 border-ink">
+<button class="w-14 h-14 rounded-2xl bg-poppyRed hover:bg-red-600 text-comicWhite comic-border shadow-pop-sm flex items-center justify-center group-hover:scale-105 active:translate-x-0.5 active:translate-y-0.5 transition-all">
+<span class="material-symbols-outlined text-[36px] ml-0.5" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<div class="text-right">
+<span class="block font-display text-2xl text-ink tracking-wider">+50 XP</span>
+<span class="block font-bold text-xs text-ink/80">10 Mins</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Sound of P -->
+<div class="game-activity-card comic-card-interactive bg-comicWhite comic-border-thick rounded-3xl p-5 flex flex-col justify-between shadow-pop group min-h-[340px]">
+<div>
+<div class="relative w-full h-36 rounded-2xl halftone-yellow comic-border overflow-hidden flex items-center justify-center">
+<div class="relative flex items-center justify-center gap-2">
+<div class="w-16 h-16 rounded-2xl bg-primaryYellow comic-border text-ink flex items-center justify-center font-display text-4xl shadow-pop-sm group-hover:rotate-6 transition-transform">
+                    P
+                  </div>
+<span class="material-symbols-outlined text-poppyRed text-[44px]">cruelty_free</span>
+</div>
+<div class="absolute top-2 right-2 bg-comicWhite comic-border text-ink font-display text-xs tracking-wider px-2 py-0.5 rounded-lg shadow-sm">
+                  4 Activities
+                </div>
+</div>
+<div class="mt-4">
+<div class="flex items-center justify-between">
+<h4 class="font-display text-2xl tracking-wide text-ink">The Sound of P</h4>
+<span class="material-symbols-outlined text-amber-500 text-[22px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-bold text-xs text-gray-700 mt-1">Pup, Pig, Pan, Pop! Tap &amp; hear the burst phoneme.</p>
+</div>
+</div>
+<button class="mt-5 w-full h-11 rounded-2xl bg-electricCyan hover:bg-cyan-400 text-ink comic-border font-display text-base tracking-wider flex items-center justify-center gap-1.5 shadow-pop-sm active:translate-x-0.5 active:translate-y-0.5 transition-all">
+<span class="material-symbols-outlined text-[22px]">sports_esports</span>
+<span class="">Play Letter P</span>
+</button>
+</div>
+<!-- Card 3: Sounds s, a, t -->
+<div class="game-activity-card comic-card-interactive bg-comicWhite comic-border-thick rounded-3xl p-5 flex flex-col justify-between shadow-pop group min-h-[340px]">
+<div>
+<div class="relative w-full h-36 rounded-2xl halftone-red comic-border overflow-hidden flex items-center justify-center">
+<div class="relative flex items-center gap-1.5">
+<span class="w-10 h-10 rounded-xl bg-poppyRed comic-border text-comicWhite flex items-center justify-center font-display text-2xl shadow-pop-sm">S</span>
+<span class="w-10 h-10 rounded-xl bg-electricCyan comic-border text-ink flex items-center justify-center font-display text-2xl shadow-pop-sm">A</span>
+<span class="w-10 h-10 rounded-xl bg-primaryYellow comic-border text-ink flex items-center justify-center font-display text-2xl shadow-pop-sm">T</span>
+</div>
+<div class="absolute bottom-2 left-2 bg-emerald-400 text-ink comic-border font-display text-xs tracking-wider px-2 py-0.5 rounded-lg">
+                  In Progress • 80%
+                </div>
+</div>
+<div class="mt-4">
+<div class="flex items-center justify-between">
+<h4 class="font-display text-2xl tracking-wide text-ink">Sounds s, a, t</h4>
+<span class="material-symbols-outlined text-amber-500 text-[22px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-bold text-xs text-gray-700 mt-1">Blend first sounds to build sunny three-letter words.</p>
+</div>
+</div>
+<button class="mt-5 w-full h-11 rounded-2xl bg-comicPaper hover:bg-yellow-200 text-ink comic-border font-display text-base tracking-wider flex items-center justify-center gap-1.5 shadow-pop-sm active:translate-x-0.5 active:translate-y-0.5 transition-all">
+<span class="material-symbols-outlined text-[22px]">resume</span>
+<span class="">Continue Stage</span>
+</button>
+</div>
+<!-- Card 4: Upper & Lowercase Pairs -->
+<div class="game-activity-card comic-card-interactive bg-comicWhite comic-border-thick rounded-3xl p-5 flex flex-col justify-between shadow-pop group min-h-[340px]">
+<div>
+<div class="relative w-full h-36 rounded-2xl halftone-yellow comic-border overflow-hidden flex items-center justify-center">
+<div class="relative flex items-baseline gap-2">
+<span class="font-display text-5xl text-electricCyan text-pop-shadow">A</span>
+<span class="font-display text-3xl text-poppyRed text-pop-shadow">a</span>
+<span class="font-display text-5xl text-indigo-600 text-pop-shadow ml-2">B</span>
+<span class="font-display text-3xl text-amber-500 text-pop-shadow">b</span>
+</div>
+<div class="absolute top-2 right-2 bg-primaryYellow text-ink comic-border font-display text-xs tracking-wider px-2 py-0.5 rounded-lg shadow-sm">
+                  New Game!
+                </div>
+</div>
+<div class="mt-4">
+<div class="flex items-center justify-between">
+<h4 class="font-display text-2xl tracking-wide text-ink">Case Match Arena</h4>
+<span class="material-symbols-outlined text-gray-400 text-[22px]">star_border</span>
+</div>
+<p class="font-bold text-xs text-gray-700 mt-1">Connect big puppy letters with their baby letters.</p>
+</div>
+</div>
+<button class="mt-5 w-full h-11 rounded-2xl bg-primaryYellow hover:bg-amber-400 text-ink comic-border font-display text-base tracking-wider flex items-center justify-center gap-1.5 shadow-pop-sm active:translate-x-0.5 active:translate-y-0.5 transition-all">
+<span class="material-symbols-outlined text-[22px]">extension</span>
+<span class="">Start Match</span>
+</button>
+</div>
+</div>
+</section>
+<!-- 3. GAME ARENA ROW 2: Storybooks & Fun Games -->
+<section class="flex flex-col gap-5">
+<!-- Section Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-2xl bg-poppyRed comic-border flex items-center justify-center text-comicWhite shadow-pop-sm">
+<span class="material-symbols-outlined text-[28px]">menu_book</span>
+</div>
+<h2 class="font-display text-4xl md:text-5xl text-comicWhite tracking-wider text-pop-shadow">Storybooks &amp; Fun Games</h2>
+</div>
+<a class="group flex items-center gap-1.5 bg-comicWhite comic-border px-5 py-2 rounded-2xl font-display text-lg tracking-wider text-ink hover:bg-poppyRed hover:text-comicWhite transition-colors shadow-pop-sm active:translate-x-0.5 active:translate-y-0.5" data-path="storybooks" href="#">
+<span class="">Discover More</span>
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+<!-- 4 Storybook Comic Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1: Lucy's Picnic Day -->
+<div class="game-activity-card comic-card-interactive bg-comicWhite comic-border-thick rounded-3xl p-5 flex flex-col justify-between shadow-pop group">
+<div>
+<div class="relative w-full h-36 rounded-2xl halftone-cyan comic-border overflow-hidden flex items-center justify-center">
+<div class="relative flex items-center justify-center">
+<span class="material-symbols-outlined text-cyan-600 text-[68px] group-hover:scale-110 transition-transform">book_2</span>
+</div>
+<div class="absolute bottom-2 left-2">
+<span class="bg-electricCyan text-ink font-display text-xs tracking-wider px-2 py-0.5 rounded-lg comic-border">Read Along</span>
+</div>
+<div class="absolute top-2 right-2 flex items-center gap-1 bg-comicWhite comic-border px-2 py-0.5 rounded-lg">
+<span class="material-symbols-outlined text-amber-500 text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-ink font-display text-xs tracking-wider">5 Pages</span>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="font-display text-2xl tracking-wide text-ink">Lucy's Picnic Day</h4>
+<p class="font-bold text-xs text-gray-700 mt-1">Tap moving objects to hear story sound effects!</p>
+</div>
+</div>
+<button class="mt-5 w-full h-11 rounded-2xl bg-comicPaper hover:bg-electricCyan text-ink comic-border font-display text-base tracking-wider flex items-center justify-center gap-1.5 shadow-pop-sm active:translate-x-0.5 active:translate-y-0.5 transition-all">
+<span class="material-symbols-outlined text-[22px]">auto_stories</span>
+<span class="">Open Book</span>
+</button>
+</div>
+<!-- Card 2: Rhymes & Songs -->
+<div class="game-activity-card comic-card-interactive bg-comicWhite comic-border-thick rounded-3xl p-5 flex flex-col justify-between shadow-pop group">
+<div>
+<div class="relative w-full h-36 rounded-2xl halftone-yellow comic-border overflow-hidden flex items-center justify-center">
+<div class="relative flex items-center justify-center">
+<div class="w-14 h-14 rounded-2xl bg-primaryYellow comic-border text-ink flex items-center justify-center shadow-pop-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[36px]">music_note</span>
+</div>
+</div>
+<div class="absolute bottom-2 left-2">
+<span class="bg-primaryYellow text-ink font-display text-xs tracking-wider px-2 py-0.5 rounded-lg comic-border">Sing Along</span>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="font-display text-2xl tracking-wide text-ink">Rhymes &amp; Songs</h4>
+<p class="font-bold text-xs text-gray-700 mt-1">Fun musical phoneme songs that get kids giggling.</p>
+</div>
+</div>
+<button class="mt-5 w-full h-11 rounded-2xl bg-comicPaper hover:bg-primaryYellow text-ink comic-border font-display text-base tracking-wider flex items-center justify-center gap-1.5 shadow-pop-sm active:translate-x-0.5 active:translate-y-0.5 transition-all">
+<span class="material-symbols-outlined text-[22px]">headphones</span>
+<span class="">Listen &amp; Sing</span>
+</button>
+</div>
+<!-- Card 3: Coloring Canvas -->
+<div class="game-activity-card comic-card-interactive bg-comicWhite comic-border-thick rounded-3xl p-5 flex flex-col justify-between shadow-pop group">
+<div>
+<div class="relative w-full h-36 rounded-2xl halftone-red comic-border overflow-hidden flex items-center justify-center">
+<div class="relative flex items-center justify-center">
+<div class="w-14 h-14 rounded-2xl bg-poppyRed comic-border text-comicWhite flex items-center justify-center shadow-pop-sm group-hover:rotate-6 transition-transform">
+<span class="material-symbols-outlined text-[36px]">palette</span>
+</div>
+</div>
+<div class="absolute bottom-2 left-2">
+<span class="bg-poppyRed text-comicWhite font-display text-xs tracking-wider px-2 py-0.5 rounded-lg comic-border">Creative Lab</span>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="font-display text-2xl tracking-wide text-ink">Coloring Canvas</h4>
+<p class="font-bold text-xs text-gray-700 mt-1">Paint puppy pictures and trace giant letter outlines.</p>
+</div>
+</div>
+<button class="mt-5 w-full h-11 rounded-2xl bg-comicPaper hover:bg-poppyRed hover:text-comicWhite text-ink comic-border font-display text-base tracking-wider flex items-center justify-center gap-1.5 shadow-pop-sm active:translate-x-0.5 active:translate-y-0.5 transition-all">
+<span class="material-symbols-outlined text-[22px]">brush</span>
+<span class="">Open Canvas</span>
+</button>
+</div>
+<!-- Card 4: Puppy Treat Match -->
+<div class="game-activity-card comic-card-interactive bg-comicWhite comic-border-thick rounded-3xl p-5 flex flex-col justify-between shadow-pop group">
+<div>
+<div class="relative w-full h-36 rounded-2xl halftone-cyan comic-border overflow-hidden flex items-center justify-center">
+<div class="relative flex items-center justify-center">
+<div class="w-14 h-14 rounded-2xl bg-electricCyan comic-border text-ink flex items-center justify-center shadow-pop-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[36px]">videogame_asset</span>
+</div>
+</div>
+<div class="absolute bottom-2 left-2">
+<span class="bg-electricCyan text-ink font-display text-xs tracking-wider px-2 py-0.5 rounded-lg comic-border">Memory Arcade</span>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="font-display text-2xl tracking-wide text-ink">Puppy Treat Match</h4>
+<p class="font-bold text-xs text-gray-700 mt-1">Flip matching phonics cards to feed Lucy puppy treats!</p>
+</div>
+</div>
+<button class="mt-5 w-full h-11 rounded-2xl bg-primaryYellow hover:bg-amber-400 text-ink comic-border font-display text-base tracking-wider flex items-center justify-center gap-1.5 shadow-pop-sm active:translate-x-0.5 active:translate-y-0.5 transition-all">
+<span class="material-symbols-outlined text-[22px]">play_arrow</span>
+<span class="">Play Memory</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+<!-- 4. COMIC BOOK HELPER CHARACTER (Lucy Pops Out of Comic Dialogue Bubble) -->
+<aside class="fixed bottom-4 right-4 md:bottom-6 md:right-8 z-50 flex flex-col items-end pointer-events-auto select-none" id="lucy-helper-pod">
+<!-- Comic Dialogue Bubble -->
+<div class="mb-2 mr-2 max-w-xs bg-comicWhite text-ink p-4 rounded-3xl comic-border-thick shadow-pop-lg relative transition-all duration-300 transform scale-100 origin-bottom-right cursor-pointer" id="lucy-speech-bubble" title="Click bubble to chat with Lucy!">
+<div class="flex items-start gap-2.5">
+<button aria-label="Play sound prompt" class="shrink-0 w-8 h-8 rounded-xl bg-primaryYellow comic-border text-ink flex items-center justify-center hover:scale-110 active:scale-95 transition-transform" id="lucy-speak-btn">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+<p class="font-sans font-bold text-sm leading-snug select-none" id="lucy-quote">
+            Hi Leo! Ready to find letter <strong class="text-poppyRed font-display text-xl tracking-wide">“P”</strong>? Tap my nose!
+          </p>
+</div>
+<!-- Comic triangular speech pointer -->
+<div class="absolute -bottom-3 right-12 w-5 h-5 bg-comicWhite border-r-4 border-b-4 border-ink rotate-45"></div>
+</div>
+<!-- Lucy Mascot Comic Cutout Sticker -->
+<div class="relative group cursor-pointer" id="lucy-character" title="Click Lucy for encouragement!">
+<div class="relative w-28 h-28 md:w-36 md:h-36 bg-amber-100 comic-border-thick rounded-3xl shadow-pop-lg flex items-center justify-center transition-transform group-hover:rotate-3 active:scale-90 duration-200" id="lucy-sprite-wrapper">
+<img alt="Lucy the Golden Retriever animated learning helper" class="w-full h-full object-contain filter drop-shadow-[2px_4px_0_rgba(0,0,0,1)] animate-lucy-idle" id="companion-lucy-img" src="https://lh3.googleusercontent.com/aida/AEtjO1XCz-UwYuGsmKvwaNz768KxrOnWt8HhBoWcO0Usn3aCKFKxYfU8QOFIJjFBWRpo3M7Bp9SS2X4E6ibOwHydfRYq80kgSPLfzTxcI2r_Ojs63GeGWYr_K1Rue3PIc8Cr7AW7jFMxP-E5Sp-U60A4QXkbGP5CjPvBUhvsc2tvbx9d0fM8-S6IDfX-asiDV5nRzAMGgDkTdG-hIarObfADYlGC54IP8toJ6znSuImTI1_9uqhkkDypzlvmKg"/>
+<span class="absolute -top-2 left-1 text-primaryYellow text-[24px] drop-shadow-[1.5px_1.5px_0_#000] material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<!-- Pop Tap Badge -->
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-poppyRed text-comicWhite px-3 py-0.5 rounded-xl comic-border font-display text-sm tracking-wider shadow-pop-sm whitespace-nowrap group-hover:scale-105 transition-transform">
+          Tap Lucy! 🐾
+        </div>
+</div>
+</aside>
+<!-- COMPLETE WEB AUDIO SYNTHESIZER & MICRO-INTERACTIONS -->
+<script>
+  // Web Audio Synthesizer Engine (Zero external dependencies)
+  const SFX = {
+    ctx: null,
+    init() {
+      if (!this.ctx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          this.ctx = new AudioContextClass();
+        }
+      }
+      if (this.ctx && this.ctx.state === 'suspended') {
+        this.ctx.resume();
+      }
+    },
+    // Cheerful Puppy Bark
+    bark() {
+      this.init();
+      if (!this.ctx) return;
+      const t = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(320, t);
+      osc.frequency.exponentialRampToValueAtTime(620, t + 0.08);
+      osc.frequency.exponentialRampToValueAtTime(260, t + 0.22);
+      gain.gain.setValueAtTime(0.3, t);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.25);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.26);
+
+      // Secondary resonant chirp
+      const chirp = this.ctx.createOscillator();
+      const chirpGain = this.ctx.createGain();
+      chirp.type = 'sine';
+      chirp.frequency.setValueAtTime(540, t + 0.04);
+      chirp.frequency.exponentialRampToValueAtTime(780, t + 0.14);
+      chirpGain.gain.setValueAtTime(0.18, t + 0.04);
+      chirpGain.gain.exponentialRampToValueAtTime(0.01, t + 0.24);
+      chirp.connect(chirpGain);
+      chirpGain.connect(this.ctx.destination);
+      chirp.start(t + 0.04);
+      chirp.stop(t + 0.25);
+    },
+    // Sparkling Star Chime
+    sparkle() {
+      this.init();
+      if (!this.ctx) return;
+      const notes = [587.33, 739.99, 880, 1174.66, 1479.98];
+      notes.forEach((freq, idx) => {
+        const t = this.ctx.currentTime + idx * 0.06;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, t);
+        gain.gain.setValueAtTime(0.18, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.38);
+      });
+    },
+    // Playful Marimba / Pop click
+    marimba(noteFreq = 440) {
+      this.init();
+      if (!this.ctx) return;
+      const t = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(noteFreq, t);
+      gain.gain.setValueAtTime(0.25, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.24);
+    },
+    // Mechanical Lever Click & Whir
+    lever() {
+      this.init();
+      if (!this.ctx) return;
+      const t = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(140, t);
+      osc.frequency.exponentialRampToValueAtTime(70, t + 0.09);
+      gain.gain.setValueAtTime(0.2, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.13);
+
+      // Follow-up metallic chime
+      setTimeout(() => {
+        const bell = this.ctx.createOscillator();
+        const bGain = this.ctx.createGain();
+        bell.type = 'triangle';
+        bell.frequency.setValueAtTime(659.25, this.ctx.currentTime);
+        bGain.gain.setValueAtTime(0.22, this.ctx.currentTime);
+        bGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
+        bell.connect(bGain);
+        bGain.connect(this.ctx.destination);
+        bell.start(this.ctx.currentTime);
+        bell.stop(this.ctx.currentTime + 0.32);
+      }, 100);
+    },
+    // Rising Bone Arpeggio
+    boneFanfare() {
+      this.init();
+      if (!this.ctx) return;
+      const notes = [329.63, 440, 554.37, 659.25];
+      notes.forEach((freq, idx) => {
+        const t = this.ctx.currentTime + idx * 0.08;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, t);
+        gain.gain.setValueAtTime(0.22, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.32);
+      });
+    }
+  };
+
+  // Helper function to spawn comic floating particles
+  function spawnParticles(targetEl, symbols = ['★', '✦', '🦴', '✨', '🐾'], count = 4) {
+    const rect = targetEl.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'pop-particle font-display text-xl text-primaryYellow select-none';
+      p.style.left = centerX + (Math.random() * 40 - 20) + 'px';
+      p.style.top = centerY + (Math.random() * 20 - 10) + 'px';
+      p.style.setProperty('--dx', (Math.random() * 80 - 40) + 'px');
+      p.style.setProperty('--dy', (-40 - Math.random() * 50) + 'px');
+      p.style.setProperty('--rot', (Math.random() * 60 - 30) + 'deg');
+      p.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+      p.style.textShadow = '2px 2px 0px #000';
+      p.style.position = 'fixed';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 850);
+    }
+  }
+
+  // 1. Interactive Lucy Companion & Speech Bubble
+  (function initLucyInteractive() {
+    const phrases = [
+      "Woof! You have <strong class='text-amber-500 font-display text-xl'>24 shiny stars</strong>, Leo!",
+      "Let's play <strong class='text-poppyRed font-display text-lg'>Letters P &amp; M</strong> together!",
+      "P is for Puppy, Popcorn, and Play! 🐾",
+      "Tap a game card to unlock surprise stickers!",
+      "High five! You're doing so great today!",
+      "Pull the magic lever to get puppy treats!"
+    ];
+    let phraseIndex = 0;
+
+    const lucyChar = document.getElementById('lucy-character');
+    const lucyWrapper = document.getElementById('lucy-sprite-wrapper');
+    const speechBubble = document.getElementById('lucy-speech-bubble');
+    const lucyQuote = document.getElementById('lucy-quote');
+    const speakBtn = document.getElementById('lucy-speak-btn');
+    const heroLucyImg = document.getElementById('hero-lucy-img');
+
+    function triggerCheer(e) {
+      if (e) e.stopPropagation();
+      SFX.bark();
+      
+      // Excitement animation
+      if (lucyWrapper) {
+        lucyWrapper.classList.remove('animate-excited');
+        void lucyWrapper.offsetWidth;
+        lucyWrapper.classList.add('animate-excited');
+      }
+      if (heroLucyImg) {
+        heroLucyImg.classList.remove('animate-excited');
+        void heroLucyImg.offsetWidth;
+        heroLucyImg.classList.add('animate-excited');
+      }
+
+      // Next phrase
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      lucyQuote.innerHTML = phrases[phraseIndex];
+
+      // Bubble pop effect
+      speechBubble.classList.remove('scale-105', '-rotate-2');
+      void speechBubble.offsetWidth;
+      speechBubble.classList.add('scale-105', '-rotate-2');
+      setTimeout(() => speechBubble.classList.remove('scale-105', '-rotate-2'), 250);
+
+      // Spawn stars
+      spawnParticles(lucyChar || speechBubble, ['★', '🐾', 'WOOF!', '✨'], 5);
+    }
+
+    if (lucyChar) lucyChar.addEventListener('click', triggerCheer);
+    if (speechBubble) speechBubble.addEventListener('click', triggerCheer);
+    if (speakBtn) speakBtn.addEventListener('click', triggerCheer);
+    if (heroLucyImg) heroLucyImg.addEventListener('click', triggerCheer);
+  })();
+
+  // 2. Mechanical Lever & Daily Bone Treat Meter
+  (function initLeverAndBoneMeter() {
+    const lever = document.getElementById('interactive-lever');
+    const boneMeter = document.getElementById('bone-meter-card');
+    const boneCountText = document.getElementById('bone-count-text');
+    const boneProgressBar = document.getElementById('bone-progress-bar');
+    const boneHint = document.getElementById('bone-meter-hint');
+    const bonePawIcon = document.getElementById('bone-paw-icon');
+
+    let bones = 4;
+    const maxBones = 10;
+
+    function addBoneReward(eventTarget) {
+      if (bones < maxBones) {
+        bones++;
+      } else {
+        bones = 1; // loop back to 1 if completed
+      }
+
+      const percent = (bones / maxBones) * 100;
+      boneCountText.innerText = `${bones} / ${maxBones} Bones`;
+      boneProgressBar.style.width = `${percent}%`;
+
+      const remaining = maxBones - bones;
+      if (remaining > 0) {
+        boneHint.innerText = `${remaining} more bones to unlock Lucy's Captain Hat!`;
+      } else {
+        boneHint.innerText = `🎉 Captain Hat Unlocked! Lucy loves Leo!`;
+      }
+
+      // Icon pop
+      bonePawIcon.classList.add('scale-125', 'rotate-12');
+      setTimeout(() => bonePawIcon.classList.remove('scale-125', 'rotate-12'), 300);
+
+      SFX.boneFanfare();
+      spawnParticles(eventTarget || boneMeter, ['🦴', '✨', '+1 BONE!'], 4);
+    }
+
+    // Lever Click
+    if (lever) {
+      lever.addEventListener('click', (e) => {
+        e.stopPropagation();
+        lever.classList.add('lever-pulled');
+        SFX.lever();
+        setTimeout(() => lever.classList.remove('lever-pulled'), 350);
+        setTimeout(() => addBoneReward(lever), 120);
+      });
+    }
+
+    // Bone Meter Card Click
+    if (boneMeter) {
+      boneMeter.addEventListener('click', (e) => {
+        addBoneReward(boneMeter);
+      });
+    }
+  })();
+
+  // 3. Tactile Card Physics & Sound Effects
+  (function initCardPhysics() {
+    const activityCards = document.querySelectorAll('.game-activity-card');
+    const notes = [392, 440, 523.25, 587.33, 659.25, 698.46, 783.99, 880];
+
+    activityCards.forEach((card, i) => {
+      card.addEventListener('click', (e) => {
+        const note = notes[i % notes.length];
+        SFX.marimba(note);
+        spawnParticles(card, ['✦', '✨', 'READY!'], 3);
+      });
+    });
+  })();
+
+  // 4. Star Bank & Streak Micro-Interactions
+  (function initStarsAndStreak() {
+    const starCard = document.getElementById('star-bank-card');
+    const navStarCounter = document.getElementById('nav-star-counter');
+    const starIcon = document.getElementById('star-bank-icon');
+    const streakBtn = document.getElementById('streak-pill');
+    const streakIcon = document.getElementById('streak-icon');
+
+    function triggerStarSparkles(target) {
+      SFX.sparkle();
+      if (starIcon) {
+        starIcon.classList.add('scale-125', 'rotate-45');
+        setTimeout(() => starIcon.classList.remove('scale-125', 'rotate-45'), 350);
+      }
+      spawnParticles(target, ['★', '★', '✨', '+3'], 5);
+    }
+
+    if (starCard) starCard.addEventListener('click', () => triggerStarSparkles(starCard));
+    if (navStarCounter) navStarCounter.addEventListener('click', () => triggerStarSparkles(navStarCounter));
+
+    if (streakBtn) {
+      streakBtn.addEventListener('click', () => {
+        SFX.sparkle();
+        streakIcon.classList.add('scale-150', '-rotate-12');
+        setTimeout(() => streakIcon.classList.remove('scale-150', '-rotate-12'), 300);
+        spawnParticles(streakBtn, ['🔥', '✨', '3 DAYS!'], 4);
+      });
+    }
+  })();
+
+  // 5. Navigation pills interaction
+  (function initNavInteractions() {
+    const navs = document.querySelectorAll('.nav-interactive');
+    navs.forEach(nav => {
+      nav.addEventListener('click', () => {
+        SFX.marimba(587.33);
+      });
+    });
+  })();
+</script>
+</main>
+<!-- POP ART COMIC FOOTER STRIP -->
+<footer class="w-full bg-primaryYellow border-t-4 border-ink py-6 shadow-[0_-5px_0_0_#000000]">
+<div class="w-full max-w-[1360px] mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+<div class="flex items-center gap-2">
+<span class="font-display text-2xl tracking-wider text-ink">Ready Set ABC</span>
+<span class="text-ink font-bold text-sm">• Phonics Galaxy with Lucy</span>
+</div>
+<p class="font-bold text-xs text-ink/90">© 2024 Ready Set ABC. Co-play learning for preschool explorers.</p>
+<div class="flex items-center gap-4">
+<a class="font-display text-base tracking-wider text-ink hover:text-poppyRed underline underline-offset-4 decoration-2" data-path="parents-dashboard" href="#">Parent Portal</a>
+<a class="font-display text-base tracking-wider text-ink hover:text-poppyRed underline underline-offset-4 decoration-2" data-path="learning-analytics" href="#">Progress Reports</a>
+</div>
+</div>
+</footer>
+<!-- CELEBRATORY POP-ART STAR CHEST MODAL OVERLAY -->
+<div aria-modal="true" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-ink/75 backdrop-blur-sm" id="quest-complete-modal" role="dialog">
+<!-- Modal Backdrop Ben-Day Halftone Layer -->
+<div class="fixed inset-0 halftone-slate opacity-25 pointer-events-none"></div>
+<!-- Pop-Art Comic Dialog Container -->
+<div class="relative w-full max-w-2xl bg-comicPaper comic-border-thick rounded-3xl p-6 sm:p-8 shadow-pop-xl z-10 my-auto text-center transform transition-transform animate-excited">
+<!-- Close Button (Tactile comic circle) -->
+<button aria-label="Close celebration modal" class="absolute -top-3 -right-3 w-11 h-11 rounded-full bg-poppyRed hover:bg-red-600 text-comicWhite comic-border flex items-center justify-center shadow-pop-sm active:translate-x-0.5 active:translate-y-0.5 transition-all cursor-pointer z-30" onclick="document.getElementById('quest-complete-modal').remove();">
+<span class="material-symbols-outlined text-[24px] font-bold">close</span>
+</button>
+<!-- Ribbon Banner Header -->
+<div class="inline-block relative -mt-10 sm:-mt-12 mb-4">
+<div class="bg-poppyRed text-comicWhite comic-border px-6 py-2 rounded-2xl shadow-pop transform -rotate-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-primaryYellow text-[24px]" style="font-variation-settings: 'FILL' 1;">celebration</span>
+<span class="font-display text-xl sm:text-2xl tracking-wider uppercase text-pop-shadow">DAILY MISSIONS ACCOMPLISHED!</span>
+<span class="material-symbols-outlined text-primaryYellow text-[24px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+</div>
+<!-- Main Headline with Lichtenstein Pop Shadow -->
+<h2 class="font-display text-3xl sm:text-5xl text-ink tracking-wider uppercase drop-shadow-[2.5px_2.5px_0px_#ffe600] leading-none mb-4">
+      GOLDEN BONE CHEST UNLOCKED!
+    </h2>
+<!-- Celebratory Showcase Area: Mascot + Bursting Golden Star Chest -->
+<div class="relative bg-amber-100 comic-border rounded-3xl p-4 my-4 shadow-pop-sm overflow-hidden flex flex-col sm:flex-row items-center justify-around gap-4 halftone-yellow">
+<!-- Bursting Star rays glow -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
+<div class="w-72 h-72 rounded-full bg-primaryYellow blur-2xl"></div>
+</div>
+<!-- Celebratory Lucy Pup with celebration party glasses / party vibe -->
+<div class="relative flex flex-col items-center shrink-0 z-10">
+<div class="relative w-36 h-36 flex items-center justify-center">
+<img alt="Lucy celebrating golden puppy quest completion" class="max-h-full max-w-full object-contain filter drop-shadow-[3px_5px_0_rgba(0,0,0,1)] animate-lucy-idle" src="https://lh3.googleusercontent.com/aida/AEtjO1XCz-UwYuGsmKvwaNz768KxrOnWt8HhBoWcO0Usn3aCKFKxYfU8QOFIJjFBWRpo3M7Bp9SS2X4E6ibOwHydfRYq80kgSPLfzTxcI2r_Ojs63GeGWYr_K1Rue3PIc8Cr7AW7jFMxP-E5Sp-U60A4QXkbGP5CjPvBUhvsc2tvbx9d0fM8-S6IDfX-asiDV5nRzAMGgDkTdG-hIarObfADYlGC54IP8toJ6znSuImTI1_9uqhkkDypzlvmKg"/>
+<!-- Party Glasses / Star sticker over eyes -->
+<div class="absolute -top-1 right-2 bg-poppyRed text-comicWhite px-2 py-0.5 rounded-lg comic-border font-display text-xs rotate-12 shadow-pop-xs">
+            PARTY PUP! 🎉
+          </div>
+</div>
+<span class="font-display text-base text-ink tracking-wide mt-1 bg-comicWhite comic-border px-3 py-0.5 rounded-xl shadow-pop-xs">Cheering Lucy</span>
+</div>
+<!-- Glowing Golden Star & Bone Chest Burst Graphic -->
+<div class="relative z-10 flex flex-col items-center justify-center p-3">
+<div class="relative w-32 h-28 bg-primaryYellow comic-border-thick rounded-2xl flex items-center justify-center shadow-pop transform rotate-2">
+<span class="material-symbols-outlined text-ink text-[64px]" style="font-variation-settings: 'FILL' 1;">savings</span>
+<!-- Exploding reward icons around the chest -->
+<span class="absolute -top-3 -left-3 text-amber-500 font-display text-2xl bg-comicWhite comic-border w-9 h-9 rounded-full flex items-center justify-center shadow-pop-xs animate-bounce">★</span>
+<span class="absolute -top-4 -right-2 text-poppyRed font-display text-lg bg-comicWhite comic-border px-2 py-0.5 rounded-xl shadow-pop-xs rotate-12">🦴 +10</span>
+<span class="absolute -bottom-2 -left-2 text-cyan-600 font-display text-lg bg-electricCyan comic-border text-ink px-2 py-0.5 rounded-xl shadow-pop-xs -rotate-6">P M S</span>
+</div>
+<div class="mt-3 font-display text-lg text-poppyRed tracking-wider uppercase drop-shadow-[1.5px_1.5px_0_#000000]">
+          Sparkling Bone Chest!
+        </div>
+</div>
+</div>
+<!-- Rewards Earned Breakdown (3 Comic Badges) -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 my-5">
+<!-- Reward 1: Golden Stars -->
+<div class="bg-comicWhite comic-border rounded-2xl p-3 flex flex-col items-center justify-center shadow-pop-sm transform hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-amber-500 text-[32px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-display text-xl text-ink mt-1">+30 Stars</span>
+<span class="font-bold text-[11px] text-ink/80 uppercase tracking-wider">Phonics Bank</span>
+</div>
+<!-- Reward 2: Bone Treats -->
+<div class="bg-comicWhite comic-border rounded-2xl p-3 flex flex-col items-center justify-center shadow-pop-sm transform hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-poppyRed text-[32px]">pets</span>
+<span class="font-display text-xl text-ink mt-1">10/10 Bones</span>
+<span class="font-bold text-[11px] text-emerald-500 uppercase tracking-wider">Meter Full!</span>
+</div>
+<!-- Reward 3: Outfit Unlocked -->
+<div class="bg-comicWhite comic-border rounded-2xl p-3 flex flex-col items-center justify-center shadow-pop-sm transform hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-electricCyan text-[32px]">checkroom</span>
+<span class="font-display text-base text-ink mt-1 leading-tight">Sailor Collar</span>
+<span class="font-bold text-[11px] text-poppyRed uppercase tracking-wider">New Lucy Outfit!</span>
+</div>
+</div>
+<!-- Tactile Pop-Art Action Buttons -->
+<div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+<!-- Claim & Dress Up Primary CTA -->
+<button class="w-full sm:w-auto flex-1 py-3 px-6 bg-primaryYellow hover:bg-amber-400 text-ink font-display text-lg sm:text-xl tracking-wider rounded-2xl comic-border shadow-pop active:translate-x-1 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2" onclick="if(window.SFX){SFX.boneFanfare();SFX.sparkle();}; document.getElementById('quest-complete-modal').remove();">
+<span class="material-symbols-outlined text-[24px]">redeem</span>
+<span>CLAIM REWARDS &amp; DRESS UP</span>
+</button>
+<!-- Continue Exploring Secondary CTA -->
+<button class="w-full sm:w-auto py-3 px-6 bg-electricCyan hover:bg-cyan-400 text-ink font-display text-lg sm:text-xl tracking-wider rounded-2xl comic-border shadow-pop active:translate-x-1 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2" onclick="if(window.SFX){SFX.sparkle();}; document.getElementById('quest-complete-modal').remove();">
+<span class="material-symbols-outlined text-[24px]">explore</span>
+<span>CONTINUE EXPLORING</span>
+</button>
+</div>
+</div>
+</div></body></html>

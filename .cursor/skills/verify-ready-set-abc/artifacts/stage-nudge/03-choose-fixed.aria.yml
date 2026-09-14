@@ -1,0 +1,11 @@
+feature: stage-nudge
+entry: after Get update + Reload to finish on 4174
+origin: http://127.0.0.1:4174
+screen: choose
+body[data-screen]: choose
+miss: Letter A (letter is P)
+after:
+  bubble: Almost!
+  voice: http://127.0.0.1:4174/audio/lucy-nudge-3.mp3
+  NUDGES[2]: Almost!
+  match: true

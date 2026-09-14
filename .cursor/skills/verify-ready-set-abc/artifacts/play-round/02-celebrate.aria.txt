@@ -1,0 +1,16 @@
+url: http://127.0.0.1:4173/index.html#/play
+body[data-screen]: celebrate
+Ready Set ABC chrome visible. Footer: rsabc-shell-v25-az-art
+
+- button "Skip the celebration"
+- text: Perfect Match! 3 of 3 Stars
+- paragraph: Woohoo! 🎉
+- paragraph: You opened Party bows for me! Put it on?
+- img "Lucy the golden retriever"
+- paragraph: is for Ambulance
+- button "Ambulance sticker. Tap to hear it."
+- text: Party bows / 3 stars opened it
+- button "Put party bows on Lucy"
+- button "Play A Again"
+- button "Next Adventure Play Letter B"
+- text: Letter 1 of 3 completed in this set

@@ -1,0 +1,7 @@
+ts	phase	decision	why	evidence	result
+2026-09-12T00:07:30Z	pickup	resume Feature verify from pause note, keep closet design	Bradley asked to continue, not redo closet, not commit	/tmp/ready-set-abc-resume.md	open
+2026-09-12T00:08:10Z	verify	relaunch 4173 outside sandbox because pid 72188 was dead and launch helper got reaped	skill says keep python serving app on 4173 and write state	/tmp/rsabc-verify/state pid 99736	doctor OK drive http://127.0.0.1:4173
+2026-09-12T00:09:40Z	verify	tapped Party bows then Ball cap on the pouch	prove mix-and-match on the real tablet path	.cursor/skills/verify-ready-set-abc/artifacts/star-pouch/storage.json	outfit ["bows","cap"], lucy-cap.jpg plus layer-headband.png
+2026-09-12T00:15:16Z	verify	drove Workshop four beats, Sound of P once-home, Case Match once-home	product lock for the four phonics cards	.cursor/skills/verify-ready-set-abc/artifacts/comic-hub/02-workshop-meet.png	each card returned as specified
+2026-09-12T00:17:30Z	hub	sized closet SVG and Lucy stage so eight cards fit 1280x800	Home was sparse because the pouch icon filled the column	app/css/play.css hub rules	cards in view bottom 783
+2026-09-12T00:27:20Z	verify	tapped Comic Cosmic Violet on Device after PIN 1234	same hub, different paint, cream PIN stays	.cursor/skills/verify-ready-set-abc/artifacts/comic-hub/04-cosmic.png	recast measured

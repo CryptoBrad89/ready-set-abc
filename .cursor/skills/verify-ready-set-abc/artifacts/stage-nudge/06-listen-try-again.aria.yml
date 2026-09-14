@@ -1,0 +1,14 @@
+feature: stage-nudge
+entry: same round listen miss
+origin: http://127.0.0.1:4174
+viewport: 1280x800
+pin: rsabc-shell-v39-mute-dots (no bump)
+screen: listen
+body[data-screen]: listen
+miss: Not this sound
+after:
+  bubble: Try again!
+  voice: http://127.0.0.1:4174/audio/lucy-nudge-2.mp3
+  NUDGES[1]: Try again!
+  match: true
+  not: Not that one — try another orb!

@@ -26,5 +26,17 @@
     "screen": "arcade",
     "playLabel": "Arcade, locked",
     "roundStarted": false
+  },
+  "afterWriterReproof": {
+    "rosterNullText": false,
+    "whoSlotEmptyOnFaces": true,
+    "letterPEmptySessionScreen": "faces",
+    "milesCsv": "assigned,S O J,true",
+    "homeBlendAria": "Open cloud letters S, O, J",
+    "playLabel": "Play letter S. Tap to start sound.",
+    "trailLocked": ["A", "T", "P", "I", "N"],
+    "trailOpen": ["S"],
+    "arcadeHash": "#/arcade",
+    "arcadeLucy": "Arcade is locked. Ask a grown-up."
   }
 }
