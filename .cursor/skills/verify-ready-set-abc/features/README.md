@@ -66,3 +66,4 @@ Keep implementation details out of the map. Name only user paths, stable handles
 - [Letters & Phonics](./abc-trail.md) covers the path. SATPIN Ava has Cloud 1 (S A T P I N). Assigned Miles has S O J and no cloud islands.
 - [Grown-Ups pin](./grown-ups-pin.md) covers the PIN gate, pinning a letter, and setting Miles to assigned letters S O J.
 - [Lucy's Closet](./star-pouch.md) covers dress-up with stars. Mix and match. Stars are never spent.
+- [Lucy's Picnic Day](./picnic-day.md) covers Storybooks. A paged picture story for this letter. Not the four-beat round.

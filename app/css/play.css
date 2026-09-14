@@ -2772,6 +2772,66 @@ html[data-chrome="hidden"] .screen {
 .later-slot { display: grid; gap: 12px; min-height: 0; }
 .later-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
 
+.picnic {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 8px;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+.picnic-spread {
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  text-align: center;
+}
+.picnic-line {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(22px, 4.2vh, 40px);
+  line-height: 1.15;
+  max-width: min(28ch, 90vw);
+}
+.picnic-plate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: min(28vw, 220px);
+  min-height: var(--target-min);
+  padding: 12px 18px;
+}
+.picnic-plate .pic-plate--pic {
+  width: min(28vh, 180px);
+  height: min(28vh, 180px);
+  margin-top: 0;
+}
+.picnic-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+.picnic-turn {
+  min-height: var(--target-min);
+  min-width: var(--target-min);
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(16px, 2.2vh, 22px);
+}
+.picnic-turn svg { width: 1.1em; height: 1.1em; }
+.picnic-turn:not(.picnic-turn--next) svg { transform: scaleX(-1); }
+
 @media (max-width: 1100px) {
   .hub-row--phonics, .later-grid, .hub-row--later { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hub-hero { grid-template-columns: 1fr; }

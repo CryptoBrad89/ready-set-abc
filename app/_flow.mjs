@@ -2461,6 +2461,49 @@ const e2Blend = byClass(e2HomeNode, 'hub-card').find((n) => /Open cloud/.test(n.
 assert(e2Blend && /Open cloud letters/.test(e2Blend.getAttribute('aria-label')),
   'SATPIN Home blend still says open cloud');
 assert(/Cloud 1/.test(textOf(e2Home.footLeft())), 'SATPIN Home foot still names Cloud 1');
+assert(/A tiny picture story for this letter/.test(textOf(e2HomeNode)),
+  'Home picnic card is a picture story, not tap-a-word leftover');
+
+const e2Stories = await import('./js/screens/stories.js');
+assert(startLetter('P') === 'P', 'SATPIN picnic letter matches Home PLAY');
+const e2Picnic = e2Stories.picnicStory(startLetter('P'));
+assert(e2Picnic.letter === 'P', 'SATPIN picnic story is for P');
+assert(e2Picnic.pages[0].kind === 'cover' && e2Picnic.pages[0].title === "Lucy's Picnic Day",
+  'picnic opens on Lucy’s Picnic Day');
+assert(e2Picnic.pages[e2Picnic.pages.length - 1].kind === 'end', 'picnic ends');
+assert(e2Picnic.pages.length === 6, `picnic is cover, four pictures, end (${e2Picnic.pages.length})`);
+assert(e2Picnic.pages.every((p) => p.plates.length <= 1), 'each picnic page has at most one picture');
+assert(e2Picnic.pages.some((p) => p.plates[0] && p.plates[0].word === 'Pig'),
+  'P picnic shows Pig, not a four-plate payoff board');
+const e2Cover = e2Stories.render({ go: () => {}, kid: null, foot: () => {}, params: [] });
+assert(/Lucy's Picnic Day/.test(textOf(e2Cover)), 'cover paints Lucy’s Picnic Day');
+assert(/Lucy packs a picnic for P/.test(textOf(e2Cover)), 'cover is a story line, not a letter round');
+assert(!byClass(e2Cover, 'later-grid').length, 'cover is not the leftover four-plate grid');
+assert(!/Coming next week|read-along later|Word pictures for this letter/.test(textOf(e2Cover)),
+  'cover does not keep leftover Storybooks copy');
+assert(!/meet|choose|listen|payoff|Hooray/i.test(textOf(e2Cover)),
+  'cover is not meet/choose/listen/payoff');
+assert(byClass(e2Cover, 'lucy-stage').length === 1, 'Lucy stays on the cover');
+const e2Next = byTag(e2Cover, 'button').find((n) => n.getAttribute('aria-label') === 'Next page');
+assert(e2Next, 'cover has a Next page control');
+assert(!byTag(e2Cover, 'button').some((n) => n.getAttribute('aria-label') === 'Previous page'),
+  'cover has no Previous page');
+const e2Page2 = e2Stories.render({ go: () => {}, kid: null, foot: () => {}, params: ['2'] });
+assert(/Pig is at the picnic/.test(textOf(e2Page2)), 'page 2 is the Pig spread');
+assert(byTag(e2Page2, 'button').some((n) => n.getAttribute('aria-label') === 'Pig'),
+  'page 2 has a Pig plate, not four leftover words');
+assert(!/Pizza|Pencil|Pear/.test(textOf(e2Page2)), 'page 2 is not a four-word payoff row');
+const e2Last = e2Stories.render({
+  go: () => {},
+  kid: null,
+  foot: () => {},
+  params: [String(e2Picnic.pages.length)],
+});
+assert(/The End/.test(textOf(e2Last)) && /P is in this picnic/.test(textOf(e2Last)),
+  'last page is The End');
+assert(!byTag(e2Last, 'button').some((n) => n.getAttribute('aria-label') === 'Next page'),
+  'the last page has no Next page');
+assert(/Lucy's Picnic Day/.test(textOf(e2Stories.footLeft())), 'footer names Lucy’s Picnic Day');
 
 store.setRosterOverride([{
   id: 'k24',
@@ -2518,6 +2561,10 @@ assert(!/Start match for A/.test(sojPlay.getAttribute('aria-label') || ''),
   'assigned Arcade does not start SATPIN A');
 assert(/Tap the Ss/.test(textOf(sojArcade)),
   'assigned Arcade Lucy names S');
+const sojPicnic = e2Stories.picnicStory(startLetter('P'));
+assert(sojPicnic.letter === 'S', 'assigned picnic is S, same as Home PLAY');
+const sojCover = e2Stories.render({ go: () => {}, kid: activeKid(), foot: () => {}, params: [] });
+assert(/Lucy packs a picnic for S/.test(textOf(sojCover)), 'assigned picnic cover names S');
 setTeacherUnlock(1);
 round.startRound({ startAt: 'O' });
 assert(round.getRound() && round.getRound().letters[0] === 'O',

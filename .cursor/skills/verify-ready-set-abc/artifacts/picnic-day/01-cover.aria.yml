@@ -1,0 +1,36 @@
+- generic [ref=f3e2]:
+  - banner [ref=f3e3]:
+    - generic [ref=f3e4]:
+      - button "Ready Set ABC — home. Hold for Grown-Ups." [ref=f3e5] [cursor=pointer]
+      - button "Ava is playing. Tap to pick a different friend." [ref=f3e198] [cursor=pointer]:
+        - generic [ref=f3e199]: 🦊
+        - generic [ref=f3e201]:
+          - generic [ref=f3e202]: Ava
+          - generic [ref=f3e203]: Pre-K
+    - navigation "Sections" [ref=f3e20]:
+      - button "Home" [ref=f3e204] [cursor=pointer]
+      - button "Letters & Phonics" [ref=f3e206] [cursor=pointer]
+      - button "Lucy's Closet" [ref=f3e208] [cursor=pointer]
+      - button "Storybooks" [ref=f3e210] [cursor=pointer]
+      - button "Arcade" [ref=f3e212] [cursor=pointer]
+    - generic [ref=f3e31]:
+      - generic "0 Stars" [ref=f3e32]
+      - group "Sound" [ref=f3e35]:
+        - button "Music" [ref=f3e36] [cursor=pointer]
+        - button "Sound effects" [pressed] [ref=f3e39] [cursor=pointer]
+        - button "Lucy voice on or off" [pressed] [ref=f3e44] [cursor=pointer]
+      - button "Grown-Ups" [ref=f3e49] [cursor=pointer]
+  - main [ref=f3e55]:
+    - generic [ref=f3e216]:
+      - heading "Lucy's Picnic Day" [level=1] [ref=f3e218]
+      - generic [ref=f3e222]:
+        - generic [ref=f3e224] [cursor=pointer]:
+          - img "Lucy the golden retriever"
+        - paragraph [ref=f3e226]: P is for Pig!
+      - paragraph [ref=f3e228]: Lucy packs a picnic for P.
+      - generic [ref=f3e229]:
+        - generic [ref=f3e230]: 1 / 6
+        - button "Next page" [ref=f3e231] [cursor=pointer]: Next
+  - contentinfo [ref=f3e192]:
+    - generic [ref=f3e193]: Lucy's Picnic Day
+    - generic [ref=f3e197]: READY SET ABC · Pre-K Phonics with Lucy · rsabc-shell-v40-nudge-home
