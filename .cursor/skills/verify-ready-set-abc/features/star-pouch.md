@@ -1,6 +1,6 @@
-# Star Pouch
+# Lucy's Closet
 
-Lucy's Closet shows earned stars and picture stickers and lets a child put unlocked closet treats on Lucy. Kids mix and match. Stars are never spent.
+Lucy's Closet is dress-up with stars. Kids mix and match unlocked closet treats on Lucy. Stars are never spent. It is not a ticket shop.
 
 ## Sub-features
 
@@ -12,9 +12,9 @@ Lucy's Closet shows earned stars and picture stickers and lets a child put unloc
 ## How to get to it (user POV)
 
 - Tap the **Lucy's Closet** tab.
-- Smoke empty: `_smoke.html?kid=k01&stars=&to=%23/pouch`.
-- Smoke with stars: `_smoke.html?kid=k01&stars=A3&to=%23/pouch` (Party bows just opened).
-- Smoke resting: `_smoke.html?kid=k01&progress=none&to=%23/pouch`.
+- Smoke empty `_smoke.html?kid=k01&stars=&to=%23/pouch`.
+- Smoke with stars `_smoke.html?kid=k01&stars=A3&to=%23/pouch` (Party bows just opened).
+- Smoke resting `_smoke.html?kid=k01&progress=none&to=%23/pouch`.
 - After a letter, the celebrate card hands off to the closet.
 
 ## Driving it with the browser
@@ -23,10 +23,10 @@ Preconditions:
 
 - `verify-rsabc doctor` is OK on port 4173 with shell `rsabc-shell-v40-nudge-home`.
 - Viewport is landscape 1280×800.
-- Navigate to `verify-rsabc smoke 'reset=1&kid=k01&stars=A3&to=%23/pouch'`.
+- Ava is playing. Navigate to `verify-rsabc smoke 'reset=1&kid=k01&stars=A3&to=%23/pouch'`.
 
-- **See the closet.** `body[data-screen]` is `pouch`. Heading includes `Lucy's closet`. A count `3` and copy `stars in the pouch`. Empty-sticker line `Your stars are here! Match a picture with Lucy to earn a sticker too.` Snapshot `artifacts/star-pouch/01-pouch.aria.txt` and screenshot `artifacts/star-pouch/01-pouch.png`.
-- **Wear Party bows.** Choose the treat whose name includes `Party bows` and is pressed/unpressed as a button (not a locked non-button). Lucy's bubble mentions the bows or `How do I look?`. The treat is `aria-pressed=true`.
+- **See the closet.** Hash `#/pouch`. `body[data-screen]` is `pouch`. Heading includes `Lucy's closet`. A count `3` and copy `stars in the pouch`. Empty-sticker line `Your stars are here! Match a picture with Lucy to earn a sticker too.` Snapshot `artifacts/star-pouch/01-pouch.aria.txt` and screenshot `artifacts/star-pouch/01-pouch.png`.
+- **Wear Party bows.** Choose the treat whose name includes `Party bows` and is pressed or unpressed as a button (not a locked non-button). Lucy's bubble mentions the bows or `How do I look?`. The treat is `aria-pressed=true`.
 - **Proof.** Read `localStorage['rsabc.outfit']` into `artifacts/star-pouch/storage.json`. Value includes the bows treat id (`bows`, as a JSON array). Screenshot `artifacts/star-pouch/02-worn.png` with Lucy wearing bows. Tap Ball cap as well if 12 stars are banked and confirm bows stay on. Tap the same treat again to take them off if you need to restore. Keep the worn screenshots.
 
 ## Gotchas

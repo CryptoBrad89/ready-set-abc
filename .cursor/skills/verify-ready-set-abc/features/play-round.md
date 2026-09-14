@@ -16,7 +16,7 @@ A child starts PLAY from that child's Home. The round is meet, then choose, then
 
 - On Ava Home, tap **Play letter P**.
 - On Letters & Phonics, tap the P tile in Cloud 1 (Ava) or the S tile (Miles assigned).
-- Open a named round: `_smoke.html?kid=k01&play=P`.
+- Open a named round `_smoke.html?kid=k01&play=P`.
 
 ## Driving it with the browser
 
@@ -24,9 +24,10 @@ Preconditions:
 
 - `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v40-nudge-home`.
 - Viewport is landscape 1280×800.
-- Navigate to the URL from `verify-rsabc smoke 'reset=1&kid=k01&play=P'`.
+- Ava is playing. Navigate to the URL from `verify-rsabc smoke 'reset=1&kid=k01'`.
 
-- **Land in meet.** `body[data-screen]` is `meet`. A hanging P is on the stage. Lucy is in the corner, not a coach overlay. Snapshot `artifacts/play-round/01-meet.aria.txt`.
+- **Home PLAY.** Heading `Welcome back, Ava!`. Mission button `Play letter P. Tap to start sound.`. Choose that button. `body[data-screen]` is `meet`.
+- **Hash round.** Navigate to the URL from `verify-rsabc smoke 'kid=k01&play=P'`. `body[data-screen]` is `meet`. A hanging P is on the stage. Lucy is in the corner, not a coach overlay. Snapshot `artifacts/play-round/01-meet.aria.txt`.
 - **Choose.** Tap the P card(s). Misses wobble only. No drag.
 - **Listen.** Three identical orbs. One is the sound. Wrong orbs wobble.
 - **Payoff.** Pan / Panda plates. Tap **Hooray!**

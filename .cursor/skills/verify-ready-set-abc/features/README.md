@@ -2,7 +2,24 @@
 
 This directory is the maintained source for verifying the user-facing behavior of Ready Set ABC. Read the index before driving the app, then use the matching feature file as the recipe.
 
-The product story is in [PRODUCT.md](../../../../PRODUCT.md). If a recipe disagrees with that file, PRODUCT.md wins. Roster is login. A child tap opens that child's Home, not a round.
+The product story is in [PRODUCT.md](../../../../PRODUCT.md). If a recipe disagrees with that file, PRODUCT.md wins.
+
+## Tablet session
+
+A tablet session is a state machine.
+
+1. No session shows the roster. Heading **Who is playing?**. `body[data-screen]` is `faces`. Tabs are hidden. Empty hash and `_smoke.html?reset=1` land here. Smoke `classroom=0` also lands here. It does not skip the roster.
+2. A child tap opens that child's Home. Heading **Welcome back, {Name}!**. Hash `#/home`. It never starts a round.
+3. The adult tile opens the PIN, then that adult's Home.
+4. Home cards and Letters & Phonics follow that child's work mode.
+
+Work mode lives on the child record.
+
+- **SATPIN** is the default. Ava (`k01`) is SATPIN. Cloud 1 letters are S A T P I N. PLAY is P. Gold chip **Cloud 1**. Blend aria `Open cloud letters S, A, T`. Stat **Level 1** with `S · A · T · P · I · N`. Letters & Phonics shows cloud islands and six open-cloud tiles. Path footer `Tap a letter in the open cloud`. Home footer `Cloud 1 · n/24`.
+- **Assigned letters** is set on the Class tab. Miles (`k24`) stays SATPIN until Class sets assigned letters. After Class sets `S O J`, PLAY is S. No Cloud 1 chip. Blend aria `Your letters S, O, J`. Stat **Your letters** with `S · O · J`. Letters & Phonics has no islands. The board is S O J. Lucy does not say Cloud 1 is open. Path footer `Tap one of your letters`. Home footer `Your letters · n/12`.
+- **Free play** exists in Grown-Ups. Do not invent a proof for it in this pass.
+
+Seed Ava with `kid=k01`. Seed Miles with `kid=k24`. Assigned Miles still needs the Class step.
 
 ## Baseline preconditions
 
@@ -12,7 +29,7 @@ The product story is in [PRODUCT.md](../../../../PRODUCT.md). If a recipe disagr
 - Seed state only through `_smoke.html` on this origin (`verify-rsabc smoke '<query>'`).
 - Never drive `:8000` or `:8080`. Never drive an instance this helper did not start.
 - PIN for Grown-Ups is `1234`.
-- Leftover proofs in `artifacts/` often used port 4174. New drives use the skill default 4173 so localStorage stays isolated.
+- Leftover proofs in `artifacts/` used port 4174. New drives use the skill default 4173 so localStorage stays isolated.
 
 ## Driving conventions
 
@@ -21,7 +38,6 @@ The product story is in [PRODUCT.md](../../../../PRODUCT.md). If a recipe disagr
 - Treat every command as literal. Keep quoted names and smoke queries unchanged.
 - Open smoke URLs in the verification browser, wait until `index.html` is showing, then tap.
 - Restore a clean tablet with `_smoke.html?reset=1` after a mutation. Do not remove proof artifacts during cleanup.
-- `classroom=0` does not skip the roster. Empty session is always **Who is playing?**. Seed Ava with `kid=k01`. Seed Miles with `kid=k24` only after Class has set that child's work.
 
 ## Proof and skip reporting
 
@@ -46,7 +62,7 @@ Keep implementation details out of the map. Name only user paths, stable handles
 ## Features
 
 - [Play a letter round](./play-round.md) covers PLAY from that child's Home, meet through celebrate, Ava SATPIN letter P, and Miles assigned letter S.
-- [Face pick](./face-pick.md) covers roster login, a child tap to Home, and switching kids with the who-chip.
-- [ABC Trail](./abc-trail.md) covers the Letters & Phonics path. SATPIN Ava has Cloud 1 (S A T P I N). Assigned Miles has S O J and no cloud islands.
+- [Face pick](./face-pick.md) covers roster login. A face tap opens that child's Home. The who-chip returns to the roster.
+- [Letters & Phonics](./abc-trail.md) covers the path. SATPIN Ava has Cloud 1 (S A T P I N). Assigned Miles has S O J and no cloud islands.
 - [Grown-Ups pin](./grown-ups-pin.md) covers the PIN gate, pinning a letter, and setting Miles to assigned letters S O J.
-- [Star Pouch](./star-pouch.md) covers Lucy's Closet. Stars, stickers, and mix-and-match dress-up. Stars are never spent.
+- [Lucy's Closet](./star-pouch.md) covers dress-up with stars. Mix and match. Stars are never spent.

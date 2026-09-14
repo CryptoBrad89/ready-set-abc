@@ -59,6 +59,8 @@ Seed tablet state by navigating to a smoke URL on **this** origin, then wait for
 
 ```
 .cursor/skills/verify-ready-set-abc/bin/verify-rsabc smoke 'reset=1'
+.cursor/skills/verify-ready-set-abc/bin/verify-rsabc smoke 'kid=k01'
+.cursor/skills/verify-ready-set-abc/bin/verify-rsabc smoke 'kid=k01&play=P'
 ```
 
 `_smoke.html?<query>` writes `rsabc.*` localStorage then `location.replace`s into the app. Query with no keys lists bookmarks. That index is not a play screen. `reset=1` is the roster. `kid=k01` is Ava Home. `kid=k01&play=P` is a named round. Empty session never skips the roster.
@@ -72,18 +74,18 @@ Stable handles:
 | App identity | roster heading `Who is playing?`; Home heading `Welcome back, Ava!` (or that child's name); brand button name `Ready Set ABC — home. Hold for Grown-Ups.` |
 | Play | button `Play letter P. Tap to start sound.` on SATPIN Ava Home. Miles assigned is `Play letter S. Tap to start sound.` |
 | Tabs | `Home`, `Letters & Phonics`, `Lucy's Closet`, `Storybooks`, `Arcade` |
-| Grown-Ups | button `Grown-Ups` → dialog `Grown-up check` → PIN **1234** (keys `1` `2` `3` `4`) or the sum on the card |
+| Grown-Ups | button `Grown-Ups`, then dialog `Grown-up check`, then PIN **1234** (keys `1` `2` `3` `4`) or the sum on the card |
 | Close gate | PIN pad `Return to Letter Play` or Escape. Unlocked sheet `Back to play`. |
 | Home from logo | click the brand (hold 3s opens the gate instead) |
 | Case-match choice | button `Letter a, … as in Apple` or `Letter A, …`. Hunt case is in the instruction (`little` vs `big`). |
 | Complete match | button whose name contains `Tap here to complete the match` (or the CTA `Match A & a!` / `Check Aa`) |
-| Picture choice | button `{Word}, starts with {phoneme}` — pick the word that starts with this letter |
+| Picture choice | button `{Word}, starts with {phoneme}`. Pick the word that starts with this letter. |
 | Celebrate skip | button `Skip the celebration` |
 | Next letter | button whose name contains `Play Letter B` (or whichever letter is next) |
 | Roster | heading `Who is playing?`; face buttons named `Ava`, `Miles`, … A face tap opens that child's Home, not a round. |
-| Path tile | SATPIN `Letter P, Pig. … Play this letter.` Assigned Miles tiles are S O J only. |
+| Letters & Phonics tile | SATPIN `Letter P, Pig. … Play this letter.` Assigned Miles tiles are S O J only. |
 | Lucy | image `Lucy the golden retriever` |
-| Lucy hello | button `Talk with Lucy` (Lucy’s paw) → dialog `Lucy says`; close is `Close Lucy` or Escape. Sound chip `Hear the sound of letter P` does not unlock audio. Peek plates `Pan` / `Panda`. Play in the dialog is `Play letter P with Lucy. Tap to start sound.` |
+| Lucy hello | button `Talk with Lucy` (Lucy's paw), then dialog `Lucy says`. Close is `Close Lucy` or Escape. Sound chip `Hear the sound of letter P` does not unlock audio. Peek plates `Pan` / `Panda`. Play in the dialog is `Play letter P with Lucy. Tap to start sound.` |
 
 `document.body.dataset.screen` is `home` · `faces` · `trail` · `pouch` · `case` · `picture` · `bonus` · `celebrate`. Use it to know which step you are on.
 
@@ -91,7 +93,7 @@ Two-tap match (case and picture). (1) tap a choice until `aria-pressed=true`. (2
 
 Bonus (`body[data-screen=bonus]`): Letter Hunt / ABC Order tiles are `Letter {glyph}, tap it if it is {letter}` or `Letter {glyph}`. Sound Sort is `Yes!` / `No`. `Skip to stars` appears after two misses or 20 seconds. Bonus misses never cost a star.
 
-Classroom PIN for the Grown-Ups gate is `1234` (also printed in `app/README.md` for the cart). Wrong PIN clears. Nobody locks out.
+PIN for the Grown-Ups gate is `1234` (also printed in `app/README.md` for the cart). Wrong PIN clears. Nobody locks out.
 
 Do not use `_flow.mjs`, `store.set*` from the console, or hash-only jumps as the proof of a kid path. Smoke URLs may **seed** settings (bonus off, named kid, pin). The **action** under test still has to be a user tap.
 
@@ -131,6 +133,8 @@ All invocations assume repo root. The script is executable.
 .cursor/skills/verify-ready-set-abc/bin/verify-rsabc doctor
 .cursor/skills/verify-ready-set-abc/bin/verify-rsabc url
 .cursor/skills/verify-ready-set-abc/bin/verify-rsabc smoke 'reset=1'
+.cursor/skills/verify-ready-set-abc/bin/verify-rsabc smoke 'kid=k01'
+.cursor/skills/verify-ready-set-abc/bin/verify-rsabc smoke 'kid=k01&play=P'
 .cursor/skills/verify-ready-set-abc/bin/verify-rsabc cleanup
 ```
 
