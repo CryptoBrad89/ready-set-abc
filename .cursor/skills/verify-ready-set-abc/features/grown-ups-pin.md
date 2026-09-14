@@ -30,12 +30,12 @@ Preconditions:
 - **Unlock.** Choose keys `1`, then `2`, then `3`, then `4` (buttons whose names are `1` `2` `3` `4`). Dialog named `Grown-Ups settings` appears. Play tab is selected. Open clouds is visible for SATPIN Ava. Note text names the open cloud.
 - **Pin P.** Under `Letter of the day`, choose the button named `P`. Note text reads `Pinned: P is highlighted inside the open cloud (P is for Pig). If that letter is locked, PLAY starts the open cloud instead. Tap it again to unpin.` That button is `aria-pressed=true`.
 - **Assign Miles.** Choose the **Class** tab. Find Miles. Set **Work mode for Miles** to **Assigned letters**. Set **Assigned letters for Miles** to `S O J`. Optionally set Arcade to Locked.
-- **Return.** Choose `Return to Letter Play`. The overlay closes. Header unlock does not switch session (still Ava).
+- **Return.** Choose `Back to play`. The overlay closes. Header unlock does not switch session (still Ava).
 - **Proof.** Snapshot `artifacts/grown-ups-pin/02-home.aria.txt` on Home. Read `localStorage['rsabc.pinnedLetter']` into `artifacts/grown-ups-pin/storage.json`. Value is `"P"`. Open Letters & Phonics if you need the flag. A tile name includes `Letter of the day`.
 
 ## Gotchas
 
-- `?gu=play` with an empty session shows the roster first. Seed `kid=k01` or tap a face before you treat the keypad as the first screen.
+- The PIN pad cancel is `Return to Letter Play`. The unlocked sheet close is `Back to play`.
 - The keypad also accepts the sum on the card. Digit length of 4 or more that is neither PIN nor sum clears. Do not treat a cleared pad as a lockout.
 - Hold-logo for 3 seconds opens the same gate. A short click on the paw goes Home instead.
 - Pin applies on the next PLAY, not mid-round. Do not start a letter, then pin, and expect the current board to change.

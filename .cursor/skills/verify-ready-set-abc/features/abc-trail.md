@@ -27,7 +27,7 @@ Preconditions:
 
 - **SATPIN Ava.** Navigate to `verify-rsabc smoke 'reset=1&kid=k01&to=%23/trail'`. `body[data-screen]` is `trail`. Heading `Letters & Phonics`. Lucy says Cloud 1 is open. Six tiles for S A T P I N. Footer `Tap a letter in the open cloud`. Snapshot `artifacts/abc-trail/01-ava-trail.aria.txt`.
 - **Open letter P.** Choose `Letter P, … Play this letter.` Meet for P opens.
-- **Assigned Miles.** From Ava Home, open Grown-Ups, PIN 1234, Class tab. Set **Work mode for Miles** to **Assigned letters**. Set **Assigned letters for Miles** to `S O J`. Choose **Return to Letter Play**. Tap the who-chip, then **Miles**. Tap **Letters & Phonics**. Board is S O J. No cloud islands. Lucy `Tap letter S to start.` Footer `Tap one of your letters`. A tile named `Letter Z` must not appear. Snapshot `artifacts/abc-trail/02-miles-trail.aria.txt`.
+- **Assigned Miles.** From Ava Home, open Grown-Ups, PIN 1234, Class tab. Set **Work mode for Miles** to **Assigned letters**. Set **Assigned letters for Miles** to `S O J`. Choose **Back to play**. Tap the who-chip, then **Miles**. Tap **Letters & Phonics**. Board is S O J. No cloud islands. Lucy `Tap letter S to start.` Footer `Tap one of your letters`. A tile named `Letter Z` must not appear. Snapshot `artifacts/abc-trail/02-miles-trail.aria.txt`.
 - **Closed letter.** With Miles still assigned, open `#/letter/P` or smoke `kid=k24&play=P`. Screen stays trail. Tile `Letter P, locked.`
 - **Proof.** For Ava, `localStorage['rsabc.kid']` is `"k01"`. For Miles, `"k24"`.
 

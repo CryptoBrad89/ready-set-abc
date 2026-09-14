@@ -73,7 +73,7 @@ Stable handles:
 | Play | button `Play letter P. Tap to start sound.` on SATPIN Ava Home. Miles assigned is `Play letter S. Tap to start sound.` |
 | Tabs | `Home`, `Letters & Phonics`, `Lucy's Closet`, `Storybooks`, `Arcade` |
 | Grown-Ups | button `Grown-Ups` → dialog `Grown-up check` → PIN **1234** (keys `1` `2` `3` `4`) or the sum on the card |
-| Close gate | `Return to Letter Play` or Escape |
+| Close gate | PIN pad `Return to Letter Play` or Escape. Unlocked sheet `Back to play`. |
 | Home from logo | click the brand (hold 3s opens the gate instead) |
 | Case-match choice | button `Letter a, … as in Apple` or `Letter A, …`. Hunt case is in the instruction (`little` vs `big`). |
 | Complete match | button whose name contains `Tap here to complete the match` (or the CTA `Match A & a!` / `Check Aa`) |
