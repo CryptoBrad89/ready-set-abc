@@ -25,7 +25,7 @@ Preconditions:
 - Ava is playing. Navigate to the URL from `verify-rsabc smoke 'reset=1&kid=k01'`.
 
 - **Home card.** Heading `Welcome back, Ava!`. Card `Lucy's Picnic Day`. Subcopy `A tiny picture story for this letter.` Choose that card.
-- **Cover.** Heading `Lucy's Picnic Day`. Copy `Lucy packs a picnic for P.` Lucy is on the page. `body[data-screen]` is `stories`. Button `Next page`. No `Previous page`. No four-word payoff grid. Snapshot `artifacts/picnic-day/01-cover.aria.txt`.
+- **Cover.** Heading `Lucy's Picnic Day`. Copy `Lucy packs a picnic for P.` Lucy is on the page. `body[data-screen]` is `stories`. Button `Next page`. No `Previous page`. No four-word payoff grid. Snapshot `artifacts/picnic-day/01-cover.aria.yml`.
 - **Page.** Choose `Next page`. Copy `Pig is at the picnic.` Button `Pig`. Choose `Next page` through The End.
 - **The End.** Heading `The End`. Copy `P is in this picnic!` No `Next page`. Lucy is still there.
 - **Tab.** From Home, choose tab `Storybooks`. Cover returns.
