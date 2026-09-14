@@ -1,8 +1,8 @@
 # Ready Set ABC — classroom how-to (Brandy)
 
-Pre-K phonics with Lucy. Kids tap giant letter and picture cards. Grown-ups pin today’s letter, pick who is playing, and set the tablets up once for offline.
+Pre-K phonics with Lucy. Kids tap a face on Who is playing?, then play letters with Lucy. Grown-ups pin today's letter, pick who is playing, and set the tablets up once for offline.
 
-There is no login, no kid account, and no internet after the first setup. Everything lives on that tablet.
+There is no password login and no kid account. The roster lives on that tablet. There is no internet after the first setup.
 
 **The PIN is `1234`.** It is the only number in here you have to remember, and the last section is a card you can tape inside the cart lid.
 
@@ -25,13 +25,11 @@ There is no login, no kid account, and no internet after the first setup. Everyt
 
 ## What the kids see
 
-1. Home — Lucy says hello. Giant **PLAY!** button.
-2. (Classroom mode only) Face grid — tap your face.
-3. **Case match** — tap a little/big letter, then tap the big prompt to match.
-4. **Picture match** — tap a picture, then tap **Aa**.
-5. **Bonus round** — one short game, a different one each letter (below).
-6. **Celebrate** — 1, 2 or 3 stars, the sticker dropping into the Star Pouch, and anything new in Lucy's closet. It settles itself after 8 seconds, and **Skip** (or a tap on the background) settles it sooner. The big button always names the letter that opens next (**Play Letter B**), whether that is the next one in the set or the next one on the trail.
-7. Tabs: **Play Cards · ABC Trail · Star Pouch**.
+1. **Who is playing?** Tap your face. Tabs stay hidden until someone is playing. This is the empty `index.html`. It is not Home.
+2. On **Home**, Lucy says hello. The giant **PLAY!** button starts the letter.
+3. Each letter runs meet → choose → listen → payoff → celebrate.
+4. **Celebrate.** 1, 2 or 3 stars, the sticker dropping into the Star Pouch, and anything new in Lucy's closet. It settles itself after 8 seconds, and **Skip** (or a tap on the background) settles it sooner. The big button always names the letter that opens next (**Play Letter B**), whether that is the next one in the set or the next one on the path.
+5. Tabs: **Home · Letters & Phonics · Lucy's Closet · Storybooks · Arcade**.
 
 A wrong tap wobbles coral and lets them try again. Nothing punishes. Nothing times out.
 
@@ -60,9 +58,7 @@ The setting lives on the tablet and survives a power-cycle, so check it Monday i
 
 **Which one to pin, if you are not sure:** **Sound** is the one that carries phonics (does *ball* start with /b/?). **ABC** is alphabet-song order, and it is the only place Lucy says letter *names* on a tap. **Hunt** is the easiest and the best for a wobbly first week.
 
-**All 26 letters are awake.** A–Z each run the full letter — case match → picture match → bonus → celebrate — off a pool of **15 pictures**, so the same letter is a different board every time. There is nothing left to wake and nothing that refuses to open: pin any letter, tap any tile.
-
-On the **ABC Trail**, a gold ring and a **Next up** tag mark the letter the next PLAY opens. If you pinned a letter of the day it also carries a blue ring and a small flag.
+**Letters & Phonics** shows Cloud 1 letters S A T P I N for a SATPIN child such as Ava. A child on an assigned list, such as Miles, sees that child's letters only. A gold ring and a **Next up** tag mark the letter the next PLAY opens. If you pinned a letter of the day it also carries a blue ring and a small flag.
 
 All 390 pictures are drawn (flat SVG stickers, A–Z). Every one of them still carries its own emoji as a fallback, so two cards on a board can never show the same plate, and each letter's own picture (**J is for Juice**, **X is for Xylophone**) is one an older tablet can definitely draw.
 
@@ -385,7 +381,7 @@ Two smoke bookmarks set this up on a laptop without any tapping: `_smoke.html?mo
 2. Grown-Ups → **Play** → pin today’s letter (or leave it on the trail).
 3. Grown-Ups → **Class** → Face pick **On** if you want names.
 4. Grown-Ups → **Device** → **Whiteboard** if this is the wall board. Turn on **Hide chrome** (or **Shift+H**) so the bars drop away — Lucy’s prompt stays.
-5. Hand the tablet over. A child taps **PLAY!**.
+5. Hand the tablet over. A child taps a face on **Who is playing?**. Then they tap **PLAY!** on Home.
 
 If a grown-up is running the table, print the day's paper first: Grown-Ups → **Print** → **Small-group sheet**. Certificates at the end of the week.
 
@@ -403,7 +399,7 @@ At the end of a 3-letter round the big button reads **Play Letter D** (or whatev
 | 2 | 1–2 misses |
 | 1 | A hint, or 3+ misses |
 
-Best result per letter stands. ABC Trail shows them. Star Pouch lists every picture sticker a child has matched.
+Best result per letter stands. Letters & Phonics shows them. Star Pouch lists every picture sticker a child has matched.
 
 ### Lucy's closet (Star Pouch)
 
@@ -432,7 +428,7 @@ That row and the two big buttons are **pinned** to the bottom of the celebration
 
 | What the tablet is | What the pouch says |
 |---|---|
-| Brand new | *Nothing here yet — tap Play Cards and match a letter with Lucy.* The closet is there, counting down to Party bows. |
+| Brand new | *Nothing here yet — tap Home and play a letter with Lucy.* The closet is there, counting down to Party bows. |
 | Stars, no stickers yet | *Your stars are here! Match a picture with Lucy to earn a sticker too.* |
 | **Stars are off** (Grown-Ups → Play) | No count, no closet: *The pouch is resting today — Lucy still loves playing letters with you!* The line telling you to turn stars back on is grey and for you, not the child. Lucy is plain. |
 
@@ -522,7 +518,7 @@ Kid chrome to match those screens: white-pill header tabs, mint giant **PLAY!** 
 
 Printables are `js/screens/printables.js` + `css/print.css`: plain DOM built into `#print-root`, then `window.print()`. No popup, no PDF library, no server. Sheet geometry lives outside `@media print` so the in-panel preview is literally the page the printer gets; `@media print` only hides the app, unpins `shell.css`’s non-scrolling `html, body` (otherwise Chrome clips the job to page 1), and sets the breaks. Certificates use the named page `@page rsabc-cert` for landscape and degrade to portrait where that is unsupported.
 
-A letter is four steps: `js/screens/match.js` runs case and picture (one module, one two-tap board), `js/screens/bonus.js` runs the rotating game, `js/screens/celebrate.js` runs the stars. `js/round.js` owns the state machine (`STEPS`), `js/bonus.js` builds the bonus board (rotation is `letterIndex % 3`), `js/closet.js` owns the treat list, what Lucy is wearing, and **every word the closet says** (`treatStatus` / `closetLine` / `nextTreatNudge`) so the pouch and the celebrate card cannot drift and nothing scolds. The rungs stay ≥3 stars apart on purpose: a letter is worth at most 3, so `newlyUnlocked()[0]` can never silently drop a second treat — `_flow.mjs` holds the ladder to it. A wear tap repaints the shelf in place (plus `ctx.foot()` for the footer); re-rendering would scroll a child back to the top mid-tap. Bonus taps go through `round.bonusTap()` and never touch `round.misses` — that is what makes it a bonus. Celebrate caps its own juice at `CELEBRATE_MS` (8s) and `settle()` is what Skip, Esc and a background tap call.
+A letter is four beats then a celebration. `js/screens/stage.js` runs meet → choose → listen → payoff. `js/screens/celebrate.js` runs the stars. `js/screens/match.js` and `js/screens/bonus.js` still ship as leftover. `js/round.js` owns the state machine (`STEPS`), `js/bonus.js` builds the bonus board (rotation is `letterIndex % 3`), `js/closet.js` owns the treat list, what Lucy is wearing, and **every word the closet says** (`treatStatus` / `closetLine` / `nextTreatNudge`) so the pouch and the celebrate card cannot drift and nothing scolds. The rungs stay ≥3 stars apart on purpose: a letter is worth at most 3, so `newlyUnlocked()[0]` can never silently drop a second treat — `_flow.mjs` holds the ladder to it. A wear tap repaints the shelf in place (plus `ctx.foot()` for the footer); re-rendering would scroll a child back to the top mid-tap. Bonus taps go through `round.bonusTap()` and never touch `round.misses` — that is what makes it a bonus. Celebrate caps its own juice at `CELEBRATE_MS` (8s) and `settle()` is what Skip, Esc and a background tap call.
 
 This README is gated too: `_flow.mjs` holds it to the PIN the keypad takes, the filename Export CSV writes, the whiteboard sizes in `css/tokens.css`, the real length of `SHELL`, and every `#anchor` in the Start here table — a renamed heading fails the gate instead of quietly sending a teacher nowhere. It is not in `SHELL`, so a README pass alone does not need a `VERSION` bump.
 
