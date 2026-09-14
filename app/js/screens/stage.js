@@ -157,8 +157,8 @@ function chooseBoard(entry, trial, ctx, root, lucy) {
       if (result === 'wrong') {
         wobble(card);
         audio.sfx('wrong');
-        audio.nudge();
-        lucy.say('Try another one!', { voice: false });
+        const nudge = audio.nudge();
+        lucy.say(nudge, { voice: false });
         return;
       }
       audio.sayPhoneme(entry);
@@ -191,8 +191,8 @@ function listenBoard(entry, trial, ctx, root, lucy) {
       if (result === 'wrong') {
         wobble(btn);
         audio.sfx('wrong');
-        audio.nudge();
-        lucy.say('Not that one — try another orb!', { voice: false });
+        const nudge = audio.nudge();
+        lucy.say(nudge, { voice: false });
         return;
       }
       audio.sayPhoneme(entry);
