@@ -2258,6 +2258,33 @@ assert(new RegExp(`of ${d6Shell.length} files are cached`).test(ship),
   [/fonts\//, 'that the font folder has to travel'],
 ].forEach(([re, what]) => assert(re.test(ship), `SHIP.md carries ${what}`));
 
+assert(/Who is playing\?/.test(d6Readme), 'README names Who is playing?');
+assert(/Letters & Phonics/.test(d6Readme) && /Cloud 1/.test(d6Readme) && /S A T P I N/.test(d6Readme),
+  'README names Letters & Phonics and Cloud 1 SATPIN');
+assert(/Home · Letters & Phonics · Lucy's Closet · Storybooks · Arcade/.test(d6Readme),
+  'README lists the header tabs in order');
+assert(d6Readme.includes('Each letter runs meet → choose → listen → payoff → celebrate.'),
+  'README quotes the Grown-Ups round line');
+assert(/Each letter runs meet → choose → listen → payoff → celebrate/.test(d6Gu),
+  'and that is the Play panel copy');
+assert(!/Play Cards · ABC Trail · Star Pouch/.test(d6Readme),
+  'README does not list the old three header tabs');
+assert(!/\*\*All 26 letters are awake\.\*\*/.test(d6Readme),
+  'README does not claim a 26-letter awake trail');
+assert(!/tap Play Cards/.test(d6Readme),
+  'empty pouch copy does not send kids to Play Cards');
+assert(/index\.html` \| [^\n]*Who is playing\?/.test(ship),
+  'SHIP smoke: empty index is Who is playing?');
+assert(/kid=k01&to=%23\/trail` \| [^\n]*Cloud 1/.test(ship) && /kid=k01&to=%23\/trail` \| [^\n]*S A T P I N/.test(ship),
+  'SHIP smoke trail cell is Cloud 1 SATPIN with Ava seeded');
+assert(/kid=k01&play=W` \| [^\n]*Letters & Phonics/.test(ship),
+  'SHIP smoke: play=W with Ava lands on Letters & Phonics');
+assert(!/Home screen/.test(ship), 'SHIP.md does not call empty index the Home screen');
+assert(!/26 tiles/.test(ship) && !/every one of them lit/.test(ship),
+  'SHIP.md does not claim 26 lit tiles');
+assert(!/a real round, same as A/.test(ship),
+  'SHIP smoke does not treat W as an awake round');
+
 
 /* ---- PASS E2: the whole alphabet, played for real ---------------------
    Waking a letter is a one-character edit in data/letters.json and it is the

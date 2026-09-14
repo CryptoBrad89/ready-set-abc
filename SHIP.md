@@ -72,17 +72,17 @@ Do this on a prep period, never mid-lesson.
 
 ## 5. Smoke test it in two minutes
 
-Open the app once at the top level and check the home screen paints. Then open
-`_smoke.html` with no query — it is a clickable index of every test URL. The
+Open the app once at the top level. You should see **Who is playing?** Tabs stay hidden. Then open
+`_smoke.html` with no query. It is a clickable index of every test URL. The
 ones worth clicking after a fresh upload:
 
 | URL | What you should see |
 |---|---|
-| `index.html` | Home screen, rounded chunky letters, Lucy the dog |
+| `index.html` | Who is playing? Face roster. Tabs hidden. Rounded chunky letters. Lucy waits. |
 | `_smoke.html` | The index of test links |
 | `_smoke.html?classroom=1&kid=k01&play=A` | Straight into a letter A round |
-| `_smoke.html?play=W` | A letter that used to be asleep — a real round, same as A |
-| `_smoke.html?to=%23/trail` | The ABC Trail: 26 tiles, every one of them lit |
+| `_smoke.html?classroom=1&kid=k01&play=W` | W is a later cloud. Lands on Letters & Phonics, not a round. |
+| `_smoke.html?classroom=1&kid=k01&to=%23/trail` | Letters & Phonics: Cloud 1 letters S A T P I N. An assigned child sees that child's list. |
 | `_smoke.html?gu=device` | The Grown-Ups Device panel (asks for PIN `1234`) |
 | `_smoke.html?mode=whiteboard` | Everything much bigger, for the wall board |
 
