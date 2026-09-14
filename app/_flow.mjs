@@ -533,6 +533,7 @@ store.setPinnedLetter(keepPin);
 const app = readFileSync(join(root, 'js/app.js'), 'utf8');
 assert(/pickme:\s*'faces'/.test(app) && /map:\s*'trail'/.test(app), 'old hashes aliased');
 assert(/name === 'faces'/.test(app), 'faces is a real route');
+assert(/name === 'rhymes'/.test(app), 'rhymes is a real route');
 assert(/setHideChrome/.test(app) && /key === 'H'/.test(app), 'Shift+H toggles hide chrome');
 
 const html = readFileSync(join(root, 'index.html'), 'utf8');
@@ -2504,6 +2505,54 @@ assert(/The End/.test(textOf(e2Last)) && /P is in this picnic/.test(textOf(e2Las
 assert(!byTag(e2Last, 'button').some((n) => n.getAttribute('aria-label') === 'Next page'),
   'the last page has no Next page');
 assert(/Lucy's Picnic Day/.test(textOf(e2Stories.footLeft())), 'footer names Lucy’s Picnic Day');
+
+const e2Rhymes = await import('./js/screens/rhymes.js');
+const e2Song = e2Rhymes.lucyRhyme();
+assert(e2Song.song === 'Lucy the Pup' && e2Song.lines.length === 4,
+  'Rhymes & Songs is one short Lucy rhyme');
+assert(e2Song.lines.every((line) => /lucy|pup|tail|paw|stars/i.test(line)),
+  'the rhyme is Lucy, not a letter round');
+const e2RhymeIdle = e2Rhymes.render({ go: () => {}, kid: null, foot: () => {}, params: [] });
+assert(/Rhymes & Songs/.test(textOf(e2RhymeIdle)), 'idle heading is Rhymes & Songs');
+assert(/Lucy the Pup/.test(textOf(e2RhymeIdle)), 'idle names the song');
+assert(/Tap Play to sing with me/.test(textOf(e2RhymeIdle)), 'idle Lucy asks the child to play');
+assert(!/Coming next week|Coming soon/.test(textOf(e2RhymeIdle)),
+  'playable rhymes drop Coming next week');
+assert(!/meet|choose|listen|payoff|Hooray/i.test(textOf(e2RhymeIdle)),
+  'rhymes is not meet/choose/listen/payoff');
+assert(!byClass(e2RhymeIdle, 'later-grid').length, 'rhymes is not a leftover word grid');
+assert(byClass(e2RhymeIdle, 'lucy-stage').length === 1, 'Lucy stays on idle rhymes');
+const e2PlaySong = byTag(e2RhymeIdle, 'button').find((n) => n.getAttribute('aria-label') === 'Play song');
+assert(e2PlaySong, 'idle has a Play song control');
+const e2RhymeCard = byClass(e2HomeNode, 'hub-card').find((n) => (n.getAttribute('aria-label') || '') === 'Rhymes & Songs');
+assert(e2RhymeCard && /Sing along/.test(textOf(e2RhymeCard)),
+  'Home rhymes card opens a real destination');
+assert(!/Coming next week|Coming soon/.test(textOf(e2RhymeCard)),
+  'Home rhymes card is not Coming next week');
+const e2ColorCard = byClass(e2HomeNode, 'hub-card').find((n) => (n.getAttribute('aria-label') || '') === 'Coloring Canvas');
+assert(e2ColorCard && /Coming soon/.test(textOf(e2ColorCard)),
+  'Coloring Canvas stays Coming next week');
+const e2Sing = e2Rhymes.render({ go: () => {}, kid: null, foot: () => {}, params: ['1'] });
+assert(/Lucy the pup, Lucy the pup/.test(textOf(e2Sing)), 'beat 1 shows the first line');
+assert(byClass(e2Sing, 'is-on').length === 1, 'one line is on during the song');
+assert(!byTag(e2Sing, 'button').some((n) => /Play song/.test(n.getAttribute('aria-label') || '')),
+  'singing has no Play song button');
+assert(/1 \/ 4/.test(textOf(e2Sing)), 'singing names the beat');
+assert(byClass(e2Sing, 'lucy-stage').length === 1, 'Lucy stays while singing');
+const e2RhymeEnd = e2Rhymes.render({ go: () => {}, kid: null, foot: () => {}, params: ['end'] });
+assert(/Sing it again/.test(textOf(e2RhymeEnd)), 'the end invites another play');
+assert(byTag(e2RhymeEnd, 'button').some((n) => n.getAttribute('aria-label') === 'Play song again'),
+  'the end has Play song again');
+assert(/Rhymes & Songs/.test(textOf(e2Rhymes.footLeft())), 'footer names Rhymes & Songs');
+assert(e2Rhymes.rhymeBeat([], 4).kind === 'idle', 'empty hash is idle');
+assert(e2Rhymes.rhymeBeat(['1'], 4).kind === 'sing' && e2Rhymes.rhymeBeat(['1'], 4).i === 0,
+  'rhymes/1 is the first line');
+assert(e2Rhymes.rhymeBeat(['end'], 4).kind === 'end', 'rhymes/end is done');
+assert(e2Rhymes.rhymeBeat(['9'], 4).kind === 'end', 'past the last line lands on the end');
+const e2Coming = await import('./js/screens/coming.js');
+const e2ColorSlot = e2Coming.render({ go: () => {}, kid: null, foot: () => {}, params: ['color'] });
+assert(/Coloring Canvas/.test(textOf(e2ColorSlot)) && /Coming next week/.test(textOf(e2ColorSlot)),
+  'coloring later-slot still says Coming next week');
 
 store.setRosterOverride([{
   id: 'k24',

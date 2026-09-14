@@ -15,6 +15,7 @@ import * as celebrate from './screens/celebrate.js';
 import * as trail from './screens/trail.js';
 import * as pouch from './screens/pouch.js';
 import * as stories from './screens/stories.js';
+import * as rhymes from './screens/rhymes.js';
 import * as arcade from './screens/arcade.js';
 import * as coming from './screens/coming.js';
 import * as match from './screens/match.js';
@@ -117,7 +118,14 @@ function resolve(route) {
 
   if (name === 'coming') {
     if (needsRoster()) return { name: 'faces', params: [] };
+    const slot = route.params[0] ? String(route.params[0]).toLowerCase() : '';
+    if (slot === 'rhymes') return { name: 'rhymes', params: route.params.slice(1) };
     return { name: 'coming', params: route.params };
+  }
+
+  if (name === 'rhymes') {
+    if (needsRoster()) return { name: 'faces', params: [] };
+    return { name: 'rhymes', params: route.params };
   }
 
   if (needsRoster()) return { name: 'faces', params: [] };
@@ -137,6 +145,7 @@ function moduleFor(route) {
   if (route.name === 'trail') return trail;
   if (route.name === 'pouch') return pouch;
   if (route.name === 'stories') return stories;
+  if (route.name === 'rhymes') return rhymes;
   if (route.name === 'arcade') return arcade;
   if (route.name === 'coming') return coming;
   return home;

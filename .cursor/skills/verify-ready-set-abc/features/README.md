@@ -67,3 +67,4 @@ Keep implementation details out of the map. Name only user paths, stable handles
 - [Grown-Ups pin](./grown-ups-pin.md) covers the PIN gate, pinning a letter, and setting Miles to assigned letters S O J.
 - [Lucy's Closet](./star-pouch.md) covers dress-up with stars. Mix and match. Stars are never spent.
 - [Lucy's Picnic Day](./picnic-day.md) covers Storybooks. A paged picture story for this letter. Not the four-beat round.
+- [Rhymes & Songs](./rhymes-songs.md) covers the Fun-row song. A short Lucy rhyme. Not the four-beat round and not Picnic Day.

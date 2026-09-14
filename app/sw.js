@@ -40,6 +40,7 @@ const SHELL = [
   'js/screens/trail.js',
   'js/screens/pouch.js',
   'js/screens/stories.js',
+  'js/screens/rhymes.js',
   'js/screens/arcade.js',
   'js/screens/coming.js',
   'js/screens/grownups.js',

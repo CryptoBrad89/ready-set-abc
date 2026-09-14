@@ -2832,6 +2832,52 @@ html[data-chrome="hidden"] .screen {
 .picnic-turn svg { width: 1.1em; height: 1.1em; }
 .picnic-turn:not(.picnic-turn--next) svg { transform: scaleX(-1); }
 
+.rhyme {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 8px;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+.rhyme-verse {
+  min-height: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 4px;
+  text-align: center;
+}
+.rhyme-line {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(20px, 3.6vh, 34px);
+  line-height: 1.2;
+  max-width: min(28ch, 90vw);
+}
+.rhyme-line.is-wait { opacity: 0.45; }
+.rhyme-line.is-on { transform: scale(1.04); }
+.rhyme-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+.rhyme-play {
+  min-height: var(--target-min);
+  min-width: var(--target-min);
+  padding: 0 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(16px, 2.2vh, 22px);
+}
+.rhyme-play svg { width: 1.1em; height: 1.1em; }
+
 @media (max-width: 1100px) {
   .hub-row--phonics, .later-grid, .hub-row--later { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hub-hero { grid-template-columns: 1fr; }

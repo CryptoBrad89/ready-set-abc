@@ -6,11 +6,6 @@ import { createLucy } from '../lucy.js';
 export const chrome = { tabs: true, tab: 'home', who: true };
 
 const COPY = {
-  rhymes: {
-    title: 'Rhymes & Songs',
-    line: 'A short Lucy song lives here next. Not a letter lesson.',
-    tab: 'stories',
-  },
   color: {
     title: 'Coloring Canvas',
     line: 'Tap-to-fill pictures live here next. Closet stays in Lucy’s Closet.',
@@ -20,7 +15,7 @@ const COPY = {
 
 export function render(ctx) {
   const key = String((ctx.params && ctx.params[0]) || '').toLowerCase();
-  const copy = COPY[key] || COPY.rhymes;
+  const copy = COPY[key] || COPY.color;
   chrome.tab = copy.tab;
   const lucy = createLucy({
     state: 'idle',

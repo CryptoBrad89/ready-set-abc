@@ -35,5 +35,5 @@ Preconditions:
 - Ava SATPIN picnic is P, same as PLAY. It is not S (first open SATPIN letter).
 - Assigned Miles picnic is S after Class sets S O J.
 - Kid screens cannot scroll. If the page scrolls, the recipe failed.
-- Rhymes & Songs still says Coming next week. That is a different card.
+- Rhymes & Songs is its own Home card. It is not this story.
 - Isolated word clips may be silent. Silence plus Lucy's bubble is not a failure. Do not use TTS.
