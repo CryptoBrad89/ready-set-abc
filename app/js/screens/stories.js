@@ -1,5 +1,3 @@
-/* Lucy's Picnic Day — a picture story for this letter, not the four-beat round. */
-
 import { el, icon, pressable, picturePlate } from '../ui.js';
 import { picturesFor } from '../data.js';
 import { createLucy } from '../lucy.js';
