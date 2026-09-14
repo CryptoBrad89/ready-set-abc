@@ -1,31 +1,38 @@
 # Product shell proof
 
-Origin `http://127.0.0.1:4174` (fresh, no cached service worker). Viewport 1280×800. Pin `rsabc-shell-v36-login-satpin`.
+Historical drive used origin `http://127.0.0.1:4174` and pin `rsabc-shell-v36-login-satpin`. Default verify port is now **4173**. Current shell pin on origin/main is `rsabc-shell-v40-nudge-home`. Do not bump the pin in this unit. Do not drive 8000 or 8080.
 
-Do not drive `http://127.0.0.1:4173` for this pin. That origin still served `rsabc-shell-v35-stitch-hub` from an old service worker and skipped roster.
+New drives use `.cursor/skills/verify-ready-set-abc/bin/verify-rsabc launch` then `doctor`. Leftover PNGs under this folder remain historical evidence. They are not a queue.
 
-Smoke `_smoke.html?reset=1`. Doctor OK on pid 75960.
-
-## Passed
+## Passed (still true)
 
 - Roster-first. Empty hash, empty `rsabc.*`, heading `Who is playing?`, `body[data-screen]=faces`. `02-roster-first-v36.png`.
 - Child tap to Home. Ava → `Welcome back, Ava!`, hash `#/home`, `rsabc.kid` k01, `rsabc.session` child. Not a round. `03-ava-home.png`.
 - SATPIN on Home. Level 1 line `S · A · T · P · I · N`. Mission Play letter P. `03-ava-home.png`.
-- PIN 1234 on the pad. Grown-Up Check `4 + 4 = ?`, tap 1 2 3 4, sheet heading Grown-Ups. `04-pin-gate.png`, `05-grownups-unlocked.png`. Header unlock does not switch session (still child / Ava).
-- Keyboard PIN. Header Grown-Ups, `keydown` Digit1 then Digit2 Digit3 Digit4. Display went `•` then sheet heading Grown-Ups. Measured.
-- Assigned-letter child. Class tab, Miles work mode Assigned, letters `S O J`, Arcade switch released. Miles tap → `#/home`, `Welcome back, Miles!`, Level 1 `S · O · J`, PLAY `Play letter S` (P remapped). `08-miles-assigned-home.png`.
-- Locked Arcade wobble. Tab `Arcade, locked` stays on `#/home`, class `tab is-locked wobble`. Puppy Treat Match stays on Home, CTA Locked. `09-arcade-lock-wobble.png`.
-- `#/arcade` with lock. Lands on Arcade heading, Lucy `Arcade is locked. Ask a grown-up.`, play `Arcade, locked`. Does not start a round. `10-arcade-hash-locked.png`.
+- PIN 1234 on the pad. Tap 1 2 3 4, sheet heading Grown-Ups. `04-pin-gate.png`, `05-grownups-unlocked.png`. Header unlock does not switch session (still child / Ava).
+- Keyboard PIN. Header Grown-Ups, Digit1 then Digit2 Digit3 Digit4. Sheet heading Grown-Ups. Measured on the v36 drive.
+- Assigned-letter child. Class tab, Miles work mode Assigned, letters `S O J`. Miles tap → `#/home`, `Welcome back, Miles!`, `S · O · J`, PLAY `Play letter S`. `08-miles-assigned-home.png`. Later leftovers replaced Cloud 1 copy on this path with Your letters. See `artifacts/home-cloud1/NOTES.md` and `artifacts/home-level1/NOTES.md`.
+- Locked Arcade wobble. Tab `Arcade, locked` stays on `#/home`. Puppy Treat Match stays on Home, CTA Locked. `09-arcade-lock-wobble.png`.
+- `#/arcade` with lock. Lands on Arcade heading. Does not start a round. `10-arcade-hash-locked.png`.
 
-## Not yet closed in code
+## Shipped after this NOTES was first written
 
-- CSV drop of work fields. `csv.js` kid rows still omit `workMode`, `assignedLetters`, `arcadeLocked`. Import would fall back to SATPIN / Arcade open.
-- SAT blend card still says `Sounds S, A, T` / `Open cloud letters S, A, T` on Miles Home. Assigned path is S O J.
-- Trail still starts any open-cloud letter. It does not consult `workLetters`.
-- `#/letter/P` with empty session starts meet. `rsabc.kid` null, `rsabc.session` null, `body[data-screen]=meet`. Skips roster. `11-letter-skip-roster.png`.
+These four sat under "Not yet closed in code" on disk. All four shipped in the comic-hub squash and follow-ups. Do not redo them.
 
-## Bugs seen (reproduced)
+- CSV kid rows export and import `workMode`, `assignedLetters`, and `arcadeLocked`. `app/js/csv.js` columns. `_flow.mjs` asserts the Miles row. [PR 3](https://github.com/CryptoBrad89/ready-set-abc/pull/3).
+- SAT blend on assigned Miles is `Your letters S, O, J`. No Cloud 1 tag. `artifacts/home-cloud1/NOTES.md`.
+- Letters & Phonics consults `workLetters`. Assigned board is S O J. Closed `#/letter/P` stays on trail. `artifacts/assigned-trail/NOTES.md`, `artifacts/letter-hash/NOTES.md`, `artifacts/assigned-trail-chrome/NOTES.md`.
+- `#/letter/P` with empty session is the roster (`Who is playing?`), not meet. `app.js` calls `needsRoster()` before `startRound`. `11-letter-skip-roster.png` is a before shot.
 
-- Roster footer prints the word `null` under Miles. Root cause measured: `faces.js` calls native `root.append(..., hasSession() ? back : null)`. `Element.append(null)` becomes the text `null`. `06-roster-bugs.png`.
-- Roster still shows a FRIEND who-chip. `paintWho` always paints. `chrome.who: false` only switches button vs div. `who-slot` text `friend Pre-K`.
-- Accessibility tree still names `Turn the tablet sideways` at 1280×800. `#rotate` is `display:none` with no `aria-hidden` / `inert`.
+Also shipped, so this NOTES no longer tracks them as bugs:
+
+- Roster footer no longer prints `null`. `faces.js` only appends Back when `hasSession()`.
+- Roster chrome sets `who: false`, so the FRIEND who-chip is off on login.
+- `#rotate` gets `aria-hidden="true"` and `inert` in landscape. `app.js` `syncRotate`.
+- Leftover 11 choose/listen nudge. [PR 4](https://github.com/CryptoBrad89/ready-set-abc/pull/4).
+- Unused Home `previewLetters` binding. [PR 5](https://github.com/CryptoBrad89/ready-set-abc/pull/5).
+- Shell pin v40. [PR 6](https://github.com/CryptoBrad89/ready-set-abc/pull/6).
+
+## Do not rebuild
+
+Leftovers 1 to 14, leftover 11, Home preview, and Lucy's Closet compositor are closed. SATPIN Ava still names Cloud 1, open cloud, and Level 1. That is correct. Open clouds stays on SATPIN Play. Keep `satCard` named `satCard`.

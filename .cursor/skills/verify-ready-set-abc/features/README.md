@@ -2,6 +2,8 @@
 
 This directory is the maintained source for verifying the user-facing behavior of Ready Set ABC. Read the index before driving the app, then use the matching feature file as the recipe.
 
+The product story is in [PRODUCT.md](../../../../PRODUCT.md). If a recipe disagrees with that file, PRODUCT.md wins. Roster is login. A child tap opens that child's Home, not a round.
+
 ## Baseline preconditions
 
 - Launch with `.cursor/skills/verify-ready-set-abc/bin/verify-rsabc launch` and require `http://127.0.0.1:4173`.
@@ -10,14 +12,16 @@ This directory is the maintained source for verifying the user-facing behavior o
 - Seed state only through `_smoke.html` on this origin (`verify-rsabc smoke '<query>'`).
 - Never drive `:8000` or `:8080`. Never drive an instance this helper did not start.
 - PIN for Grown-Ups is `1234`.
+- Leftover proofs in `artifacts/` often used port 4174. New drives use the skill default 4173 so localStorage stays isolated.
 
 ## Driving conventions
 
-- Start every recipe from the baseline state unless its preconditions say otherwise.
+- Start every recipe from the roster unless its preconditions seed a named child.
 - Prefer ARIA roles and accessible names over CSS selectors or DOM position.
 - Treat every command as literal. Keep quoted names and smoke queries unchanged.
 - Open smoke URLs in the verification browser, wait until `index.html` is showing, then tap.
 - Restore a clean tablet with `_smoke.html?reset=1` after a mutation. Do not remove proof artifacts during cleanup.
+- `classroom=0` does not skip the roster. Empty session is always **Who is playing?**. Seed Ava with `kid=k01`. Seed Miles with `kid=k24` only after Class has set that child's work.
 
 ## Proof and skip reporting
 
@@ -41,8 +45,8 @@ Keep implementation details out of the map. Name only user paths, stable handles
 
 ## Features
 
-- [Play a letter round](./play-round.md) covers PLAY, two-tap case and picture match, optional bonus, celebrate, and the next-letter button.
-- [Face pick](./face-pick.md) covers classroom Who-is-playing, a named child, and switching kids.
-- [ABC Trail](./abc-trail.md) covers the A–Z trail, letter-of-the-day ring, and opening a letter from a tile.
-- [Grown-Ups pin](./grown-ups-pin.md) covers the PIN gate, Play tab, and pinning today's letter.
-- [Star Pouch](./star-pouch.md) covers empty pouch, earned stars, and putting a closet treat on Lucy.
+- [Play a letter round](./play-round.md) covers PLAY from that child's Home, meet through celebrate, Ava SATPIN letter P, and Miles assigned letter S.
+- [Face pick](./face-pick.md) covers roster login, a child tap to Home, and switching kids with the who-chip.
+- [ABC Trail](./abc-trail.md) covers the Letters & Phonics path. SATPIN Ava has Cloud 1 (S A T P I N). Assigned Miles has S O J and no cloud islands.
+- [Grown-Ups pin](./grown-ups-pin.md) covers the PIN gate, pinning a letter, and setting Miles to assigned letters S O J.
+- [Star Pouch](./star-pouch.md) covers Lucy's Closet. Stars, stickers, and mix-and-match dress-up. Stars are never spent.

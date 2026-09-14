@@ -202,7 +202,7 @@ cmd_url() {
 cmd_smoke() {
   local query="${1:-}"
   if [[ -z "$query" ]]; then
-    echo "verify-rsabc smoke: missing query (e.g. classroom=0&bonus=off&play=A)" >&2
+    echo "verify-rsabc smoke: missing query (e.g. reset=1 or kid=k01&play=P)" >&2
     return 2
   fi
   query="${query#\?}"

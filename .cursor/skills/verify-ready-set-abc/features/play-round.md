@@ -1,22 +1,22 @@
 # Play a letter round
 
-A child starts an open-cloud letter, runs meet → choose → listen → payoff, then the skippable celebrate. Cloud 1 proof letter is **P**.
+A child starts PLAY from that child's Home. The round is meet, then choose, then listen, then payoff, then a skippable celebrate. Cloud 1 proof letter for SATPIN Ava is **P**. Assigned Miles starts at **S**.
 
 ## Sub-features
 
-- `round-play-home` starts from Home via Lucy’s Pick / PLAY.
-- `round-play-hash` starts from a smoke round URL (`play=P`) after seed.
+- `round-play-home` starts from Home via the mission card.
+- `round-play-hash` starts from a smoke round URL after a named child is seeded.
 - `round-meet` tap the giant letter to continue.
-- `round-choose` single-tap hanging letters (Lucy wants P).
-- `round-listen` tap the orb that plays the isolated phoneme file (or silence + Lucy’s line).
+- `round-choose` single-tap hanging letters (Lucy wants this letter).
+- `round-listen` tap the orb that plays the isolated phoneme file (or silence plus Lucy's line).
 - `round-payoff` word plates (P is for Pan / Panda) then Hooray.
-- `round-celebrate` shows 1–3 stars and a Skip control.
+- `round-celebrate` shows 1 to 3 stars and a Skip control.
 
 ## How to get to it (user POV)
 
-- On Home, tap **Play Letter P**.
-- On Letters & Phonics, tap the P tile in Cloud 1.
-- Open a smoke round: `_smoke.html?classroom=0&play=P`.
+- On Ava Home, tap **Play letter P**.
+- On Letters & Phonics, tap the P tile in Cloud 1 (Ava) or the S tile (Miles assigned).
+- Open a named round: `_smoke.html?kid=k01&play=P`.
 
 ## Driving it with the browser
 
@@ -24,8 +24,7 @@ Preconditions:
 
 - `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v40-nudge-home`.
 - Viewport is landscape 1280×800.
-- Face pick is off so PLAY goes straight into the letter.
-- Navigate to the URL from `verify-rsabc smoke 'reset=1&classroom=0&play=P'`.
+- Navigate to the URL from `verify-rsabc smoke 'reset=1&kid=k01&play=P'`.
 
 - **Land in meet.** `body[data-screen]` is `meet`. A hanging P is on the stage. Lucy is in the corner, not a coach overlay. Snapshot `artifacts/play-round/01-meet.aria.txt`.
 - **Choose.** Tap the P card(s). Misses wobble only. No drag.
@@ -35,8 +34,9 @@ Preconditions:
 
 ## Gotchas
 
-- `play=P` with `classroom=1` and no kid lands on **Who is playing?** first. This recipe uses `classroom=0`.
-- Letters outside the open cloud (default Cloud 1 = S A T P I N) do not start PLAY.
-- Isolated phonemes are files only. Missing clip = silence + Lucy’s bubble, never TTS “puh”.
+- `play=P` with an empty session lands on **Who is playing?** first. Seed `kid=k01` or tap Ava, then PLAY.
+- Ava SATPIN PLAY is P. Miles assigned PLAY is S. Do not expect P on Miles after Class sets S O J.
+- Letters outside that child's work do not start PLAY. Miles assigned refuses P from a hash and lands on Letters & Phonics with `Letter P, locked.`
+- Isolated phonemes are files only. Missing clip is silence plus Lucy's bubble, never TTS "puh".
 - Celebration auto-settles at 8 seconds. Skip only stops the party.
 - First PLAY also unlocks Web Audio.
