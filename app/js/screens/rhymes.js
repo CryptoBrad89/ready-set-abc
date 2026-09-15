@@ -4,16 +4,20 @@ import { audio } from '../audio.js';
 
 export const chrome = { tabs: true, tab: 'home', who: true };
 
-export const LINE_MS = 2400;
+/* Vocals ~16s across five lines; the file is ~20s. 2400ms was too fast. */
+export const LINE_MS = 3200;
+export const SONG_MS = 20000;
 
 export function lucyRhyme() {
   return {
     title: 'Rhymes & Songs',
     song: 'Lucy the Pup',
+    file: 'audio/lucy-the-pup-l-for-lucy.mp3',
     lines: [
       'Lucy the pup, Lucy the pup,',
-      'Wags her tail and looks up, up, up.',
-      'Paw on the page, stars in a cup,',
+      'L is for Lucy, come sing with me.',
+      'Sound it out, just wait and see,',
+      'Letters and sounds, one two three,',
       'Lucy the pup, Lucy the pup!',
     ],
   };
@@ -40,14 +44,25 @@ let advanceTimer = 0;
 export function teardown() {
   clearTimeout(advanceTimer);
   advanceTimer = 0;
+  if (!liveShell()) return;
+  queueMicrotask(() => {
+    if (typeof document === 'undefined' || document.body?.dataset?.screen === 'rhymes') return;
+    audio.stopSong();
+  });
 }
 
 function liveShell() {
   return typeof document !== 'undefined' && !!document.getElementById('screen');
 }
 
+function lineWait(beat, lineCount) {
+  if (beat.i + 1 >= lineCount) return Math.max(LINE_MS, SONG_MS - beat.i * LINE_MS);
+  return LINE_MS;
+}
+
 function scheduleNext(ctx, beat, lineCount) {
-  teardown();
+  clearTimeout(advanceTimer);
+  advanceTimer = 0;
   if (!liveShell() || beat.kind !== 'sing') return;
   const next = beat.i + 1 >= lineCount
     ? { kind: 'end', i: lineCount - 1 }
@@ -55,7 +70,7 @@ function scheduleNext(ctx, beat, lineCount) {
   advanceTimer = setTimeout(() => {
     if (next.kind === 'end') audio.sfx('cheer');
     ctx.go(hashFor(next));
-  }, LINE_MS);
+  }, lineWait(beat, lineCount));
 }
 
 export function render(ctx) {
@@ -95,6 +110,7 @@ export function render(ctx) {
     pressable(play, () => {
       audio.unlock();
       audio.sfx('select');
+      audio.playSong(rhyme.file);
       ctx.go('rhymes/1');
     });
     nav.append(play);
