@@ -49,7 +49,7 @@ Run this first whenever anything looks off:
 .cursor/skills/verify-ready-set-abc/bin/verify-rsabc doctor
 ```
 
-It is read-only. It must report: our pid alive, that pid owns the port, `GET /` is Ready Set ABC, `GET /js/version.js` contains `rsabc-shell-v41-lucy-pup`, `_smoke.html` answers, and the port is not 8000 or 8080. If it fails, stop driving. Launch a fresh instance or pick another port. Never drive an instance this helper did not start.
+It is read-only. It must report: our pid alive, that pid owns the port, `GET /` is Ready Set ABC, `GET /js/version.js` contains `rsabc-shell-v42-coloring`, `_smoke.html` answers, and the port is not 8000 or 8080. If it fails, stop driving. Launch a fresh instance or pick another port. Never drive an instance this helper did not start.
 
 ## Drive
 
@@ -87,9 +87,10 @@ Stable handles:
 | Lucy | image `Lucy the golden retriever` |
 | Lucy's Picnic Day | Home card `Lucy's Picnic Day`; Storybooks tab; cover heading `Lucy's Picnic Day`; `Next page` / `Previous page`; `body[data-screen]` is `stories` |
 | Rhymes & Songs | Home card `Rhymes & Songs`; heading `Rhymes & Songs`; `Play song` / `Play song again`; `body[data-screen]` is `rhymes` |
+| Coloring Canvas | Home card `Coloring Canvas`; heading `Coloring Canvas`; `Color Lucy` / `Color letter P`; crayons `Yellow crayon`; `Done coloring`; `body[data-screen]` is `color` |
 | Lucy hello | button `Talk with Lucy` (Lucy's paw), then dialog `Lucy says`. Close is `Close Lucy` or Escape. Sound chip `Hear the sound of letter P` does not unlock audio. Peek plates `Pan` / `Panda`. Play in the dialog is `Play letter P with Lucy. Tap to start sound.` |
 
-`document.body.dataset.screen` is `home` · `faces` · `trail` · `pouch` · `stories` · `rhymes` · `case` · `picture` · `bonus` · `celebrate`. Use it to know which step you are on.
+`document.body.dataset.screen` is `home` · `faces` · `trail` · `pouch` · `stories` · `rhymes` · `color` · `case` · `picture` · `bonus` · `celebrate`. Use it to know which step you are on.
 
 Two-tap match (case and picture). (1) tap a choice until `aria-pressed=true`. (2) tap the prompt. A wrong submit wobbles coral and clears the selection. Try another choice. Do not treat wobble as a hang. Nothing times out. Nothing punishes.
 

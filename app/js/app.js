@@ -16,6 +16,7 @@ import * as trail from './screens/trail.js';
 import * as pouch from './screens/pouch.js';
 import * as stories from './screens/stories.js';
 import * as rhymes from './screens/rhymes.js';
+import * as color from './screens/color.js';
 import * as arcade from './screens/arcade.js';
 import * as coming from './screens/coming.js';
 import * as match from './screens/match.js';
@@ -54,6 +55,7 @@ const ALIASES = {
   stories: 'stories',
   storybooks: 'stories',
   arcade: 'arcade',
+  coloring: 'color',
   closet: 'pouch',
   end: 'play',
   teacher: 'grownups',
@@ -120,12 +122,18 @@ function resolve(route) {
     if (needsRoster()) return { name: 'faces', params: [] };
     const slot = route.params[0] ? String(route.params[0]).toLowerCase() : '';
     if (slot === 'rhymes') return { name: 'rhymes', params: route.params.slice(1) };
+    if (slot === 'color' || slot === 'coloring') return { name: 'color', params: route.params.slice(1) };
     return { name: 'coming', params: route.params };
   }
 
   if (name === 'rhymes') {
     if (needsRoster()) return { name: 'faces', params: [] };
     return { name: 'rhymes', params: route.params };
+  }
+
+  if (name === 'color') {
+    if (needsRoster()) return { name: 'faces', params: [] };
+    return { name: 'color', params: route.params };
   }
 
   if (needsRoster()) return { name: 'faces', params: [] };
@@ -146,6 +154,7 @@ function moduleFor(route) {
   if (route.name === 'pouch') return pouch;
   if (route.name === 'stories') return stories;
   if (route.name === 'rhymes') return rhymes;
+  if (route.name === 'color') return color;
   if (route.name === 'arcade') return arcade;
   if (route.name === 'coming') return coming;
   return home;

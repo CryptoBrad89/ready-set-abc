@@ -24,7 +24,7 @@ Seed Ava with `kid=k01`. Seed Miles with `kid=k24`. Assigned Miles still needs t
 ## Baseline preconditions
 
 - Launch with `.cursor/skills/verify-ready-set-abc/bin/verify-rsabc launch` and require `http://127.0.0.1:4173`.
-- Run `verify-rsabc doctor` and require pid ownership of 4173, `Ready Set ABC` on `GET /`, and shell `rsabc-shell-v41-lucy-pup`.
+- Run `verify-rsabc doctor` and require pid ownership of 4173, `Ready Set ABC` on `GET /`, and shell `rsabc-shell-v42-coloring`.
 - Browser viewport is landscape 1280×800 or 1366×768. Portrait under 900px wide is blocked by the rotate overlay.
 - Seed state only through `_smoke.html` on this origin (`verify-rsabc smoke '<query>'`).
 - Never drive `:8000` or `:8080`. Never drive an instance this helper did not start.
@@ -68,3 +68,4 @@ Keep implementation details out of the map. Name only user paths, stable handles
 - [Lucy's Closet](./star-pouch.md) covers dress-up with stars. Mix and match. Stars are never spent.
 - [Lucy's Picnic Day](./picnic-day.md) covers Storybooks. A paged picture story for this letter. Not the four-beat round.
 - [Rhymes & Songs](./rhymes-songs.md) covers the Fun-row song. A short Lucy rhyme. Not the four-beat round and not Picnic Day.
+- [Coloring Canvas](./coloring-canvas.md) covers the Fun-row coloring play. Pick a Lucy or letter page, tap crayons, done.

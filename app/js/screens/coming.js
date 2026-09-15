@@ -6,16 +6,16 @@ import { createLucy } from '../lucy.js';
 export const chrome = { tabs: true, tab: 'home', who: true };
 
 const COPY = {
-  color: {
-    title: 'Coloring Canvas',
-    line: 'Tap-to-fill pictures live here next. Closet stays in Lucy’s Closet.',
+  next: {
+    title: 'A new game',
+    line: 'Something new is on the way. Closet stays in Lucy’s Closet.',
     tab: 'home',
   },
 };
 
 export function render(ctx) {
   const key = String((ctx.params && ctx.params[0]) || '').toLowerCase();
-  const copy = COPY[key] || COPY.color;
+  const copy = COPY[key] || COPY.next;
   chrome.tab = copy.tab;
   const lucy = createLucy({
     state: 'idle',

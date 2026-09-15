@@ -5,7 +5,7 @@
    installs, then waits. Only Grown-Ups → Device → Get update sends
    SKIP_WAITING, so the pin never swaps under a child mid-round. */
 
-const VERSION = 'rsabc-shell-v41-lucy-pup';
+const VERSION = 'rsabc-shell-v42-coloring';
 const SHELL = [
   './',
   'index.html',
@@ -41,6 +41,7 @@ const SHELL = [
   'js/screens/pouch.js',
   'js/screens/stories.js',
   'js/screens/rhymes.js',
+  'js/screens/color.js',
   'js/screens/arcade.js',
   'js/screens/coming.js',
   'js/screens/grownups.js',

@@ -534,6 +534,7 @@ const app = readFileSync(join(root, 'js/app.js'), 'utf8');
 assert(/pickme:\s*'faces'/.test(app) && /map:\s*'trail'/.test(app), 'old hashes aliased');
 assert(/name === 'faces'/.test(app), 'faces is a real route');
 assert(/name === 'rhymes'/.test(app), 'rhymes is a real route');
+assert(/name === 'color'/.test(app), 'color is a real route');
 assert(/setHideChrome/.test(app) && /key === 'H'/.test(app), 'Shift+H toggles hide chrome');
 
 const html = readFileSync(join(root, 'index.html'), 'utf8');
@@ -2544,8 +2545,10 @@ assert(e2RhymeCard && /Sing along/.test(textOf(e2RhymeCard)),
 assert(!/Coming next week|Coming soon/.test(textOf(e2RhymeCard)),
   'Home rhymes card is not Coming next week');
 const e2ColorCard = byClass(e2HomeNode, 'hub-card').find((n) => (n.getAttribute('aria-label') || '') === 'Coloring Canvas');
-assert(e2ColorCard && /Coming soon/.test(textOf(e2ColorCard)),
-  'Coloring Canvas stays Coming next week');
+assert(e2ColorCard && /Color now/.test(textOf(e2ColorCard)),
+  'Home coloring card opens a real destination');
+assert(!/Coming next week|Coming soon/.test(textOf(e2ColorCard)),
+  'Home coloring card is not Coming next week');
 const e2Sing = e2Rhymes.render({ go: () => {}, kid: null, foot: () => {}, params: ['1'] });
 assert(/Lucy the pup, Lucy the pup/.test(textOf(e2Sing)), 'beat 1 shows the first line');
 assert(byClass(e2Sing, 'is-on').length === 1, 'one line is on during the song');
@@ -2564,10 +2567,49 @@ assert(e2Rhymes.rhymeBeat(['1'], e2Song.lines.length).kind === 'sing'
   'rhymes/1 is the first line');
 assert(e2Rhymes.rhymeBeat(['end'], e2Song.lines.length).kind === 'end', 'rhymes/end is done');
 assert(e2Rhymes.rhymeBeat(['9'], e2Song.lines.length).kind === 'end', 'past the last line lands on the end');
+
+const e2Color = await import('./js/screens/color.js');
+e2Color.resetFills();
+const e2ColorPages = e2Color.colorPages('P');
+assert(e2ColorPages[0].id === 'lucy' && e2ColorPages[1].id === 'letter-P',
+  'Coloring Canvas is a Lucy page and a letter page');
+assert(e2Color.colorView([], 'P').kind === 'pick', 'empty hash is the page picker');
+assert(e2Color.colorView(['lucy'], 'P').kind === 'paint', 'color/lucy is the Lucy page');
+assert(e2Color.colorView(['letter'], 'P').page.id === 'letter-P', 'color/letter is this letter');
+const e2ColorPick = e2Color.render({ go: () => {}, kid: null, foot: () => {}, params: [] });
+assert(/Coloring Canvas/.test(textOf(e2ColorPick)), 'picker heading is Coloring Canvas');
+assert(/Pick a page to color/.test(textOf(e2ColorPick)), 'picker Lucy asks the child to pick');
+assert(!/Coming next week|Coming soon/.test(textOf(e2ColorPick)),
+  'playable coloring drops Coming next week');
+assert(!/meet|choose|listen|payoff|Hooray/i.test(textOf(e2ColorPick)),
+  'coloring is not meet/choose/listen/payoff');
+assert(!byClass(e2ColorPick, 'later-grid').length, 'coloring is not a leftover word grid');
+assert(byClass(e2ColorPick, 'lucy-stage').length === 1, 'Lucy stays on the coloring picker');
+assert(byTag(e2ColorPick, 'button').some((n) => n.getAttribute('aria-label') === 'Color Lucy'),
+  'picker has Color Lucy');
+assert(byTag(e2ColorPick, 'button').some((n) => n.getAttribute('aria-label') === 'Color letter P'),
+  'picker has Color letter P');
+const e2ColorLucy = e2Color.render({ go: () => {}, kid: null, foot: () => {}, params: ['lucy'] });
+assert(/Tap a crayon, then tap a spot/.test(textOf(e2ColorLucy)), 'paint Lucy coaches the tap');
+assert(byTag(e2ColorLucy, 'button').some((n) => n.getAttribute('aria-label') === 'Yellow crayon'),
+  'paint has crayons');
+assert(walk(e2ColorLucy).some((n) => n.getAttribute && n.getAttribute('aria-label') === "Lucy's head"),
+  'Lucy page has fill spots');
+assert(byTag(e2ColorLucy, 'button').some((n) => n.getAttribute('aria-label') === 'Done coloring'),
+  'paint has Done coloring');
+e2Color.setFill('lucy', 'sky', '#29B6F6');
+const e2ColorBack = e2Color.render({ go: () => {}, kid: null, foot: () => {}, params: ['lucy'] });
+const e2Sky = walk(e2ColorBack).find((n) => n.getAttribute && n.getAttribute('data-region') === 'sky');
+assert(e2Sky && e2Sky.getAttribute('fill') === '#29B6F6', 'a fill stays after leave and come back');
+assert(/Coloring Canvas/.test(textOf(e2Color.footLeft())), 'footer names Coloring Canvas');
+assert(/slot === 'color'/.test(app), 'coming/color aliases the real coloring screen');
+
 const e2Coming = await import('./js/screens/coming.js');
-const e2ColorSlot = e2Coming.render({ go: () => {}, kid: null, foot: () => {}, params: ['color'] });
-assert(/Coloring Canvas/.test(textOf(e2ColorSlot)) && /Coming next week/.test(textOf(e2ColorSlot)),
-  'coloring later-slot still says Coming next week');
+const e2ComingSlot = e2Coming.render({ go: () => {}, kid: null, foot: () => {}, params: ['next'] });
+assert(/A new game/.test(textOf(e2ComingSlot)) && /Coming next week/.test(textOf(e2ComingSlot)),
+  'unknown later-slots still say Coming next week');
+assert(!/Coloring Canvas/.test(textOf(e2ComingSlot)),
+  'the leftover coming slot is not Coloring Canvas');
 
 store.setRosterOverride([{
   id: 'k24',

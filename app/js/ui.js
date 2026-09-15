@@ -64,6 +64,7 @@ const PATHS = {
   book: '<path d="M5 4.2h6.4c2 0 3.6 1.4 3.6 3.4v12.2c0-1.6-1.4-2.8-3.2-2.8H5z"/><path d="M19 4.2h-6.4c-2 0-3.6 1.4-3.6 3.4v12.2c0-1.6 1.4-2.8 3.2-2.8H19z" opacity=".7"/>',
   arcade: '<rect x="4" y="6" width="16" height="12" rx="3"/><circle cx="9" cy="12" r="1.8"/><circle cx="15" cy="12" r="1.8"/><rect x="8.5" y="18.4" width="7" height="2.2" rx="1"/>',
   sparkle: '<path d="M12 2.6l1.7 5.7 5.7 1.7-5.7 1.7L12 17.4l-1.7-5.7-5.7-1.7 5.7-1.7z"/>',
+  crayon: '<path d="M14.4 2.8l6.8 6.8-11 11-6.8-6.8z"/><path d="M3.8 14.6L2 22l7.4-1.8z"/><path d="M14.4 2.8l2.2 2.2" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>',
   cloud: '<ellipse cx="9" cy="14.2" rx="5.6" ry="4.6"/><ellipse cx="15.2" cy="13.2" rx="6.4" ry="5.4"/><ellipse cx="7.6" cy="11.4" rx="4.2" ry="3.6"/>',
   sun: '<circle cx="12" cy="12" r="4.2"/><path d="M12 3.2v2.2M12 18.6V21M3.2 12h2.2M18.6 12H21M5.8 5.8l1.6 1.6M16.6 16.6l1.6 1.6M5.8 18.2l1.6-1.6M16.6 7.4l1.6-1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
 };
