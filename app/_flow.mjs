@@ -2508,10 +2508,24 @@ assert(/Lucy's Picnic Day/.test(textOf(e2Stories.footLeft())), 'footer names Luc
 
 const e2Rhymes = await import('./js/screens/rhymes.js');
 const e2Song = e2Rhymes.lucyRhyme();
-assert(e2Song.song === 'Lucy the Pup' && e2Song.lines.length === 4,
+assert(e2Song.song === 'Lucy the Pup' && e2Song.lines.length === 5,
   'Rhymes & Songs is one short Lucy rhyme');
-assert(e2Song.lines.every((line) => /lucy|pup|tail|paw|stars/i.test(line)),
+assert(e2Song.file === 'audio/lucy-the-pup-l-for-lucy.mp3',
+  'Play song uses Bradley’s keeper take');
+assert(e2Song.lines[1] === 'L is for Lucy, come sing with me.',
+  'the verse is the L-for-Lucy lyric');
+assert(e2Song.lines.every((line) => /lucy|pup|sing|sound|letters/i.test(line)),
   'the rhyme is Lucy, not a letter round');
+assert(!e2Song.lines.some((line) => /wags her tail|paw on the page/i.test(line)),
+  'the old four filler lines are gone');
+assert(e2Rhymes.LINE_MS >= 3200, 'line highlights follow the sung track, not 2.4s filler');
+const e2AudioSrc = readFileSync(join(root, 'js/audio.js'), 'utf8');
+const e2PlaySongFn = e2AudioSrc.slice(e2AudioSrc.indexOf('playSong('), e2AudioSrc.indexOf('stopSong('));
+assert(/store\.getAudio\(\)\.music/.test(e2PlaySongFn) && !/store\.getAudio\(\)\.voice/.test(e2PlaySongFn),
+  'the song respects Music mute, not Voice');
+assert(/playSong\(rhyme\.file\)/.test(readFileSync(join(root, 'js/screens/rhymes.js'), 'utf8')),
+  'Play song starts the Music-channel track');
+assert(sw.includes('audio/lucy-the-pup-l-for-lucy.mp3'), 'Lucy the Pup song is pinned');
 const e2RhymeIdle = e2Rhymes.render({ go: () => {}, kid: null, foot: () => {}, params: [] });
 assert(/Rhymes & Songs/.test(textOf(e2RhymeIdle)), 'idle heading is Rhymes & Songs');
 assert(/Lucy the Pup/.test(textOf(e2RhymeIdle)), 'idle names the song');
@@ -2537,18 +2551,19 @@ assert(/Lucy the pup, Lucy the pup/.test(textOf(e2Sing)), 'beat 1 shows the firs
 assert(byClass(e2Sing, 'is-on').length === 1, 'one line is on during the song');
 assert(!byTag(e2Sing, 'button').some((n) => /Play song/.test(n.getAttribute('aria-label') || '')),
   'singing has no Play song button');
-assert(/1 \/ 4/.test(textOf(e2Sing)), 'singing names the beat');
+assert(/1 \/ 5/.test(textOf(e2Sing)), 'singing names the beat');
 assert(byClass(e2Sing, 'lucy-stage').length === 1, 'Lucy stays while singing');
 const e2RhymeEnd = e2Rhymes.render({ go: () => {}, kid: null, foot: () => {}, params: ['end'] });
 assert(/Sing it again/.test(textOf(e2RhymeEnd)), 'the end invites another play');
 assert(byTag(e2RhymeEnd, 'button').some((n) => n.getAttribute('aria-label') === 'Play song again'),
   'the end has Play song again');
 assert(/Rhymes & Songs/.test(textOf(e2Rhymes.footLeft())), 'footer names Rhymes & Songs');
-assert(e2Rhymes.rhymeBeat([], 4).kind === 'idle', 'empty hash is idle');
-assert(e2Rhymes.rhymeBeat(['1'], 4).kind === 'sing' && e2Rhymes.rhymeBeat(['1'], 4).i === 0,
+assert(e2Rhymes.rhymeBeat([], e2Song.lines.length).kind === 'idle', 'empty hash is idle');
+assert(e2Rhymes.rhymeBeat(['1'], e2Song.lines.length).kind === 'sing'
+  && e2Rhymes.rhymeBeat(['1'], e2Song.lines.length).i === 0,
   'rhymes/1 is the first line');
-assert(e2Rhymes.rhymeBeat(['end'], 4).kind === 'end', 'rhymes/end is done');
-assert(e2Rhymes.rhymeBeat(['9'], 4).kind === 'end', 'past the last line lands on the end');
+assert(e2Rhymes.rhymeBeat(['end'], e2Song.lines.length).kind === 'end', 'rhymes/end is done');
+assert(e2Rhymes.rhymeBeat(['9'], e2Song.lines.length).kind === 'end', 'past the last line lands on the end');
 const e2Coming = await import('./js/screens/coming.js');
 const e2ColorSlot = e2Coming.render({ go: () => {}, kid: null, foot: () => {}, params: ['color'] });
 assert(/Coloring Canvas/.test(textOf(e2ColorSlot)) && /Coming next week/.test(textOf(e2ColorSlot)),

@@ -16,6 +16,10 @@ through `lucy-nudge-4.mp3` are ElevenLabs multilingual v2
 (`eleven_multilingual_v2`), voice Flicker (`piI8Kku0DcvcL6TTSeQt`).
 MPEG layer III, 128 kbps, 44.1 kHz, mono, under 2s.
 
+`lucy-the-pup-l-for-lucy.mp3` is ElevenLabs Music v2 (`eleven_music_v2`),
+custom lyrics, Bradley's keeper take. MPEG layer III, 192 kbps, 48 kHz,
+stereo, ~20s. Vocals ~16s. Music channel, not Voice.
+
 Phoneme / name / word recordings, when they land, must be files Bradley
 drops in — never generated here as English speech. Isolated phonemes are
 never TTS.

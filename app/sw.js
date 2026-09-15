@@ -5,7 +5,7 @@
    installs, then waits. Only Grown-Ups → Device → Get update sends
    SKIP_WAITING, so the pin never swaps under a child mid-round. */
 
-const VERSION = 'rsabc-shell-v40-nudge-home';
+const VERSION = 'rsabc-shell-v41-lucy-pup';
 const SHELL = [
   './',
   'index.html',
@@ -94,6 +94,7 @@ const SHELL = [
   'audio/lucy-nudge-2.mp3',
   'audio/lucy-nudge-3.mp3',
   'audio/lucy-nudge-4.mp3',
+  'audio/lucy-the-pup-l-for-lucy.mp3',
   'icons/icon.svg',
   'icons/icon-maskable.svg',
   'icons/icon-192.png',

@@ -18,14 +18,16 @@ Rhymes & Songs is a short Lucy song on Home. It is not meet, choose, listen, or 
 
 Preconditions:
 
-- `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v40-nudge-home`.
+- `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v41-lucy-pup`.
 - Viewport is landscape 1280×800.
 - Ava is playing. Navigate to the URL from `verify-rsabc smoke 'reset=1&kid=k01'`.
 
 - **Home card.** Heading `Welcome back, Ava!`. Card `Rhymes & Songs`. Subcopy `A short Lucy song. Tap Play and sing along.` CTA `Sing along`. It does not say Coming next week. Choose that card.
-- **Idle.** Heading `Rhymes & Songs`. Chip `Lucy the Pup`. Copy includes `Lucy the pup, Lucy the pup,`. Lucy is on the page. `body[data-screen]` is `rhymes`. Button `Play song`. No `Coming next week`. Snapshot `artifacts/rhymes-songs/01-idle.aria.yml`.
-- **Sing.** Choose `Play song`. One line is current. Chip `1 / 4`. Lucy is still there. No `Play song` while it sings. Wait through the four lines.
-- **The end.** Lucy says `Sing it again?`. Button `Play song again`. Choose it to start the song again.
+- **Idle.** Heading `Rhymes & Songs`. Chip `Lucy the Pup`. Copy includes `L is for Lucy, come sing with me.` Lucy is on the page. `body[data-screen]` is `rhymes`. Button `Play song`. No `Coming next week`. Snapshot `artifacts/rhymes-songs/01-idle.aria.yml`.
+- **Music on.** Header `Music` is a mute toggle (`aria-pressed` true means on). Turn Music on before the first Play if it is off. Default Music is off.
+- **Sing.** Choose `Play song`. The keeper track plays on the Music channel. One line is current. Chip `1 / 5`. Lucy is still there. No `Play song` while it sings. Wait through the five lines.
+- **The end.** Lucy says `Sing it again?`. Button `Play song again`.
+- **Music mute.** Turn Music off. Choose `Play song again`. Lines still light. The song does not play. Voice mute and SFX mute are not this check.
 - **Coloring.** Home card `Coloring Canvas` still says Coming soon.
 
 ## Gotchas

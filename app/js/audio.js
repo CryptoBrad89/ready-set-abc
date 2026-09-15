@@ -11,6 +11,8 @@
      3. phonemes: clip only. No TTS, no oscillator “puh”. Silence + Lucy’s line.
 
    Music and SFX are WAV beds in audio/ (see audio/LICENSES.md).
+   Rhymes & Songs plays audio/lucy-the-pup-l-for-lucy.mp3 on the music bus.
+   Mute Music silences it. Mute Voice and mute SFX do not.
    The celebrate sting is SFX. Lucy also speaks the mapped cheer clip.
 
    Phoneme ≠ name ≠ word. The three live in three clip namespaces that cannot
@@ -30,6 +32,8 @@ let clips = {};
 let musicTimer = 0;
 let musicStep = 0;
 let musicSource = null;
+let songEl = null;
+let songNode = null;
 let duckCount = 0;
 let voiceGen = 0;
 let clipEl = null;
@@ -172,6 +176,7 @@ const SFX_FILES = {
   woof: 'audio/sfx-woof.wav',
 };
 const MUSIC_FILE = 'audio/music-loop.wav';
+const SONG_FILE = 'audio/lucy-the-pup-l-for-lucy.mp3';
 
 function playBuffer(name, dest = null, { loop = false } = {}) {
   const ac = ensureCtx();
@@ -209,6 +214,15 @@ function silentUnlockPulse(ac) {
     src.connect(ac.destination);
     src.start();
   } catch (err) { /* resume() is the real unlock */ }
+}
+
+function stopSongEl() {
+  if (songEl) {
+    try { songEl.pause(); } catch (err) { /* already gone */ }
+    try { songEl.removeAttribute('src'); songEl.load(); } catch (err) { /* ignore */ }
+    songEl = null;
+  }
+  songNode = null;
 }
 
 function stopVoice() {
@@ -337,6 +351,36 @@ export const audio = {
 
   stopVoice,
 
+  /* One-shot Music track. Mute Music silences it. Voice / SFX mutes do not. */
+  playSong(url) {
+    stopSongEl();
+    if (!unlocked || !store.getAudio().music) return;
+    const ac = ensureCtx();
+    if (!ac) return;
+    if (musicSource) {
+      try { musicSource.stop(); } catch (err) { /* already stopped */ }
+      musicSource = null;
+    }
+    const src = String(url || SONG_FILE);
+    const el = new Audio(src);
+    el.preload = 'auto';
+    songEl = el;
+    try {
+      songNode = ac.createMediaElementSource(el);
+      songNode.connect(musicGain || ac.destination);
+    } catch (err) {
+      songNode = null;
+    }
+    el.addEventListener('ended', () => {
+      if (songEl === el) {
+        songEl = null;
+        songNode = null;
+      }
+    }, { once: true });
+    el.play().catch(() => { if (songEl === el) stopSongEl(); });
+  },
+  stopSong() { stopSongEl(); },
+
   /* ---- audio contract (GAME-FLOW §7) --------------------------------
      name    — board appear (case + picture). Never on a choice tap.
      phoneme — letter-choice tap. The SOUND, never the letter name.
@@ -395,6 +439,10 @@ export const audio = {
     const b = buses();
     const on = unlocked && store.getAudio().music;
     if (b) ramp(b.music, on ? (duckCount > 0 ? 0.16 : 1) : 0.0001, 0.08);
+    if (songEl) {
+      if (!on) stopSongEl();
+      return;
+    }
     if (on) {
       musicSource = playBuffer('music', b.music, { loop: true });
     }
@@ -402,6 +450,7 @@ export const audio = {
   stopAll() {
     clearInterval(musicTimer);
     musicTimer = 0;
+    stopSongEl();
     stopVoice();
   },
 };
