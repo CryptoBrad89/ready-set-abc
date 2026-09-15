@@ -273,7 +273,7 @@ export function render(ctx) {
   const later = [
     ['stories', "Lucy's Picnic Day", 'A tiny picture story for this letter.', 'Open Book', 'hub-art--cyan', 'book', false],
     ['rhymes', 'Rhymes & Songs', 'A short Lucy song. Tap Play and sing along.', 'Sing along', 'hub-art--yellow', 'music', false],
-    ['coming/color', 'Coloring Canvas', 'Tap-to-fill a picture. Coming next week.', 'Coming soon', 'hub-art--red', 'pouch', false],
+    ['color', 'Coloring Canvas', 'Tap a crayon, then tap a picture.', 'Color now', 'hub-art--red', 'crayon', false],
     ['arcade', 'Puppy Treat Match', 'Memory in Arcade. Uses first sounds.', 'Play Memory', 'hub-art--cyan', 'arcade', arcadeOff],
   ];
   const laterRow = el('div', { class: 'hub-row hub-row--later' });

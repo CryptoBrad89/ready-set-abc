@@ -2878,6 +2878,103 @@ html[data-chrome="hidden"] .screen {
 }
 .rhyme-play svg { width: 1.1em; height: 1.1em; }
 
+.coloring {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 8px;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+.color-picks {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  align-content: center;
+  justify-items: stretch;
+  padding: 0 8px;
+}
+.color-pick {
+  min-height: var(--target-min);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.color-pick-art {
+  font-size: clamp(40px, 8vh, 72px);
+  line-height: 1;
+}
+.color-pick-title {
+  font-size: clamp(18px, 2.4vh, 26px);
+}
+.color-stage {
+  position: relative;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+}
+.color-art {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+.color-spot { cursor: pointer; }
+.color-ink { pointer-events: none; }
+.color-glyph {
+  position: absolute;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(56px, 14vh, 120px);
+  line-height: 1;
+  color: var(--on-surface);
+  pointer-events: none;
+  transform: translateY(-6%);
+}
+.color-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+.color-crayons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.color-crayon {
+  width: var(--target-min);
+  height: var(--target-min);
+  min-width: var(--target-min);
+  min-height: var(--target-min);
+  border-radius: var(--r-full);
+  box-shadow: var(--pillow-shadow);
+}
+.color-crayon[aria-pressed="true"] {
+  box-shadow: var(--ring-select), var(--pillow-shadow);
+}
+.color-done {
+  min-height: var(--target-min);
+  min-width: var(--target-min);
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(16px, 2.2vh, 22px);
+}
+.color-done svg { width: 1.1em; height: 1.1em; }
+
 @media (max-width: 1100px) {
   .hub-row--phonics, .later-grid, .hub-row--later { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hub-hero { grid-template-columns: 1fr; }

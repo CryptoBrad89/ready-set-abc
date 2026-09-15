@@ -18,7 +18,7 @@ Rhymes & Songs is a short Lucy song on Home. It is not meet, choose, listen, or 
 
 Preconditions:
 
-- `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v41-lucy-pup`.
+- `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v42-coloring`.
 - Viewport is landscape 1280×800.
 - Ava is playing. Navigate to the URL from `verify-rsabc smoke 'reset=1&kid=k01'`.
 
@@ -28,11 +28,10 @@ Preconditions:
 - **Sing.** Choose `Play song`. The keeper track plays on the Music channel. One line is current. Chip `1 / 5`. Lucy is still there. No `Play song` while it sings. Wait through the five lines.
 - **The end.** Lucy says `Sing it again?`. Button `Play song again`.
 - **Music mute.** Turn Music off. Choose `Play song again`. Lines still light. The song does not play. Voice mute and SFX mute are not this check.
-- **Coloring.** Home card `Coloring Canvas` still says Coming soon.
 
 ## Gotchas
 
 - Kid screens cannot scroll. If the page scrolls, the recipe failed.
 - This is not Picnic Day and not the four-beat round. Storybooks still opens Lucy's Picnic Day.
 - Isolated name / phoneme / word clips may be silent. The song uses on-screen lines plus Music / SFX. Do not use TTS.
-- Coloring Canvas is still Coming next week. That is a different card.
+- Coloring Canvas is its own Home card.
