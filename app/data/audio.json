@@ -1,31 +1,31 @@
 {
-  "note": "Recorded-voice hook AND Lucy's recording checklist. Placeholders stay null as the full id list. Mapped filenames live in `clips`. Isolated phonemes are kid-voice recreations from reference/Starfall/audio/{A-Z}/phoneme.mp3. Letter names, picture words, cheers, and sentences are ElevenLabs Flicker. To ship a clip: drop the file in app/audio/, map it here, add it to SHELL in sw.js, and bump VERSION in sw.js + js/version.js.",
+  "note": "Recorded-voice hook AND Lucy's recording checklist. Placeholders stay null as the full id list. Mapped filenames live in `clips`. Isolated phonemes are kid-voice recreations from reference/Starfall/audio/{A-Z}/phoneme.mp3. Picture words, cheers, and nudges are ElevenLabs Flicker. Letter names stay silent placeholders until Bradley records — never ElevenLabs, never isolated-letter TTS. To ship a clip: drop the file in app/audio/, map it here, add it to SHELL in sw.js, and bump VERSION in sw.js + js/version.js.",
   "base": "audio/",
-  "recorded": 452,
+  "recorded": 426,
   "channels": {
     "music": "Quiet playground wander. Loops audio/music-loop.wav on the music bus. Ducks to 16% while voice plays.",
     "sfx": "Short musical UI hits: tap, select, match chord, miss, star, pop, woof, plus a celebrate xylophone. ElevenLabs beds. Independent of voice: mute one, the other keeps going.",
     "voice": "Lucy. The only channel that uses the clips below."
   },
   "contract": {
-    "name": "name-<L> \u2014 board appear. The letter NAME only. Example: \u201cA!\u201d",
-    "phoneme": "phoneme-<L> \u2014 letter-choice tap. The SOUND only, NEVER the name. Example: ah / buh / kuh",
-    "word": "word-<L>-<id> \u2014 picture tap. The picture's word only. Example: \u201cApple!\u201d Falls back to word-<L> when the per-picture clip is missing.",
-    "cheer": "cheer-<n> \u2014 after a correct submitted two-tap. Falls back to a single `cheer` clip.",
-    "nudge": "nudge-<n> \u2014 after a wrong tap. Falls back to a single `nudge` clip."
+    "name": "name-<L> — board appear. The letter NAME only. Example: “A!”",
+    "phoneme": "phoneme-<L> — letter-choice tap. The SOUND only, NEVER the name. Example: ah / buh / kuh",
+    "word": "word-<L>-<id> — picture tap. The picture's word only. Example: “Apple!” Falls back to word-<L> when the per-picture clip is missing.",
+    "cheer": "cheer-<n> — after a correct submitted two-tap. Falls back to a single `cheer` clip.",
+    "nudge": "nudge-<n> — after a wrong tap. Falls back to a single `nudge` clip."
   },
   "rules": [
     "Three namespaces, three channels: name-* / phoneme-* / word-* never share an id and must never share a FILE. js/audio.js drops a phoneme id that points at that letter's name file, because that is the one mix-up that would say the letter name on a choice tap.",
-    "A phoneme clip says the sound. Recording \u201cA\u201d into phoneme-A is a ship-blocker, not a typo.",
-    "Resolution order per line: clip if mapped, else silence. Lucy's on-screen line shows either way. Isolated phonemes are never TTS \u2014 they are the Starfall-folder recreations.",
-    "Whole words, letter names, and sentences are ElevenLabs. Isolated phonemes are not.",
+    "A phoneme clip says the sound. Recording “A” into phoneme-A is a ship-blocker, not a typo.",
+    "Resolution order per line: clip if mapped, else silence. Lucy's on-screen line shows either way. Isolated phonemes are never TTS — they are the Starfall-folder recreations.",
+    "ElevenLabs speaks whole picture words and the existing cheer/nudge sentences. Isolated phonemes are Starfall files only. Letter names are recordings only — do not generate name-* TTS.",
     "Nothing plays before a user gesture. The giant PLAY button (and the Grown-Ups Test buttons) unlock the speaker; the header mute dots only set prefs.",
     "Keep clips under about 2s. A clip that stalls is let go of after 8s so the music duck cannot stick."
   ],
   "placeholders": {
     "note": "null = not recorded yet. Move an id from here into `clips` when the file lands.",
     "name": {
-      "say": "The letter name, warm and short: \u201cA!\u201d",
+      "say": "The letter name, warm and short: “A!” Recorded only. Leave unmapped until Bradley records. Never ElevenLabs.",
       "ids": {
         "name-A": null,
         "name-B": null,
@@ -87,7 +87,7 @@
       }
     },
     "word": {
-      "say": "The picture\u2019s word on its own: \u201cApple!\u201d Every awake letter is listed \u2014 all 26 are awake, so that is the 390 picture words plus a word-<L> fallback per letter for a plate that has no clip of its own.",
+      "say": "The picture’s word on its own: “Apple!” Every awake letter is listed — all 26 are awake, so that is the 390 picture words plus a word-<L> fallback per letter for a plate that has no clip of its own.",
       "ids": {
         "word-A-apple": null,
         "word-A-alligator": null,
@@ -508,13 +508,13 @@
       }
     },
     "cheer": {
-      "say": "In CHEERS order (js/audio.js): 1 Yes! \u00b7 2 You got it! \u00b7 3 Excellent! \u00b7 4 Nice job! \u00b7 5 Woohoo! \u00b7 6 High five!",
+      "say": "In CHEERS order (js/audio.js): 1 Yes! · 2 You got it! · 3 Excellent! · 4 Nice job! · 5 Woohoo! · 6 High five!",
       "ids": {
         "cheer": null
       }
     },
     "nudge": {
-      "say": "In NUDGES order (js/audio.js): 1 Not quite! \u00b7 2 Try again! \u00b7 3 Almost! \u00b7 4 Keep going! Never cross \u2014 always an invitation to tap again.",
+      "say": "In NUDGES order (js/audio.js): 1 Not quite! · 2 Try again! · 3 Almost! · 4 Keep going! Never cross — always an invitation to tap again.",
       "ids": {
         "nudge": null
       }
@@ -532,57 +532,31 @@
     "nudge-3": "lucy-nudge-3.mp3",
     "nudge-4": "lucy-nudge-4.mp3",
     "phoneme-A": "lucy-phoneme-a.mp3",
-    "name-A": "lucy-name-a.mp3",
     "phoneme-B": "lucy-phoneme-b.mp3",
-    "name-B": "lucy-name-b.mp3",
     "phoneme-C": "lucy-phoneme-c.mp3",
-    "name-C": "lucy-name-c.mp3",
     "phoneme-D": "lucy-phoneme-d.mp3",
-    "name-D": "lucy-name-d.mp3",
     "phoneme-E": "lucy-phoneme-e.mp3",
-    "name-E": "lucy-name-e.mp3",
     "phoneme-F": "lucy-phoneme-f.mp3",
-    "name-F": "lucy-name-f.mp3",
     "phoneme-G": "lucy-phoneme-g.mp3",
-    "name-G": "lucy-name-g.mp3",
     "phoneme-H": "lucy-phoneme-h.mp3",
-    "name-H": "lucy-name-h.mp3",
     "phoneme-I": "lucy-phoneme-i.mp3",
-    "name-I": "lucy-name-i.mp3",
     "phoneme-J": "lucy-phoneme-j.mp3",
-    "name-J": "lucy-name-j.mp3",
     "phoneme-K": "lucy-phoneme-k.mp3",
-    "name-K": "lucy-name-k.mp3",
     "phoneme-L": "lucy-phoneme-l.mp3",
-    "name-L": "lucy-name-l.mp3",
     "phoneme-M": "lucy-phoneme-m.mp3",
-    "name-M": "lucy-name-m.mp3",
     "phoneme-N": "lucy-phoneme-n.mp3",
-    "name-N": "lucy-name-n.mp3",
     "phoneme-O": "lucy-phoneme-o.mp3",
-    "name-O": "lucy-name-o.mp3",
     "phoneme-P": "lucy-phoneme-p.mp3",
-    "name-P": "lucy-name-p.mp3",
     "phoneme-Q": "lucy-phoneme-q.mp3",
-    "name-Q": "lucy-name-q.mp3",
     "phoneme-R": "lucy-phoneme-r.mp3",
-    "name-R": "lucy-name-r.mp3",
     "phoneme-S": "lucy-phoneme-s.mp3",
-    "name-S": "lucy-name-s.mp3",
     "phoneme-T": "lucy-phoneme-t.mp3",
-    "name-T": "lucy-name-t.mp3",
     "phoneme-U": "lucy-phoneme-u.mp3",
-    "name-U": "lucy-name-u.mp3",
     "phoneme-V": "lucy-phoneme-v.mp3",
-    "name-V": "lucy-name-v.mp3",
     "phoneme-W": "lucy-phoneme-w.mp3",
-    "name-W": "lucy-name-w.mp3",
     "phoneme-X": "lucy-phoneme-x.mp3",
-    "name-X": "lucy-name-x.mp3",
     "phoneme-Y": "lucy-phoneme-y.mp3",
-    "name-Y": "lucy-name-y.mp3",
     "phoneme-Z": "lucy-phoneme-z.mp3",
-    "name-Z": "lucy-name-z.mp3",
     "word-A-apple": "lucy-word-a-apple.mp3",
     "word-A-alligator": "lucy-word-a-alligator.mp3",
     "word-A-astronaut": "lucy-word-a-astronaut.mp3",

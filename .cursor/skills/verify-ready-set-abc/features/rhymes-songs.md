@@ -18,7 +18,7 @@ Rhymes & Songs is a short Lucy song on Home. It is not meet, choose, listen, or 
 
 Preconditions:
 
-- `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v43-voice-clips`.
+- `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v44-silent-names`.
 - Viewport is landscape 1280×800.
 - Ava is playing. Navigate to the URL from `verify-rsabc smoke 'reset=1&kid=k01'`.
 

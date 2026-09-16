@@ -465,6 +465,11 @@ assert(audio.clipCount() === mappedCount, 'the shipped audio.json maps every rec
 assert(audio.hasClip('cheer-1'), 'cheer-1 is a real clip after setClips');
 assert(audio.hasClip('phoneme-C') && audio.hasClip('word-C-cat'),
   'C letter-choice sound and Cat picture word are both mapped');
+ALPHABET.forEach((L) => {
+  assert(!(clipId.name(L) in audioFile.clips),
+    `${clipId.name(L)} stays unmapped until Bradley records`);
+});
+assert(!audio.hasClip('name-C'), 'letter-name C is silent until recorded');
 assert(['name', 'phoneme', 'word', 'cheer', 'nudge'].every((k) => ph[k] && ph[k].ids && ph[k].say),
   'audio.json documents name / phoneme / word / cheer / nudge, each with what to say');
 const phIds = Object.assign({}, ...['name', 'phoneme', 'word', 'cheer', 'nudge'].map((k) => ph[k].ids));

@@ -16,8 +16,9 @@ through `lucy-nudge-4.mp3` are ElevenLabs multilingual v2
 (`eleven_multilingual_v2`), voice Flicker (`piI8Kku0DcvcL6TTSeQt`).
 MPEG layer III, 128 kbps, 44.1 kHz, mono, under 2s.
 
-Letter **names** and picture **words** (`lucy-name-*.mp3`, `lucy-word-*.mp3`)
-use the same Flicker voice and model. Isolated **phonemes**
+Picture **words** (`lucy-word-*.mp3`) use the same Flicker voice and model.
+Letter **names** are not shipped as ElevenLabs — `name-*` stays a silent
+placeholder until Bradley records. Isolated **phonemes**
 (`lucy-phoneme-a.mp3` … `lucy-phoneme-z.mp3`) are original kid-voice
 recreations copied from `reference/Starfall/audio/{A-Z}/phoneme.mp3`.
 They are not ElevenLabs and not a website rip; the folder name is only
