@@ -466,10 +466,15 @@ assert(audio.hasClip('cheer-1'), 'cheer-1 is a real clip after setClips');
 assert(audio.hasClip('phoneme-C') && audio.hasClip('word-C-cat'),
   'C letter-choice sound and Cat picture word are both mapped');
 ALPHABET.forEach((L) => {
-  assert(!(clipId.name(L) in audioFile.clips),
-    `${clipId.name(L)} stays unmapped until Bradley records`);
+  assert(audioFile.clips[clipId.name(L)] === `lucy-name-${L.toLowerCase()}.mp3`,
+    `${clipId.name(L)} maps to the Starfall-folder name recording`);
 });
-assert(!audio.hasClip('name-C'), 'letter-name C is silent until recorded');
+assert(audio.hasClip('name-C'), 'letter-name C is mapped');
+ALPHABET.forEach((L) => {
+  const nameBytes = readFileSync(join(root, 'audio', `lucy-name-${L.toLowerCase()}.mp3`));
+  const phonemeBytes = readFileSync(join(root, 'audio', `lucy-phoneme-${L.toLowerCase()}.mp3`));
+  assert(!nameBytes.equals(phonemeBytes), `${L} name and phoneme files are distinct recordings`);
+});
 assert(['name', 'phoneme', 'word', 'cheer', 'nudge'].every((k) => ph[k] && ph[k].ids && ph[k].say),
   'audio.json documents name / phoneme / word / cheer / nudge, each with what to say');
 const phIds = Object.assign({}, ...['name', 'phoneme', 'word', 'cheer', 'nudge'].map((k) => ph[k].ids));

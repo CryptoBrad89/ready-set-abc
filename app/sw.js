@@ -5,7 +5,7 @@
    installs, then waits. Only Grown-Ups → Device → Get update sends
    SKIP_WAITING, so the pin never swaps under a child mid-round. */
 
-const VERSION = 'rsabc-shell-v44-silent-names';
+const VERSION = 'rsabc-shell-v45-letter-names';
 const SHELL = [
   './',
   'index.html',
@@ -96,6 +96,32 @@ const SHELL = [
   'audio/lucy-nudge-3.mp3',
   'audio/lucy-nudge-4.mp3',
   'audio/lucy-the-pup-l-for-lucy.mp3',
+  'audio/lucy-name-a.mp3',
+  'audio/lucy-name-b.mp3',
+  'audio/lucy-name-c.mp3',
+  'audio/lucy-name-d.mp3',
+  'audio/lucy-name-e.mp3',
+  'audio/lucy-name-f.mp3',
+  'audio/lucy-name-g.mp3',
+  'audio/lucy-name-h.mp3',
+  'audio/lucy-name-i.mp3',
+  'audio/lucy-name-j.mp3',
+  'audio/lucy-name-k.mp3',
+  'audio/lucy-name-l.mp3',
+  'audio/lucy-name-m.mp3',
+  'audio/lucy-name-n.mp3',
+  'audio/lucy-name-o.mp3',
+  'audio/lucy-name-p.mp3',
+  'audio/lucy-name-q.mp3',
+  'audio/lucy-name-r.mp3',
+  'audio/lucy-name-s.mp3',
+  'audio/lucy-name-t.mp3',
+  'audio/lucy-name-u.mp3',
+  'audio/lucy-name-v.mp3',
+  'audio/lucy-name-w.mp3',
+  'audio/lucy-name-x.mp3',
+  'audio/lucy-name-y.mp3',
+  'audio/lucy-name-z.mp3',
   'audio/lucy-phoneme-a.mp3',
   'audio/lucy-phoneme-b.mp3',
   'audio/lucy-phoneme-c.mp3',

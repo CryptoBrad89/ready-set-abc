@@ -1,12 +1,12 @@
 ---
-description: Phonemes are Starfall files only; letter names wait for recordings; ElevenLabs speaks whole words and existing cheers/nudges, never isolated letters.
+description: Phonemes and letter names are Starfall file copies only; ElevenLabs speaks whole words and existing cheers/nudges, never isolated letters.
 alwaysApply: true
 ---
 
 # Voice clips
 
 - Isolated letter **sounds** (`phoneme-*`) come from `reference/Starfall/audio/{A-Z}/phoneme.mp3`. That folder is a kid-voice recreation for this app, not a website rip. Copy those files into `app/audio/`. Never ElevenLabs, never TTS, never invented “puh” tones.
-- Letter **names** (`name-*`, the meet beat that would say “P!” or “C!”) are **recordings only**. Leave them unmapped until Bradley records. Do not generate letter-name TTS. Unmapped names stay silent; Lucy’s on-screen line still shows.
+- Letter **names** (`name-*`, the meet beat that would say “P!” or “C!”) are **recordings only**, copied from `reference/Starfall/audio/{A-Z}/name.mp3` into `app/audio/lucy-name-{a-z}.mp3`. Never ElevenLabs, never TTS. The Starfall source folder stays gitignored and is not shipped.
 - ElevenLabs (Flicker `piI8Kku0DcvcL6TTSeQt`, `eleven_multilingual_v2`) speaks **whole picture words** (`word-*`, Cat, Pig) and the existing cheer / nudge sentences. Never phonemes. Never isolated letter names.
 - Do not ship Starfall **word** MP3s. Do not clone Starfall audio into ElevenLabs.
 - Map a clip in `data/audio.json` `clips`, pin it in `sw.js` `SHELL`, bump `VERSION` and `js/version.js` together.
