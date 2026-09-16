@@ -1,7 +1,9 @@
 # Lucy's voice clips
 
-Ten cheer and nudge clips are mapped. Names, letter sounds, and words stay
-silent until a clip is mapped. Lucy’s lines still show on screen. The success
+Ten cheer and nudge clips are mapped. All 26 letter sounds are mapped from
+the kid-voice recreations in `reference/Starfall/audio/{A-Z}/phoneme.mp3`.
+Picture words and letter names use ElevenLabs Flicker when a file is mapped.
+Unmapped ids stay silent. Lucy’s lines still show on screen. The success
 jingle is SFX. Isolated phonemes are never TTS.
 
 `../data/audio.json` is the recording checklist. A mapped id lives in `clips`.
@@ -10,9 +12,9 @@ nothing 404s offline, and the file doubles as the script.
 
 | Ids | How many | What Lucy says |
 |---|---|---|
-| `name-A` … `name-Z` | 26 | the letter **name**, warm and short — “A!” (silent) |
-| `phoneme-A` … `phoneme-Z` | 26 | the **sound**, stretched — `ah`, `buh`, `kuh`. **Never the name.** (silent) |
-| `word-<L>-<id>` | 390 | that picture's word on its own — “Apple!” (silent) |
+| `name-A` … `name-Z` | 26 | the letter **name**, warm and short — “A!” (ElevenLabs when mapped) |
+| `phoneme-A` … `phoneme-Z` | 26 | the **sound**, stretched — `ah`, `buh`, `kuh`. **Never the name.** (Starfall-folder recreations, mapped) |
+| `word-<L>-<id>` | 390 | that picture's word on its own — “Apple!” (ElevenLabs when mapped) |
 | `word-A` … `word-Z` | 26 | one fallback per letter, used when the per-picture clip is missing (silent) |
 | `cheer-1` … `cheer-6` | 6 | the celebration lines, in `CHEERS` order (mapped) |
 | `nudge-1` … `nudge-4` | 4 | the try-again lines, in `NUDGES` order (mapped) |
