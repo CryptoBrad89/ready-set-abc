@@ -148,7 +148,7 @@ Off Wi-Fi, **Get update** and **Set up this device** both say so and stop. They 
 | It says | What it means | What to do |
 |---|---|---|
 | *Checked just now · all N files cached* | Genuinely ready. | Turn the radio off. |
-| *Only 66 of 506 files are cached…* | Chrome evicted part of it (usually a full disk). | Back on Wi-Fi, tap **Set up this device**. |
+| *Only 66 of 541 files are cached…* | Chrome evicted part of it (usually a full disk). | Back on Wi-Fi, tap **Set up this device**. |
 | *Nothing is cached on this tablet* | It was never set up, or site data was cleared. | Back on Wi-Fi, tap **Set up this device**. |
 | *All N files cached on `…`, but this page is running `…`* | A **Get update** finished and nobody tapped **Reload to finish**. | Reload the tablet. Nothing is wrong with the files. |
 
@@ -232,7 +232,7 @@ Lucy talks in three separate channels and they never borrow from each other:
 
 The one place Lucy says a letter **name** on a tap is the **ABC Order** bonus, because that game is the alphabet song, not a sound match. Letter Hunt taps say the **sound**; Sound Sort taps say the **word**.
 
-Lucy’s ten cheer and nudge clips are mapped. All 26 letter sounds play from the kid-voice recreations. Picture words and letter names speak when their ElevenLabs clip is mapped (C’s Cat is in). The words are always on screen as well. Success chimes are sound effects, and a mapped cheer also speaks.
+Lucy’s ten cheer and nudge clips are mapped. All 26 letter sounds play from the kid-voice recreations. All 26 letter names and all 390 picture words speak via ElevenLabs Flicker (C’s Cat is in). The words are always on screen as well. Success chimes are sound effects, and a mapped cheer also speaks.
 
 `data/audio.json` is the recording checklist. Every clip id is listed under **placeholders** (`null`). Mapped filenames live in `clips`: 26 letter sounds, the ten cheer and nudge lines, and each picture word or letter name that has a file. Nothing unmapped is fetched, so nothing 404s offline. `node _check.mjs` fails if a picture in `data/letters.json` has no placeholder, so a letter can never be woken without being added to Lucy's list.
 
@@ -528,8 +528,8 @@ Offline is `sw.js` + Grown-Ups → Device. `SHELL` is the whole precache list an
 
 `_check.mjs` does not trust the `SHELL` list against a directory scan alone: it walks the import graph from `js/app.js` and every module it reaches has to exist and be pinned, wherever it lives, and it resolves local `url()` in every stylesheet the same way. A new module in a folder nobody thought to scan is exactly how a shell goes half-offline.
 
-Audio is `js/audio.js`: three Web Audio buses (music / sfx / voice), one unlock gate behind the giant PLAY, music ducked to 16% for the length of a voice line, and three clip namespaces built only by `clipId` so a phoneme tap can never reach a name recording. `data/audio.json` + `audio/README.md` are the recording checklist. Ten cheer and nudge clips plus all 26 isolated sounds are mapped. Picture words and letter names speak when their ElevenLabs file is mapped.
+Audio is `js/audio.js`: three Web Audio buses (music / sfx / voice), one unlock gate behind the giant PLAY, music ducked to 16% for the length of a voice line, and three clip namespaces built only by `clipId` so a phoneme tap can never reach a name recording. `data/audio.json` + `audio/README.md` are the recording checklist. Ten cheer and nudge clips plus all 26 isolated sounds are mapped. All 26 letter names and all 390 picture words speak via ElevenLabs Flicker.
 
-**Not yet:** remaining picture-word and letter-name ElevenLabs clips (`audio/README.md`). Two-tablet copy is Export / Import CSV (replace, not a silent merge).
+**Not yet:** Two-tablet copy is Export / Import CSV (replace, not a silent merge).
 
 Lucy is a drawn golden retriever. Glasses when she teaches. Bows when she celebrates. She talks and moves. A still photo of a dog is a failed Lucy. Her closet is `data-wear` on the same SVG (`css/shell.css`), independent of the pose — teaching Lucy in a ball cap is correct.
