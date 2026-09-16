@@ -165,10 +165,10 @@ cmd_doctor() {
     fail=1
   fi
 
-  if http_ok "${URL}/js/version.js" "rsabc-shell-v42-coloring"; then
-    say OK "shell version rsabc-shell-v42-coloring"
+  if http_ok "${URL}/js/version.js" "rsabc-shell-v44-silent-names"; then
+    say OK "shell version rsabc-shell-v44-silent-names"
   else
-    say FAIL "GET /js/version.js missing APP_VERSION rsabc-shell-v42-coloring"
+    say FAIL "GET /js/version.js missing APP_VERSION rsabc-shell-v44-silent-names"
     fail=1
   fi
 

@@ -1,5 +1,5 @@
 /* Pinned shell version. Must match `const VERSION` in sw.js.
    _check.mjs fails the build if they drift. Bump both together when the
    teacher-facing "Get update" cache should refresh. */
-export const APP_VERSION = 'rsabc-shell-v42-coloring';
-export const APP_LABEL = '2026.09.15 Coloring Canvas from Home';
+export const APP_VERSION = 'rsabc-shell-v44-silent-names';
+export const APP_LABEL = '2026.09.15 Phonemes and words, names wait';
