@@ -441,11 +441,12 @@ assert(audio.hasClip('phoneme-B'), 'an honest phoneme clip is kept');
 assert(!audio.hasClip('word-A-apple') && !audio.hasClip('cheer-1'),
   'null / blank placeholders never become clips');
 
-/* --- data/audio.json: ten Lucy lines mapped, names still silent -------- */
+/* --- data/audio.json: Lucy lines mapped, placeholders still silent -------- */
 const audioFile = JSON.parse(readFileSync(join(root, 'data/audio.json'), 'utf8'));
 const ph = audioFile.placeholders || {};
-assert(audioFile.recorded === 10, 'audio.json recorded count is the ten Lucy lines');
-assert(Object.keys(audioFile.clips || {}).length === 10, 'clips has exactly the ten Lucy lines');
+const mappedCount = Object.keys(audioFile.clips || {}).length;
+assert(audioFile.recorded === mappedCount, 'audio.json recorded count matches clips');
+assert(mappedCount >= 37, `clips include ten Lucy lines, 26 phonemes, and Cat (got ${mappedCount})`);
 CHEERS.forEach((_, i) => {
   const id = clipId.cheer(i);
   assert(audioFile.clips[id] === `lucy-cheer-${i + 1}.mp3`, `${id} maps to lucy-cheer-${i + 1}.mp3`);
@@ -454,9 +455,16 @@ NUDGES.forEach((_, i) => {
   const id = clipId.nudge(i);
   assert(audioFile.clips[id] === `lucy-nudge-${i + 1}.mp3`, `${id} maps to lucy-nudge-${i + 1}.mp3`);
 });
+ALPHABET.forEach((L) => {
+  assert(audioFile.clips[clipId.phoneme(L)] === `lucy-phoneme-${L.toLowerCase()}.mp3`,
+    `${clipId.phoneme(L)} maps to the Starfall-folder recreation`);
+});
+assert(audioFile.clips['word-C-cat'] === 'lucy-word-c-cat.mp3', 'C cat is the ElevenLabs word clip');
 audio.setClips(audioFile.clips);
-assert(audio.clipCount() === 10, 'the shipped audio.json maps the ten Lucy lines');
+assert(audio.clipCount() === mappedCount, 'the shipped audio.json maps every recorded clip');
 assert(audio.hasClip('cheer-1'), 'cheer-1 is a real clip after setClips');
+assert(audio.hasClip('phoneme-C') && audio.hasClip('word-C-cat'),
+  'C letter-choice sound and Cat picture word are both mapped');
 assert(['name', 'phoneme', 'word', 'cheer', 'nudge'].every((k) => ph[k] && ph[k].ids && ph[k].say),
   'audio.json documents name / phoneme / word / cheer / nudge, each with what to say');
 const phIds = Object.assign({}, ...['name', 'phoneme', 'word', 'cheer', 'nudge'].map((k) => ph[k].ids));

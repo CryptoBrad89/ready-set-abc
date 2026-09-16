@@ -1,0 +1,11 @@
+---
+description: Isolated phonemes are Starfall-folder recreations; ElevenLabs speaks every whole word, name, and sentence.
+alwaysApply: true
+---
+
+# Voice clips
+
+- Isolated letter **sounds** (`phoneme-*`) come from `reference/Starfall/audio/{A-Z}/phoneme.mp3`. That folder is a kid-voice recreation for this app, not a website rip. Copy those files into `app/audio/`. Never ElevenLabs, never TTS, never invented “puh” tones.
+- ElevenLabs (Flicker `piI8Kku0DcvcL6TTSeQt`, `eleven_multilingual_v2`) speaks every **whole word**, letter **name**, sentence, cheer, and nudge. Example: C letter-choice is Starfall “cuh” (`phoneme-C`); the picture is ElevenLabs “Cat!” (`word-C-cat`).
+- Do not ship Starfall **word** MP3s. Do not clone Starfall audio into ElevenLabs.
+- Map a clip in `data/audio.json` `clips`, pin it in `sw.js` `SHELL`, bump `VERSION` and `js/version.js` together.
