@@ -19,7 +19,7 @@ Coloring Canvas is a short tap-to-fill play on Home. It is not meet, choose, lis
 
 Preconditions:
 
-- `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v44-silent-names`.
+- `verify-rsabc doctor` reports `http://127.0.0.1:4173` and shell `rsabc-shell-v45-letter-names`.
 - Viewport is landscape 1280×800.
 - Ava is playing. Navigate to the URL from `verify-rsabc smoke 'reset=1&kid=k01'`.
 

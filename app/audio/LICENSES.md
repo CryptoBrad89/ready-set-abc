@@ -17,12 +17,13 @@ through `lucy-nudge-4.mp3` are ElevenLabs multilingual v2
 MPEG layer III, 128 kbps, 44.1 kHz, mono, under 2s.
 
 Picture **words** (`lucy-word-*.mp3`) use the same Flicker voice and model.
-Letter **names** are not shipped as ElevenLabs — `name-*` stays a silent
-placeholder until Bradley records. Isolated **phonemes**
-(`lucy-phoneme-a.mp3` … `lucy-phoneme-z.mp3`) are original kid-voice
-recreations copied from `reference/Starfall/audio/{A-Z}/phoneme.mp3`.
-They are not ElevenLabs and not a website rip; the folder name is only
-Bradley’s pronunciation reference. Isolated phonemes are never TTS.
+Letter **names** (`lucy-name-a.mp3` … `lucy-name-z.mp3`) are original
+kid-voice recreations copied from `reference/Starfall/audio/{A-Z}/name.mp3`.
+Isolated **phonemes** (`lucy-phoneme-a.mp3` … `lucy-phoneme-z.mp3`) are
+copied from the matching `phoneme.mp3` files. They are not ElevenLabs and
+not a website rip; the folder name is only Bradley’s pronunciation
+reference. Isolated phonemes and isolated letter names are never TTS. The
+`reference/` folder stays out of git.
 
 `lucy-the-pup-l-for-lucy.mp3` is ElevenLabs Music v2 (`eleven_music_v2`),
 custom lyrics, Bradley's keeper take. MPEG layer III, 192 kbps, 48 kHz,
