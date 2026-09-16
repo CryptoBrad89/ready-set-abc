@@ -25,7 +25,7 @@
   "placeholders": {
     "note": "null = not recorded yet. Move an id from here into `clips` when the file lands.",
     "name": {
-      "say": "The letter name, warm and short: “A!” Recorded only. Copied from reference/Starfall/audio/{A-Z}/name.mp3 as lucy-name-{a-z}.mp3. Never ElevenLabs.",
+      "say": "The letter name, warm and short: “A!” Recorded only. Never ElevenLabs.",
       "ids": {
         "name-A": null,
         "name-B": null,

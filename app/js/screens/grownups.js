@@ -449,7 +449,7 @@ function soundPanel() {
     ),
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Recorded voice'),
-      el('p', { class: 'note' }, 'Cheers and nudges are mapped. Names, letter sounds, and words stay silent until a clip is dropped in. Lucy’s lines still show on screen. Success chimes are sound effects, not speech.'),
+      el('p', { class: 'note' }, 'Cheers, nudges, letter names, and letter sounds are mapped. Picture words speak when a clip is mapped. Lucy’s lines still show on screen. Success chimes are sound effects, not speech.'),
       el('p', { class: 'note' }, `data/audio.json keeps every clip id as a silent placeholder and maps filenames in clips. ${letters().length} letter names and ${letters().length} letter sounds are mapped. Picture words use ElevenLabs when a file is mapped (${pictureCount()} pictures). To ship one, drop the file in app/audio/, map its id in "clips", pin the file in sw.js, and bump the version.`),
       el('p', { class: 'note' }, 'Three separate channels, three separate keys: name-A is the letter NAME (board appear), phoneme-A is the SOUND and never the name (letter-choice tap), word-A-apple is the picture word. A phoneme key pointing at a name recording is thrown away rather than played.'),
       el('p', { class: 'gu-status' }, audio.clipCount() === 0
