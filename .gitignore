@@ -4,3 +4,4 @@ stitch/
 node_modules/
 .claude/
 .tmp/
+reference/
