@@ -5,7 +5,7 @@
    installs, then waits. Only Grown-Ups → Device → Get update sends
    SKIP_WAITING, so the pin never swaps under a child mid-round. */
 
-const VERSION = 'rsabc-shell-v45-letter-names';
+const VERSION = 'rsabc-shell-v46-lucy-clips';
 const SHELL = [
   './',
   'index.html',
@@ -70,9 +70,8 @@ const SHELL = [
   'art/lucy/lucy-pack.jpg',
   'art/lucy/lucy-rainbow.jpg',
   'art/lucy/lucy-celebrate.jpg',
-  'art/lucy/idle-wave.mp4',
-  'art/lucy/idle-blink.mp4',
-  'art/lucy/idle-tail.mp4',
+  'art/lucy/idle.mp4',
+  'art/lucy/talk.mp4',
   'art/lucy/layer-bows.png',
   'art/lucy/layer-headband.png',
   'art/lucy/layer-clip.png',
