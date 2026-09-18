@@ -24,7 +24,7 @@ Seed Ava with `kid=k01`. Seed Miles with `kid=k24`. Assigned Miles still needs t
 ## Baseline preconditions
 
 - Launch with `.cursor/skills/verify-ready-set-abc/bin/verify-rsabc launch` and require `http://127.0.0.1:4173`.
-- Run `verify-rsabc doctor` and require pid ownership of 4173, `Ready Set ABC` on `GET /`, and shell `rsabc-shell-v45-letter-names`.
+- Run `verify-rsabc doctor` and require pid ownership of 4173, `Ready Set ABC` on `GET /`, and shell `rsabc-shell-v46-lucy-clips`.
 - Browser viewport is landscape 1280×800 or 1366×768. Portrait under 900px wide is blocked by the rotate overlay.
 - Seed state only through `_smoke.html` on this origin (`verify-rsabc smoke '<query>'`).
 - Never drive `:8000` or `:8080`. Never drive an instance this helper did not start.

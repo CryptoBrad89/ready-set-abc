@@ -12,8 +12,10 @@ import { audio } from './audio.js';
 import { wornOutfitId } from './closet.js';
 import { mountLottie } from './motion.js';
 
-/* Named like clipId: art/lucy/idle-${id}.mp4. */
-const IDLE_LOOPS = ['tail', 'wave', 'blink'];
+const CLIPS = {
+  idle: 'art/lucy/idle.mp4',
+  talk: 'art/lucy/talk.mp4',
+};
 
 const SVG = `
 <svg class="lucy" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lucy the golden retriever">
@@ -207,34 +209,44 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
   });
   const slot = el('div', { class: 'lucy-lottie-slot', hidden: true, 'aria-hidden': 'true' });
   const sparkle = el('div', { class: 'lucy-sparkle', 'aria-hidden': 'true' });
-  const idleName = IDLE_LOOPS[Math.floor(Math.random() * IDLE_LOOPS.length)];
   const reduceMotion = typeof matchMedia === 'function'
     && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let loop = null;
-  if (!reduceMotion && state !== 'celebrating') {
-    loop = el('video', {
-      class: 'lucy-idle-loop',
+  let idleLoop = null;
+  let talkLoop = null;
+  function mountClip(kind, className) {
+    const node = el('video', {
+      class: className,
       muted: true,
       loop: true,
       playsinline: '',
       'aria-hidden': 'true',
     });
-    loop.setAttribute('playsinline', '');
-    loop.src = `art/lucy/idle-${idleName}.mp4`;
-    loop.addEventListener('loadeddata', () => {
+    node.setAttribute('playsinline', '');
+    node.setAttribute('muted', '');
+    node.src = CLIPS[kind];
+    node.addEventListener('error', () => {
+      node.remove();
+      if (kind === 'idle') {
+        idleLoop = null;
+        well.classList.remove('has-loop');
+      } else {
+        talkLoop = null;
+      }
+    });
+    well.append(node);
+    return node;
+  }
+  if (!reduceMotion && state !== 'celebrating') {
+    idleLoop = mountClip('idle', 'lucy-idle-loop');
+    talkLoop = mountClip('talk', 'lucy-talk-loop');
+    idleLoop.addEventListener('loadeddata', () => {
       if (resting === 'celebrating') return;
       well.classList.add('has-loop');
-      loop.play().catch(() => {});
+      idleLoop.play().catch(() => {});
     });
-    loop.addEventListener('error', () => {
-      well.classList.remove('has-loop');
-      loop.remove();
-      loop = null;
-    });
-    well.append(loop);
   }
   const stage = el('div', { class: `lucy-stage lucy-stage--${variant === 'card' ? 'card' : 'circle'}` }, well, sparkle, slot);
-  stage.dataset.idle = idleName;
+  stage.dataset.idle = 'idle';
   mountLottie(sparkle, 'sparkle', { loop: true });
   /* Callers still read .svg.dataset. The well holds pose/talk/wear. */
   const svg = well;
@@ -254,19 +266,22 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
     setState(next) {
       resting = next;
       paintLook(well, lucyLook({ outfit, cutout, pose: next }), next);
-      if (loop && loop.isConnected) {
-        const live = next !== 'celebrating';
-        well.classList.toggle('has-loop', live);
-        if (live) loop.play().catch(() => {});
-        else loop.pause();
-      }
+      clearTimeout(timer);
+      svg.dataset.talking = 'false';
+      const photo = well.querySelector('img.lucy-photo');
+      if (photo) photo.classList.remove('is-talking');
+      if (talkLoop && talkLoop.isConnected) talkLoop.pause();
+      const live = next !== 'celebrating' && idleLoop && idleLoop.isConnected;
+      well.classList.toggle('has-loop', !!live);
+      if (live) idleLoop.play().catch(() => {});
+      else if (idleLoop && idleLoop.isConnected) idleLoop.pause();
     },
     setOutfit() {
       paintLook(well, lucyLook({ cutout, pose: resting }), resting);
     },
     getOutfit() { return svg.dataset.wear || ''; },
-    /* Say a line: bubble + mouth. Voice is opt-in. Mapped clips live on audio.*.
-       Talking is an overlay — glasses/bows stay with the resting pose. */
+    /* Say a line: bubble + talk clip. Voice is opt-in via audio.speak.
+       Clips stay muted: both files carry baked audio that would skip Voice mute. */
     say(text, { voice = false, hold = 2200 } = {}) {
       const lineEl = bubble.querySelector('[data-line]') || bubble.querySelector('p');
       if (lineEl) lineEl.textContent = text;
@@ -277,10 +292,19 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
       svg.dataset.pose = resting;
       const photo = well.querySelector('img.lucy-photo');
       if (photo) photo.classList.add('is-talking');
+      if (talkLoop && talkLoop.isConnected) {
+        if (idleLoop && idleLoop.isConnected) idleLoop.pause();
+        if (talkLoop.readyState >= 1) talkLoop.currentTime = 0;
+        talkLoop.play().catch(() => {});
+      }
       clearTimeout(timer);
       timer = setTimeout(() => {
         svg.dataset.talking = 'false';
         if (photo) photo.classList.remove('is-talking');
+        if (talkLoop && talkLoop.isConnected) talkLoop.pause();
+        if (resting !== 'celebrating' && idleLoop && idleLoop.isConnected) {
+          idleLoop.play().catch(() => {});
+        }
       }, hold);
       if (voice) audio.speak(text);
       api.lastLine = text;
