@@ -222,7 +222,8 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
       'aria-hidden': 'true',
     });
     node.setAttribute('playsinline', '');
-    node.setAttribute('muted', '');
+    /* Both clips carry baked audio. Stay muted so say() never bypasses Music/SFX/Voice. */
+    node.muted = true;
     node.src = CLIPS[kind];
     node.addEventListener('error', () => {
       node.remove();
@@ -240,7 +241,7 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
     idleLoop = mountClip('idle', 'lucy-idle-loop');
     talkLoop = mountClip('talk', 'lucy-talk-loop');
     idleLoop.addEventListener('loadeddata', () => {
-      if (resting === 'celebrating') return;
+      if (resting === 'celebrating' || !idleLoop || !idleLoop.isConnected) return;
       well.classList.add('has-loop');
       idleLoop.play().catch(() => {});
     });
@@ -248,7 +249,6 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
   const stage = el('div', { class: `lucy-stage lucy-stage--${variant === 'card' ? 'card' : 'circle'}` }, well, sparkle, slot);
   stage.dataset.idle = 'idle';
   mountLottie(sparkle, 'sparkle', { loop: true });
-  /* Callers still read .svg.dataset. The well holds pose/talk/wear. */
   const svg = well;
   svg.dataset.talking = 'false';
 
@@ -280,8 +280,6 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
       paintLook(well, lucyLook({ cutout, pose: resting }), resting);
     },
     getOutfit() { return svg.dataset.wear || ''; },
-    /* Say a line: bubble + talk clip. Voice is opt-in via audio.speak.
-       Clips stay muted: both files carry baked audio that would skip Voice mute. */
     say(text, { voice = false, hold = 2200 } = {}) {
       const lineEl = bubble.querySelector('[data-line]') || bubble.querySelector('p');
       if (lineEl) lineEl.textContent = text;
@@ -292,19 +290,20 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
       svg.dataset.pose = resting;
       const photo = well.querySelector('img.lucy-photo');
       if (photo) photo.classList.add('is-talking');
-      if (talkLoop && talkLoop.isConnected) {
-        if (idleLoop && idleLoop.isConnected) idleLoop.pause();
-        if (talkLoop.readyState >= 1) talkLoop.currentTime = 0;
-        talkLoop.play().catch(() => {});
+      if (talkLoop && talkLoop.isConnected && resting !== 'celebrating') {
+        const playTalk = () => talkLoop.play().catch(() => {});
+        if (talkLoop.readyState >= 1 && talkLoop.currentTime > 0.05) {
+          talkLoop.addEventListener('seeked', playTalk, { once: true });
+          talkLoop.currentTime = 0;
+        } else {
+          playTalk();
+        }
       }
       clearTimeout(timer);
       timer = setTimeout(() => {
         svg.dataset.talking = 'false';
         if (photo) photo.classList.remove('is-talking');
         if (talkLoop && talkLoop.isConnected) talkLoop.pause();
-        if (resting !== 'celebrating' && idleLoop && idleLoop.isConnected) {
-          idleLoop.play().catch(() => {});
-        }
       }, hold);
       if (voice) audio.speak(text);
       api.lastLine = text;

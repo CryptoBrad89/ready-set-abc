@@ -448,12 +448,11 @@ button { border: 0; background: none; cursor: pointer; padding: 0; }
   pointer-events: none;
 }
 .lucy-well.has-loop .lucy-idle-loop { opacity: 1; }
-.lucy-well.has-loop .lucy-talk-loop { opacity: 0; }
-.lucy-well.has-loop[data-talking="true"]:has(.lucy-talk-loop) .lucy-idle-loop { opacity: 0; }
+.lucy-well.has-loop[data-talking="true"] .lucy-idle-loop { opacity: 0; }
 .lucy-well.has-loop[data-talking="true"] .lucy-talk-loop { opacity: 1; }
 .lucy-well[data-pose="celebrating"].has-loop .lucy-photo { opacity: 1; animation: lucyIdle 2.6s ease-in-out infinite; }
-.lucy-well[data-pose="celebrating"] .lucy-idle-loop,
-.lucy-well[data-pose="celebrating"] .lucy-talk-loop { opacity: 0; }
+.lucy-well.has-loop[data-pose="celebrating"] .lucy-idle-loop,
+.lucy-well.has-loop[data-pose="celebrating"] .lucy-talk-loop { opacity: 0; }
 .lucy-sparkle {
   position: absolute;
   inset: -10%;

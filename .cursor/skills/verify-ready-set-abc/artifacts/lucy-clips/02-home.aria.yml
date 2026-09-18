@@ -1,0 +1,108 @@
+- generic [ref=f1e2]:
+  - banner [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - button "Ready Set ABC — home. Hold for Grown-Ups." [ref=f1e5] [cursor=pointer]
+      - button "Ava is playing. Tap to pick a different friend." [ref=f1e143] [cursor=pointer]:
+        - generic [ref=f1e144]: 🦊
+        - generic [ref=f1e146]:
+          - generic [ref=f1e147]: Ava
+          - generic [ref=f1e148]: Pre-K
+    - navigation "Sections" [ref=f1e13]:
+      - button "Home" [ref=f1e149] [cursor=pointer]
+      - button "Letters & Phonics" [ref=f1e151] [cursor=pointer]
+      - button "Lucy's Closet" [ref=f1e153] [cursor=pointer]
+      - button "Storybooks" [ref=f1e155] [cursor=pointer]
+      - button "Arcade" [ref=f1e157] [cursor=pointer]
+    - generic [ref=f1e14]:
+      - generic "0 Stars" [ref=f1e39]
+      - group "Sound" [ref=f1e16]:
+        - button "Music" [ref=f1e17] [cursor=pointer]
+        - button "Sound effects" [pressed] [ref=f1e20] [cursor=pointer]
+        - button "Lucy voice on or off" [pressed] [ref=f1e25] [cursor=pointer]
+      - button "Grown-Ups" [ref=f1e30] [cursor=pointer]
+  - main [ref=f1e36]:
+    - generic [ref=f1e161]:
+      - generic [ref=f1e162]:
+        - generic [ref=f1e163]: Explorer Station Online
+        - generic [ref=f1e165]:
+          - generic [ref=f1e166]:
+            - generic [ref=f1e167]:
+              - generic [ref=f1e168] [cursor=pointer]:
+                - img "Lucy the golden retriever"
+              - button "Talk with Lucy" [ref=f1e169] [cursor=pointer]
+            - generic [ref=f1e176]: P
+            - button "Lucy's Closet" [ref=f1e177] [cursor=pointer]:
+              - text: Puppy Closet
+              - generic [ref=f1e181]: Shop
+          - generic [ref=f1e182]:
+            - heading "Welcome back, Ava!" [level=1] [ref=f1e183]
+            - generic [ref=f1e184]:
+              - generic [ref=f1e185]: "English: Pre-K"
+              - generic [ref=f1e186]: Cloud 1
+            - generic [ref=f1e187]:
+              - generic [ref=f1e192]:
+                - generic [ref=f1e193]: 0 Stars
+                - text: Golden Star Bank
+              - generic [ref=f1e194]:
+                - generic [aria-hidden] [ref=f1e195]: "1"
+                - generic [ref=f1e196]:
+                  - generic [ref=f1e197]: Level 1
+                  - text: S · A · T · P · I · N
+            - generic [ref=f1e198]:
+              - generic [ref=f1e206]: Daily Bone Treat Meter
+              - generic [ref=f1e207]: 3 more to Party bows
+              - generic [ref=f1e209]: 0 / 3
+      - generic [ref=f1e210]:
+        - heading "Phonics & Alphabet" [level=2] [ref=f1e211]
+        - button "Discover more letters" [ref=f1e215] [cursor=pointer]: Discover more
+      - generic [ref=f1e218]:
+        - button "Play letter P. Tap to start sound." [ref=f1e219] [cursor=pointer]:
+          - generic [ref=f1e220]: Today's Star Mission
+          - generic [ref=f1e221]: Letters P & A Workshop
+          - generic [ref=f1e222]: Meet Lucy, choose the letter, listen, then pictures.
+          - generic [ref=f1e223]: + stars
+        - button "The sound of P" [ref=f1e228] [cursor=pointer]:
+          - generic [ref=f1e229]:
+            - generic [ref=f1e230]: P
+            - generic [ref=f1e231]: 4 beats
+          - generic [ref=f1e232]: The Sound of P
+          - generic [ref=f1e233]: /p/
+          - generic [ref=f1e234]: Play Letter P
+        - button "Open cloud letters S, A, T" [ref=f1e235] [cursor=pointer]:
+          - generic [ref=f1e236]:
+            - generic [ref=f1e237]:
+              - generic [ref=f1e238]: S
+              - generic [ref=f1e239]: A
+              - generic [ref=f1e240]: T
+            - generic [ref=f1e241]: Cloud 1
+          - generic [ref=f1e242]: Sounds S, A, T
+          - generic [ref=f1e243]: Blend first sounds on the Letters & Phonics path.
+          - generic [ref=f1e244]: Continue Stage
+        - button "Start letter match" [ref=f1e245] [cursor=pointer]:
+          - generic [ref=f1e246]:
+            - generic [ref=f1e247]:
+              - generic [ref=f1e248]: P
+              - generic [ref=f1e249]: p
+            - generic [ref=f1e250]: New game
+          - generic [ref=f1e251]: Case Match Arena
+          - generic [ref=f1e252]: Find P and p.
+          - generic [ref=f1e253]: Start Match
+      - generic [ref=f1e254]:
+        - heading "Storybooks & Fun Games" [level=2] [ref=f1e255]
+        - button "Open storybooks" [ref=f1e260] [cursor=pointer]: Discover more
+      - generic [ref=f1e263]:
+        - button "Lucy's Picnic Day" [ref=f1e264] [cursor=pointer]:
+          - generic [ref=f1e270]: A tiny picture story for this letter.
+          - generic [ref=f1e271]: Open Book
+        - button "Rhymes & Songs" [ref=f1e272] [cursor=pointer]:
+          - generic [ref=f1e277]: A short Lucy song. Tap Play and sing along.
+          - generic [ref=f1e278]: Sing along
+        - button "Coloring Canvas" [ref=f1e279] [cursor=pointer]:
+          - generic [ref=f1e286]: Tap a crayon, then tap a picture.
+          - generic [ref=f1e287]: Color now
+        - button "Puppy Treat Match" [ref=f1e288] [cursor=pointer]:
+          - generic [ref=f1e296]: Memory in Arcade. Uses first sounds.
+          - generic [ref=f1e297]: Play Memory
+  - contentinfo [ref=f1e37]:
+    - generic [ref=f1e137]: Cloud 1 · 0/24
+    - generic [ref=f1e38]: READY SET ABC · Pre-K Phonics with Lucy · rsabc-shell-v46-lucy-clips

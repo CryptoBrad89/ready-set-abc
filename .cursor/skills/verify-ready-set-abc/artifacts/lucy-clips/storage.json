@@ -1,0 +1,7 @@
+{
+  "origin": "http://127.0.0.1:4173",
+  "pin": "rsabc-shell-v46-lucy-clips",
+  "kid": "k01",
+  "stars": { "k01": { "P": 2 } },
+  "screen": "meet"
+}
