@@ -55,7 +55,7 @@ Tabs mean what they say. Home is the lobby. Letters & Phonics is the path. Story
 
 ## What stays
 
-Lucy Imagine plates in `app/art/lucy/`. Offline PWA. No Tailwind from the internet. Comfortaa for letters. Music, SFX, and Voice as three mutes. The header voice control mutes Lucy. It is not a microphone. Isolated letter sounds stay file drop-ins.
+Lucy Imagine plates in `app/art/lucy/`. Online by default; a grown-up can turn on an offline copy. No Tailwind from the internet. Comfortaa for letters. Music, SFX, and Voice as three mutes. The header voice control mutes Lucy. It is not a microphone. Isolated letter sounds stay file drop-ins.
 
 Corner Lucy is never a still sticker. First loops are Imagine plates plus Lottie sparkles around her. Rive is the editor when she must switch idle, talk, celebrate, and tail-chase as one character, and we are managing more than about four separate loops. The Rive MCP is `rive` in `~/.cursor/mcp.json`, at `http://127.0.0.1:9791/mcp`. That local process has to be running.
 

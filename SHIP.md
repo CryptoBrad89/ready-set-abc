@@ -6,7 +6,7 @@ once on Wi-Fi, done.
 
 Shell pin for this drop: **`rsabc-shell-v46-lucy-clips`**
 
-**What is new in this one:** Corner Lucy idles on the Omni clip and talks on the HeyGen clip. Tablets already on v45 need Grown-Ups → Device → Get update, then Reload.
+**What is new in this one:** **Online only** by default. Opening the app does not download the shell. Grown-Ups → Device → **Offline only** saves it for a room with no internet, and turning that off deletes the copy. Tablets already on v46 take this thin worker on the next visit so they do not stay cache-first. Get update, then Reload, finishes a pin that was waiting.
 
 ---
 
@@ -28,10 +28,11 @@ You can drop it in the site root too (`https://yoursite.com/`). Either works.
 
 ## 2. It has to be https
 
-Not optional. The offline part of this app (the bit that makes it work in a
-classroom with no Wi-Fi) only turns on over **https**. On plain `http://` the
-app still opens, but it will never work offline, and the "Set up this device"
-button will not do anything useful.
+Not optional. The thin service worker (the bit that stops an old tablet staying
+cache-first, and the bit that can save an offline copy) only turns on over
+**https**. On plain `http://` the app still opens, but it cannot replace an old
+worker, and **Offline only** cannot save the shell. **Set up this device**
+will not do anything useful there.
 
 Most hosts give you https with a checkbox or a free Let's Encrypt certificate.
 Turn it on before you hand any tablet out. `https://localhost` also counts if
@@ -39,23 +40,28 @@ you are just testing on your own machine.
 
 ## 3. First load, on Wi-Fi, on each tablet
 
-Do this **once per tablet**, sitting on good Wi-Fi, before the cart ever goes to
-a room with no signal.
+The app is **Online only** by default. Opening it does **not** download the
+shell. A tablet with internet needs no setup step.
+
+Do the steps below only for a tablet that must work in a room with no signal.
+Sit on good Wi-Fi first.
 
 1. Open the app in Chrome on the tablet.
 2. Hold or tap into **Grown-Ups** — the PIN is **`1234`**.
 3. Tap the **Device** tab.
-4. Tap **Set up this device**. Watch the bar fill.
+4. Turn **Offline only** on. That runs **Set up this device**. Watch the bar fill.
 5. Wait for it to say **Pinned `rsabc-shell-v46-lucy-clips`**.
 
 That tablet now has the whole app — screens, pictures, and the letter fonts —
 stored on it. You can turn the Wi-Fi off and it still opens and still looks
-right. Skip this step and the app will look fine on Wi-Fi and be blank in the
-classroom, which is the one failure nobody catches until it matters.
+right. Turning **Offline only** off deletes that copy and the tablet uses the
+network again. Skip the switch and the app will look fine on Wi-Fi and be
+blank in a dead-zone room, which is the one failure nobody catches until it
+matters.
 
-Tap **Check offline files** any time to make it re-count what is really stored.
-It should say all **540** files. Chrome sometimes throws files away when a
-tablet's disk fills up; this is how you find out before a teacher does.
+Tap **Check offline files** any time Offline only is on. It should say all **540** files.
+Chrome sometimes throws files away when a tablet's disk fills up; this is how
+you find out before a teacher does.
 
 ## 4. When you put up a new version later
 
@@ -63,10 +69,13 @@ tablet's disk fills up; this is how you find out before a teacher does.
 2. On each tablet, on Wi-Fi: **Grown-Ups → Device → Get update**.
 3. When a **Reload to finish** button appears, tap it.
 
-Tablets do **not** update by themselves, on purpose. The app will never change
-under a child in the middle of a round. It waits for a grown-up to tap the
-button — which means if you skip step 2, the tablets keep happily running the
-old version forever. That is a feature, but it is also on you to remember.
+With **Offline only** off, Get update compares the pin and reloads. It does
+not download the shell. With **Offline only** on, Get update saves the shell
+again, then reloads.
+
+The page does **not** change under a child in the middle of a round. It waits
+for a grown-up to reload. A tablet that was cache-first on an older pin picks
+up the thin worker on the next visit so it does not stay that way.
 
 Do this on a prep period, never mid-lesson.
 
@@ -86,10 +95,12 @@ ones worth clicking after a fresh upload:
 | `_smoke.html?gu=device` | The Grown-Ups Device panel (asks for PIN `1234`) |
 | `_smoke.html?mode=whiteboard` | Everything much bigger, for the wall board |
 
-Then the real test: **turn the tablet's Wi-Fi off and reload the app.** It
-should open normally and the letters should still be the round friendly ones.
-If it opens but the letters look like a plain boring font, the font files did
-not upload — check `fonts/` on the server.
+Then, with **Offline only** left off, the app needs the network — that is the
+default. To prove a dead-zone copy: turn **Offline only** on, wait for the
+pin, turn the tablet's Wi-Fi off, and reload. It should open and the letters
+should still be the round friendly ones. If it opens but the letters look like
+a plain boring font, the font files did not upload — check `fonts/` on the
+server.
 
 ## 6. What NOT to do
 
@@ -100,9 +111,12 @@ not upload — check `fonts/` on the server.
   offline part cannot work through a login prompt.
 - **Do not skip https.** See step 2. This is the one that silently ruins it.
 - **Do not delete `fonts/`** or the `.txt` licence files in it.
-- **Do not delete `sw.js`** — that one file is the entire offline feature.
-- **Do not hand out tablets before doing step 3 on each one.** "It worked in my
-  office" is not the same as "it works in Room 4."
+- **Do not delete `sw.js`** — tablets already on v46 stay cache-first forever
+  without that file. The thin worker is what deletes the old shell when
+  Offline only is off.
+- **Do not hand a tablet into a dead-zone room before turning Offline only on**
+  (step 3). "It worked in my office" on Wi-Fi is not the same as "it works
+  with the radio off."
 - **Do not give the PIN `1234` to kids.** It is a speed bump for 3-year-olds,
   not real security. Anything sensitive should not live on a classroom tablet.
 - **Do not edit the files on the server to make a quick fix.** Change them here,
@@ -113,7 +127,7 @@ not upload — check `fonts/` on the server.
 | What you see | Almost always |
 |---|---|
 | Blank white page | Files uploaded into the wrong folder, or folder shapes flattened |
-| Works on Wi-Fi, blank offline | Step 3 was never done on that tablet, or the site is not https |
+| Works on Wi-Fi, blank offline | Offline only was never turned on, or the site is not https |
 | Plain flat letters instead of round ones | `fonts/` did not upload, or uploaded in text mode |
 | "Only 66 of 540 files are cached" | Chrome evicted some. Back on Wi-Fi, tap **Set up this device** |
 | Tablet stuck on an old version | Nobody tapped **Get update** then **Reload to finish** |

@@ -255,6 +255,40 @@ if (!swVer || swVer !== appVer) {
   problem(`Version pin drift: sw.js ${swVer} vs js/version.js ${appVer}`);
 }
 
+const installBlock = (swSrc.match(/addEventListener\('install'[\s\S]*?addEventListener\('activate'/) || [''])[0];
+if (/precacheInto/.test(installBlock)) problem('sw.js install must not precache SHELL');
+if (!/OFFLINE_FLAG/.test(installBlock) || !/skipWaiting/.test(installBlock)) {
+  problem('sw.js install must skipWaiting only when the offline-only flag is absent');
+}
+if (!/rsabc-offline-on/.test(swSrc) || !/startsWith\('rsabc-shell-'\)/.test(swSrc)) {
+  problem('sw.js activate must delete rsabc-shell-* caches when offline only is off');
+}
+const onlineFetch = (swSrc.match(/if \(!\(await offlineEnabled\(\)\)\) \{[\s\S]*?\n    \}/) || [''])[0];
+if (!onlineFetch || /cache\.put/.test(onlineFetch)) {
+  problem('sw.js fetch must not cache.put while offline only is off');
+}
+if (!/headers\.has\('range'\) && offlineOnly !== true/.test(swSrc)) {
+  problem('sw.js must not intercept online media range requests');
+}
+if (!/new Request\(request\.url/.test(swSrc)) {
+  problem('sw.js offline mode must still serve a cached whole file for a range');
+}
+const guPolicy = readFileSync('js/screens/grownups.js', 'utf8');
+if (!/getOfflineOnly/.test(guPolicy) || !/Offline only/.test(guPolicy) || !/OFFLINE_MODE/.test(guPolicy)) {
+  problem('Device card must offer Offline only and tell the worker');
+}
+if (!/arm: true/.test(guPolicy) || !/type: 'PRECACHE'/.test(guPolicy)) {
+  problem('turning Offline only on must run the existing precache');
+}
+const bootSrc = readFileSync('js/app.js', 'utf8');
+if (/PRECACHE/.test(bootSrc)) problem('app.js must not precache on boot');
+if (!/getOfflineOnly/.test(bootSrc) || !/rsabc-offline-on/.test(bootSrc)) {
+  problem('app.js must sync the offline-only flag before the worker activates');
+}
+const product = existsSync('../PRODUCT.md') ? readFileSync('../PRODUCT.md', 'utf8') : '';
+if (/Offline PWA/.test(product)) problem('PRODUCT.md still says Offline PWA');
+if (!/Online by default/.test(product)) problem('PRODUCT.md must say online by default');
+
 const html = readFileSync('index.html', 'utf8');
 /* Comments are allowed to say "do not link fonts.googleapis" — markup is not.
    Strip <!-- --> before any no-network-font rule, or the warning trips it. */

@@ -1,8 +1,8 @@
 # Ready Set ABC — classroom how-to (Brandy)
 
-Pre-K phonics with Lucy. Kids tap a face on Who is playing?, then play letters with Lucy. Grown-ups pin today's letter, pick who is playing, and set the tablets up once for offline.
+Pre-K phonics with Lucy. Kids tap a face on Who is playing?, then play letters with Lucy. Grown-ups pin today's letter and pick who is playing. The tablet loads from the network unless **Offline only** is on.
 
-There is no password login and no kid account. The roster lives on that tablet. There is no internet after the first setup.
+There is no password login and no kid account. The roster lives on that tablet. **Online only** is the default — a dead-zone room needs **Offline only** turned on first.
 
 **The PIN is `1234`.** It is the only number in here you have to remember, and the last section is a card you can tape inside the cart lid.
 
@@ -10,13 +10,13 @@ There is no password login and no kid account. The roster lives on that tablet. 
 
 | If it is… | Go to |
 |---|---|
-| a brand-new tablet or a cart that has never run this | [Put it on a classroom tablet](#put-it-on-a-classroom-tablet-once), then [First morning: Set up this device](#first-morning-set-up-this-device-offline) — do the offline setup **on Wi-Fi**, before the cart goes to a dead-zone room |
+| a brand-new tablet or a cart that has never run this | [Put it on a classroom tablet](#put-it-on-a-classroom-tablet-once). It loads from the network. For a room with no signal, [turn on Offline only](#first-morning-set-up-this-device-offline) **on Wi-Fi** first |
 | a normal Tuesday | [A normal morning](#a-normal-morning) — four taps, about a minute |
 | the wall board | [The wall board](#the-wall-board-whiteboard-mode) |
 | Friday, and you want paper | [Print tab](#print-tab--paper-for-the-table) — certificates, small-group sheet, roster cards |
 | today's short game | [The bonus round](#the-bonus-round), and [how to set it in 30 seconds](#how-to-set-todays-bonus-30-seconds) |
 | a second tablet, or the end of term | [Back up a tablet](#back-up-a-tablet-and-put-it-back) — Export / Import CSV |
-| a dead-zone room tomorrow | [Check offline files](#first-morning-set-up-this-device-offline) |
+| a dead-zone room tomorrow | [Turn on Offline only](#first-morning-set-up-this-device-offline), then Check offline files |
 | something wrong in front of children | [If something is wrong](#if-something-is-wrong) |
 | you, on a laptop, checking a screen quickly | [Smoke bookmarks](#put-it-on-a-classroom-tablet-once) |
 | one page to print and tape up | [Tape this to the cart](#tape-this-to-the-cart) |
@@ -123,38 +123,45 @@ Landscape. If a tablet is portrait, Lucy asks them to turn it.
 
 ## First morning: Set up this device (offline)
 
-Do this **once per tablet, on school Wi-Fi**, before the cart goes into a dead-zone classroom.
+Do this only for a tablet that must work with the radio off. **Online only** is the default: opening the app does not download the shell. A room with internet needs nothing on this card.
+
+Turn **Offline only** on **once, on school Wi-Fi**, before that tablet goes into a dead-zone classroom.
 
 1. Open Ready Set ABC.
 2. Open **Grown-Ups** (see PIN below).
 3. Tap **Device**.
-4. Tap **Set up this device**. Watch the bar fill.
+4. Turn **Offline only** on. That runs **Set up this device**. Watch the bar fill.
 5. When it says **Pinned** plus the shell version (Grown-Ups → Device, currently `rsabc-shell-v46-lucy-clips`), you can turn the radio off.
 
-The tablet now keeps this exact shell. It will **not** silently update mid-week. If someone drops a newer copy of the files on the server, the tablet quietly downloads it and then **waits** — the swap only happens when a grown-up taps **Get update**. No child has ever had the app change under them mid-round, and that is on purpose.
+Turning **Offline only** off deletes that copy and the tablet uses the network again.
 
-**Get update** (same screen, school Wi-Fi on) is how you pull a newer pin later. Do it on a prep period, not during a round. It takes three beats, and the screen tells you which one it is on:
+While Offline only stays on, the tablet keeps this exact shell. It will **not** change under a child mid-round. A newer copy installs and waits when Offline only is on. **Get update** is the tap that swaps it in.
 
-1. *Fetching the pinned shell…* — it is downloading the newer copy. On a slow prep-period connection this is the long part; the bar has not started yet because the new shell is still installing itself.
+**Get update** (same screen, school Wi-Fi on) is how you pull a newer pin later. Do it on a prep period, not during a round.
+
+- **Offline only off:** it compares this page with the server pin. It does not download the shell. If a newer copy is waiting, **Reload to finish** appears. Tap it.
+- **Offline only on:** it downloads the pinned shell again, then the same reload. Three beats:
+
+1. *Fetching the pinned shell…* — it is downloading the newer copy.
 2. *Pinned `…` · N files cached* — the files are on the tablet.
-3. **Reload to finish** — a button appears next to the other three. Until you tap it the tablet has the new shell but is still **running** the one it opened with. Tap it. It takes a second and drops you back on Home.
+3. **Reload to finish** — a button appears next to the others. Until you tap it the tablet has the new shell but is still **running** the one it opened with. Tap it.
 
-If step 3 never appears, there was no newer copy to get — the tablet was already on the pinned version, and it just re-checked every file. That is a fine thing to have done.
+If step 3 never appears, there was no newer copy to get — the tablet was already on the pinned version. With Offline only on, that pass re-checked every file. That is a fine thing to have done.
 
 Off Wi-Fi, **Get update** and **Set up this device** both say so and stop. They never touch the files the tablet already has, so tapping either one by accident in a dead-zone room cannot break a morning.
 
-**Check offline files** (same card) re-reads the tablet's actual cache and counts it against the list in `sw.js`. Use it before a dead-zone morning. Three answers:
+**Check offline files** (same card, once Offline only is on) re-reads the tablet's actual cache and counts it against the list in `sw.js`. Use it before a dead-zone morning. Three answers:
 
 | It says | What it means | What to do |
 |---|---|---|
 | *Checked just now · all N files cached* | Genuinely ready. | Turn the radio off. |
 | *Only 66 of 540 files are cached…* | Chrome evicted part of it (usually a full disk). | Back on Wi-Fi, tap **Set up this device**. |
-| *Nothing is cached on this tablet* | It was never set up, or site data was cleared. | Back on Wi-Fi, tap **Set up this device**. |
+| *Nothing is cached on this tablet* | Offline only was never finished, or site data was cleared. | Back on Wi-Fi, turn **Offline only** on. |
 | *All N files cached on `…`, but this page is running `…`* | A **Get update** finished and nobody tapped **Reload to finish**. | Reload the tablet. Nothing is wrong with the files. |
 
 That check is the one that matters: the tablet used to just repeat the note it wrote itself the first morning, which stayed cheerful even after the files were gone.
 
-Comfortaa and Nunito Sans **ship inside the app** (`app/fonts/`, SIL Open Font License) and are precached with everything else. There is no Google Fonts request, so a tablet with the radio off paints the real letters and first paint never waits on a network that is not there. If Chrome ever evicts a font file, the letters fall back to the rounded system fonts already on the tablet and play carries on. See `fonts/README.md`.
+Comfortaa and Nunito Sans **ship inside the app** (`app/fonts/`, SIL Open Font License) and are part of the shell **Set up this device** saves. There is no Google Fonts request. Online, the tablet loads the font files from the network. With Offline only on, a tablet with the radio off still paints the real letters. If Chrome ever evicts a font file, the letters fall back to the rounded system fonts already on the tablet and play carries on. See `fonts/README.md`.
 
 ---
 
@@ -355,7 +362,9 @@ On a screen wider than 1440px the cards also grow, even in Center.
 
 **Erase this device** wipes stars, notes, roster edits and the pin. The class file comes back.
 
-The offline card has four buttons and they are not the same button: **Set up this device** and **Get update** both re-download every file in the shell (the difference is that **Get update** first hands over to a newer copy if one is waiting), **Check offline files** downloads nothing and just counts what is really there, and **Reload to finish** only appears after a hand-over actually happened.
+**Offline only** (same Device card) is off unless you turn it on. Off, the tablet loads from the network and does not keep a copy. On, **Set up this device** saves the shell. Turning it off deletes that copy.
+
+The offline card has four buttons and they are not the same button: **Set up this device** re-downloads every file in the shell (it also runs when you turn **Offline only** on), **Get update** hands over to a newer copy if one is waiting and, with Offline only on, downloads the shell again — with Offline only off it only compares the pin, **Check offline files** downloads nothing and just counts what is really there, and **Reload to finish** only appears after a hand-over actually happened.
 
 ### The wall board (whiteboard mode)
 
@@ -377,7 +386,7 @@ Two smoke bookmarks set this up on a laptop without any tapping: `_smoke.html?mo
 
 ## A normal morning
 
-1. Charge the cart. Open the app (it should load offline).
+1. Charge the cart. Open the app on the network (or with **Offline only** already on).
 2. Grown-Ups → **Play** → pin today’s letter (or leave it on the trail).
 3. Grown-Ups → **Class** → Face pick **On** if you want names.
 4. Grown-Ups → **Device** → **Whiteboard** if this is the wall board. Turn on **Hide chrome** (or **Shift+H**) so the bars drop away — Lucy’s prompt stays.
@@ -444,8 +453,8 @@ That row and the two big buttons are **pinned** to the bottom of the celebration
 | A picture you would not have chosen | The pools are in `data/letters.json` under that letter. Q, U, X and Y are thin on purpose — those are the words that exist. |
 | An empty box where a picture should be | That tablet's emoji font is older than the picture. Every **letter's own** picture is deliberately an old, safe one, so this is at worst one card in a pool of fifteen. Chrome → update the tablet. |
 | Face grid keeps coming back | That child is no longer on the roster (removed, or an Import CSV replaced the class). Pick a face again, or re-add them on the Class tab. |
-| Old version after a file drop | Grown-Ups → Device → **Get update** on Wi-Fi. A newer copy installs and then waits on purpose — **Get update** is the tap that swaps it in. |
-| Would not open in a dead-zone room | Back on Wi-Fi: Grown-Ups → Device → **Check offline files**. If it is short of the full count, tap **Set up this device** and watch the bar fill. |
+| Old version after a file drop | Grown-Ups → Device → **Get update** on Wi-Fi. A newer copy installs and waits when Offline only is on — **Get update** is the tap that swaps it in. With Offline only off, the next visit already loads from the network; **Reload to finish** if the button is there. |
+| Would not open in a dead-zone room | **Online only** needs the network. Back on Wi-Fi: Grown-Ups → Device → turn **Offline only** on, then **Check offline files**. If it is short of the full count, tap **Set up this device** and watch the bar fill. |
 | Two tablets disagree on stars | Expected. Export CSV from the one you use for records, Import on the other. |
 | **Copy family note** said it could not reach the clipboard | A locked-down cart Chromebook blocks it. The note is already selected in the box above the button — press **Ctrl+C**. |
 | Kid opened Grown-Ups | Unlikely. Close with **Return to Letter Play**. PIN is 1234 if you need it. |
@@ -480,7 +489,7 @@ One page. Print it, or copy it onto an index card and tape it inside the cart li
 >
 > **No sound?** Tap **PLAY!** once — that first tap is what unlocks the tablet speaker. Then check the three dots in the header and the tablet's own volume.
 >
-> **Before a dead-zone room:** **Device** → **Check offline files**. If it is short of the full count, go back on Wi-Fi and tap **Set up this device**.
+> **Before a dead-zone room:** **Device** → turn **Offline only** on, then **Check offline files**. If it is short of the full count, go back on Wi-Fi and tap **Set up this device**. Leave **Offline only** off when the room has internet.
 >
 > **Paper (Print tab):** small-group sheet *before* you run the table · certificates on Friday · roster cards at the start of a unit. In the print dialog: **Background graphics on**, **Margins: Default**.
 >
@@ -503,7 +512,7 @@ One page. Print it, or copy it onto an index card and tape it inside the cart li
 - PIN **`1234`**
 - Shell pin **`rsabc-shell-v46-lucy-clips`** (Grown-Ups → Device)
 - Content pin from `data/letters.json` (all 26 awake · 15-picture GAME-FLOW pool each · 390 plates, no two sharing an emoji)
-- Saved on the tablet under `rsabc.` keys: kid, classroom, roster, settings, audio, mode, hideChrome, pinnedLetter, cursor, nextAbcIndex, stars, stickers, outfit, progress, notes, cache
+- Saved on the tablet under `rsabc.` keys: kid, classroom, roster, settings, audio, mode, hideChrome, pinnedLetter, cursor, nextAbcIndex, stars, stickers, outfit, progress, notes, cache, offlineOnly
 - Tablet copy / backup: Grown-Ups → Class → **Export CSV** writes `ready-set-abc.csv` (format `rsabc-csv-v1`). Import replaces this tablet — it never merges.
 - Paper: Grown-Ups → **Print** → certificate · small-group sheet · roster cards (`css/print.css`, `window.print()`, no server)
 - **Erase this device** or clearing site data wipes it
@@ -524,7 +533,7 @@ This README is gated too: `_flow.mjs` holds it to the PIN the keypad takes, the 
 
 Dev, from `app/`: `python3 -m http.server 8000` then http://localhost:8000/ · `node _check.mjs` · `node _flow.mjs` · `python3 icons/make-icons.py`. Smoke: open `_smoke.html` with **no query** — that is the index of every tested URL, grouped and clickable. The individual bookmarks still work directly: `_smoke.html?classroom=1&kid=k01&play=A`, `?classroom=1&clearKid=1`, `?play=E`, `?play=9`, `?pin=C`, `?unpin=1`, `?bonus=sound`, `?outfit=cap`, `?stars=A3,B2&to=%23/pouch`, `?progress=none&to=%23/pouch`, `?mode=whiteboard`, `?mode=whiteboard&hideChrome=1`, `?gu=print`, `?gu=device`, `?reset=1`. `?gu=<tab>` maps to `#/grownups/<tab>` (`play·sound·class·print·device`) and still goes through the gate — it is the only way to bookmark a Grown-Ups panel, and `_check.mjs` fails if a tab in `grownups.js` has no bookmark for it. Old hashes `#/pickme` `#/map` `#/letter/A` `#/teacher` still resolve; `#/letter/<any of A–Z>` opens that round, and `#/letter/<not a letter>` (`?play=9`) lands on the trail with Lucy naming the letter that is up. Shift+H hides chrome; Lucy’s prompts stay. Self-hosted offline fonts: `fonts/README.md`.
 
-Offline is `sw.js` + Grown-Ups → Device. `SHELL` is the whole precache list and `_check.mjs` fails if a runtime file (or a mapped Lucy clip) is missing from it, or if `VERSION` and `js/version.js`’s `APP_VERSION` drift. The worker **does not** `skipWaiting()` on install: a newer pin installs and waits, and only the `SKIP_WAITING` message from **Get update** hands over — that is what “nothing changes mid-round” actually rests on. Registration passes `updateViaCache: 'none'` in both `js/app.js` and the Device panel, or the HTTP cache re-pins the version the cart already has. Runtime caching only stores a same-origin `200` (a ranged `206` from `<audio>` throws inside `cache.put`, and an opaque body has no readable status), never `sw.js`, and never a `_`-prefixed dev file — so a smoke bookmark always runs the copy on disk. Each shell fetch is retried once, because school Wi-Fi drops one request far more often than it stays down and a half-cached shell is the failure nobody can diagnose. The `HEALTH` message counts what is really in the cache; **Check offline files** is that read, and it is why the Device tab can contradict the note it wrote itself on setup day. **Get update** waits out `reg.installing` before it looks at `reg.waiting`: `reg.update()` resolves as soon as the newer `sw.js` has been *fetched*, and that worker then spends the whole precache in `installing` — a Get update that checked `waiting` at that moment found nothing, talked to the worker the cart already had, and re-pinned the version it was trying to replace. After a hand-over the page is still the modules the old pin served, so the panel shows a **Reload to finish** button and says so rather than pretending the swap is done. Both cache buttons short-circuit on `navigator.onLine === false` (every shell fetch is `cache: 'reload'`, so off Wi-Fi they can only fail), and a precache error is truncated — the failure list is for the log, not for a teacher.
+Offline is opt-in: `sw.js` + Grown-Ups → Device → **Offline only**. Boot does not precache. `SHELL` is still the list that opt-in saves, and `_check.mjs` fails if a runtime file (or a mapped Lucy clip) is missing from it, or if `VERSION` and `js/version.js`’s `APP_VERSION` drift. While the flag cache `rsabc-offline-on` is absent, fetch is network-only and does not `cache.put`, and activate deletes every `rsabc-shell-*` cache so a tablet already on v46 does not stay cache-first. Install calls `skipWaiting()` only in that case. It claims the worker and does not reload the page, so a round’s modules stay until **Reload to finish**. When Offline only is on, install waits, and the `SKIP_WAITING` message from **Get update** hands over. Registration passes `updateViaCache: 'none'` in both `js/app.js` and the Device panel, or the HTTP cache re-pins the version the cart already has. The opt-in cache stores only a same-origin `200` (a ranged `206` from `<audio>` throws inside `cache.put`, and an opaque body has no readable status), never `sw.js`, and never a `_`-prefixed dev file — so a smoke bookmark always runs the copy on disk. Each shell fetch is retried once, because school Wi-Fi drops one request far more often than it stays down and a half-cached shell is the failure nobody can diagnose. The `HEALTH` message counts what is really in the cache; **Check offline files** is that read, and it is why the Device tab can contradict the note it wrote itself on setup day. **Get update** waits out `reg.installing` before it looks at `reg.waiting`: `reg.update()` resolves as soon as the newer `sw.js` has been *fetched*. With Offline only off, Get update compares `APP_VERSION` with the server copy and does not download the shell. With Offline only on, it sends `PRECACHE` after the hand-over. After a hand-over the page is still the modules the old pin served, so the panel shows a **Reload to finish** button and says so rather than pretending the swap is done. Both cache buttons short-circuit on `navigator.onLine === false` (every shell fetch is `cache: 'reload'`, so off Wi-Fi they can only fail), and a precache error is truncated — the failure list is for the log, not for a teacher.
 
 `_check.mjs` does not trust the `SHELL` list against a directory scan alone: it walks the import graph from `js/app.js` and every module it reaches has to exist and be pinned, wherever it lives, and it resolves local `url()` in every stylesheet the same way. A new module in a folder nobody thought to scan is exactly how a shell goes half-offline.
 

@@ -1,8 +1,9 @@
 # The fonts ship with the app
 
 Ready Set ABC self-hosts its two faces. They are **in this folder** and they are
-**pinned in `sw.js` SHELL**, so a cart Chromebook with the radio off paints the
-real Stitch look — no `fonts.googleapis.com` request, online or off.
+**pinned in `sw.js` SHELL**, so an Offline only tablet paints the real Stitch
+look with the radio off. Online, the same files load from the network. There is
+no `fonts.googleapis.com` request either way.
 
 | File | Family / weight | Used for |
 |---|---|---|

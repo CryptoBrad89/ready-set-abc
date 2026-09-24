@@ -1,7 +1,7 @@
 {
   "name": "Ready Set ABC",
   "short_name": "Ready Set ABC",
-  "description": "Pre-K phonics with Lucy. Two-tap letter matching, offline-first, teacher-controlled.",
+  "description": "Pre-K phonics with Lucy. Two-tap letter matching, online by default, teacher-controlled.",
   "id": "./",
   "lang": "en",
   "dir": "ltr",

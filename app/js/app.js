@@ -304,6 +304,66 @@ function wireGate() {
   });
 }
 
+/* The worker reads `rsabc-offline-on`, not localStorage. Write that flag
+   before register so activate sees the switch the grown-up actually left. */
+async function syncOfflineFlag(on) {
+  if (!('caches' in window)) return;
+  if (on) {
+    const cache = await caches.open('rsabc-offline-on');
+    await cache.put('./offline-mode', new Response('on'));
+    return;
+  }
+  await caches.delete('rsabc-offline-on');
+}
+
+function waitUntilSettled(worker, ms) {
+  const done = () => worker.state === 'installed' || worker.state === 'activated' || worker.state === 'redundant';
+  if (!worker || done()) return Promise.resolve();
+  return new Promise((resolve) => {
+    const timer = setTimeout(resolve, ms);
+    const seen = () => {
+      if (!done()) return;
+      worker.removeEventListener('statechange', seen);
+      clearTimeout(timer);
+      resolve();
+    };
+    worker.addEventListener('statechange', seen);
+    seen();
+  });
+}
+
+async function bootWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  try {
+    await syncOfflineFlag(store.getOfflineOnly());
+    /* updateViaCache: 'none' — the HTTP cache must never hand back a stale
+       sw.js, or Get update quietly re-pins the version the cart already has. */
+    const reg = await navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' });
+    await navigator.serviceWorker.ready;
+    if (reg.installing) await waitUntilSettled(reg.installing, 8000);
+    const on = store.getOfflineOnly();
+    await syncOfflineFlag(on);
+    if (!on) store.clearCache();
+    /* A waiting pin is the previous cache-first worker. Claim it only while
+       Offline only is off, so an opted-in shell is not dropped on boot. */
+    if (!store.getOfflineOnly() && reg.waiting && navigator.serviceWorker.controller) {
+      const changed = new Promise((resolve) => {
+        const timer = setTimeout(resolve, 4000);
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          clearTimeout(timer);
+          resolve();
+        }, { once: true });
+      });
+      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+      await changed;
+    }
+    const worker = navigator.serviceWorker.controller || reg.active;
+    if (worker) worker.postMessage({ type: 'OFFLINE_MODE', on: store.getOfflineOnly() });
+  } catch (err) {
+    console.warn('[sw] register failed', err);
+  }
+}
+
 async function boot() {
   applyPresentation();
   const bootEl = document.getElementById('boot-loader');
@@ -350,12 +410,7 @@ async function boot() {
   render();
   if (bootEl) bootEl.hidden = true;
 
-  /* updateViaCache: 'none' — the HTTP cache must never hand back a stale
-     sw.js, or Get update quietly re-pins the version the cart already has. */
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
-      .catch((err) => console.warn('[sw] register failed', err));
-  }
+  bootWorker();
 }
 
 boot();

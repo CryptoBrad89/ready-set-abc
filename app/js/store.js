@@ -20,7 +20,8 @@ export const KEYS = {
   stickers: 'stickers',         // { kidId|_device: [ {letter,id,word,emoji} ] }
   outfit: 'outfit',             // treat ids Lucy is wearing (js/closet.js), [] = plain
   progress: 'progress',         // { kidId: { lastPlayed, letters: {...} } }
-  cache: 'cache',               // { at, version, files }
+  cache: 'cache',               // { at, version, files } — Offline only note
+  offlineOnly: 'offlineOnly',   // grown-up opt-in; default off (online only)
   notes: 'notes',               // { kidId: string } roster notes, this device
   beats: 'beats',               // { kidId|_device: { P: 4, S: 2 } } 0–4 SATPIN beats
   skin: 'skin',                 // comic (light hub) | cosmic | violet
@@ -373,9 +374,15 @@ export const store = {
     write(KEYS.notes, all);
   },
 
-  /* --- offline cache health -------------------------------------------- */
+  /* --- offline cache health --------------------------------------------
+     Offline only is off unless a grown-up turns it on. The shell cache
+     itself lives in Cache Storage; this key is only the note the Device
+     card last wrote. */
+  getOfflineOnly() { return read(KEYS.offlineOnly, false) === true; },
+  setOfflineOnly(on) { write(KEYS.offlineOnly, on === true); },
   getCache() { return read(KEYS.cache, null); },
   setCache(info) { write(KEYS.cache, info); },
+  clearCache() { localStorage.removeItem(NS + KEYS.cache); },
 
   /* --- Grown-Ups CSV snapshot (progress + settings, this device) ------- */
   exportSnapshot() {
