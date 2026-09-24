@@ -2760,6 +2760,8 @@ html[data-chrome="hidden"] .screen {
   border-radius: 50%;
 }
 .stage-orb-face { display: grid; place-items: center; }
+/* A viewBox-only SVG in this grid paints at 0×0. Size the speaker so a child can see it. */
+.stage-orb-face svg { width: 64px; height: 64px; display: block; }
 .stage-lucy {
   position: absolute;
   left: 12px;
