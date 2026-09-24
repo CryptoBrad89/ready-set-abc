@@ -1,6 +1,6 @@
 # Lottie slots
 
-`lottie-web` plays these JSON files offline (pinned in `sw.js`).
+`lottie-web` plays these JSON files from the app. They are pinned in `sw.js` SHELL for the Offline only opt-in.
 
 | File | Used for |
 | --- | --- |

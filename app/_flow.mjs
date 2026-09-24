@@ -514,6 +514,14 @@ assert(/familyNoteText/.test(src) && /copyFamilyNote/.test(src), 'Grown-Ups buil
 assert(/execCommand\('copy'\)/.test(src), 'and retries the old select-and-copy path when the async clipboard says no');
 assert(/press Ctrl\+C/.test(src), 'a refused clipboard still leaves the teacher the note to select');
 assert(/Set up this device/.test(src) && /Get update/.test(src), 'offline setup + get update');
+assert(/Offline only/.test(src) && /getOfflineOnly/.test(src) && /OFFLINE_MODE/.test(src),
+  'Device has an Offline only switch that tells the worker');
+assert(/rsabc-offline-on/.test(src) && /startsWith\('rsabc-shell-'\)/.test(src),
+  'turning Offline only off deletes the flag and every rsabc-shell-* cache');
+store.setOfflineOnly(true);
+assert(store.getOfflineOnly() === true, 'Offline only can be turned on');
+store.setOfflineOnly(false);
+assert(store.getOfflineOnly() === false, 'Offline only defaults off');
 assert(/APP_VERSION/.test(src), 'Grown-Ups shows the version pin');
 
 /* The family note is the thing a grown-up pastes into a newsletter: it has to
@@ -598,7 +606,21 @@ assert(!['_check.mjs', '_flow.mjs', '_smoke.html', 'sw.js'].some((p) => shellSet
   'SW SHELL does not pin dev files or the worker script');
 assert(!/fonts\.googleapis|fonts\.gstatic/.test(sw), 'SW does not pin Google Fonts URLs');
 assert(/pathname\.endsWith\('\/sw\.js'\)/.test(sw), 'SW does not cache-first intercept itself');
-assert(/precacheInto/.test(sw), 'install and teacher precache share one completeness pass');
+const installEarly = (sw.match(/addEventListener\('install'[\s\S]*?addEventListener\('activate'/) || [''])[0];
+assert(/function precacheInto\(/.test(sw) && /precacheInto\(cache/.test(sw),
+  'opt-in PRECACHE still fills SHELL in one pass');
+assert(!/precacheInto/.test(installEarly), 'install does not precache SHELL on boot');
+assert(/OFFLINE_FLAG/.test(installEarly) && /skipWaiting/.test(installEarly),
+  'install takes over only when Offline only is off, so v46 does not stay cache-first');
+const onlineFetch = (sw.match(/if \(!\(await offlineEnabled\(\)\)\) \{[\s\S]*?\n    \}/) || [''])[0];
+assert(onlineFetch.length > 0 && !/cache\.put/.test(onlineFetch),
+  'fetch does not write the shell cache while Offline only is off');
+assert(/headers\.has\('range'\) && offlineOnly !== true/.test(sw),
+  'online media ranges skip the worker so video and audio can finish');
+assert(/new Request\(request\.url/.test(sw),
+  'offline mode still serves a cached whole file for a range request');
+assert(/startsWith\('rsabc-shell-'\)/.test(sw) && /rsabc-offline-on/.test(sw),
+  'activate can delete every rsabc-shell-* cache when the flag is off');
 
 const lucy = readFileSync(join(root, 'js/lucy.js'), 'utf8');
 assert(/dataset.pose/.test(lucy) && /lucy-glasses/.test(lucy) && /lucy-bows/.test(lucy),
@@ -1575,13 +1597,14 @@ assert(readmeC4.includes(APP_VERSION), `README names the C4 shell pin (${APP_VER
 
 /* ---- PASS C6: offline hardening, smoke index, teacher how-to ---------- */
 
-/* "Nothing updates mid-round" has to be a mechanism, not a sentence in a
-   README: the worker installs, waits, and only Get update hands over. */
+/* The page does not reload on install. Offline only waits for SKIP_WAITING.
+   Online, install skipWaiting()s so a v46 cache-first worker cannot stay. */
 const swC6 = readFileSync(join(root, 'sw.js'), 'utf8');
 const installBlock = (swC6.match(/addEventListener\('install'[\s\S]*?addEventListener\('activate'/) || [''])[0];
-assert(!/skipWaiting/.test(installBlock), 'a newer pin installs and waits — install never skipWaiting()s');
+assert(/OFFLINE_FLAG/.test(installBlock) && /skipWaiting/.test(installBlock) && !/precacheInto/.test(installBlock),
+  'install does not precache; it skipWaiting()s only when Offline only is off');
 assert(/msg\.type === 'SKIP_WAITING'/.test(swC6) && /self\.skipWaiting\(\)/.test(swC6),
-  'SKIP_WAITING is the only way to hand over, and Get update sends it');
+  'SKIP_WAITING still hands over a pin that waited (Offline only on)');
 assert(/clients\.claim\(\)/.test(swC6), 'activate still claims, so the first install needs no reload');
 
 /* A 206 from a ranged <audio> read throws inside cache.put; an opaque body has
@@ -1601,6 +1624,11 @@ assert(/pathname\.endsWith\('\/sw\.js'\)/.test(swC6), 'and still never intercept
 const appC6 = readFileSync(join(root, 'js/app.js'), 'utf8');
 const guC6 = readFileSync(join(root, 'js/screens/grownups.js'), 'utf8');
 assert(/updateViaCache: 'none'/.test(appC6), 'boot registers the worker with updateViaCache: none');
+assert(!/PRECACHE/.test(appC6), 'boot does not precache the shell');
+assert(/getOfflineOnly/.test(appC6) && /rsabc-offline-on/.test(appC6) && /OFFLINE_MODE/.test(appC6),
+  'boot syncs Offline only and does not fill the shell');
+assert(/if \(!store\.getOfflineOnly\(\) && reg\.waiting/.test(appC6),
+  'a waiting pin is claimed on boot only while Offline only is off');
 assert(/updateViaCache: 'none'/.test(guC6), 'so does Grown-Ups → Device');
 assert(/reg\.waiting/.test(guC6) && /SKIP_WAITING/.test(guC6), 'Get update hands over to a waiting pin');
 assert(/Check offline files/.test(guC6) && /type: 'HEALTH'/.test(guC6),
@@ -2110,7 +2138,7 @@ assert(d5Settle > 0 && d5Waiting > d5Settle,
   'and it waits BEFORE it looks at reg.waiting, or it hands back the pin the cart already had');
 assert(/statechange/.test(d5Gu), 'it waits on the worker, not on a guessed delay');
 assert(/settle\(reg\.installing, \d{4,}\)/.test(d5Gu),
-  'with a real ceiling — installing a pin means precaching the shell over school Wi-Fi');
+  'with a real ceiling — Get update still waits out install before it reads waiting');
 assert(/redundant/.test(d5Gu), 'a pin that fails to install releases the wait instead of hanging on it');
 const d5Listen = d5Gu.indexOf("worker.addEventListener('statechange', seen)");
 assert(d5Listen > 0 && /^\s*seen\(\);/m.test(d5Gu.slice(d5Listen, d5Listen + 260)),
@@ -2144,8 +2172,13 @@ assert(!/tap Get update to pin/.test(d5Gu), 'the cached-version note no longer g
 assert(/this page is running \$\{APP_VERSION\}/.test(d5Gu), 'it states both and names one fix');
 assert(/reload this tablet to finish/i.test(d5Gu),
   'and a complete cache on another pin reads as a finished update, not a broken one');
-assert(!/skipWaiting/.test((d5Sw.match(/addEventListener\('install'[\s\S]*?addEventListener\('activate'/) || [''])[0]),
-  'the worker still installs and waits — D5 changed who asks, not the rule');
+const d5Install = (d5Sw.match(/addEventListener\('install'[\s\S]*?addEventListener\('activate'/) || [''])[0];
+assert(/OFFLINE_FLAG/.test(d5Install) && /skipWaiting/.test(d5Install) && !/precacheInto/.test(d5Install),
+  'install still does not precache; skipWaiting is only the online path');
+assert(/type: 'PRECACHE'/.test(d5Gu) && /arm: true/.test(d5Gu),
+  'turning Offline only on runs the existing precache');
+assert(/if \(store\.getOfflineOnly\(\)\) runPrecache\('Fetching the pinned shell'\);\s*else checkForUpdate\(\)/.test(d5Gu),
+  'Get update downloads the shell only while Offline only is on');
 
 /* --- the smoke index is complete --------------------------------------- */
 const d5Keys = ['classroom', 'kid', 'clearKid', 'mode', 'hideChrome', 'reset', 'play',
@@ -2213,6 +2246,8 @@ assert(d6Dead.length === 0, `every README anchor resolves to a heading (${d6Dead
   [/#### Back up a tablet \(and put it back\)/, 'a CSV backup walkthrough'],
   [/### The wall board \(whiteboard mode\)/, 'the wall board'],
   [/## First morning: Set up this device \(offline\)/, 'the offline setup'],
+  [/Online only/, 'online as the default'],
+  [/Offline only/, 'the Device switch'],
   [/_smoke\.html\?mode=whiteboard&hideChrome=1/, 'the smoke bookmarks'],
 ].forEach(([re, what]) => assert(re.test(d6Readme), `README covers ${what}`));
 
@@ -2264,6 +2299,11 @@ const shipPath = join(root, '..', 'SHIP.md');
 assert(existsSync(shipPath), 'SHIP.md ships beside app/');
 const ship = readFileSync(shipPath, 'utf8');
 assert(ship.includes(APP_VERSION), `SHIP.md names the current shell pin (${APP_VERSION})`);
+assert(/Online only/.test(ship), 'SHIP says online is the default');
+assert(/cache-first/.test(ship), 'SHIP keeps sw.js so a v46 tablet does not stay cache-first');
+const product = readFileSync(join(root, '..', 'PRODUCT.md'), 'utf8');
+assert(!/Offline PWA/.test(product), 'PRODUCT.md does not call the app an Offline PWA');
+assert(/Online by default/.test(product), 'PRODUCT.md says online by default');
 assert(new RegExp(`all \\*\\*${d6Shell.length}\\*\\* files`).test(ship),
   `SHIP.md's offline-check count is the real shell (${d6Shell.length} files)`);
 assert(new RegExp(`of ${d6Shell.length} files are cached`).test(ship),

@@ -4,13 +4,14 @@
 
 /* Ready Set ABC — self-hosted type (OFL, files in app/fonts/)
    Comfortaa (letters, titles) and Nunito Sans (instructions) ship inside the
-   app so the Stitch look survives a cart Chromebook with the radio off. No
-   fonts.googleapis request, so first paint never waits on a network that is
-   not there. `font-display: swap` means a missing or evicted face falls back
-   to the rounded system stacks below instead of blanking the letters.
-   Licences sit beside the files: fonts/Comfortaa-OFL.txt, fonts/NunitoSans-OFL.txt.
-   Add a face here → add it to SHELL in sw.js and bump both version pins,
-   or it 404s offline. `node _check.mjs` fails if you forget. */
+   app. Online, the tablet loads them from the network. With Offline only on,
+   they are in the sw.js SHELL so the Stitch look survives a radio-off cart.
+   No fonts.googleapis request. `font-display: swap` means a missing face
+   falls back to the rounded system stacks below instead of blanking the
+   letters. Licences sit beside the files: fonts/Comfortaa-OFL.txt,
+   fonts/NunitoSans-OFL.txt. Add a face here → add it to SHELL in sw.js and
+   bump both version pins, or an Offline only tablet 404s that file.
+   `node _check.mjs` fails if you forget. */
 @font-face {
   font-family: "Comfortaa";
   font-style: normal;
@@ -107,10 +108,11 @@
 
   /* --- type -------------------------------------------------------- */
   /* Comfortaa / Nunito Sans are self-hosted above (@font-face, app/fonts/) and
-     precached in sw.js SHELL — no network, online or off. The system names
-     that follow are still real fallbacks: they are what a child sees if a
-     woff2 is evicted mid-term, so never let a stack end at the webfont.
-     Never add googleapis URLs here or to SHELL — they 404 offline. */
+     listed in sw.js SHELL for the Offline only opt-in. Online they load from
+     this origin. The system names that follow are still real fallbacks: they
+     are what a child sees if a woff2 is missing, so never let a stack end at
+     the webfont. Never add googleapis URLs here or to SHELL — they 404 when
+     Offline only is on. */
   --font-display: "Comfortaa", "Quicksand", "Varela Round", "Trebuchet MS", system-ui, sans-serif;
   --font-body:    "Nunito Sans", "Nunito", "Segoe UI", system-ui, sans-serif;
 

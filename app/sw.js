@@ -1,11 +1,16 @@
 /* Ready Set ABC service worker.
-   Precaches the whole shell — no lazy caching, no unresolvable spinners.
-   The teacher's "Set up this device" button drives a re-cache with progress
-   over a MessageChannel. Updates never happen mid-session: a newer worker
-   installs, then waits. Only Grown-Ups → Device → Get update sends
-   SKIP_WAITING, so the pin never swaps under a child mid-round. */
+   Online only unless a grown-up turns Offline only on. Install does not
+   precache SHELL. While the flag cache `rsabc-offline-on` is absent, fetch
+   is network-only (no cache.put) and activate deletes every rsabc-shell-*
+   cache, so a tablet still on the v46 cache-first worker does not keep it.
+   Offline only sends PRECACHE, which fills SHELL, and fetch is cache-first
+   so the device can run with no internet. Turning the flag off deletes that
+   copy and returns to the network. Install may claim the worker when the
+   flag is off; it does not reload the page. When the flag is on, install
+   waits, and only SKIP_WAITING hands over. */
 
 const VERSION = 'rsabc-shell-v46-lucy-clips';
+const OFFLINE_FLAG = 'rsabc-offline-on';
 const SHELL = [
   './',
   'index.html',
@@ -604,7 +609,35 @@ async function precacheInto(cache, onProgress) {
 /* What is really in the cache right now — not what we wrote down last time.
    Chrome evicts storage on a full cart Chromebook without telling anyone, and
    a tablet that says "Ready offline" but is not is the worst Monday. */
+let offlineOnly = null;
+
+async function offlineEnabled() {
+  if (offlineOnly !== null) return offlineOnly;
+  const names = await caches.keys();
+  offlineOnly = names.includes(OFFLINE_FLAG);
+  return offlineOnly;
+}
+
+/* The page cannot read this from localStorage. The flag cache is the bit
+   activate can see, and the in-memory value is what fetch uses after a tap. */
+async function setOfflineEnabled(on) {
+  offlineOnly = !!on;
+  if (offlineOnly) {
+    const cache = await caches.open(OFFLINE_FLAG);
+    await cache.put(new Request('./offline-mode'), new Response('on'));
+    return;
+  }
+  const names = await caches.keys();
+  await Promise.all(names
+    .filter((n) => n === OFFLINE_FLAG || n.startsWith('rsabc-shell-'))
+    .map((n) => caches.delete(n)));
+}
+
 async function shellHealth() {
+  const names = await caches.keys();
+  if (!names.includes(VERSION)) {
+    return { version: VERSION, total: SHELL.length, cached: 0, missing: [] };
+  }
   const cache = await caches.open(VERSION);
   const missing = [];
   for (const path of SHELL) {
@@ -615,23 +648,31 @@ async function shellHealth() {
 }
 
 self.addEventListener('install', (event) => {
-  /* No hand-over here — a newer pin installs quietly and then waits, until
-     Grown-Ups → Device → Get update asks for it. */
-  event.waitUntil(caches.open(VERSION).then((cache) => precacheInto(cache)));
+  /* Do not precache SHELL. When Offline only is off, take over so a v46
+     cache-first worker does not stay in charge. When it is on, wait for
+     SKIP_WAITING so an offline copy is not dropped under a child. */
+  event.waitUntil((async () => {
+    const names = await caches.keys();
+    if (!names.includes(OFFLINE_FLAG)) await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const names = await caches.keys();
-    await Promise.all(names.filter((n) => n !== VERSION).map((n) => caches.delete(n)));
+    offlineOnly = names.includes(OFFLINE_FLAG);
+    const drop = offlineOnly
+      ? names.filter((n) => n.startsWith('rsabc-shell-') && n !== VERSION)
+      : names.filter((n) => n.startsWith('rsabc-shell-'));
+    await Promise.all(drop.map((n) => caches.delete(n)));
     await self.clients.claim();
   })());
 });
 
-/* Cache-first: the cart Chromebook is often offline on purpose.
-   Never intercept sw.js — Get update must be able to fetch a new pin.
-   Dev files (_check.mjs, _flow.mjs, _smoke.html) are never cached either, so a
-   smoke bookmark always runs the file on disk. */
+/* Network-only unless Offline only is on. Never intercept sw.js — Get update
+   must be able to fetch a new pin. Dev files (_check.mjs, _flow.mjs,
+   _smoke.html) are never cached either, so a smoke bookmark always runs the
+   file on disk. */
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
@@ -639,8 +680,40 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
   if (url.pathname.endsWith('/sw.js')) return;
   if (/\/_[^/]*$/.test(url.pathname)) return;
+  /* Online, a media element's Range request must not be answered here.
+     respondWith of either a 206 or a whole-file 200 leaves <video> loading
+     forever. Offline only still serves the cached file below. */
+  if (request.headers.has('range') && offlineOnly !== true) return;
 
   event.respondWith((async () => {
+    /* A <video> asks for a byte range. respondWith() of that 206 never
+       finishes the element. Serve the whole file (the cached 200 when
+       Offline only is on, a network 200 when it is off). */
+    if (request.headers.has('range')) {
+      const bare = new Request(request.url, { credentials: 'same-origin' });
+      if (await offlineEnabled()) {
+        const hit = await caches.match(bare, { ignoreSearch: true });
+        if (hit) return hit;
+      }
+      try {
+        const response = await fetch(bare);
+        if ((await offlineEnabled()) && cacheable(response)) {
+          const copy = response.clone();
+          caches.open(VERSION).then((cache) => cache.put(bare, copy)).catch(() => {});
+        }
+        return response;
+      } catch (err) {
+        return new Response('offline', { status: 503, statusText: 'offline' });
+      }
+    }
+    if (!(await offlineEnabled())) {
+      /* Network only while Offline only is off. */
+      try {
+        return await fetch(request);
+      } catch (err) {
+        return new Response('offline', { status: 503, statusText: 'offline' });
+      }
+    }
     const hit = await caches.match(request, { ignoreSearch: true });
     if (hit) return hit;
     try {
@@ -653,7 +726,7 @@ self.addEventListener('fetch', (event) => {
       }
       return response;
     } catch (err) {
-      // Navigations fall back to the shell so the app still opens offline.
+      // Navigations fall back to the shell so an opted-in tablet still opens.
       if (request.mode === 'navigate') {
         const shell = await caches.match(shellUrl('index.html'))
           || await caches.match('index.html')
@@ -673,6 +746,18 @@ self.addEventListener('message', (event) => {
 
   if (msg.type === 'SKIP_WAITING') {
     event.waitUntil(self.skipWaiting());
+    return;
+  }
+
+  if (msg.type === 'OFFLINE_MODE') {
+    event.waitUntil((async () => {
+      try {
+        await setOfflineEnabled(!!msg.on);
+        if (port) port.postMessage({ type: 'offline-mode', on: !!msg.on });
+      } catch (err) {
+        if (port) port.postMessage({ type: 'error', message: String(err.message || err) });
+      }
+    })());
     return;
   }
 

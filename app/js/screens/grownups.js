@@ -20,6 +20,7 @@ const overlay = document.getElementById('overlay');
 let onChange = () => {};
 let paintAudioChrome = () => {};
 let open = false;
+let pendingReload = false;
 let atGate = false;
 let gatePress = null;
 let afterUnlock = 'sheet';
@@ -683,10 +684,10 @@ function raceEvent(target, event, ms) {
 
 /* Wait for a freshly-found worker to stop being `installing`.
    reg.update() resolves as soon as the new sw.js has been fetched — the worker
-   it found is then INSTALLING (precaching the whole shell), and only lands in
-   `waiting` when that finishes. A Get update that looked at reg.waiting right
-   after reg.update() therefore found nothing, talked to the worker the cart
-   already had, and re-pinned the version it was trying to replace. */
+   it found is then INSTALLING, and only lands in `waiting` when that finishes.
+   A Get update that looked at reg.waiting right after reg.update() therefore
+   found nothing and talked to the worker the cart already had. Install does
+   not download the shell; that download is the Offline only PRECACHE. */
 function settle(worker, ms) {
   const done = () => worker.state === 'installed' || worker.state === 'activated' || worker.state === 'redundant';
   if (done()) return Promise.resolve();
@@ -759,8 +760,32 @@ function short(message, max = 140) {
   return text.length > max ? `${text.slice(0, max - 1)}…` : text;
 }
 
+/* Drop the offline copy and the flag the worker reads. Safe to call when
+   the switch is already off. Page-side deletes cover a worker that does
+   not understand OFFLINE_MODE yet. */
+async function dropShellCaches() {
+  pendingReload = false;
+  store.setOfflineOnly(false);
+  store.clearCache();
+  if (typeof caches !== 'undefined') await caches.delete('rsabc-offline-on');
+  if ('serviceWorker' in navigator) {
+    try {
+      const { worker } = await shellWorker();
+      if (worker) await askWorker(worker, { type: 'OFFLINE_MODE', on: false });
+    } catch (err) { /* the delete below still runs */ }
+  }
+  if (typeof caches !== 'undefined') {
+    const names = await caches.keys();
+    await Promise.all(names
+      .filter((n) => n === 'rsabc-offline-on' || n.startsWith('rsabc-shell-'))
+      .map((n) => caches.delete(n)));
+  }
+}
+
 function devicePanel() {
-  const cache = store.getCache();
+  const offlineOn = store.getOfflineOnly();
+  const saved = store.getCache();
+  const cache = offlineOn ? saved : null;
   const bar = el('div', { class: 'progress-bar' }, el('i'));
   if (cache && cache.files) bar.firstChild.style.width = '100%';
   const pinnedMatch = cache && cache.version === APP_VERSION;
@@ -768,52 +793,104 @@ function devicePanel() {
      while this page still runs the pin it booted on — the fix is one sentence
      and it is the same sentence. Do not claim which one is newer: these are
      names, not numbers, and guessing wrong sends a teacher the wrong way. */
-  const status = el('p', { class: 'gu-status' }, cache
-    ? (pinnedMatch
-      ? `Ready offline · ${cache.files} files · ${new Date(cache.at).toLocaleString()}`
-      : `Cached ${cache.version || 'an older pin'} · this page is running ${APP_VERSION}. Tap Get update on Wi-Fi, then reload.`)
-    : 'Not set up for offline use yet.');
+  const status = el('p', { class: 'gu-status' }, !offlineOn
+    ? 'Online only. Nothing is cached for offline use.'
+    : (cache
+      ? (pinnedMatch
+        ? `Ready offline · ${cache.files} files · ${new Date(cache.at).toLocaleString()}`
+        : `Cached ${cache.version || 'an older pin'} · this page is running ${APP_VERSION}. Tap Get update on Wi-Fi, then reload.`)
+      : 'Not set up for offline use yet.'));
 
   /* Only shown after a hand-over actually happened. See shellWorker(). */
-  const reload = el('button', { class: 'gu-btn gu-btn--primary', type: 'button', hidden: true }, 'Reload to finish');
+  const reload = el('button', { class: 'gu-btn gu-btn--primary', type: 'button', hidden: !pendingReload }, 'Reload to finish');
   reload.addEventListener('click', () => location.reload());
 
-  const runPrecache = async (label) => {
+  /* Every shell fetch is `cache: 'reload'`, so off Wi-Fi a precache can only
+     fail. One sentence beats 40 file names. Nothing already cached is lost:
+     the worker only ever puts a file it actually got. */
+  const refuseOffline = () => {
+    if (navigator.onLine === false) {
+      status.textContent = 'This tablet is offline. Join school Wi-Fi, then tap again — the files it already has are untouched.';
+      return true;
+    }
+    return false;
+  };
+
+  const runPrecache = async (label, { arm = false } = {}) => {
     reload.hidden = true;
     status.textContent = `${label}…`;
     bar.firstChild.style.width = '0%';
     if (!('serviceWorker' in navigator)) {
       status.textContent = 'This browser cannot cache offline.';
-      return;
+      return false;
     }
-    /* Every shell fetch is `cache: 'reload'`, so off Wi-Fi this can only fail —
-       one clear sentence beats 40 file names. Nothing already cached is lost:
-       the worker only ever puts a file it actually got. */
-    if (navigator.onLine === false) {
-      status.textContent = 'This tablet is offline. Join school Wi-Fi, then tap again — the files it already has are untouched.';
-      return;
-    }
+    if (refuseOffline()) return false;
     try {
       const { worker, swapped } = await shellWorker();
       if (!worker) {
         status.textContent = 'Reload this page once, then tap Set up this device again.';
-        return;
+        return false;
       }
       const done = await askWorker(worker, { type: 'PRECACHE' }, (msg) => {
         bar.firstChild.style.width = `${Math.round((msg.done / msg.total) * 100)}%`;
       });
       bar.firstChild.style.width = '100%';
       store.setCache({ at: Date.now(), version: done.version, files: done.count });
+      if (arm) {
+        try {
+          await askWorker(worker, { type: 'OFFLINE_MODE', on: true });
+        } catch (err) {
+          await dropShellCaches();
+          status.textContent = `Could not keep the offline copy: ${short(err.message)} — stay on Wi-Fi and tap again.`;
+          return false;
+        }
+        store.setOfflineOnly(true);
+      }
       if (swapped) {
         /* The new shell is cached and controlling, but this page is still the
            old modules in memory. Say so, and make finishing one tap. */
+        pendingReload = true;
         reload.hidden = false;
         status.textContent = `Pinned ${done.version} · ${done.count} files cached. Tap Reload to finish — this tablet is still running ${APP_VERSION} until it does.`;
-        return;
+        return true;
       }
       status.textContent = `Pinned ${done.version} · ${done.count} files cached. Radio can go off.`;
+      return true;
     } catch (err) {
       status.textContent = `Could not cache: ${short(err.message)} — stay on Wi-Fi and tap again.`;
+      if (arm && !store.getOfflineOnly()) {
+        try { await dropShellCaches(); } catch (dropErr) { /* keep the status above */ }
+      }
+      return false;
+    }
+  };
+
+  /* Online only: compare the pin. Do not download the shell. */
+  const checkForUpdate = async () => {
+    reload.hidden = true;
+    status.textContent = 'Checking the server copy…';
+    if (!('serviceWorker' in navigator)) {
+      status.textContent = 'This browser cannot check for an update. Reload the page.';
+      return;
+    }
+    if (refuseOffline()) return;
+    try {
+      const { swapped } = await shellWorker();
+      const res = await fetch('js/version.js', { cache: 'reload', credentials: 'same-origin' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const remote = ((await res.text()).match(/APP_VERSION = '([^']+)'/) || [])[1] || '';
+      if (!remote) throw new Error('the server copy has no pin');
+      if (swapped || remote !== APP_VERSION) {
+        pendingReload = true;
+        reload.hidden = false;
+        status.textContent = remote !== APP_VERSION
+          ? `A newer copy is ${remote}. This page is running ${APP_VERSION}. Tap Reload to finish — this tablet is still running ${APP_VERSION} until it does.`
+          : `Tap Reload to finish — this tablet is still running ${APP_VERSION} until it does.`;
+        return;
+      }
+      status.textContent = `This tablet is on ${APP_VERSION}. It loads from the network. Nothing new to get.`;
+    } catch (err) {
+      status.textContent = `Could not check: ${short(err.message)} — stay on Wi-Fi and tap again.`;
     }
   };
 
@@ -822,6 +899,10 @@ function devicePanel() {
      is not is a dead centre rotation. Silent when everything is where it should
      be; loud enough to act on when it is not. */
   const verify = async (loud) => {
+    if (!store.getOfflineOnly()) {
+      if (loud) status.textContent = 'Online only. Nothing is cached for offline use.';
+      return;
+    }
     if (!('serviceWorker' in navigator) || !navigator.serviceWorker.controller) {
       if (loud) status.textContent = 'No offline worker on this page yet — reload, then try again.';
       return;
@@ -852,13 +933,49 @@ function devicePanel() {
       if (loud) status.textContent = 'This tablet is on an older shell — tap Get update on Wi-Fi, then check again.';
     }
   };
-  verify(false);
+  if (offlineOn) verify(false);
+  else if (pendingReload) {
+    status.textContent = `Tap Reload to finish — this tablet is still running ${APP_VERSION} until it does.`;
+  }
 
-  const setup = el('button', { class: 'gu-btn gu-btn--primary', type: 'button' }, 'Set up this device');
+  const offlineBtn = el('button', {
+    class: 'switch', type: 'button', 'aria-label': 'Offline only',
+    'aria-pressed': String(offlineOn),
+  }, el('i'));
+  const setup = el('button', { class: 'gu-btn gu-btn--primary', type: 'button', hidden: !offlineOn }, 'Set up this device');
+  const check = el('button', { class: 'gu-btn', type: 'button', hidden: !offlineOn }, 'Check offline files');
+  offlineBtn.addEventListener('click', async () => {
+    if (offlineBtn.disabled) return;
+    const next = offlineBtn.getAttribute('aria-pressed') !== 'true';
+    offlineBtn.disabled = true;
+    offlineBtn.setAttribute('aria-pressed', String(next));
+    try {
+      if (next) {
+        const ok = await runPrecache('Saving the shell for offline', { arm: true });
+        if (!ok) {
+          offlineBtn.setAttribute('aria-pressed', 'false');
+          return;
+        }
+        if (pendingReload) {
+          setup.hidden = false;
+          check.hidden = false;
+          return;
+        }
+      } else {
+        status.textContent = 'Removing the offline copy…';
+        await dropShellCaches();
+      }
+      repaint();
+    } finally {
+      offlineBtn.disabled = false;
+    }
+  });
   setup.addEventListener('click', () => runPrecache('Caching the shell'));
   const update = el('button', { class: 'gu-btn', type: 'button' }, 'Get update');
-  update.addEventListener('click', () => runPrecache('Fetching the pinned shell'));
-  const check = el('button', { class: 'gu-btn', type: 'button' }, 'Check offline files');
+  update.addEventListener('click', () => {
+    if (store.getOfflineOnly()) runPrecache('Fetching the pinned shell');
+    else checkForUpdate();
+  });
   check.addEventListener('click', () => {
     status.textContent = 'Checking the cache…';
     verify(true);
@@ -879,7 +996,7 @@ function devicePanel() {
     ),
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Version pin'),
-      el('p', { class: 'note' }, 'The cart Chromebooks keep this shell until you tap Get update on school Wi-Fi. Nothing updates mid-round.'),
+      el('p', { class: 'note' }, 'Online only, Get update compares this pin with the server and does not download the shell. With Offline only on, Get update saves the shell again. Nothing updates mid-round.'),
       el('div', { class: 'version-pin' },
         el('div', {}, el('span', { class: 'gu-desc' }, 'Shell'), el('strong', {}, APP_VERSION)),
         el('div', {}, el('span', { class: 'gu-desc' }, 'Label'), el('strong', {}, APP_LABEL)),
@@ -889,7 +1006,8 @@ function devicePanel() {
     ),
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Offline'),
-      el('p', { class: 'note' }, 'Set up this device once on school Wi-Fi. It precaches the full shell listed in sw.js. After that the app opens with the radio off. Check offline files re-reads the cache itself, so a tablet that quietly lost its files says so before a centre rotation does. The letter fonts are part of that shell — they ship in the app, so the tablet looks the same with the radio off as it does on Wi-Fi.'),
+      el('p', { class: 'note' }, 'Offline only is off unless you turn it on. On, this tablet saves the full shell listed in sw.js so the app opens with the radio off. Off, that copy is deleted and the tablet uses the network. Check offline files re-reads the cache when a copy is saved. The letter fonts ship in the app and are part of that shell.'),
+      row('Offline only', 'Off by default. Turn on to save this tablet for a room with no internet. Turning it off deletes that copy.', offlineBtn),
       el('div', { class: 'gu-actions' }, setup, update, check, reload),
       bar,
       status,
@@ -902,7 +1020,9 @@ function devicePanel() {
           class: 'gu-btn gu-btn--danger', type: 'button',
           onclick: () => {
             if (!window.confirm('Erase all stars, progress, notes and roster edits on this device?')) return;
+            const keepOffline = store.getOfflineOnly();
             store.reset();
+            if (keepOffline) store.setOfflineOnly(true);
             repaint();
           },
         }, 'Erase this device'),
