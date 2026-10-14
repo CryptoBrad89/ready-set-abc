@@ -3726,9 +3726,6 @@ html[data-skin="violet"] .match-card .word {
   body[data-screen="home"] .hub-closet-btn {
     display: none;
   }
-  body[data-screen="home"] .hub-hero-panel {
-    max-height: min(14vh, 118px);
-  }
   body[data-screen="home"] .hub-online {
     display: none;
   }
@@ -3753,14 +3750,19 @@ html[data-skin="violet"] .match-card .word {
     width: 40px;
     height: 40px;
   }
+  body[data-screen="home"] .hub-play-stack {
+    min-height: 0;
+    overflow: hidden;
+  }
   body[data-screen="home"] .hub-row--phonics {
-    flex: 1 1 auto;
-    max-height: none;
+    flex: 1 1 0;
+    max-height: 100%;
+    min-height: 0;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: 1fr 1fr;
     align-content: stretch;
-    height: 100%;
+    height: auto;
     overflow: hidden;
   }
   body[data-screen="home"] .hub-row--phonics .hub-card {
@@ -3807,8 +3809,9 @@ html[data-skin="violet"] .match-card .word {
     display: none;
   }
   body[data-screen="home"] .hub-hero-panel {
-    max-height: min(24vh, 108px);
+    max-height: min(24vh, 132px);
     flex-shrink: 0;
+    overflow: visible;
   }
   body[data-screen="home"] .hub-hero {
     grid-template-columns: 56px minmax(0, 1fr);
@@ -3925,14 +3928,32 @@ html[data-skin="violet"] .match-card .word {
     height: 18px;
   }
   .chrome .tab {
-    min-height: 48px;
-    min-width: 48px;
-    flex-shrink: 0;
+    min-height: 44px;
+    min-width: 0;
+    flex: 1 1 0;
+    width: 0;
+    padding: 3px;
+    flex-shrink: 1;
+  }
+  html[data-skin="comic"] .chrome .tab,
+  html:not([data-skin]) .chrome .tab {
+    min-height: 44px;
+    min-width: 0;
+    flex: 1 1 0;
+    width: 0;
+    padding: 3px;
+    border-width: 2.5px;
+    box-shadow: 1.5px 1.5px 0 #000000;
   }
   html[data-skin="comic"] .chrome .tabs,
   html:not([data-skin]) .chrome .tabs {
-    padding: 4px;
-    gap: 3px;
+    padding: 3px;
+    gap: 2px;
+    justify-content: stretch;
+  }
+  .chrome .tab svg {
+    width: 18px;
+    height: 18px;
   }
   .chrome .who-chip--stamp {
     min-width: 56px;

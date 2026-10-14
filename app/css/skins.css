@@ -270,3 +270,28 @@ html[data-skin="violet"] .lucy-hello-sound-letter {
   border-color: #c084fc;
 }
 html[data-skin="violet"] .lucy-hello-sound { background: #22d3ee; color: #1b0b2e; }
+
+/* Narrow phones: five icon tabs must fit without clipping (play.css rows). */
+@media (max-width: 420px) {
+  html[data-skin="comic"] .chrome .tab,
+  html:not([data-skin]) .chrome .tab {
+    min-width: 0;
+    min-height: 44px;
+    flex: 1 1 0;
+    width: 0;
+    padding: 3px;
+    border-width: 2.5px;
+    box-shadow: 1.5px 1.5px 0 #000000;
+  }
+  html[data-skin="comic"] .chrome .tabs,
+  html:not([data-skin]) .chrome .tabs {
+    padding: 3px;
+    gap: 2px;
+    justify-content: stretch;
+  }
+  html[data-skin="comic"] .chrome .tab svg,
+  html:not([data-skin]) .chrome .tab svg {
+    width: 18px;
+    height: 18px;
+  }
+}
