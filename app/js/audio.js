@@ -37,9 +37,19 @@ let songNode = null;
 let duckCount = 0;
 let voiceGen = 0;
 let clipEl = null;
+let voiceActive = false;
 const buffers = {};
 
 const listeners = new Set();
+const voiceListeners = new Set();
+
+function setVoiceActive(on) {
+  if (voiceActive === on) return;
+  voiceActive = on;
+  voiceListeners.forEach((fn) => {
+    try { fn(on); } catch (err) { /* one bad listener should not mute the bus */ }
+  });
+}
 
 /* Longest a recorded clip may hold the music duck before we let go of it. */
 const CLIP_WATCHDOG_MS = 8000;
@@ -237,6 +247,7 @@ function stopVoice() {
   }
   duckCount = 0;
   setMusicDuck(false);
+  setVoiceActive(false);
 }
 
 function phonemeBlip() {
@@ -265,6 +276,11 @@ export const audio = {
   },
   isUnlocked() { return unlocked; },
   onUnlock(fn) { listeners.add(fn); return () => listeners.delete(fn); },
+  isVoiceActive() { return voiceActive; },
+  onVoiceActive(fn) {
+    voiceListeners.add(fn);
+    return () => voiceListeners.delete(fn);
+  },
 
   /* data/audio.json is a recording checklist first and a clip map second.
      A null / blank value is a documented silent placeholder, not a file, so it
@@ -313,12 +329,16 @@ export const audio = {
     if (!line) return;
 
     const key = firstClip(clip);
-    if (!key) return;
+    if (!key) return false;
 
     stopVoice();
     const gen = voiceGen;
     beginDuck();
-    const done = () => { if (gen === voiceGen) endDuck(); };
+    const done = () => {
+      if (gen !== voiceGen) return;
+      setVoiceActive(false);
+      endDuck();
+    };
 
     try {
       const a = new Audio(`audio/${clips[key]}`);
@@ -336,6 +356,9 @@ export const audio = {
         handed = true;
         done();
       }, CLIP_WATCHDOG_MS);
+      a.addEventListener('play', () => {
+        if (gen === voiceGen) setVoiceActive(true);
+      }, { once: true });
       a.addEventListener('ended', () => {
         clearTimeout(guard);
         if (handed) return;
@@ -344,8 +367,10 @@ export const audio = {
       }, { once: true });
       a.addEventListener('error', () => { clearTimeout(guard); fallback(); }, { once: true });
       a.play().catch(() => { clearTimeout(guard); fallback(); });
+      return true;
     } catch (err) {
       done();
+      return false;
     }
   },
 
@@ -388,24 +413,25 @@ export const audio = {
      cheer   — after a correct submitted two-tap.
      nudge   — after a wrong one. Never scolds, always invites another go. */
   sayLetterName(letter) {
-    if (!letter) return;
+    if (!letter) return false;
     const L = up(letter);
-    audio.speak(`${L}!`, { clip: clipId.name(L), kind: 'name', letter: L });
+    if (!audio.hasClip(clipId.name(L))) return false;
+    return audio.speak(`${L}!`, { clip: clipId.name(L), kind: 'name', letter: L });
   },
   sayPhoneme(entry) {
-    if (!entry) return;
+    if (!entry) return false;
     const L = up(entry.letter);
     const id = clipId.phoneme(L);
-    if (!audio.hasClip(id)) return;
-    audio.speak(phonemeText(entry), { clip: id, kind: 'phoneme', letter: L });
+    if (!audio.hasClip(id)) return false;
+    return audio.speak(phonemeText(entry), { clip: id, kind: 'phoneme', letter: L });
   },
   /* Per-picture clip first ("Apple!"), then one clip for the whole letter. */
   sayWord(picture) {
-    if (!picture || !picture.word) return;
+    if (!picture || !picture.word) return false;
     const L = up(picture.letter);
-    if (!L) { audio.speak(picture.word, { kind: 'word' }); return; }
+    if (!L) return audio.speak(picture.word, { kind: 'word' });
     const chain = picture.id ? [clipId.word(L, picture.id), clipId.word(L)] : [clipId.word(L)];
-    audio.speak(picture.word, { clip: chain, kind: 'word', letter: L });
+    return audio.speak(picture.word, { clip: chain, kind: 'word', letter: L });
   },
   /* SFX bed still plays. Lucy also speaks the mapped line. */
   cheer() {
@@ -420,6 +446,25 @@ export const audio = {
     const line = NUDGES[i];
     audio.speak(line, { clip: [clipId.nudge(i), 'nudge'], kind: 'line' });
     return line;
+  },
+
+  /* Stage + story: only mapped whole-word / name / phoneme clips. No TTS. */
+  speakStageBeat(step, entry) {
+    if (!entry) return false;
+    if (step === 'meet') {
+      audio.sayLetterName(entry.letter);
+      window.setTimeout(() => audio.sayPhoneme(entry), 420);
+      return true;
+    }
+    if (step === 'choose' || step === 'listen') return audio.sayPhoneme(entry);
+    return false;
+  },
+  speakStoryPage(page) {
+    if (!page) return false;
+    if (page.plates && page.plates.length === 1) return audio.sayWord(page.plates[0]);
+    if (page.kind === 'cover' && page.plates && page.plates[0]) return audio.sayWord(page.plates[0]);
+    if (page.kind === 'end' && page.plates && page.plates[0]) return audio.sayWord(page.plates[0]);
+    return false;
   },
 
   /* Header / Grown-Ups mute dots. Prefs are already in the store. */

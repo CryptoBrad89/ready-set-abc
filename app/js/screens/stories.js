@@ -110,6 +110,11 @@ export function render(ctx) {
     nav.append(next);
   }
 
+  audio.unlock();
+  const spoke = audio.speakStoryPage(page)
+    || (page.kind === 'cover' && picturesFor(L)[0] && audio.sayWord(picturesFor(L)[0]));
+  window.setTimeout(() => lucy.say(page.lucy, { syncTalk: !!spoke }), 60);
+
   return el('div', { class: 'picnic' },
     el('div', { class: 'trail-head' },
       el('h1', {}, icon('book'), ' ', page.title),

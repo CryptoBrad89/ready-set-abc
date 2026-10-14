@@ -137,11 +137,10 @@ function buildChooseTrial(entry) {
   return round.trial;
 }
 
-/* First set only. Every other letter keeps three speaker orbs. */
-export const PICTURE_LISTEN = new Set(['S', 'A', 'T', 'P', 'I', 'N']);
-
+/* Every awake letter deals three pictures whose words start with different
+   letters. Wrong taps replay that picture's starting phoneme. */
 export function usesPictureListen(letter) {
-  return PICTURE_LISTEN.has(String(letter || '').toUpperCase());
+  return !!letterByChar(letter);
 }
 
 function wordStartsWith(pic, letter) {

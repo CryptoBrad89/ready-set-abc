@@ -213,21 +213,14 @@ function twoTap(letter, { miss = false, hint = false } = {}) {
   }
   assert(round.advance() === 'listen', `${letter} choose → listen`);
   const listenTrial = round.getRound().trial;
-  if (round.usesPictureListen(letter)) {
-    assert(listenTrial.pictures && listenTrial.pictures.length === 3, `${letter} listen deals three pictures`);
-    const targets = listenTrial.pictures.filter((p) => p.target);
-    assert(targets.length === 1 && targets[0].word.charAt(0).toUpperCase() === letter,
-      `${letter} listen has one picture whose word starts with ${letter}`);
-    assert(listenTrial.pictures.filter((p) => !p.target).every((p) => p.word.charAt(0).toUpperCase() !== letter),
-      `${letter} listen foils do not start with ${letter}`);
-    assert(!listenTrial.orbs, `${letter} listen does not deal speaker orbs`);
-    assert(round.tapListen(targets[0].choiceId) === 'right', `${letter} listen`);
-  } else {
-    assert(!listenTrial.pictures, `${letter} listen is not the picture board`);
-    assert(listenTrial.orbs && listenTrial.orbs.length === 3, `${letter} listen keeps three speaker orbs`);
-    const orb = listenTrial.orbs.find((o) => o.target);
-    assert(round.tapListen(orb.id) === 'right', `${letter} listen`);
-  }
+  assert(listenTrial.pictures && listenTrial.pictures.length === 3, `${letter} listen deals three pictures`);
+  const targets = listenTrial.pictures.filter((p) => p.target);
+  assert(targets.length === 1 && targets[0].word.charAt(0).toUpperCase() === letter,
+    `${letter} listen has one picture whose word starts with ${letter}`);
+  assert(listenTrial.pictures.filter((p) => !p.target).every((p) => p.word.charAt(0).toUpperCase() !== letter),
+    `${letter} listen foils do not start with ${letter}`);
+  assert(!listenTrial.orbs, `${letter} listen does not deal speaker orbs`);
+  assert(round.tapListen(targets[0].choiceId) === 'right', `${letter} listen`);
   assert(round.advance() === 'payoff', `${letter} listen → payoff`);
   assert(round.continueBeat() === 'right', `${letter} payoff`);
   assert(round.advance() === 'celebrate', `${letter} payoff → celebrate`);
@@ -1585,10 +1578,20 @@ assert(/ locked/.test(pouchC4) && /treatStatus/.test(pouchC4),
 assert(!/store\.setOutfit\(/.test(pouchC4), 'the pouch goes through closet.js, not straight at the key');
 
 const lucyC4 = readFileSync(join(root, 'js/lucy.js'), 'utf8');
-assert(/say\(text, \{ voice = false, hold = 2200 \}/.test(lucyC4),
+const stageSrc = readFileSync(join(root, 'js/screens/stage.js'), 'utf8');
+const storiesSrc = readFileSync(join(root, 'js/screens/stories.js'), 'utf8');
+assert(/say\(text, \{ voice = false, hold = 2200, syncTalk = false \}/.test(lucyC4),
   'lucy.say does not speak an unmapped line unless voice is opted in');
 assert(/if \(voice\) audio\.speak\(text\)/.test(lucyC4),
   'opt-in voice still goes through audio.speak');
+assert(/onVoiceActive/.test(audioSrc) && /setVoiceActive/.test(audioSrc),
+  'voice clips drive a shared talking flag');
+assert(/onVoiceActive/.test(lucyC4) && /followVoice/.test(lucyC4),
+  'Lucy talk animation follows the voice bus');
+assert(/speakStageBeat/.test(audioSrc) && /stage-instruction/.test(stageSrc),
+  'stage beats speak mapped clips and keep the task line on screen');
+assert(/speakStoryPage/.test(audioSrc) && /speakStoryPage/.test(storiesSrc),
+  'picnic pages speak mapped word clips when they exist');
 assert(/dataset\.wear/.test(lucyC4) && /wornOutfitId/.test(lucyC4), 'Lucy really wears the closet treat');
 ['lucy-cap', 'lucy-collar-rainbow', 'lucy-bone', 'lucy-pack'].forEach((g) =>
   assert(lucyC4.includes(g), `Lucy has a drawn ${g}`));
@@ -2828,7 +2831,7 @@ assert(store.getSkin() === 'violet', 'and the violet arcade skin');
 store.setSkin('comic');
 assert(store.getSkin() === 'comic', 'comic is the default light hub');
 
-/* First set (S A T P I N) listen is pictures. Every other letter keeps three speaker orbs. */
+/* Every letter listen is three pictures, not three identical speaker orbs. */
 setTeacherUnlock(5);
 round.goHome();
 store.setSetting('roundSize', 1);
@@ -2861,7 +2864,6 @@ assert(pLabels.filter((label) => /, starts with \/p\//.test(label)).length === 1
   'one rendered picture starts with /p/');
 assert(pLabels.filter((label) => !/, starts with \/p\//.test(label)).length === 2,
   'two rendered pictures do not start with /p/');
-const stageSrc = readFileSync(join(root, 'js/screens/stage.js'), 'utf8');
 const picBoard = stageSrc.slice(
   stageSrc.indexOf('function listenPictureBoard'),
   stageSrc.indexOf('function payoffBoard'),
@@ -2872,8 +2874,8 @@ assert(picBoard.includes('audio.sayPhoneme({ letter: start })'),
 assert(picBoard.includes('listenSucceeded'), 'a right P picture uses the listen success path');
 assert(!picBoard.includes('sayWord') && !picBoard.includes('speechSynthesis'),
   'P listen does not play a word clip or TTS');
-assert(/replayBeat\(entry, step\)/.test(stageSrc) && /step === 'listen'\) audio\.sayPhoneme\(entry\)/.test(stageSrc),
-  'the listen beat plays the phoneme as soon as it starts');
+assert(/replayBeat\(entry, step\)/.test(stageSrc) && /audio\.speakStageBeat\(step, entry\)/.test(stageSrc),
+  'stage beats speak mapped clips through speakStageBeat');
 assert(/\.stage-listen-replay svg \{[^}]*width: 72px;[^}]*height: 72px;/.test(playCss),
   'P replay speaker CSS gives the SVG a 72px box');
 stageMod.teardown();
@@ -2922,8 +2924,9 @@ round.advance();
 while (round.getRound().step === 'choose' && !round.getRound().trial.locked) round.tapChoose('B');
 round.advance();
 const bView = stageMod.render({ go() {}, kid: null, foot() {} });
-assert(byClass(bView, 'stage-orb').length === 3, 'B listen still renders three speaker orbs');
-assert(byClass(bView, 'stage-listen-pic').length === 0, 'B listen has no picture choices');
+assert(byClass(bView, 'stage-listen-pic').length === 3, 'B listen renders three pictures');
+assert(byClass(bView, 'stage-orb').length === 0, 'B listen renders no speaker orbs');
+assert(byClass(bView, 'stage-instruction').length === 1, 'B listen keeps the task instruction visible');
 stageMod.teardown();
 round.goHome();
 

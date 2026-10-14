@@ -14,8 +14,11 @@ export const chrome = { tabs: true, tab: 'home', who: true };
 
 let keyHandler = null;
 let lottiePlayer = null;
+let activeLucy = null;
 
 export function teardown() {
+  if (activeLucy && activeLucy.dispose) activeLucy.dispose();
+  activeLucy = null;
   if (keyHandler) {
     document.removeEventListener('keydown', keyHandler);
     keyHandler = null;
@@ -60,13 +63,15 @@ export function render(ctx) {
     state: step === 'payoff' ? 'celebrating' : 'teaching',
     variant: 'circle',
     cutout: true,
-    line,
+    line: '',
     paw: () => {
       audio.sfx('pop');
       replayBeat(entry, step);
-      lucy.say(line, { voice: false });
+      lucy.say(line, { syncTalk: step !== 'payoff' });
     },
   });
+  if (activeLucy && activeLucy.dispose) activeLucy.dispose();
+  activeLucy = lucy;
 
   const frame = el('div', { class: 'stage-board' });
   if (step === 'meet') frame.append(meetBoard(entry, trial, ctx, root, lucy));
@@ -86,6 +91,7 @@ export function render(ctx) {
     el('div', { class: 'xp-rail', 'aria-hidden': 'true' },
       el('span', { class: 'xp-fill', style: { width: `${xp}%` } }),
     ),
+    instructionBar(line),
     frame,
     el('div', { class: 'stage-lucy' }, lucy.stage, lucy.bubble),
     spark,
@@ -93,7 +99,7 @@ export function render(ctx) {
 
   /* Opening payoff keeps Lucy's line on screen. The picture word waits for a plate tap. */
   if (step !== 'payoff') replayBeat(entry, step);
-  window.setTimeout(() => lucy.say(line, { voice: false }), 80);
+  window.setTimeout(() => lucy.say(line, { syncTalk: step !== 'payoff' }), 80);
 
   keyHandler = (event) => {
     if (event.key === 'Escape') { round.goHome(); ctx.go('home'); }
@@ -111,10 +117,18 @@ function promptFor(step, entry) {
   return `${entry.letter} says ${entry.word}!`;
 }
 
+function instructionBar(line) {
+  return el('div', { class: 'instruction stage-instruction' },
+    el('div', { class: 'instruction-left' },
+      el('span', { class: 'megaphone', role: 'presentation' }, icon('sfx')),
+      el('p', {}, line),
+    ),
+  );
+}
+
 function replayBeat(entry, step) {
-  if (step === 'meet') audio.sayLetterName(entry.letter);
-  else if (step === 'listen') audio.sayPhoneme(entry);
-  else if (step === 'payoff') audio.sayWord({ letter: entry.letter, word: entry.word, id: entry.pictures && entry.pictures[0] && entry.pictures[0].id });
+  if (step === 'payoff') return;
+  audio.speakStageBeat(step, entry);
 }
 
 function meetBoard(entry, trial, ctx, root, lucy) {
@@ -159,7 +173,7 @@ function chooseBoard(entry, trial, ctx, root, lucy) {
         wobble(card);
         audio.sfx('wrong');
         const nudge = audio.nudge();
-        lucy.say(nudge, { voice: false });
+        lucy.say(nudge, { syncTalk: true });
         return;
       }
       audio.sayPhoneme(entry);
@@ -201,7 +215,7 @@ function listenBoard(entry, trial, ctx, root, lucy) {
         wobble(btn);
         audio.sfx('wrong');
         const nudge = audio.nudge();
-        lucy.say(nudge, { voice: false });
+        lucy.say(nudge, { syncTalk: true });
         return;
       }
       listenSucceeded(ctx, root, entry, lucy);
@@ -211,8 +225,8 @@ function listenBoard(entry, trial, ctx, root, lucy) {
   return row;
 }
 
-/* First set (S A T P I N): replay this letter's phoneme, then tap the picture
-   whose word starts with it. The speaker SVG needs a real box or a grid lays it out at 0×0. */
+/* Picture listen: replay this letter's phoneme, then tap the picture whose word
+   starts with it. The speaker SVG needs a real box or a grid lays it out at 0×0. */
 function listenPictureBoard(entry, trial, ctx, root, lucy) {
   const sound = entry.phoneme || `/${entry.lower}/`;
   const replay = el('button', {
