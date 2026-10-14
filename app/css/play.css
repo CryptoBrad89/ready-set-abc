@@ -4605,12 +4605,13 @@ body[data-screen="trail"] .trail-board.cloud-letters {
   body[data-screen="trail"] .trail-say,
   body[data-screen="trail"] .cloud-path { display: none; }
   body[data-screen="trail"] .screen {
-    padding-top: 2px;
+    padding-top: 8px;
     padding-bottom: 0;
     gap: 2px;
+    overflow: hidden;
   }
   body[data-screen="trail"] .clouds {
-    padding-top: 0;
+    padding-top: 6px;
     gap: 2px;
   }
   body[data-screen="trail"] .trail-head {
@@ -4623,20 +4624,26 @@ body[data-screen="trail"] .trail-board.cloud-letters {
     gap: 4px;
   }
   body[data-screen="trail"] .trail-head .hub-chips { display: none; }
+  body[data-screen="trail"] .trail-head {
+    display: none;
+  }
   body[data-screen="trail"] .trail-board.cloud-letters {
     grid-template-columns: repeat(9, minmax(0, 1fr)) !important;
-    grid-auto-rows: minmax(58px, auto);
+    grid-auto-rows: minmax(68px, auto);
     align-content: start;
     overflow-x: hidden;
     overflow-y: auto;
     gap: 3px;
-    padding-bottom: 4px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+    scroll-padding-top: 8px;
     -webkit-overflow-scrolling: touch;
   }
   body[data-screen="trail"] .trail-board.cloud-letters .trail-tile {
-    min-height: 58px;
-    padding: 2px;
+    min-height: 68px;
+    padding: 3px 2px;
     gap: 1px;
+    overflow: visible;
   }
   body[data-screen="trail"] .trail-tile .t-pic {
     font-size: clamp(16px, 3.5vh, 22px);
@@ -4656,8 +4663,42 @@ body[data-screen="trail"] .trail-board.cloud-letters {
   }
 }
 
-/* Celebration: reflow on phone / short landscape (no whole-column scale). */
-@media (max-width: 520px), (orientation: landscape) and (max-height: 440px) {
+/* Celebration phone portrait: stack sections; pin actions (no whole-column scale). */
+@media (max-width: 520px) {
+  body[data-screen="celebrate"] .chrome {
+    grid-template-columns: auto auto minmax(0, 1fr) minmax(0, max-content);
+    grid-template-rows: auto;
+    row-gap: 0;
+    padding-block: 4px;
+    padding-inline: 6px;
+  }
+  body[data-screen="celebrate"] .chrome-left {
+    display: contents;
+  }
+  body[data-screen="celebrate"] .chrome-left > .brand {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  body[data-screen="celebrate"] #who-slot {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  body[data-screen="celebrate"] .chrome .tabs {
+    grid-column: 3;
+    grid-row: 1;
+    width: auto;
+    min-width: 0;
+  }
+  body[data-screen="celebrate"] .chrome-right {
+    grid-column: 4;
+    grid-row: 1;
+    max-width: none;
+  }
+  body[data-screen="celebrate"] .chrome .tab {
+    min-height: 40px;
+    min-width: 40px;
+    padding: 4px;
+  }
   body[data-screen="celebrate"] .screen {
     padding-top: 4px;
     padding-bottom: 4px;
@@ -4671,9 +4712,9 @@ body[data-screen="trail"] .trail-board.cloud-letters {
     overflow: hidden;
     justify-content: flex-start;
   }
-  .celebrate-col {
+  body[data-screen="celebrate"] .celebrate-col {
     transform: none !important;
-    gap: 4px;
+    gap: 6px;
     justify-content: flex-start;
     flex: 1 1 auto;
     min-height: 0;
@@ -4682,144 +4723,418 @@ body[data-screen="trail"] .trail-board.cloud-letters {
     display: flex;
     flex-direction: column;
   }
-  .celebrate-head {
+  body[data-screen="celebrate"] .celebrate-head {
     flex: 0 0 auto;
+    z-index: 0;
   }
-  .celebrate-body {
-    flex: 0 1 auto;
-    min-height: 0;
-    max-height: min(34vh, 220px);
+  body[data-screen="celebrate"] .accuracy-tag {
+    margin-top: 0;
+    padding: 4px 10px;
+    font-size: 11px;
   }
-  .pouch-drop {
-    flex: 0 0 auto;
+  body[data-screen="celebrate"] .celebrate-body {
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
     min-height: 0;
-    max-height: min(22vh, 120px);
+    max-height: none;
+    overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
-  .celebrate-actions {
-    flex: 0 0 auto;
-    margin-top: auto;
-    padding-top: 4px;
-    background: linear-gradient(180deg, transparent, var(--surface-container-low) 28%);
-    z-index: 2;
+  body[data-screen="celebrate"] .celebrate-lucy {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 6px;
+    order: 1;
   }
-  .celebrate-buttons {
+  body[data-screen="celebrate"] .celebrate-lucy .bubble {
+    font-size: 13px;
+    max-width: min(100%, 320px);
+    order: 1;
+  }
+  body[data-screen="celebrate"] .celebrate-lucy .lucy-stage {
+    width: min(72px, 20vw);
+    order: 2;
+  }
+  body[data-screen="celebrate"] .trophy {
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+    order: 2;
+  }
+  body[data-screen="celebrate"] .trophy-ribbon {
+    flex-shrink: 0;
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+  body[data-screen="celebrate"] .trophy-body {
+    padding: 6px;
+  }
+  body[data-screen="celebrate"] .pouch-drop {
+    flex: 0 0 auto;
+    order: 3;
+    max-height: none;
+    overflow: visible;
+    gap: 8px;
+    width: 100%;
+  }
+  body[data-screen="celebrate"] .celebrate-skip {
+    display: none;
+  }
+  body[data-screen="celebrate"] .celebrate-lucy .lucy-stage {
+    display: none;
+  }
+  body[data-screen="celebrate"] .celebrate-lucy {
+    order: 2;
+    gap: 4px;
+  }
+  body[data-screen="celebrate"] .trophy {
+    order: 1;
+  }
+  body[data-screen="celebrate"] .trophy-ribbon {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  body[data-screen="celebrate"] .pouch-drop {
+    display: none;
+  }
+  body[data-screen="celebrate"] .celebrate-actions {
+    flex: 0 0 auto;
+    order: 4;
+    margin-top: auto;
+    padding: 6px 0 4px;
+    background: var(--surface-container-low);
+    z-index: 2;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  body[data-screen="celebrate"] .celebrate-buttons {
     flex-direction: column;
     width: 100%;
     align-items: stretch;
+    gap: 6px;
   }
-  .celebrate-buttons .cta--next {
+  body[data-screen="celebrate"] .celebrate-buttons .cta--next {
     order: 1;
     width: 100%;
-    max-width: none;
+    max-width: 100%;
+    box-sizing: border-box;
   }
-  .celebrate-buttons .cta--quiet {
+  body[data-screen="celebrate"] .celebrate-buttons .cta--quiet {
     order: 2;
     width: 100%;
     min-height: 44px;
+    box-sizing: border-box;
   }
   body[data-screen="celebrate"] .progress-wrap {
     display: none;
   }
-  .star-tray {
+  body[data-screen="celebrate"] .star-tray {
     padding: 6px 12px;
     gap: 10px;
   }
-  .star-tray .big-star {
+  body[data-screen="celebrate"] .star-tray .big-star {
     width: clamp(40px, 10vw, 56px);
     height: clamp(40px, 10vw, 56px);
   }
-  .star-tray .big-star:nth-child(2) {
+  body[data-screen="celebrate"] .star-tray .big-star:nth-child(2) {
     width: clamp(44px, 11vw, 60px);
     height: clamp(44px, 11vw, 60px);
     transform: translateY(-4px) scale(1.06);
   }
-  .celebrate-body {
-    flex-direction: column;
-    gap: 6px;
+  body[data-screen="celebrate"] .trophy-letters .up {
+    font-size: clamp(28px, 8vw, 48px);
   }
-  .trophy-ribbon { padding: 4px 8px; font-size: 11px; }
-  .trophy-body { padding: 6px; }
-  .hear-again { min-height: 40px; font-size: 12px; }
-  .pouch-drop { gap: 6px; }
-  .drop-card { padding: 6px; }
-  .celebrate-lucy {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 8px;
+  body[data-screen="celebrate"] .trophy-letters .low {
+    font-size: clamp(18px, 5vw, 32px);
   }
-  .celebrate-lucy .lucy-stage {
-    width: min(72px, 18vw);
-  }
-  .celebrate-lucy .bubble {
-    font-size: 13px;
-    max-width: min(240px, 55vw);
-  }
-  .trophy { flex: 0 0 auto; }
-  .trophy-letters .up { font-size: clamp(28px, 8vw, 48px); }
-  .trophy-letters .low { font-size: clamp(18px, 5vw, 32px); }
-  .cta--next {
+  body[data-screen="celebrate"] .cta--next {
     min-height: max(var(--target-min), 56px);
     font-size: clamp(15px, 3.8vw, 18px);
-    width: 100%;
   }
-  .celebrate-buttons { gap: 6px; }
+  body[data-screen="celebrate"] .drop-card {
+    padding: 6px;
+  }
+  body[data-screen="celebrate"] .hear-again {
+    min-height: 40px;
+    font-size: 12px;
+  }
 }
 
+/* Celebration short landscape: compact trophy + Lucy row, pouch hidden; Next in frame. */
 @media (orientation: landscape) and (max-height: 440px) {
+  body[data-screen="celebrate"] .screen {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    gap: 0;
+    overflow: hidden;
+    min-height: 0;
+  }
+  body[data-screen="celebrate"] .celebrate {
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    justify-content: flex-start;
+  }
   body[data-screen="celebrate"] .celebrate-col {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    transform: none !important;
+    gap: 2px;
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
-  body[data-screen="celebrate"] .celebrate-body {
-    max-height: none;
-  }
-  body[data-screen="celebrate"] .celebrate-lucy,
-  body[data-screen="celebrate"] .pouch-drop {
-    display: none;
-  }
-  body[data-screen="celebrate"] .trophy-ribbon,
-  body[data-screen="celebrate"] .hear-again {
+  body[data-screen="celebrate"] .celebrate-skip {
     display: none;
   }
   body[data-screen="celebrate"] .celebrate-head {
+    flex: 0 0 auto;
     padding-bottom: 0;
   }
   body[data-screen="celebrate"] .star-tray {
-    padding: 4px 10px;
-    gap: 8px;
+    display: none;
   }
-  body[data-screen="celebrate"] .star-tray .big-star {
-    width: 40px;
-    height: 40px;
+  body[data-screen="celebrate"] .celebrate-body {
+    flex: 0 1 auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 6px;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
   }
-  body[data-screen="celebrate"] .star-tray .big-star:nth-child(2) {
-    width: 44px;
-    height: 44px;
-    transform: translateY(-3px) scale(1.05);
+  body[data-screen="celebrate"] .trophy {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: min(58vw, 420px);
+  }
+  body[data-screen="celebrate"] .trophy-ribbon {
+    padding: 3px 6px;
+    font-size: 10px;
+  }
+  body[data-screen="celebrate"] .trophy-body {
+    padding: 4px 6px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+  }
+  body[data-screen="celebrate"] .trophy-pic {
+    flex: 0 0 auto;
+  }
+  body[data-screen="celebrate"] .trophy-pic .pic-plate {
+    width: 48px;
+    height: 48px;
+  }
+  body[data-screen="celebrate"] .trophy-ribbon .trophy-dots {
+    display: none;
+  }
+  body[data-screen="celebrate"] .trophy-words {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+  body[data-screen="celebrate"] .trophy-letters .up {
+    font-size: clamp(24px, 8vh, 36px);
+  }
+  body[data-screen="celebrate"] .trophy-letters .low {
+    font-size: clamp(16px, 5vh, 24px);
+  }
+  body[data-screen="celebrate"] .trophy-isfor,
+  body[data-screen="celebrate"] .trophy-sound {
+    font-size: 11px;
+    line-height: 1.2;
+  }
+  body[data-screen="celebrate"] .hear-again {
+    min-height: 36px;
+    font-size: 10px;
+    padding: 0 8px;
+    margin-top: 4px;
+  }
+  body[data-screen="celebrate"] .celebrate-lucy {
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    max-width: min(36vw, 200px);
+  }
+  body[data-screen="celebrate"] .celebrate-lucy .bubble {
+    font-size: 11px;
+    max-width: 100%;
+    padding: 6px 8px;
+  }
+  body[data-screen="celebrate"] .celebrate-lucy .lucy-stage {
+    width: 52px;
+  }
+  body[data-screen="celebrate"] .pouch-drop {
+    display: none;
+  }
+  body[data-screen="celebrate"] .progress-wrap {
+    display: none;
   }
   body[data-screen="celebrate"] .celebrate-actions {
-    position: sticky;
-    bottom: 0;
+    flex: 0 0 auto;
+    margin-top: auto;
+    padding: 4px max(6px, var(--gutter)) 2px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     background: var(--surface-container-low);
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, .08);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, .06);
+    overflow: hidden;
+  }
+  body[data-screen="celebrate"] .celebrate-buttons {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 4px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   body[data-screen="celebrate"] .cta--next {
-    min-height: max(var(--target-min), 52px);
+    order: 1;
+    min-height: 42px !important;
+    flex: 1 1 auto !important;
     width: 100%;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    padding: 6px 10px !important;
+    gap: 8px;
+    overflow: hidden;
   }
-  body[data-screen="trail"] .chrome .tab .tab-label { display: none; }
-  body[data-screen="trail"] .chrome .tab {
+  body[data-screen="celebrate"] .cta--next .play-disc {
+    width: 36px;
+    height: 36px;
+  }
+  body[data-screen="celebrate"] .cta--next .play-words {
+    min-width: 0;
+    overflow: hidden;
+  }
+  body[data-screen="celebrate"] .cta--next .play-big {
+    font-size: clamp(13px, 3.6vw, 17px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  body[data-screen="celebrate"] .cta--next .play-small {
+    font-size: 10px;
+  }
+  body[data-screen="celebrate"] .cta--quiet {
+    order: 2;
+    flex: 0 0 auto;
+    min-height: 36px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 12px;
+  }
+  body[data-screen="celebrate"] .accuracy-tag {
+    margin-top: 2px;
+    padding: 3px 8px;
+    font-size: 9px;
+  }
+
+  /* Trail + celebrate: one chrome row so the stage keeps room for tiles. */
+  body[data-screen="trail"] .chrome,
+  body[data-screen="celebrate"] .chrome {
+    grid-template-columns: auto auto minmax(0, 1fr) minmax(0, max-content);
+    grid-template-rows: auto;
+    row-gap: 0;
+    padding-block: 1px;
+    padding-inline: 4px;
+  }
+  body[data-screen="trail"] .chrome-left > .brand,
+  body[data-screen="celebrate"] .chrome-left > .brand {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  body[data-screen="trail"] #who-slot,
+  body[data-screen="celebrate"] #who-slot {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  body[data-screen="trail"] .chrome .tabs,
+  body[data-screen="celebrate"] .chrome .tabs {
+    grid-column: 3;
+    grid-row: 1;
+    width: auto;
+    min-width: 0;
+    max-height: none;
+  }
+  body[data-screen="trail"] .chrome-right,
+  body[data-screen="celebrate"] .chrome-right {
+    grid-column: 4;
+    grid-row: 1;
+  }
+  body[data-screen="trail"] .chrome .tab,
+  body[data-screen="celebrate"] .chrome .tab {
+    min-height: 26px;
+    padding: 1px 4px;
+    font-size: 8px;
+    white-space: nowrap;
+    line-height: 1.15;
+  }
+  body[data-screen="trail"] .chrome .tabs,
+  body[data-screen="celebrate"] .chrome .tabs {
+    padding: 1px 2px;
+    gap: 2px;
+    align-items: center;
+  }
+  body[data-screen="trail"] .chrome .who-face,
+  body[data-screen="celebrate"] .chrome .who-face {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  body[data-screen="trail"] .chrome .who-chip--stamp,
+  body[data-screen="celebrate"] .chrome .who-chip--stamp {
+    max-width: 52px;
+    min-height: 36px;
+    min-width: 36px;
+  }
+  body[data-screen="trail"] .brand-paw,
+  body[data-screen="celebrate"] .brand-paw {
+    width: 36px;
+    height: 36px;
+  }
+  body[data-screen="trail"] .chrome .star-chip,
+  body[data-screen="celebrate"] .chrome .star-chip,
+  body[data-screen="trail"] .chrome .gate-btn,
+  body[data-screen="celebrate"] .chrome .gate-btn {
     min-height: 34px;
     min-width: 34px;
-    padding: 2px;
+    font-size: 9px;
+    padding: 0 4px;
   }
-  body[data-screen="trail"] .chrome .tabs {
-    padding: 2px;
-    gap: 2px;
+  body[data-screen="trail"] .chrome .audio-toggle,
+  body[data-screen="celebrate"] .chrome .audio-toggle {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
   }
+  /* Trail tabs: labeled scroll (celebrate keeps labels too). */
+  body[data-screen="trail"] .chrome .tab,
+  body[data-screen="celebrate"] .chrome .tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  body[data-screen="trail"] .chrome .tab svg,
+  body[data-screen="celebrate"] .chrome .tab svg { display: none; }
+  body[data-screen="trail"] .chrome .tab .tab-label,
+  body[data-screen="celebrate"] .chrome .tab .tab-label { display: inline; }
+  body[data-screen="trail"] .chrome .tab.is-locked svg { display: block; width: 14px; height: 14px; }
 }
 
 /* Narrow home: show Fun row in a short horizontal strip without stealing Play. */
