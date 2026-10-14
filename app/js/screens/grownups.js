@@ -6,10 +6,9 @@
 
 import { el, icon, clear } from '../ui.js';
 import { store, applyMode, applySkin } from '../store.js';
-import { kids, shippedKids, letters, letterByChar, contentVersion, className, shippedClassName } from '../data.js';
-import { previewLetters } from '../round.js';
-import { teacherUnlock, setTeacherUnlock } from '../clouds.js';
-import { workModeOf } from '../profile.js';
+import { kids, shippedKids, letters, letterByChar, contentVersion, className, shippedClassName, soundAtEnd } from '../data.js';
+import { teacherUnlock, setTeacherUnlock, MASTERY_RUNS } from '../clouds.js';
+import { workModeOf, nextLetter, pinFor } from '../profile.js';
 import { audio } from '../audio.js';
 import { APP_VERSION, APP_LABEL } from '../version.js';
 import { buildCsv, applyCsv, detectFormat, parseCsv } from '../csv.js';
@@ -221,21 +220,22 @@ function pictureCount() {
 }
 
 /* --- panels -------------------------------------------------------------- */
+/* Says what PLAY really opens for whoever is on the tablet. A pin outside
+   that child's work is named as ignored, never as the next letter. */
 export function letterOfDayNote() {
   const pinned = store.getPinnedLetter();
   const pinLetter = pinned ? letterByChar(pinned) : null;
-  const next = previewLetters()[0] || 'P';
+  const next = nextLetter();
   const word = pinLetter ? `${pinned} is for ${pinLetter.word}` : pinned;
-  if (workModeOf() === 'assigned') {
-    if (pinned) {
-      return `Pinned: ${pinned} is highlighted in your letters (${word}). If that letter is locked, PLAY starts your letters instead. Tap it again to unpin.`;
-    }
-    return `Not pinned — next PLAY starts the first unfinished of your letters (${next}).`;
+  const mode = workModeOf();
+  const where = mode === 'assigned' ? 'your letters' : mode === 'free' ? 'the alphabet' : 'the open clouds';
+  if (pinned && pinFor()) {
+    return `Pinned: ${pinned} is the letter of the day (${word}). Next PLAY starts ${next}. Tap it again to unpin.`;
   }
   if (pinned) {
-    return `Pinned: ${pinned} is highlighted inside the open cloud (${word}). If that letter is locked, PLAY starts the open cloud instead. Tap it again to unpin.`;
+    return `Pinned: ${pinned} (${word}) is not in ${where}, so PLAY ignores it and starts ${next}. Tap it again to unpin.`;
   }
-  return `Not pinned — next PLAY starts the first unfinished letter in the open cloud (${next}).`;
+  return `Not pinned — next PLAY starts the first unfinished letter in ${where} (${next}).`;
 }
 
 export function playPanel() {
@@ -259,20 +259,16 @@ export function playPanel() {
   return el('div', { class: 'gu-panel' },
     el('div', { class: 'gu-card' },
       el('h3', {}, 'Round'),
-      el('p', { class: 'note' }, 'Each letter runs meet → choose → listen → payoff → celebrate. The celebration settles itself in 8 seconds and can be skipped. (That used to be case match → picture match → bonus → celebrate.)'),
+      el('p', { class: 'note' }, 'Each letter runs meet → choose → listen → payoff → celebrate. The celebration settles itself in 8 seconds and can be skipped.'),
       row('Letters per round', 'Default 3 · applies on the next PLAY, not mid-round', seg([[1, '1'], [2, '2'], [3, '3'], [5, '5'], [8, '8']], s.roundSize, (v) => store.setSetting('roundSize', Number(v)))),
       row('Answer cards', '2–8 choices per step · applies on the next PLAY', seg([[2, '2'], [3, '3'], [4, '4'], [6, '6'], [8, '8']], s.choiceCount, (v) => store.setSetting('choiceCount', Number(v)))),
       row('Case hunt', 'Which case the child looks for (mix is 50/50)', seg([['lower', 'Little'], ['upper', 'Big'], ['both', 'Mix']], s.caseMode, (v) => store.setSetting('caseMode', v))),
       row('Word print', 'Show words under picture cards', toggle(s.showWords, (v) => store.setSetting('showWords', v))),
-      row('Bonus round',
-        'Third step after the two matches. Rotate walks the three games down the alphabet — A a hunt, B a sound sort, C ABC order, D a hunt again — so a 3-letter round plays all three. Bonus misses never cost a star.',
-        seg([['off', 'Off'], ['rotate', 'Rotate'], ['hunt', 'Hunt'], ['sound', 'Sound'], ['order', 'ABC']],
-          s.bonusMode || 'rotate', (v) => store.setSetting('bonusMode', v))),
       row('Hint after misses', 'Auto-glow the answer. 0 = off', seg([[0, 'Off'], [2, '2'], [3, '3'], [5, '5']], s.hintAfter, (v) => store.setSetting('hintAfter', Number(v)))),
       row('Stars', 'none · this session · save on this device',
         seg([['none', 'Off'], ['stars', 'Session'], ['stars-save', 'Save']], s.progressMode || 'stars-save',
           (v) => store.setSetting('progressMode', v))),
-      workModeOf() === 'assigned' ? null : row('Open clouds', 'Highest cloud a class may play. Kids still earn the next cloud by finishing 4/4 on every letter.',
+      workModeOf() === 'assigned' ? null : row('Open clouds', `Highest cloud a class may play. A child also earns the next cloud by mastering every letter: ${MASTERY_RUNS} full runs with no hint, or a grown-up marks it mastered on the Class tab. Finishing once is "completed", not mastered.`,
         seg([[1, '1'], [2, '2'], [3, '3'], [4, '4'], [5, '5']], teacherUnlock(),
           (v) => { setTeacherUnlock(Number(v)); repaint(); })),
     ),
@@ -294,15 +290,9 @@ export function playPanel() {
    cursors or trails leaks into the note — that is Grown-Ups language, and
    it is what made the old blurb read like a placeholder. */
 
-/* Whatever PLAY would really open next: the pin if a grown-up set one, else
-   the letter previewLetters() says the next round starts on. */
+/* Whatever PLAY would really open next for whoever is on the tablet. */
 function noteLetter() {
-  const pinned = store.getPinnedLetter();
-  return letterByChar(pinned)
-    || letterByChar(previewLetters()[0])
-    || letterByChar(store.getCursor())
-    || letters()[0]
-    || null;
+  return letterByChar(nextLetter()) || letters()[0] || null;
 }
 
 function noteDate() {
@@ -323,7 +313,10 @@ export function familyNoteText(letter) {
     .map((p) => p.word)
     .filter((w) => w && w.toLowerCase() !== String(L.word).toLowerCase())
     .slice(0, 3);
-  const huntLine = hunt.length ? `${hunt.join(', ')} — say the sound first, then the word.` : 'Say the sound first, then the word.';
+  const end = soundAtEnd(L);
+  const huntLine = end
+    ? `${hunt.length ? `${hunt.join(', ')} — ` : ''}say the word, then the sound at the end.`
+    : (hunt.length ? `${hunt.join(', ')} — say the sound first, then the word.` : 'Say the sound first, then the word.');
   const say = L.say ? `"${L.say}"` : `${L.letter}${L.lower}`;
 
   return [
@@ -337,7 +330,7 @@ export function familyNoteText(letter) {
     `2. Hunt for it around the house: ${huntLine}`,
     `3. Draw a big ${L.letter} and a little ${L.lower}, and let your child point to the little one.`,
     '',
-    `In class we matched big ${L.letter} to little ${L.lower}, found the pictures that start with ${say}, and collected stars with Lucy.`,
+    `In class we matched big ${L.letter} to little ${L.lower}, found the pictures that ${end ? 'end' : 'start'} with ${say}, and collected stars with Lucy.`,
     '',
     'Ready Set ABC · Pre-K Phonics with Lucy',
   ].join('\n');
@@ -501,6 +494,18 @@ function classPanel() {
       const assignedLetters = lettersInput.value.toUpperCase().split(/[\s,]+/).filter((ch) => /^[A-Z]$/.test(ch));
       saveKid({ assignedLetters });
     });
+    const masteredInput = el('input', {
+      class: 'gu-input',
+      type: 'text',
+      maxlength: '51',
+      placeholder: 'S A',
+      'aria-label': `Letters ${kid.name} has mastered, marked by a grown-up`,
+    });
+    masteredInput.value = store.approvedLetters(kid.id).join(' ');
+    masteredInput.addEventListener('change', () => {
+      store.setApprovedLetters(kid.id, masteredInput.value.toUpperCase().split(/[\s,]+/));
+      repaint();
+    });
     const arcadeOn = !kid.arcadeLocked;
     const item = el('div', { class: 'roster-item' },
       el('div', { class: 'roster-item-row' },
@@ -517,6 +522,7 @@ function classPanel() {
       ),
       row('Work', modePick.value === 'satpin' ? 'SATPIN' : modePick.value === 'free' ? 'Any letter' : 'Assigned', modePick),
       lettersInput,
+      row('Mastered', `Grown-up says so. Otherwise ${MASTERY_RUNS} full runs with no hint.`, masteredInput),
       row('Arcade', arcadeOn ? 'Open' : 'Locked', toggle(arcadeOn, (v) => saveKid({ arcadeLocked: !v }))),
       note,
     );
@@ -875,6 +881,19 @@ function devicePanel() {
     }
     if (refuseOffline()) return;
     try {
+      const reg = await navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' });
+      await navigator.serviceWorker.ready;
+      try { await reg.update(); } catch (err) { /* offline: keep the pin we have */ }
+      if (reg.installing) await settle(reg.installing, 90000);
+      if (store.getOfflineOnly() && reg.waiting) {
+        status.textContent = 'Fetching the pinned shell…';
+        bar.firstChild.style.width = '0%';
+        const done = await askWorker(reg.waiting, { type: 'PRECACHE' }, (msg) => {
+          bar.firstChild.style.width = `${Math.round((msg.done / msg.total) * 100)}%`;
+        });
+        bar.firstChild.style.width = '100%';
+        store.setCache({ at: Date.now(), version: done.version, files: done.count });
+      }
       const { swapped } = await shellWorker();
       const res = await fetch('js/version.js', { cache: 'reload', credentials: 'same-origin' });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);

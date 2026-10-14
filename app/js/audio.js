@@ -37,6 +37,7 @@ let songNode = null;
 let duckCount = 0;
 let voiceGen = 0;
 let clipEl = null;
+let clipSettle = null;
 const buffers = {};
 
 const listeners = new Set();
@@ -232,6 +233,9 @@ function stopVoice() {
     clipEl.src = '';
     clipEl = null;
   }
+  const settle = clipSettle;
+  clipSettle = null;
+  if (settle) settle();
   if ('speechSynthesis' in window) {
     try { window.speechSynthesis.cancel(); } catch (err) { /* ignore */ }
   }
@@ -302,51 +306,49 @@ export const audio = {
 
   /* Voice channel. Recorded clip if we have one, else silence.
      Silent until PLAY (or a Grown-Ups test) unlocks audio.
-     Mute Voice does not touch SFX; mute SFX does not touch Voice. */
+     Mute Voice does not touch SFX; mute SFX does not touch Voice.
+     Resolves when the clip ends, fails, stalls, or is cut off by the next
+     line — at once when nothing plays — so a screen can wait for Lucy. */
   speak(text, { clip = null, kind = 'line', letter = '' } = {}) {
-    if (!unlocked || !store.getAudio().voice) return;
+    if (!unlocked || !store.getAudio().voice) return Promise.resolve();
     let line = String(text || '').trim();
     if (kind === 'phoneme') {
       line = phonemeText({ letter, say: line });
       if (looksLikeLetterName(line, letter)) line = phonemeText({ letter });
     }
-    if (!line) return;
+    if (!line) return Promise.resolve();
 
     const key = firstClip(clip);
-    if (!key) return;
+    if (!key) return Promise.resolve();
 
     stopVoice();
     const gen = voiceGen;
     beginDuck();
-    const done = () => { if (gen === voiceGen) endDuck(); };
 
-    try {
-      const a = new Audio(`audio/${clips[key]}`);
-      clipEl = a;
+    return new Promise((resolve) => {
       let handed = false;
-      const fallback = () => {
-        if (gen !== voiceGen || handed) return;
-        handed = true;
-        done();
-      };
-      /* A clip that stalls fires neither `ended` nor `error`. Without this
-         the music would stay ducked for the rest of the morning. */
-      const guard = setTimeout(() => {
-        if (gen !== voiceGen || handed) return;
-        handed = true;
-        done();
-      }, CLIP_WATCHDOG_MS);
-      a.addEventListener('ended', () => {
-        clearTimeout(guard);
+      const finish = () => {
         if (handed) return;
         handed = true;
-        done();
-      }, { once: true });
-      a.addEventListener('error', () => { clearTimeout(guard); fallback(); }, { once: true });
-      a.play().catch(() => { clearTimeout(guard); fallback(); });
-    } catch (err) {
-      done();
-    }
+        if (clipSettle === finish) clipSettle = null;
+        if (gen === voiceGen) endDuck();
+        resolve();
+      };
+      clipSettle = finish;
+      try {
+        const a = new Audio(`audio/${clips[key]}`);
+        clipEl = a;
+        /* A clip that stalls fires neither `ended` nor `error`. Without this
+           the music would stay ducked for the rest of the morning. */
+        const guard = setTimeout(finish, CLIP_WATCHDOG_MS);
+        const stop = () => { clearTimeout(guard); finish(); };
+        a.addEventListener('ended', stop, { once: true });
+        a.addEventListener('error', stop, { once: true });
+        a.play().catch(stop);
+      } catch (err) {
+        finish();
+      }
+    });
   },
 
   stopVoice,
@@ -388,24 +390,24 @@ export const audio = {
      cheer   — after a correct submitted two-tap.
      nudge   — after a wrong one. Never scolds, always invites another go. */
   sayLetterName(letter) {
-    if (!letter) return;
+    if (!letter) return Promise.resolve();
     const L = up(letter);
-    audio.speak(`${L}!`, { clip: clipId.name(L), kind: 'name', letter: L });
+    return audio.speak(`${L}!`, { clip: clipId.name(L), kind: 'name', letter: L });
   },
   sayPhoneme(entry) {
-    if (!entry) return;
+    if (!entry) return Promise.resolve();
     const L = up(entry.letter);
     const id = clipId.phoneme(L);
-    if (!audio.hasClip(id)) return;
-    audio.speak(phonemeText(entry), { clip: id, kind: 'phoneme', letter: L });
+    if (!audio.hasClip(id)) return Promise.resolve();
+    return audio.speak(phonemeText(entry), { clip: id, kind: 'phoneme', letter: L });
   },
   /* Per-picture clip first ("Apple!"), then one clip for the whole letter. */
   sayWord(picture) {
-    if (!picture || !picture.word) return;
+    if (!picture || !picture.word) return Promise.resolve();
     const L = up(picture.letter);
-    if (!L) { audio.speak(picture.word, { kind: 'word' }); return; }
+    if (!L) return audio.speak(picture.word, { kind: 'word' });
     const chain = picture.id ? [clipId.word(L, picture.id), clipId.word(L)] : [clipId.word(L)];
-    audio.speak(picture.word, { clip: chain, kind: 'word', letter: L });
+    return audio.speak(picture.word, { clip: chain, kind: 'word', letter: L });
   },
   /* SFX bed still plays. Lucy also speaks the mapped line. */
   cheer() {

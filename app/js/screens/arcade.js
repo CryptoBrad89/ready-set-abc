@@ -5,16 +5,15 @@ import { el, icon, pressable } from '../ui.js';
 import { letterByChar } from '../data.js';
 import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
-import { playStartLetter } from '../clouds.js';
 import { startRound } from '../round.js';
-import { isArcadeLocked, startLetter } from '../profile.js';
+import { isArcadeLocked, nextLetter } from '../profile.js';
 import { wobble } from '../motion.js';
 
 export const chrome = { tabs: true, tab: 'arcade', who: true };
 
 export function render(ctx) {
   const locked = isArcadeLocked(ctx.kid);
-  const L = startLetter(playStartLetter());
+  const L = nextLetter(ctx.kid);
   const entry = letterByChar(L);
   const lucy = createLucy({
     state: 'idle',

@@ -104,6 +104,15 @@ export function picturesFor(letter) {
   }];
 }
 
+/* X is taught as /ks/, which a picture word ends with rather than starts with. */
+export function soundAtEnd(entry) {
+  return !!(entry && entry.soundAt === 'end');
+}
+
+export function soundPhrase(entry, word) {
+  return soundAtEnd(entry) ? `${word} ends with ${entry.letter}` : `${word} starts with ${entry.letter}`;
+}
+
 export function pickPicture(letter, { exclude = [] } = {}) {
   const pool = picturesFor(letter);
   if (!pool.length) return null;
