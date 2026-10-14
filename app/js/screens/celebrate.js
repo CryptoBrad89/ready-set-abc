@@ -14,6 +14,7 @@ import { store } from '../store.js';
 import { toggleWear, wornHas, wornOutfitId, nextTreat, nextTreatNudge } from '../closet.js';
 import { burstConfetti } from '../motion.js';
 import * as round from '../round.js';
+import { soundAtEnd } from '../data.js';
 
 export const chrome = { tabs: true, tab: 'home', who: true };
 
@@ -90,8 +91,8 @@ export function render(ctx) {
   const stars = r.results[entry.letter] !== undefined ? r.results[entry.letter] : round.bankLetter();
   const isLast = r.index >= r.letters.length - 1;
   /* Mid-round this is the next letter in the set; at the end of a round it is
-     the ABC cursor (nextAbcIndex) or the pin — so the button names the letter
-     that actually opens, instead of a vague "Play again". */
+     this child's next letter (profile.nextLetter) — so the button names the
+     letter that actually opens, instead of a vague "Play again". */
   const nextEntry = round.upNextLetter();
   const pic = round.currentPicture() || { word: entry.word, emoji: entry.emoji, letter: entry.letter };
   const sticker = r.sticker || null;
@@ -223,7 +224,9 @@ export function render(ctx) {
         ),
         el('p', { class: 'trophy-isfor' }, 'is for ', el('b', {}, pic.word)),
         el('p', { class: 'trophy-sound' }, 'Phonic sound: ',
-          el('b', {}, `${entry.phoneme} ${entry.phoneme} ${pic.word}`)),
+          el('b', {}, soundAtEnd(entry)
+            ? `${pic.word} ends with ${entry.phoneme}`
+            : `${entry.phoneme} ${entry.phoneme} ${pic.word}`)),
         hearAgain,
       ),
     ),

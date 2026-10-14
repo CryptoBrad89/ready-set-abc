@@ -2,7 +2,7 @@ import { el, icon, pressable, picturePlate } from '../ui.js';
 import { picturesFor } from '../data.js';
 import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
-import { startLetter } from '../profile.js';
+import { nextLetter } from '../profile.js';
 
 export const chrome = { tabs: true, tab: 'stories', who: true };
 
@@ -55,7 +55,7 @@ function hashFor(i) {
 }
 
 export function render(ctx) {
-  const L = startLetter('P');
+  const L = nextLetter(ctx.kid);
   const story = picnicStory(L);
   const pages = story.pages;
   const i = pageIndex(ctx.params, pages.length);

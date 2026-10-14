@@ -12,6 +12,7 @@ import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
 import { store } from '../store.js';
 import * as round from '../round.js';
+import { soundPhrase } from '../data.js';
 
 export const chrome = { tabs: true, tab: 'home', who: true };
 
@@ -307,7 +308,7 @@ export function render(ctx) {
   function giveHint() {
     const answer = round.useHint();
     glowAnswer();
-    lucy.say(`Listen: ${entry.say}… ${entry.word} starts with ${entry.letter}!`, { voice: false });
+    lucy.say(`Listen: ${entry.say}… ${soundPhrase(entry, entry.word)}!`, { voice: false });
     paintSockets();
     return answer;
   }
@@ -353,7 +354,7 @@ export function render(ctx) {
       if (r.hinted) {
         glowAnswer();
         if (r.misses === (r.hintAfter || store.getSettings().hintAfter)) {
-          lucy.say(`Listen: ${entry.say}… ${entry.word} starts with ${entry.letter}!`, { voice: false });
+          lucy.say(`Listen: ${entry.say}… ${soundPhrase(entry, entry.word)}!`, { voice: false });
         }
       }
       return;
