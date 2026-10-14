@@ -1,6 +1,6 @@
 # Phase 2 mockups
 
-Three animated directions for Ready Set ABC. Ages 3–4, landscape tablet first, phone as the second frame. These are review prototypes under `design/` only. Nothing in `app/` changes.
+Animated directions for Ready Set ABC, including Silk Thread plus C1–C4. Ages 3–4, landscape tablet first, phone as the second frame. These are review prototypes under `design/` only. Nothing in `app/` changes.
 
 Open `design/index.html` from a static server (`python3 -m http.server` inside `design/`). Each prototype has a bottom bar for Home, the letter trail, Listen, celebration, and Grown-Ups. Add `?demo=1` to loop the screens. Add `?screen=listen&shot=1` to open one screen with the review bar hidden.
 
@@ -118,11 +118,35 @@ PNGs and MP4s are written to the project store, not into `app/`:
 
 `/cursor/stores/bc-69cca2ee-086d-4958-861f-572ca096de17/media/phase2-design/`
 
-- `direction-{a|b|c}-{home|trail|listen|celebration|grown-ups}-{1180x820|390x844}.png`
-- `direction-{a|b|c}-motion.mp4` — about 17s, tablet size, `?demo=1` loop
+- `direction-{a|b|c|c1|c2|c3|c4}-{home|trail|listen|celebration|grown-ups}-{1180x820|390x844}.png`
+- matching `direction-*-motion.mp4` clips, about 17s, from `?demo=1`
 
-Regenerate with `NODE_PATH` pointing at `playwright-core`, then `node design/scripts/capture.mjs`.
+Regenerate one set with `DIRECTIONS=c1,c2,c3,c4 node design/scripts/capture.mjs`.
+
+## C1 — Ink Room
+
+**Why.** Silk Thread’s room, float, iris, and mesh stay. Comic energy is layered on: a page outline, ink borders, halftone dots, a speech-bubble line, and POW / TAP / YES bursts on press. The palette is butter, sky, and coral, still soft, with warm ink `#3a2a22` instead of flat black.
+
+**Motion.** Everything in C, plus dot drift (9s), a 700ms burst that scales and spins off each tap, and mesh speed 0.95 (1.7 on the bow). Iris wipe unchanged.
+
+## C2 — Soft Comic Page
+
+**Why.** This one changes the layout. It uses the Stitch page: butter header, Play Cards / ABC Trail / Star Pouch, dotted ground, pillow panels with a lip. Lucy still floats. The iris and the mesh stay. Colors are washed so it is not the live app’s electric blue.
+
+**Motion.** Panels pop in (700ms overshoot). Play breathes every 1.5s. A bead runs the trail gutter in 3.4s. The picked picture lifts. Celebration speeds the mesh from 0.75 to 1.5. Screen changes are still the circle wipe.
+
+## C3 — Puddle Room
+
+**Why.** Same Silk Thread skeleton, no comic ink. The room is a shallow pool: Fredoka type, sky-and-sand mesh, rings that expand and fade. Letters and pictures are round. For a 3- or 4-year-old it should feel like jumping in, not like a poster.
+
+**Motion.** Lucy’s float adds a squash at the top of each hop (about 22px). SATPIN beads hop in a wave, 120ms apart. Three ripple rings loop every 3.2s. The trail stroke marches. Mesh speed is 1.05, and 1.8 when the stars come out. Iris wipe unchanged.
+
+## C4 — Lantern Room
+
+**Why.** Same skeleton again, and not a cousin of the puddle. Comfortaa letters, honey mesh, paper lanterns rising. Lucy wears a warm halo. Beads hang like little lamps. No panels, no halftone, no speech-balloon tail.
+
+**Motion.** Lucy travels a small loop (side to side and up) over 3.4s instead of a straight bob. Trail pearls bobble 14px, staggered. Five lanterns climb the screen on a 7s sway. Mesh speed 0.9, 1.6 on celebration. Iris wipe unchanged.
 
 ## Left for Bradley
 
-Pick a direction, or steal one motion (the curtain, the misregistered S, the mesh) into another. The yellow comic skin in the live app is untouched until that choice.
+A, B, and C are unchanged. C1 and C2 are the comic blends. C3 and C4 are the soft kid rooms. The live app is untouched.

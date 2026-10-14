@@ -12,7 +12,7 @@ const outDir =
   "/cursor/stores/bc-69cca2ee-086d-4958-861f-572ca096de17/media/phase2-design";
 const chrome = process.env.CHROME || "/usr/local/bin/google-chrome";
 
-const directions = ["a", "b", "c"];
+const directions = (process.env.DIRECTIONS || "a,b,c").split(",").map((s) => s.trim()).filter(Boolean);
 const screens = ["home", "trail", "listen", "celebration", "grown-ups"];
 const sizes = [
   { w: 1180, h: 820, tag: "1180x820" },

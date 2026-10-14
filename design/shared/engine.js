@@ -3,6 +3,11 @@ const PALETTES = {
   theatre: ["#ffe7a8", "#ffc14d", "#fff8e8", "#f2b6c9", "#ffffff", "#e8c56b"],
   riso: ["#e4572e", "#355e8c", "#21201c", "#f4edde", "#ffd1c4"],
   atelier: ["#f0b27a", "#7eb8a8", "#f4d35e", "#c4785a", "#fffaf3", "#e7d3b0"],
+  ink: ["#ffd56a", "#7ec8e3", "#ef8b7a", "#fff6ea", "#3a2a22", "#f3c1d8"],
+  blossom: ["#f3c7a0", "#e7a0b0", "#fff8f4", "#c47a8a", "#f6d7b0", "#d98aa8"],
+  meadow: ["#9fd4e8", "#8fcec0", "#f6e2a4", "#fffaf0", "#5aa8b8", "#c6ead8"],
+  puddle: ["#9fd8ee", "#ffe08a", "#7dcec2", "#fff", "#1d4e63", "#f7d7a8"],
+  lantern: ["#ffd27a", "#f0a06a", "#fff6d8", "#e07a3d", "#5a3418", "#fff"],
 };
 
 function wait(ms) {
