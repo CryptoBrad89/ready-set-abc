@@ -248,7 +248,7 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
   }
   const stage = el('div', { class: `lucy-stage lucy-stage--${variant === 'card' ? 'card' : 'circle'}` }, well, sparkle, slot);
   stage.dataset.idle = 'idle';
-  mountLottie(sparkle, 'sparkle', { loop: true });
+  const sparklePlayer = mountLottie(sparkle, 'sparkle', { loop: true });
   const svg = well;
   svg.dataset.talking = 'false';
 
@@ -333,7 +333,16 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
       if (voice) audio.speak(text);
       api.lastLine = text;
     },
-    dispose() { offVoice(); clearTimeout(timer); },
+    dispose() {
+      offVoice();
+      clearTimeout(timer);
+      if (sparklePlayer && sparklePlayer.destroy) sparklePlayer.destroy();
+      [idleLoop, talkLoop].forEach((node) => {
+        if (!node) return;
+        try { node.pause(); } catch (err) { /* already stopped */ }
+        try { node.removeAttribute('src'); node.load(); } catch (err) { /* ignore */ }
+      });
+    },
     replay() { if (api.lastLine) api.say(api.lastLine); },
     lastLine: line,
   };

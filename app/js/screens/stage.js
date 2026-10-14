@@ -27,6 +27,7 @@ let activeLucy = null;
 
 export function teardown() {
   screenGen += 1;
+  stageBeat = null;
   audio.stopVoice();
   timers.forEach(clearTimeout);
   timers = [];
@@ -172,9 +173,12 @@ function instructionBar(line, trailing) {
   );
 }
 
+let stageBeat = null;
+
 function replayBeat(entry, step, trial) {
-  if (step === 'payoff') return;
-  audio.speakStageBeat(step, entry);
+  if (step === 'payoff') return null;
+  stageBeat = audio.speakStageBeat(step, entry);
+  return stageBeat;
 }
 
 function meetBoard(entry, trial, ctx, root, lucy) {
@@ -194,7 +198,7 @@ function meetBoard(entry, trial, ctx, root, lucy) {
     audio.sfx('select');
     round.continueBeat();
     lucy.say(`Let's find ${entry.letter}!`, { voice: false });
-    afterRight(ctx, root, entry.letter);
+    afterRight(ctx, root, entry.letter, stageBeat);
   });
   return el('div', { class: 'stage-meet' }, card);
 }

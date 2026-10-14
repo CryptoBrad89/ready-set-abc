@@ -9,7 +9,7 @@
    flag is off; it does not reload the page. When the flag is on, install
    waits, and only SKIP_WAITING hands over. */
 
-const VERSION = 'rsabc-shell-v48-codex-pass2';
+const VERSION = 'rsabc-shell-v49-codex-pass3';
 const OFFLINE_FLAG = 'rsabc-offline-on';
 const SHELL = [
   './',
@@ -828,22 +828,21 @@ self.addEventListener('message', (event) => {
   if (!port) return;
 
   event.waitUntil((async () => {
-    const candidate = `${VERSION}~${Date.now()}`;
     try {
-      const live = await liveShellCacheName();
+      await deleteFlagText(OFFLINE_NEXT);
+      await deleteFlagText(OFFLINE_CURRENT);
       const existing = await caches.keys();
       await Promise.all(existing
-        .filter((n) => n.startsWith('rsabc-shell-') && n !== live && n !== candidate)
+        .filter((n) => n.startsWith('rsabc-shell-'))
         .map((n) => caches.delete(n)));
-      const cache = await caches.open(candidate);
+      const cache = await caches.open(VERSION);
       const count = await precacheInto(cache, (done, total) => {
         port.postMessage({ type: 'progress', done, total });
       });
-      await setFlagText(OFFLINE_NEXT, candidate);
-      if (self.state === 'activated') await promoteShellCache();
+      await setFlagText(OFFLINE_CURRENT, VERSION);
       port.postMessage({ type: 'done', count, version: VERSION });
     } catch (err) {
-      await caches.delete(candidate);
+      await caches.delete(VERSION);
       port.postMessage({ type: 'error', message: String(err.message || err) });
     }
   })());

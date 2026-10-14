@@ -237,7 +237,10 @@ function stopSongEl() {
   songNode = null;
 }
 
-function stopVoice() {
+let currentBeat = null;
+
+function stopVoice(keepBeat) {
+  if (!keepBeat) currentBeat = null;
   voiceGen += 1;
   if (clipEl) {
     try { clipEl.pause(); } catch (err) { /* already gone */ }
@@ -347,7 +350,7 @@ export const audio = {
       });
     }
 
-    stopVoice();
+    stopVoice(true);
     const gen = voiceGen;
     beginDuck();
 
@@ -383,7 +386,7 @@ export const audio = {
     });
   },
 
-  stopVoice,
+  stopVoice: () => stopVoice(false),
 
   /* One-shot Music track. Mute Music silences it. Voice / SFX mutes do not. */
   playSong(url) {
@@ -460,10 +463,16 @@ export const audio = {
   /* Stage + story: only mapped whole-word / name / phoneme clips. No TTS. */
   speakStageBeat(step, entry) {
     if (!entry) return Promise.resolve();
+    const token = {};
+    currentBeat = token;
+    const live = () => currentBeat === token;
     if (step === 'meet') {
       return audio.sayLetterName(entry.letter)
-        .then(() => new Promise((r) => { window.setTimeout(r, 420); }))
-        .then(() => audio.sayPhoneme(entry));
+        .then(() => {
+          if (!live()) return null;
+          return new Promise((r) => { window.setTimeout(r, 420); });
+        })
+        .then(() => (live() ? audio.sayPhoneme(entry) : null));
     }
     if (step === 'choose' || step === 'listen') return audio.sayPhoneme(entry);
     return Promise.resolve();

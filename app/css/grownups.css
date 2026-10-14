@@ -143,6 +143,21 @@
 }
 .gu-tab[aria-selected="true"] { background: var(--surface-container-low); color: var(--primary); }
 
+@media (max-width: 520px) {
+  .gu { width: min(100%, calc(100vw - 16px)); }
+  .gu-tabs {
+    flex-wrap: wrap;
+    overflow-x: hidden;
+    padding-inline: 8px;
+  }
+  .gu-tab {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0 8px;
+    text-align: center;
+  }
+}
+
 .gu-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: var(--space-lg); }
 
 @media (max-height: 520px), (orientation: landscape) and (max-height: 440px) {

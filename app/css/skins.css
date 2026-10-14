@@ -201,6 +201,26 @@ html[data-skin="violet"] .pillow {
 }
 html[data-skin="violet"] .play-btn { background: #22d3ee; color: #1b0b2e; border-color: #22d3ee; }
 
+html[data-skin="cosmic"] .face-card,
+html[data-skin="violet"] .face-card {
+  background: #fff;
+}
+html[data-skin="cosmic"] .face-card .face-name {
+  color: #0f172a;
+}
+html[data-skin="violet"] .face-card .face-name {
+  color: #1b0b2e;
+}
+html[data-skin="violet"] .cta--next .play-big,
+html[data-skin="violet"] .cta--next .play-small,
+html[data-skin="violet"] .progress-title,
+html[data-skin="violet"] .progress-sub {
+  color: #1b0b2e;
+}
+html[data-skin="violet"] .progress-wrap {
+  background: #fff;
+}
+
 html[data-skin="cosmic"] .hub-hero-panel { background: #182258; border-color: #0ea5e9; box-shadow: 8px 8px 0 #0b3a55; }
 html[data-skin="cosmic"] .hub-online { background: #f59e0b; }
 html[data-skin="cosmic"] .hub-stat--stars { background: #f59e0b; color: #0f1738; }

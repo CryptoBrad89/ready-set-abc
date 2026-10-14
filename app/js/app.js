@@ -369,7 +369,11 @@ async function boot() {
   applyPresentation();
   const bootEl = document.getElementById('boot-loader');
   const bootLottie = document.getElementById('boot-lottie');
-  if (bootLottie) mountLottie(bootLottie, 'loader', { loop: true });
+  const bootPlayer = bootLottie ? mountLottie(bootLottie, 'loader', { loop: true }) : null;
+  const hideBoot = () => {
+    if (bootPlayer && bootPlayer.destroy) bootPlayer.destroy();
+    if (bootEl) bootEl.hidden = true;
+  };
   document.getElementById('brand-paw').append(icon('paw'));
   document.getElementById('gate-lock-icon').append(icon('lock'));
   document.getElementById('rotate-icon').append(icon('rotate', { size: 96 }));
@@ -414,12 +418,12 @@ async function boot() {
         el('p', {}, 'Ask a grown-up to reload this page.'),
       ),
     ));
-    if (bootEl) bootEl.hidden = true;
+    hideBoot();
     return;
   }
 
   render();
-  if (bootEl) bootEl.hidden = true;
+  hideBoot();
 
   bootWorker();
 }

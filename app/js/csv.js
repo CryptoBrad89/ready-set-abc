@@ -23,8 +23,10 @@ const DEVICE = '_device';
 
 function stripCsvFormula(s) {
   const t = String(s ?? '');
-  /* Sheets prefixes '=… with a guard quote on export. Only strip that guard,
-     not a leading apostrophe that is part of the field (e.g. 'O’Brien). */
+  /* A doubled guard (''=literal) is a real apostrophe in front of a formula
+     character. Strip one quote only. A single guard ('=literal) is the
+     formula escape and becomes =literal. 'Pat stays 'Pat. */
+  if (t.length > 2 && /^''[=+\-@\t\r]/.test(t)) return t.slice(1);
   if (t.length > 1 && t.startsWith("'") && /^'[=+\-@\t\r]/.test(t)) return t.slice(1);
   return t;
 }
@@ -32,6 +34,7 @@ function stripCsvFormula(s) {
 export function csvCell(value) {
   let s = String(value ?? '');
   if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
+  else if (/^'[=+\-@\t\r]/.test(s)) s = `'${s}`;
   return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 

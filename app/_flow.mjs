@@ -882,6 +882,13 @@ const literalRoundTrip = csv.serializeCsv([
 ]);
 assert(csv.csvToSnapshot(literalRoundTrip).className === '=literal',
   'CSV round-trips =literal without losing the equals');
+const apostropheFormula = csv.serializeCsv([
+  ['kind', 'key', 'value'],
+  ['meta', 'format', 'rsabc-csv-v1'],
+  ['setting', 'className', "'=literal"],
+]);
+assert(csv.csvToSnapshot(apostropheFormula).className === "'=literal",
+  'CSV round-trips a literal apostrophe in front of =literal');
 const apostropheSnap = csv.csvToSnapshot('kind,id,name,emoji,color\nkid,k99,\'Pat,🐾,#5aa9f0\n');
 assert(apostropheSnap.roster[0] && apostropheSnap.roster[0].name === "'Pat",
   'CSV import keeps a leading apostrophe in kid names');

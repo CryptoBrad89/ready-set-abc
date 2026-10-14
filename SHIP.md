@@ -4,7 +4,7 @@ Bradley — this is the whole job. It is a folder of files. There is nothing to
 install, no database, no build step, no account. Copy the folder up, open it
 once on Wi-Fi, done.
 
-Shell pin for this drop: **`rsabc-shell-v48-codex-pass2`**
+Shell pin for this drop: **`rsabc-shell-v49-codex-pass3`**
 
 **What is new in this one:** **Online only** by default. Opening the app does not download the shell. Grown-Ups → Device → **Offline only** saves it for a room with no internet, and turning that off deletes the copy. Tablets already on v46 take this thin worker on the next visit so they do not stay cache-first. Get update, then Reload, finishes a pin that was waiting.
 
@@ -50,7 +50,7 @@ Sit on good Wi-Fi first.
 2. Hold or tap into **Grown-Ups** — the PIN is **`1234`**.
 3. Tap the **Device** tab.
 4. Turn **Offline only** on. That runs **Set up this device**. Watch the bar fill.
-5. Wait for it to say **Pinned `rsabc-shell-v48-codex-pass2`**.
+5. Wait for it to say **Pinned `rsabc-shell-v49-codex-pass3`**.
 
 That tablet now has the whole app — screens, pictures, and the letter fonts —
 stored on it. You can turn the Wi-Fi off and it still opens and still looks
