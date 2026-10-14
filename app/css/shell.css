@@ -128,11 +128,21 @@ button { border: 0; background: none; cursor: pointer; padding: 0; }
 }
 .tabs[hidden] { display: none; }
 .tab-label { display: inline; }
-@media (max-width: 780px) {
+/* Landscape tablets: icon tabs so labels are not clipped between brand and stars. */
+@media (max-width: 1200px) {
   .tabs { padding: 6px 8px; gap: 4px; }
-  .tab { padding: 8px 12px; min-height: 40px; }
+  .tab {
+    min-height: var(--target-min);
+    min-width: var(--target-min);
+    padding: 8px;
+    justify-content: center;
+  }
   .tab svg { display: block; }
   .tab-label { display: none; }
+}
+@media (max-width: 780px) {
+  .tabs { padding: 6px 8px; gap: 4px; }
+  .tab { padding: 8px; min-height: var(--target-min); }
 }
 
 .chrome-right { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }

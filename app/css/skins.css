@@ -64,6 +64,11 @@ html:not([data-skin]) .tab {
   padding: 6px 10px;
   min-height: 36px;
 }
+html[data-skin="comic"] .chrome .tab,
+html:not([data-skin]) .chrome .tab {
+  min-height: var(--target-min);
+  min-width: var(--target-min);
+}
 html[data-skin="comic"] .tab[aria-current="page"],
 html:not([data-skin]) .tab[aria-current="page"] {
   background: #ef4444;

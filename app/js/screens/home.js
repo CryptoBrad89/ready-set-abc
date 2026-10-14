@@ -372,9 +372,9 @@ export function render(ctx) {
       discover,
     );
   const phonicsRow = el('div', { class: 'hub-row hub-row--phonics' }, playBtn, soundCard, satCard, matchCard);
+  const playStack = el('div', { class: 'hub-play-stack' }, phonicsHead, phonicsRow);
   root.append(
-    phonicsHead,
-    phonicsRow,
+    playStack,
     heroPanel,
     el('div', { class: 'hub-section-row' },
       el('h2', { class: 'hub-section' },
