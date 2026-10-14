@@ -8,6 +8,7 @@
 </head>
 <body data-confetti="ink">
   <div id="shader" class="shader"></div>
+  <canvas id="field" class="field" aria-hidden="true"></canvas>
   <div class="dots" aria-hidden="true"></div>
   <div class="motes" aria-hidden="true">
     <i style="--x:8%;--d:0s"></i><i style="--x:22%;--d:1.2s"></i><i style="--x:40%;--d:2.4s"></i>
@@ -28,7 +29,11 @@
     <main>
       <section class="screen home" data-screen="home">
         <div>
-          <h1 class="hello"><span style="--d:.02s">Hello,</span><br /><span style="--d:.12s">letter S.</span></h1>
+          <h1 class="hello trickle" aria-label="Hello, letter S.">
+            <span><i style="--i:0">H</i><i style="--i:1">e</i><i style="--i:2">l</i><i style="--i:3">l</i><i style="--i:4">o</i><i style="--i:5">,</i></span><br />
+            <span><i style="--i:6">l</i><i style="--i:7">e</i><i style="--i:8">t</i><i style="--i:9">t</i><i style="--i:10">e</i><i style="--i:11">r</i> <i style="--i:12">S</i><i style="--i:13">.</i></span>
+          </h1>
+          <span class="sticker" aria-hidden="true">POW</span>
           <p class="lede pop" style="--d:.2s">Lucy is here. The sound is /s/. Tap play when you are ready.</p>
           <div class="beads" aria-label="SATPIN">
             <b class="now">S</b><b>A</b><b>T</b><b>P</b><b>I</b><b>N</b>
@@ -44,14 +49,14 @@
         <p class="prompt pop">A silk path. A is glowing.</p>
         <div class="silk">
           <svg class="wide" viewBox="0 0 1000 420">
-            <path d="M40,260 C180,80 280,340 460,180 S780,60 970,240" fill="none" stroke="#1c1915" stroke-width="2"/>
-            <circle r="11" fill="#b8613a">
+            <path d="M40,260 C180,80 280,340 460,180 S780,60 970,240" fill="none" stroke="#111" stroke-width="4"/>
+            <circle r="11" fill="#ef4444">
               <animateMotion dur="4s" repeatCount="indefinite" path="M40,260 C180,80 280,340 460,180 S780,60 970,240"/>
             </circle>
           </svg>
           <svg class="tall" viewBox="0 0 360 640">
-            <path d="M180,24 C60,160 300,240 180,340 S60,520 180,620" fill="none" stroke="#1c1915" stroke-width="2"/>
-            <circle r="10" fill="#b8613a">
+            <path d="M180,24 C60,160 300,240 180,340 S60,520 180,620" fill="none" stroke="#111" stroke-width="4"/>
+            <circle r="10" fill="#ef4444">
               <animateMotion dur="4s" repeatCount="indefinite" path="M180,24 C60,160 300,240 180,340 S60,520 180,620"/>
             </circle>
           </svg>
@@ -135,7 +140,7 @@
   <style>
     .veil {
       position: fixed; inset: -10%; z-index: 8; pointer-events: none;
-      background: #1c1915;
+      background: #111;
       clip-path: circle(0% at 50% 45%);
       transition: clip-path 0.5s cubic-bezier(0.7, 0, 0.2, 1);
     }
@@ -144,6 +149,7 @@
   <script type="module">
     import { boot } from "../shared/engine.js";
     import { mountMesh, prefersReduced } from "../shared/paper-mount.js";
+    import { paintField } from "../shared/field.js";
     boot();
     const words = ["POW", "TAP", "YES"];
     document.body.addEventListener("pointerdown", (event) => {
@@ -159,18 +165,19 @@
       document.body.appendChild(burst);
       setTimeout(() => burst.remove(), 700);
     });
+    paintField("ink");
     const shader = mountMesh(document.getElementById("shader"), {
-      colors: ["#fff6ea", "#ffd56a", "#7ec8e3", "#ef8b7a", "#f3c1d8"],
-      distortion: 1,
-      swirl: 0.55,
-      grainMixer: 0.3,
-      grainOverlay: 0.14,
-      speed: 0.95,
-      scale: 1.2,
+      colors: ["#ffe600", "#3b82f6", "#ef4444", "#fffdf6", "#7dd3fc"],
+      distortion: 1.05,
+      swirl: 0.62,
+      grainMixer: 0.22,
+      grainOverlay: 0.08,
+      speed: 1.05,
+      scale: 1.25,
     });
     document.addEventListener("phase2:screen", (event) => {
       if (prefersReduced()) return;
-      shader.setSpeed(event.detail === "celebration" ? 1.7 : 0.95);
+      shader.setSpeed(event.detail === "celebration" ? 1.85 : 1.05);
     });
   </script>
 </body>

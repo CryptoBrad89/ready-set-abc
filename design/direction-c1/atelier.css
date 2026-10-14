@@ -1,15 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&family=Instrument+Serif:ital@0;1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@600;800&display=swap");
 @import "../shared/motion.css";
 
 :root {
-  --ivory: #fff6ea;
-  --ink: #3a2a22;
-  --copper: #ef8b7a;
-  --gold: #ffd56a;
-  --sage: #3d8f9a;
+  --ivory: #fff8e8;
+  --ink: #111111;
+  --copper: #ef4444;
+  --gold: #ffe600;
+  --sage: #3b82f6;
   --tap: 88px;
-  --serif: "Instrument Serif", Georgia, serif;
-  --sans: "Instrument Sans", "Segoe UI", sans-serif;
+  --serif: "Bangers", "Arial Black", sans-serif;
+  --sans: "Nunito", "Segoe UI", sans-serif;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }
@@ -192,7 +192,7 @@ main { flex: 1; min-height: 0; padding: 8px 40px 22px; }
   .top { flex-wrap: wrap; }
   .audio button { min-width: 0; flex: 1; }
   .home.is-on, .celebration.is-on, .grown.is-on, .plates { grid-template-columns: 1fr; }
-  .hello { font-size: 72px; }
+  .hello { font-size: 58px; }
   .oval img { height: 200px; }
   .choice { min-height: 96px; flex-direction: row; justify-content: flex-start; padding: 0 14px; }
   .art { transform: scale(0.55); width: 70px; height: 70px; }
@@ -213,40 +213,75 @@ main { flex: 1; min-height: 0; padding: 8px 40px 22px; }
   .portrait img { height: 170px; }
 }
 
+.field { position: fixed; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
+.trickle i {
+  display: inline-block; font-style: normal;
+  animation: trickle 0.7s cubic-bezier(0.16, 1.5, 0.3, 1) both;
+  animation-delay: calc(var(--i) * 45ms);
+}
+@keyframes trickle {
+  0% { opacity: 0; transform: translateY(0.6em) rotate(-8deg); }
+  100% { opacity: 1; transform: none; }
+}
+.sticker {
+  display: inline-block; margin: 4px 0 0 8px; padding: 2px 12px;
+  font-family: var(--serif); font-size: 34px; letter-spacing: 0.04em;
+  color: #fff; background: #ef4444; border: 4px solid #111;
+  box-shadow: 4px 4px 0 #111; transform: rotate(-8deg);
+  animation: sticker 1.4s ease-in-out infinite;
+}
+@keyframes sticker {
+  50% { transform: rotate(7deg) scale(1.1); }
+}
 .dots {
-  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.28;
-  background-image: radial-gradient(#3a2a22 1.1px, transparent 1.2px);
-  background-size: 14px 14px;
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.42;
+  background-image:
+    radial-gradient(#111 1.7px, transparent 1.8px),
+    radial-gradient(#3b82f6 1.3px, transparent 1.4px);
+  background-size: 16px 16px, 16px 16px;
+  background-position: 0 0, 8px 8px;
   mix-blend-mode: multiply;
-  animation: drift 9s linear infinite;
+  animation: drift 7s linear infinite;
 }
-@keyframes drift { to { background-position: 28px 14px; } }
-.shell { outline: 4px solid var(--ink); outline-offset: -10px; }
-.top, .choice, .beads b, .pearl, .folio, .keys button, .play, .oval img, .portrait {
-  border: 3px solid var(--ink) !important;
+@keyframes drift { to { background-position: 32px 16px, 40px 24px; } }
+.shell { outline: 6px solid #111; outline-offset: -8px; }
+.top, .choice, .beads b, .pearl, .folio, .keys button, .play, .oval img, .portrait, .audio button, .gu {
+  border: 4px solid #111 !important;
 }
-.choice, .folio, .play {
-  box-shadow: 5px 5px 0 var(--ink);
+.choice, .folio, .play, .audio, .gu {
+  box-shadow: 6px 6px 0 #111;
 }
+.play {
+  background: #ffe600; color: #111; border-radius: 16px;
+  font-family: var(--serif); font-size: 32px; letter-spacing: 0.03em;
+}
+.play::before {
+  background: conic-gradient(from var(--beam), transparent 0 58%, #ef4444 76%, #3b82f6 90%, transparent 100%);
+}
+.brand, .hello, .prompt, .starword { font-family: var(--serif); letter-spacing: 0.02em; }
+.hello { font-size: clamp(64px, 8vw, 104px); }
 .lede {
   position: relative;
-  background: #fffdf8;
-  border: 3px solid var(--ink);
-  border-radius: 22px 22px 22px 6px;
-  padding: 14px 16px;
-  box-shadow: 4px 4px 0 var(--ink);
+  background: #fff;
+  border: 4px solid #111;
+  border-radius: 18px 22px 22px 4px;
+  padding: 12px 16px;
+  box-shadow: 5px 5px 0 #111;
+  font-weight: 800;
 }
 .lede::after {
   content: "";
-  position: absolute; left: 28px; bottom: -12px;
-  border: 8px solid transparent; border-top-color: var(--ink);
+  position: absolute; left: 28px; bottom: -14px;
+  border: 10px solid transparent; border-top-color: #111;
 }
-.beads b.now { background: var(--gold); color: var(--ink); }
+.beads b.now { background: #ef4444; color: #fff; }
+.pearl.now { background: #3b82f6; }
 .pow {
   position: fixed; z-index: 8; pointer-events: none;
-  font-family: var(--serif); font-size: 28px; color: var(--ink);
-  background: var(--gold); border: 3px solid var(--ink);
-  padding: 2px 8px; border-radius: 8px;
+  font-family: var(--serif); font-size: 32px; color: #111;
+  background: #ffe600; border: 4px solid #111;
+  padding: 0 10px; border-radius: 6px;
+  box-shadow: 3px 3px 0 #111;
   animation: pow 0.7s cubic-bezier(0.16, 1.6, 0.3, 1) forwards;
 }
 @keyframes pow {

@@ -125,27 +125,27 @@ Regenerate one set with `DIRECTIONS=c1,c2,c3,c4 node design/scripts/capture.mjs`
 
 ## C1 — Ink Room
 
-**Why.** Silk Thread’s room, float, iris, and mesh stay. Comic energy is layered on: a page outline, ink borders, halftone dots, a speech-bubble line, and POW / TAP / YES bursts on press. The palette is butter, sky, and coral, still soft, with warm ink `#3a2a22` instead of flat black.
+**Why.** Silk Thread’s room, float, iris, and mesh stay. The look is the in-repo comic skin (`app/css/skins.css`, `UX-FROM-STITCH.md`): ink `#111`, yellow `#ffe600`, blue `#3b82f6`, red `#ef4444`, thick outlines, halftone, a speech balloon, and a POW sticker. Bangers plus Nunito. Plate notes: `design/direction-c1/README.md`.
 
-**Motion.** Everything in C, plus dot drift (9s), a 700ms burst that scales and spins off each tap, and mesh speed 0.95 (1.7 on the bow). Iris wipe unchanged.
+**Motion.** Everything in C, plus letter trickle, a wobbling POW sticker, halftone drift (7s), a drifting primary-dot canvas, a 700ms POW / TAP / YES burst on press, and mesh speed 1.05 (1.85 on the bow). Iris wipe unchanged.
 
-## C2 — Soft Comic Page
+## C2 — Pop Press
 
-**Why.** This one changes the layout. It uses the Stitch page: butter header, Play Cards / ABC Trail / Star Pouch, dotted ground, pillow panels with a lip. Lucy still floats. The iris and the mesh stay. Colors are washed so it is not the live app’s electric blue.
+**Why.** Same Silk Thread skeleton as C, not the Stitch page chrome. A second comic: Anton, cyan `#00b4d8` / magenta `#e91e8c` / yellow `#ffe14a`, a spinning starburst, misregistered type, cloud balloon, BOOM / ZAP / WOW. Distinct from C1’s primary ink. Plate notes: `design/direction-c2/README.md`.
 
-**Motion.** Panels pop in (700ms overshoot). Play breathes every 1.5s. A bead runs the trail gutter in 3.4s. The picked picture lifts. Celebration speeds the mesh from 0.75 to 1.5. Screen changes are still the circle wipe.
+**Motion.** Letter trickle, starburst spin (9s), magenta halftone drift, CMYK canvas dots, border beam on Play, 650ms bursts, mesh speed 1.1 (1.9 on celebration). Iris wipe unchanged.
 
 ## C3 — Puddle Room
 
-**Why.** Same Silk Thread skeleton, no comic ink. The room is a shallow pool: Fredoka type, sky-and-sand mesh, rings that expand and fade. Letters and pictures are round. For a 3- or 4-year-old it should feel like jumping in, not like a poster.
+**Why.** Same Silk Thread skeleton, no comic ink. The room is a shallow pool: Fredoka type, sky-and-sand mesh, rings that expand and fade. Letters and pictures are round. For a 3- or 4-year-old it should feel like jumping in, not like a poster. Plate notes: `design/direction-c3/README.md`.
 
-**Motion.** Lucy’s float adds a squash at the top of each hop (about 22px). SATPIN beads hop in a wave, 120ms apart. Three ripple rings loop every 3.2s. The trail stroke marches. Mesh speed is 1.05, and 1.8 when the stars come out. Iris wipe unchanged.
+**Motion.** Lucy’s float adds a squash at the top of each hop (about 22px). SATPIN beads hop in a wave, 120ms apart. Three ripple rings loop every 3.2s. Letters trickle in. A warm spotlight drifts. Bubbles rise on a canvas. The trail stroke marches. Mesh speed is 1.05, and 1.8 when the stars come out. Iris wipe unchanged.
 
 ## C4 — Lantern Room
 
-**Why.** Same skeleton again, and not a cousin of the puddle. Comfortaa letters, honey mesh, paper lanterns rising. Lucy wears a warm halo. Beads hang like little lamps. No panels, no halftone, no speech-balloon tail.
+**Why.** Same skeleton again, and not a cousin of the puddle. Comfortaa letters, honey mesh, paper lanterns rising. Lucy wears a warm halo. Beads hang like little lamps. No panels, no halftone, no speech-balloon tail. Plate notes: `design/direction-c4/README.md`.
 
-**Motion.** Lucy travels a small loop (side to side and up) over 3.4s instead of a straight bob. Trail pearls bobble 14px, staggered. Five lanterns climb the screen on a 7s sway. Mesh speed 0.9, 1.6 on celebration. Iris wipe unchanged.
+**Motion.** Lucy travels a small loop (side to side and up) over 3.4s instead of a straight bob. Letters trickle in with a small tilt. Trail pearls bobble 14px, staggered. Five lanterns climb the screen on a 7s sway. A soft sheen crosses the headline. Firefly dots rise on a canvas. Mesh speed 0.9, 1.6 on celebration. Iris wipe unchanged.
 
 ## Left for Bradley
 

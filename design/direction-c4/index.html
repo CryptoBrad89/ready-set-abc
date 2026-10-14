@@ -8,6 +8,7 @@
 </head>
 <body data-confetti="lantern">
   <div id="shader" class="shader"></div>
+  <canvas id="field" class="field" aria-hidden="true"></canvas>
   <div class="lanterns" aria-hidden="true">
     <i style="--x:12%;--d:0s"></i><i style="--x:30%;--d:1.4s"></i><i style="--x:52%;--d:.6s"></i>
     <i style="--x:70%;--d:2s"></i><i style="--x:88%;--d:1s"></i>
@@ -31,7 +32,10 @@
     <main>
       <section class="screen home" data-screen="home">
         <div>
-          <h1 class="hello"><span style="--d:.02s">Lights on.</span><br /><span style="--d:.12s">Letter S.</span></h1>
+          <h1 class="hello sheen trickle" aria-label="Lights on. Letter S.">
+            <span><i style="--i:0">L</i><i style="--i:1">i</i><i style="--i:2">g</i><i style="--i:3">h</i><i style="--i:4">t</i><i style="--i:5">s</i> <i style="--i:6">o</i><i style="--i:7">n</i><i style="--i:8">.</i></span><br />
+            <span><i style="--i:9">L</i><i style="--i:10">e</i><i style="--i:11">t</i><i style="--i:12">t</i><i style="--i:13">e</i><i style="--i:14">r</i> <i style="--i:15">S</i><i style="--i:16">.</i></span>
+          </h1>
           <p class="lede pop" style="--d:.2s">Lucy carries the lantern. The sound is /s/. Come along.</p>
           <div class="beads" aria-label="SATPIN">
             <b class="now">S</b><b>A</b><b>T</b><b>P</b><b>I</b><b>N</b>
@@ -147,7 +151,9 @@
   <script type="module">
     import { boot } from "../shared/engine.js";
     import { mountMesh, prefersReduced } from "../shared/paper-mount.js";
+    import { paintField } from "../shared/field.js";
     boot();
+    paintField("lantern");
     const shader = mountMesh(document.getElementById("shader"), {
       colors: ["#fff3e4", "#ffd27a", "#f0a06a", "#e7c2ae", "#f7e1b8"],
       distortion: 0.8,
