@@ -4,7 +4,7 @@ Bradley — this is the whole job. It is a folder of files. There is nothing to
 install, no database, no build step, no account. Copy the folder up, open it
 once on Wi-Fi, done.
 
-Shell pin for this drop: **`rsabc-shell-v46-lucy-clips`**
+Shell pin for this drop: **`rsabc-shell-v47-work-order`**
 
 **What is new in this one:** **Online only** by default. Opening the app does not download the shell. Grown-Ups → Device → **Offline only** saves it for a room with no internet, and turning that off deletes the copy. Tablets already on v46 take this thin worker on the next visit so they do not stay cache-first. Get update, then Reload, finishes a pin that was waiting.
 
@@ -50,7 +50,7 @@ Sit on good Wi-Fi first.
 2. Hold or tap into **Grown-Ups** — the PIN is **`1234`**.
 3. Tap the **Device** tab.
 4. Turn **Offline only** on. That runs **Set up this device**. Watch the bar fill.
-5. Wait for it to say **Pinned `rsabc-shell-v46-lucy-clips`**.
+5. Wait for it to say **Pinned `rsabc-shell-v47-work-order`**.
 
 That tablet now has the whole app — screens, pictures, and the letter fonts —
 stored on it. You can turn the Wi-Fi off and it still opens and still looks
@@ -78,6 +78,15 @@ for a grown-up to reload. A tablet that was cache-first on an older pin picks
 up the thin worker on the next visit so it does not stay that way.
 
 Do this on a prep period, never mid-lesson.
+
+### Host caching (how to upload without breaking updates)
+
+Upload the **whole** `app/` tree every time. Do not rename paths.
+
+- **HTML, JS, CSS, JSON, `sw.js`, `manifest.webmanifest`:** serve with **no long-lived cache** (for example `Cache-Control: no-cache` or short `max-age` with revalidation). Teachers need the cart to pick up a new pin on the next visit.
+- **Fonts, audio, art, icons, vendor, lottie:** these paths are pinned in `sw.js` and can use **long cache** (`immutable` / one-year) because the shell pin changes when they change.
+- Upload **atomically** when you can (staging folder, then swap) so a tablet never reads half of a deploy mid-request.
+- After upload, one tablet on Wi-Fi should run **Get update** then **Reload to finish** so the service worker and offline shell match the files on disk.
 
 ## 5. Smoke test it in two minutes
 
