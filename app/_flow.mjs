@@ -3,6 +3,7 @@
    Run from app/:  node _flow.mjs   (no dependencies, no browser) */
 
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -211,8 +212,22 @@ function twoTap(letter, { miss = false, hint = false } = {}) {
     guard += 1;
   }
   assert(round.advance() === 'listen', `${letter} choose → listen`);
-  const orb = round.getRound().trial.orbs.find((o) => o.target);
-  assert(round.tapListen(orb.id) === 'right', `${letter} listen`);
+  const listenTrial = round.getRound().trial;
+  if (round.usesPictureListen(letter)) {
+    assert(listenTrial.pictures && listenTrial.pictures.length === 3, `${letter} listen deals three pictures`);
+    const targets = listenTrial.pictures.filter((p) => p.target);
+    assert(targets.length === 1 && targets[0].word.charAt(0).toUpperCase() === letter,
+      `${letter} listen has one picture whose word starts with ${letter}`);
+    assert(listenTrial.pictures.filter((p) => !p.target).every((p) => p.word.charAt(0).toUpperCase() !== letter),
+      `${letter} listen foils do not start with ${letter}`);
+    assert(!listenTrial.orbs, `${letter} listen does not deal speaker orbs`);
+    assert(round.tapListen(targets[0].choiceId) === 'right', `${letter} listen`);
+  } else {
+    assert(!listenTrial.pictures, `${letter} listen is not the picture board`);
+    assert(listenTrial.orbs && listenTrial.orbs.length === 3, `${letter} listen keeps three speaker orbs`);
+    const orb = listenTrial.orbs.find((o) => o.target);
+    assert(round.tapListen(orb.id) === 'right', `${letter} listen`);
+  }
   assert(round.advance() === 'payoff', `${letter} listen → payoff`);
   assert(round.continueBeat() === 'right', `${letter} payoff`);
   assert(round.advance() === 'celebrate', `${letter} payoff → celebrate`);
@@ -475,6 +490,9 @@ ALPHABET.forEach((L) => {
   const phonemeBytes = readFileSync(join(root, 'audio', `lucy-phoneme-${L.toLowerCase()}.mp3`));
   assert(!nameBytes.equals(phonemeBytes), `${L} name and phoneme files are distinct recordings`);
 });
+assert(createHash('md5').update(readFileSync(join(root, 'audio', 'lucy-phoneme-p.mp3'))).digest('hex')
+  === '007e5ed80ebfb7604f347d295c1453bf',
+  'phoneme-P is reference/Starfall/audio/P/phoneme.mp3');
 assert(['name', 'phoneme', 'word', 'cheer', 'nudge'].every((k) => ph[k] && ph[k].ids && ph[k].say),
   'audio.json documents name / phoneme / word / cheer / nudge, each with what to say');
 const phIds = Object.assign({}, ...['name', 'phoneme', 'word', 'cheer', 'nudge'].map((k) => ph[k].ids));
@@ -718,8 +736,11 @@ if (!round.getRound().trial.locked) {
   while (!round.getRound().trial.locked) round.tapChoose('A');
 }
 assert(round.advance() === 'listen', 'hinted choose → listen');
-const hintOrb = round.getRound().trial.orbs.find((o) => o.target);
-assert(round.tapListen(hintOrb.id) === 'right', 'listen after hint');
+const hintTrial = round.getRound().trial;
+const hintId = hintTrial.pictures
+  ? hintTrial.pictures.find((p) => p.target).choiceId
+  : hintTrial.orbs.find((o) => o.target).id;
+assert(round.tapListen(hintId) === 'right', 'listen after hint');
 assert(round.advance() === 'payoff', 'listen → payoff');
 assert(round.continueBeat() === 'right', 'payoff after hint');
 assert(round.advance() === 'celebrate', 'four-beat → celebrate (bonus is not on the kid path)');
@@ -2038,15 +2059,23 @@ assert(/\} else if \(store\.progressMode\(\) !== 'none'\)/.test(d4Cel),
 assert(!/unlocked \$\{treat\.name\}/.test(d4Cel), 'Lucy does not say "unlocked" at a four year old');
 assert(/You opened \$\{treat\.name\} for me/.test(d4Cel), 'she says she opened it, and asks to wear it');
 assert(/if \(ctx\.foot\) ctx\.foot\(\)/.test(d4Cel), 'wearing it from the celebrate card updates the footer');
-/* The hand-off has to be on the screen a cart Chromebook actually has. The
-   trophy does not shrink, so the stars + trophy scroll and the pouch row and
-   the buttons are pinned under them — never covered, never below the fold. */
-assert(/celebrate-scroll/.test(d4Cel), 'the celebration art has its own scroller');
-assert(/scroll\.append\(el\('div', \{ class: 'celebrate-head'/.test(d4Cel)
-  && /scroll\.append\(el\('div', \{ class: 'celebrate-body'/.test(d4Cel),
-  'the stars and the trophy are what scrolls');
-assert(/if \(pouchRow\.childNodes\.length\) root\.append\(pouchRow\)/.test(d4Cel),
-  'and the Star Pouch hand-off is pinned outside it');
+/* The hand-off has to be on the screen a cart Chromebook actually has.
+   Stars, Lucy, and the trophy are one column that scales to that screen.
+   There is no scroll frame, and the letter is not cropped inside a box. */
+assert(!/celebrate-scroll/.test(d4Cel), 'the celebration has no hidden scroll frame');
+assert(/scaleH/.test(d4Cel) && /scaleW/.test(d4Cel) && /\(availableW - 2\) \/ neededW/.test(d4Cel)
+  && /\(availableH - 2\) \/ neededH/.test(d4Cel),
+  'the celebration column scales to the stage on both axes when the screen is short');
+assert(/celebrate-col/.test(d4Cel)
+  && /class: 'celebrate-head'/.test(d4Cel)
+  && /class: 'celebrate-body'/.test(d4Cel)
+  && /class: 'trophy'/.test(d4Cel),
+  'stars, Lucy, and the trophy sit in one column');
+assert(/if \(pouchRow\.childNodes\.length\) column\.append\(pouchRow\)/.test(d4Cel),
+  'New Sticker and Lucy\'s Closet stay in that column');
+assert(/column\.append\(el\('div', \{ class: 'celebrate-actions'/.test(d4Cel)
+  && /cta--next/.test(d4Cel),
+  'Next stays in that column');
 /* --- the shelf is one scroller ------------------------------------------ */
 const d4Css = readFileSync(join(root, 'css/play.css'), 'utf8');
 const d4PouchRule = (d4Css.match(/\.pouch \{[^}]*\}/) || [''])[0];
@@ -2069,8 +2098,14 @@ assert(!/style: \{ marginLeft: 'auto'/.test(d4Pouch), 'so the screen carries no 
 const d4CelRule = (d4Css.match(/\.celebrate \{[^}]*\}/) || [''])[0];
 assert(!/grid-template-rows/.test(d4CelRule),
   'no fixed row template — that is what let the trophy overflow onto the hand-off');
-assert(/\.celebrate-scroll > \* \{ flex: 0 0 auto/.test(d4Css),
-  'and the scroller does not squash its children back into overlapping');
+assert(!/\.celebrate-scroll/.test(d4Css), 'no inner scroll box on the celebration');
+assert(/\.celebrate-col \{/.test(d4Css), 'one column scales to the screen');
+assert(/flex-direction:\s*row/.test((d4Css.match(/\.celebrate-body \{[^}]*\}/) || [''])[0]),
+  'Lucy sits beside the trophy so the celebration uses the width of the page');
+assert(!/840px/.test((d4Css.match(/\.trophy \{[^}]*\}/) || [''])[0]),
+  'the trophy card is not locked to a small width');
+assert(!/\.trophy \{[^}]*overflow:\s*hidden/.test(d4Css), 'the trophy does not clip the letter');
+assert(!/\.celebrate-body \{[^}]*overflow:\s*hidden/.test(d4Css), 'no second box clips the letter');
 assert(/\.pouch-drop \{[^}]*flex: 0 0 auto/.test(d4Css), 'the pinned row keeps its height');
 assert(/@media \(max-height: 820px\) \{\s*\.pouch-drop/.test(d4Css),
   'on a short cart screen the pinned row goes to a strip so pinning it costs little');
@@ -2792,6 +2827,105 @@ store.setSkin('violet');
 assert(store.getSkin() === 'violet', 'and the violet arcade skin');
 store.setSkin('comic');
 assert(store.getSkin() === 'comic', 'comic is the default light hub');
+
+/* First set (S A T P I N) listen is pictures. Every other letter keeps three speaker orbs. */
+setTeacherUnlock(5);
+round.goHome();
+store.setSetting('roundSize', 1);
+round.startRound({ startAt: 'P' });
+round.continueBeat();
+round.advance();
+while (round.getRound().step === 'choose' && !round.getRound().trial.locked) round.tapChoose('P');
+assert(round.advance() === 'listen', 'P picture listen follows choose');
+const pListen = round.getRound().trial;
+const pFoil = pListen.pictures.find((p) => !p.target);
+const pMisses = round.getRound().misses;
+assert(round.tapListen(pFoil.choiceId) === 'wrong', 'P wrong picture is a miss');
+assert(round.getRound().step === 'listen' && !round.getRound().trial.locked,
+  'a wrong P picture does not advance');
+assert(round.getRound().misses === pMisses + 1, 'a wrong P picture counts a miss');
+assert(String(pFoil.word).charAt(0).toUpperCase() !== 'P', 'the miss picture does not start with P');
+const stageMod = await import('./js/screens/stage.js');
+const pView = stageMod.render({ go() {}, kid: null, foot() {} });
+assert(/Find the sound \/p\//.test(textOf(pView)), 'P listen prompt is Find the sound /p/.');
+const pReplay = byClass(pView, 'stage-listen-replay');
+assert(pReplay.length === 1, 'P listen has one replay control');
+const pSpeaker = pReplay[0].querySelector('svg');
+assert(pSpeaker && pSpeaker.style.width === '72px' && pSpeaker.style.height === '72px',
+  'P replay speaker is drawn at 72px, not 0×0');
+const pPics = byClass(pView, 'stage-listen-pic');
+assert(pPics.length === 3, 'P listen renders three pictures');
+assert(byClass(pView, 'stage-orb').length === 0, 'P listen renders no speaker orbs');
+const pLabels = pPics.map((n) => n.getAttribute('aria-label') || '');
+assert(pLabels.filter((label) => /, starts with \/p\//.test(label)).length === 1,
+  'one rendered picture starts with /p/');
+assert(pLabels.filter((label) => !/, starts with \/p\//.test(label)).length === 2,
+  'two rendered pictures do not start with /p/');
+const stageSrc = readFileSync(join(root, 'js/screens/stage.js'), 'utf8');
+const picBoard = stageSrc.slice(
+  stageSrc.indexOf('function listenPictureBoard'),
+  stageSrc.indexOf('function payoffBoard'),
+);
+assert(picBoard.includes('audio.sayPhoneme(entry)'), 'P replay uses sayPhoneme');
+assert(picBoard.includes('audio.sayPhoneme({ letter: start })'),
+  'a wrong P picture says that word’s starting phoneme');
+assert(picBoard.includes('listenSucceeded'), 'a right P picture uses the listen success path');
+assert(!picBoard.includes('sayWord') && !picBoard.includes('speechSynthesis'),
+  'P listen does not play a word clip or TTS');
+assert(/replayBeat\(entry, step\)/.test(stageSrc) && /step === 'listen'\) audio\.sayPhoneme\(entry\)/.test(stageSrc),
+  'the listen beat plays the phoneme as soon as it starts');
+assert(/\.stage-listen-replay svg \{[^}]*width: 72px;[^}]*height: 72px;/.test(playCss),
+  'P replay speaker CSS gives the SVG a 72px box');
+stageMod.teardown();
+for (const letter of ['S', 'A', 'T', 'I', 'N']) {
+  round.goHome();
+  round.startRound({ startAt: letter });
+  round.continueBeat();
+  round.advance();
+  while (round.getRound().step === 'choose' && !round.getRound().trial.locked) round.tapChoose(letter);
+  assert(round.advance() === 'listen', `${letter} picture listen follows choose`);
+  const trial = round.getRound().trial;
+  const foil = trial.pictures.find((p) => !p.target);
+  const misses = round.getRound().misses;
+  const target = trial.pictures.find((p) => p.target);
+  assert(trial.pictures.length === 3, `${letter} listen deals three pictures`);
+  assert(target && target.word.charAt(0).toUpperCase() === letter,
+    `${letter} listen has one picture whose word starts with ${letter}`);
+  assert(trial.pictures.filter((p) => p.target).length === 1, `${letter} listen has exactly one target picture`);
+  assert(trial.pictures.filter((p) => !p.target).every((p) => p.word.charAt(0).toUpperCase() !== letter),
+    `${letter} listen foils do not start with ${letter}`);
+  assert(!trial.orbs, `${letter} listen does not deal speaker orbs`);
+  assert(round.tapListen(foil.choiceId) === 'wrong', `${letter} wrong picture is a miss`);
+  assert(round.getRound().step === 'listen' && !round.getRound().trial.locked,
+    `a wrong ${letter} picture does not advance`);
+  assert(round.getRound().misses === misses + 1, `a wrong ${letter} picture counts a miss`);
+  const view = stageMod.render({ go() {}, kid: null, foot() {} });
+  const phoneme = letterByChar(letter).phoneme;
+  assert(textOf(view).includes(`Find the sound ${phoneme}`),
+    `${letter} listen prompt is Find the sound ${phoneme}.`);
+  assert(byClass(view, 'stage-listen-replay').length === 1, `${letter} listen has one replay control`);
+  const pics = byClass(view, 'stage-listen-pic');
+  assert(pics.length === 3, `${letter} listen renders three pictures`);
+  assert(byClass(view, 'stage-orb').length === 0, `${letter} listen renders no speaker orbs`);
+  const labels = pics.map((n) => n.getAttribute('aria-label') || '');
+  const mark = `, starts with ${phoneme}`;
+  assert(labels.filter((label) => label.includes(mark)).length === 1,
+    `one rendered ${letter} picture starts with ${phoneme}`);
+  assert(labels.filter((label) => !label.includes(mark)).length === 2,
+    `two rendered ${letter} pictures do not start with ${phoneme}`);
+  stageMod.teardown();
+}
+round.goHome();
+round.startRound({ startAt: 'B' });
+round.continueBeat();
+round.advance();
+while (round.getRound().step === 'choose' && !round.getRound().trial.locked) round.tapChoose('B');
+round.advance();
+const bView = stageMod.render({ go() {}, kid: null, foot() {} });
+assert(byClass(bView, 'stage-orb').length === 3, 'B listen still renders three speaker orbs');
+assert(byClass(bView, 'stage-listen-pic').length === 0, 'B listen has no picture choices');
+stageMod.teardown();
+round.goHome();
 
 store.reset();
 

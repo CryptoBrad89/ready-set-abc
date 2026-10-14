@@ -13,10 +13,10 @@ Instrumental xylophone chime. No speech. `bake-beds.py` does not rewrite it.
 
 `lucy-cheer-1.mp3` through `lucy-cheer-6.mp3` and `lucy-nudge-1.mp3`
 through `lucy-nudge-4.mp3` are ElevenLabs multilingual v2
-(`eleven_multilingual_v2`), voice Flicker (`piI8Kku0DcvcL6TTSeQt`).
+(`eleven_multilingual_v2`), voice Mary (`acCWxmzPBgXdHwA63uzP`).
 MPEG layer III, 128 kbps, 44.1 kHz, mono, under 2s.
 
-Picture **words** (`lucy-word-*.mp3`) use the same Flicker voice and model.
+Picture **words** (`lucy-word-*.mp3`) use the same Mary voice and model.
 Letter **names** (`lucy-name-a.mp3` … `lucy-name-z.mp3`) are original
 kid-voice recreations copied from `reference/Starfall/audio/{A-Z}/name.mp3`.
 Isolated **phonemes** (`lucy-phoneme-a.mp3` … `lucy-phoneme-z.mp3`) are

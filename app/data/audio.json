@@ -1,5 +1,5 @@
 {
-  "note": "Recorded-voice hook AND Lucy's recording checklist. Placeholders stay null as the full id list. Mapped filenames live in `clips`. Isolated phonemes are kid-voice recreations from reference/Starfall/audio/{A-Z}/phoneme.mp3. Isolated letter names are the matching name.mp3 files copied into app/audio/lucy-name-{a-z}.mp3. Picture words, cheers, and nudges are ElevenLabs Flicker. ElevenLabs never speaks an isolated letter name or phoneme. To ship a clip: drop the file in app/audio/, map it here, add it to SHELL in sw.js, and bump VERSION in sw.js + js/version.js.",
+  "note": "Recorded-voice hook AND Lucy's recording checklist. Placeholders stay null as the full id list. Mapped filenames live in `clips`. Isolated phonemes are kid-voice recreations from reference/Starfall/audio/{A-Z}/phoneme.mp3. Isolated letter names are the matching name.mp3 files copied into app/audio/lucy-name-{a-z}.mp3. Picture words, cheers, and nudges are ElevenLabs Mary (acCWxmzPBgXdHwA63uzP). ElevenLabs never speaks an isolated letter name or phoneme. To ship a clip: drop the file in app/audio/, map it here, add it to SHELL in sw.js, and bump VERSION in sw.js + js/version.js.",
   "base": "audio/",
   "recorded": 452,
   "channels": {

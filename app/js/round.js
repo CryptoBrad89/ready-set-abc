@@ -137,7 +137,57 @@ function buildChooseTrial(entry) {
   return round.trial;
 }
 
+/* First set only. Every other letter keeps three speaker orbs. */
+export const PICTURE_LISTEN = new Set(['S', 'A', 'T', 'P', 'I', 'N']);
+
+export function usesPictureListen(letter) {
+  return PICTURE_LISTEN.has(String(letter || '').toUpperCase());
+}
+
+function wordStartsWith(pic, letter) {
+  return String(pic && pic.word || '').charAt(0).toUpperCase() === String(letter || '').toUpperCase();
+}
+
+/* Two pictures whose words do not start with this letter. Awake letters first. */
+function listenFoils(entry, n) {
+  const foils = [];
+  const seen = new Set();
+  const bag = distractors(entry.letter, 25);
+  for (let i = 0; i < bag.length && foils.length < n; i += 1) {
+    const pic = pickPicture(bag[i].letter);
+    if (!pic || !pic.word || pic.letter === entry.letter || wordStartsWith(pic, entry.letter)) continue;
+    const key = `${pic.letter}:${pic.id}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    foils.push(pic);
+  }
+  return foils;
+}
+
+/* First set: one picture that starts with the letter, two that do not.
+   choiceId is the tap id. picture.id stays the art id. */
+function buildListenPictureTrial(entry) {
+  const target = pickPicture(entry.letter);
+  const pictures = shuffle([
+    { ...target, target: true },
+    ...listenFoils(entry, 2).map((pic) => ({ ...pic, target: false })),
+  ]).map((pic, i) => ({
+    ...pic,
+    choiceId: `listen-${pic.letter}-${pic.id}-${i}`,
+  }));
+  round.trial = {
+    kind: 'listen',
+    answer: entry.letter,
+    pictures,
+    selected: null,
+    locked: false,
+    picture: target,
+  };
+  return round.trial;
+}
+
 function buildListenTrial(entry) {
+  if (usesPictureListen(entry.letter)) return buildListenPictureTrial(entry);
   const orbs = [
     { id: 'orb-a', target: false },
     { id: 'orb-b', target: false },
@@ -238,10 +288,13 @@ export function tapChoose(letter) {
 
 export function tapListen(id) {
   if (!round || round.step !== 'listen' || !round.trial || round.trial.locked) return null;
-  const orb = round.trial.orbs.find((o) => o.id === id);
-  if (!orb) return null;
+  const pictures = round.trial.pictures;
+  const choices = pictures || round.trial.orbs;
+  if (!Array.isArray(choices)) return null;
+  const choice = choices.find((item) => (pictures ? item.choiceId : item.id) === id);
+  if (!choice) return null;
   round.trial.selected = id;
-  if (orb.target) {
+  if (choice.target) {
     round.trial.locked = true;
     return 'right';
   }

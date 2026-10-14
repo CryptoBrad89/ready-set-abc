@@ -1273,27 +1273,27 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
-  min-height: 0;
-  text-align: center;
-}
-/* The trophy card does not shrink. Under a `1fr` row it overflowed and drew
-   itself over the Star Pouch hand-off below it on any short Chromebook, so
-   the stars / trophy / pouch drop share a scroller and the buttons are
-   pinned under it — the next letter is never off-screen. */
-.celebrate-scroll {
+  justify-content: center;
+  align-items: stretch;
   flex: 1 1 auto;
   min-height: 0;
-  overflow-y: auto;
+  width: 100%;
+  text-align: center;
+  overflow: visible;
+}
+/* One column across the stage. It grows to the yellow bars. A short screen
+   scales the whole column from the middle. Nothing in it scrolls. */
+.celebrate-col {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
   gap: var(--space-sm);
-  justify-content: safe center;
+  width: 100%;
+  flex: 1 1 auto;
+  overflow: visible;
+  transform-origin: center center;
 }
-/* Children keep their own height: a flex column would otherwise shrink the
-   trophy row to nothing and let the card spill over the cards beneath it —
-   which is the overlap this scroller exists to end. */
-.celebrate-scroll > * { flex: 0 0 auto; }
 .celebrate-actions { flex: 0 0 auto; }
 /* ≤8s, skippable: after the cap (or a Skip / background tap) the confetti and
    balloons stop and the card settles. Stars and buttons never move. */
@@ -1308,6 +1308,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 0 0 auto;
+  width: 100%;
   z-index: 1;
 }
 .celebrate-tags { display: flex; gap: var(--space-xs); align-items: center; flex-wrap: wrap; justify-content: center; }
@@ -1382,24 +1384,41 @@
 }
 
 .celebrate-body {
-  display: grid;
-  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
-  gap: var(--gutter);
-  min-height: 0;
+  justify-content: center;
+  gap: var(--space-md);
+  width: 100%;
+  overflow: visible;
   position: relative;
   z-index: 1;
 }
-@media (max-width: 860px), (max-height: 560px) {
-  .celebrate-body { grid-template-columns: minmax(0, 1fr); }
-  .celebrate-lucy { display: none; }
+.celebrate-lucy {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  width: auto;
+  flex: 0 1 auto;
+  overflow: visible;
 }
-.celebrate-lucy { display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); min-height: 0; }
-.celebrate-lucy .lucy-stage { width: min(100%, clamp(150px, 28vh, 270px)); }
-.celebrate-lucy .bubble { text-align: left; max-width: 280px; }
+.celebrate-lucy .bubble { flex: 0 1 auto; text-align: left; max-width: min(320px, 100%); }
+.celebrate-lucy .lucy-stage {
+  flex: 0 0 auto;
+  width: min(100%, clamp(120px, 18vh, 180px));
+  overflow: visible;
+}
 
 .trophy {
-  overflow: hidden;
+  width: auto;
+  flex: 1 1 520px;
+  min-width: min(100%, 420px);
+  max-width: none;
+  overflow: visible;
   border-radius: var(--r-xl);
   background: var(--surface-container-lowest);
   box-shadow: var(--shadow-4);
@@ -1417,18 +1436,19 @@
   font-size: clamp(12px, 1.6vh, 18px);
 }
 .trophy-ribbon svg { width: 20px; height: 20px; color: var(--star-gold); vertical-align: -4px; margin-right: 6px; }
-.trophy-dots { display: flex; gap: 5px; }
+.trophy-dots { display: flex; gap: 5px; align-items: center; }
 .trophy-dots i { width: 11px; height: 11px; border-radius: var(--r-full); display: block; }
 .trophy-body {
   display: flex;
   align-items: center;
   gap: var(--space-lg);
   padding: var(--space-lg) var(--space-xl);
+  overflow: visible;
 }
 .trophy-pic {
   position: relative;
-  width: clamp(96px, 18vh, 168px);
-  height: clamp(96px, 18vh, 168px);
+  width: clamp(112px, 20vh, 200px);
+  height: clamp(112px, 20vh, 200px);
   flex: 0 0 auto;
   border-radius: var(--r-md);
   background: var(--coral-pop-tint);
@@ -1447,7 +1467,7 @@
   font-weight: 800;
   box-shadow: var(--shadow-1);
 }
-.trophy-words { min-width: 0; }
+.trophy-words { min-width: 0; overflow: visible; }
 .trophy-letters {
   display: flex;
   align-items: baseline;
@@ -1455,9 +1475,10 @@
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 1;
+  overflow: visible;
 }
-.trophy-letters .up  { font-size: clamp(52px, 11vh, 112px); color: var(--primary); }
-.trophy-letters .low { font-size: clamp(34px, 7vh, 72px); color: var(--on-surface-variant); }
+.trophy-letters .up  { font-size: clamp(64px, 13vh, 140px); color: var(--primary); }
+.trophy-letters .low { font-size: clamp(40px, 8vh, 88px); color: var(--on-surface-variant); }
 .trophy-isfor {
   margin: 2px 0 0;
   font-family: var(--font-display);
@@ -1492,6 +1513,11 @@
   position: relative;
   z-index: 1;
   flex: 0 0 auto;
+  width: 100%;
+}
+.pouch-drop > .drop-card,
+.pouch-drop > button.drop-card {
+  flex: 1 1 240px;
 }
 .drop-card {
   --face: var(--card-cloud);
@@ -1500,10 +1526,12 @@
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--r-lg);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 4px;
-  text-align: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  text-align: left;
 }
 .drop-kicker {
   font-size: clamp(10px, 1.4vh, 13px);
@@ -1565,7 +1593,7 @@
 .drop-wear svg { width: 16px; height: 16px; }
 .drop-wear[aria-pressed="true"] { background: var(--mint-green); box-shadow: 0 4px 0 var(--mint-green-press); }
 
-.celebrate-actions { display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); position: relative; z-index: 1; }
+.celebrate-actions { display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); position: relative; z-index: 1; width: 100%; }
 .celebrate-buttons { display: flex; gap: var(--space-md); align-items: center; flex-wrap: wrap; justify-content: center; width: 100%; }
 .cta--quiet { color: var(--on-surface); box-shadow: 0 var(--lip) 0 var(--surface-container-highest), var(--shadow-2); }
 .cta--next {
@@ -1601,7 +1629,7 @@
 }
 .progress-wrap {
   width: 100%;
-  max-width: 760px;
+  max-width: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2000,7 +2028,11 @@ html[data-mode="whiteboard"] .play-btn .play-disc {
 }
 html[data-mode="whiteboard"] .home-lucy .lucy-stage { width: min(100%, clamp(200px, 34vh, 340px)); }
 html[data-mode="whiteboard"] .board-lucy .lucy-stage { width: min(100%, clamp(160px, 28vh, 280px)); }
-html[data-mode="whiteboard"] .celebrate-lucy .lucy-stage { width: min(100%, clamp(180px, 30vh, 300px)); }
+html[data-mode="whiteboard"] .celebrate-lucy .lucy-stage {
+  width: min(100%, clamp(140px, 20vh, 220px));
+  height: auto;
+  max-height: none;
+}
 html[data-mode="whiteboard"] .faces-grid {
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: var(--space-lg);
@@ -2762,6 +2794,64 @@ html[data-chrome="hidden"] .screen {
 .stage-orb-face { display: grid; place-items: center; }
 /* A viewBox-only SVG in this grid paints at 0×0. Size the speaker so a child can see it. */
 .stage-orb-face svg { width: 64px; height: 64px; display: block; }
+/* First-set picture listen (S A T P I N). A viewBox-only speaker SVG in a grid paints at 0×0. */
+.stage-listen-p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  max-width: 100%;
+  min-height: 0;
+}
+.stage-listen-pics {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 12px;
+  min-width: 0;
+}
+.stage-listen-replay {
+  width: max(128px, var(--target-min));
+  height: max(128px, var(--target-min));
+  min-width: max(128px, var(--target-min));
+  min-height: max(128px, var(--target-min));
+  padding: 0;
+  border-radius: 50%;
+  border: 4px solid #1a1a1a;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+}
+.stage-listen-replay .stage-replay-face {
+  display: block;
+  width: 72px;
+  height: 72px;
+  flex: 0 0 72px;
+}
+.stage-listen-replay svg {
+  width: 72px;
+  height: 72px;
+  min-width: 72px;
+  min-height: 72px;
+  display: block;
+}
+.stage-listen-pic {
+  width: 148px;
+  min-width: 148px;
+  min-height: 168px;
+  padding: 8px 8px 10px;
+  flex: 0 0 auto;
+}
+.stage-listen-pic .pic-plate--card {
+  width: 112px;
+  height: 112px;
+}
+.stage-listen-pic .stage-word {
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1.1;
+  text-align: center;
+}
 .stage-lucy {
   position: absolute;
   left: 12px;

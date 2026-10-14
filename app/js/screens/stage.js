@@ -91,7 +91,8 @@ export function render(ctx) {
     spark,
   );
 
-  replayBeat(entry, step);
+  /* Opening payoff keeps Lucy's line on screen. The picture word waits for a plate tap. */
+  if (step !== 'payoff') replayBeat(entry, step);
   window.setTimeout(() => lucy.say(line, { voice: false }), 80);
 
   keyHandler = (event) => {
@@ -175,7 +176,15 @@ function chooseBoard(entry, trial, ctx, root, lucy) {
   return row;
 }
 
+function listenSucceeded(ctx, root, entry, lucy) {
+  audio.sayPhoneme(entry);
+  lucy.setState('celebrating');
+  lucy.say('You found it!', { voice: false });
+  afterRight(ctx, root, entry.letter);
+}
+
 function listenBoard(entry, trial, ctx, root, lucy) {
+  if (round.usesPictureListen(entry.letter)) return listenPictureBoard(entry, trial, ctx, root, lucy);
   const row = el('div', { class: 'stage-orb-row' });
   trial.orbs.forEach((orb) => {
     const btn = el('button', {
@@ -195,14 +204,56 @@ function listenBoard(entry, trial, ctx, root, lucy) {
         lucy.say(nudge, { voice: false });
         return;
       }
-      audio.sayPhoneme(entry);
-      lucy.setState('celebrating');
-      lucy.say('You found it!', { voice: false });
-      afterRight(ctx, root, entry.letter);
+      listenSucceeded(ctx, root, entry, lucy);
     });
     row.append(btn);
   });
   return row;
+}
+
+/* First set (S A T P I N): replay this letter's phoneme, then tap the picture
+   whose word starts with it. The speaker SVG needs a real box or a grid lays it out at 0×0. */
+function listenPictureBoard(entry, trial, ctx, root, lucy) {
+  const sound = entry.phoneme || `/${entry.lower}/`;
+  const replay = el('button', {
+    class: 'pillow stage-listen-replay',
+    type: 'button',
+    'aria-label': `Hear the sound ${sound} again`,
+  }, el('span', { class: 'stage-replay-face' }, icon('sfx', { size: 72 })));
+  pressable(replay, () => {
+    audio.unlock();
+    squash(replay);
+    audio.sayPhoneme(entry);
+  });
+
+  const pics = el('div', { class: 'stage-listen-pics' });
+  (trial.pictures || []).forEach((pic) => {
+    const btn = el('button', {
+      class: 'pillow stage-plate stage-listen-pic',
+      type: 'button',
+      'aria-label': `${pic.word}, starts with ${pic.phoneme || ''}`,
+    },
+      picturePlate(pic, { size: 'card' }),
+      el('span', { class: 'stage-word' }, pic.word),
+    );
+    pressable(btn, () => {
+      if (trial.locked) return;
+      audio.unlock();
+      squash(btn);
+      const result = round.tapListen(pic.choiceId);
+      if (result === 'wrong') {
+        wobble(btn);
+        audio.sfx('wrong');
+        const start = String(pic.word || '').charAt(0);
+        audio.sayPhoneme({ letter: start });
+        lucy.say('Try again!', { voice: false });
+        return;
+      }
+      if (result === 'right') listenSucceeded(ctx, root, entry, lucy);
+    });
+    pics.append(btn);
+  });
+  return el('div', { class: 'stage-listen-p' }, replay, pics);
 }
 
 function payoffBoard(entry, trial, ctx, root, lucy) {
