@@ -25,7 +25,10 @@ function serve(port) {
         res.writeHead(404); res.end(); return;
       }
       const body = readFileSync(path);
-      res.writeHead(200, { 'Content-Type': MIME[extname(path)] || 'application/octet-stream' });
+      res.writeHead(200, {
+        'Content-Type': MIME[extname(path)] || 'application/octet-stream',
+        'Cache-Control': 'no-store',
+      });
       res.end(body);
     });
     server.listen(port, '127.0.0.1', () => resolve(server));
@@ -119,6 +122,15 @@ async function runCelebrate(page, port) {
   });
   await page.waitForSelector('body[data-screen="celebrate"]', { timeout: 12000 });
   await page.waitForSelector('.cta--next', { timeout: 8000 });
+  await page.waitForFunction(() => {
+    const chip = document.querySelector('.star-chip');
+    const chrome = document.querySelector('.chrome');
+    if (!chip || !chrome) return false;
+    const cs = getComputedStyle(chip);
+    if (parseFloat(cs.fontSize) < 10) return false;
+    const rows = getComputedStyle(chrome).gridTemplateRows;
+    return rows.split(' ').length >= 2;
+  }, { timeout: 8000 });
   await page.waitForTimeout(500);
 }
 
@@ -161,7 +173,7 @@ try {
         await page.goto(`http://127.0.0.1:${port}/index.html#/trail`);
         await page.waitForSelector('.trail-board.cloud-letters', { timeout: 15000 });
         await page.locator('.trail-board.cloud-letters').evaluate((el) => {
-          el.scrollTop = el.scrollHeight;
+          el.scrollTop = 0;
         });
         await page.waitForTimeout(400);
       },
@@ -178,7 +190,12 @@ try {
     },
   ];
 
-  for (const shot of shots) {
+  const shotsOnly = process.env.SHOTS?.split(',').map((s) => s.trim()).filter(Boolean);
+  const list = shotsOnly?.length
+    ? shots.filter((s) => shotsOnly.some((k) => s.name.includes(k)))
+    : shots;
+
+  for (const shot of list) {
     const context = await browser.newContext({ viewport: { width: shot.w, height: shot.h } });
     const page = await context.newPage();
     await shot.run(page);
