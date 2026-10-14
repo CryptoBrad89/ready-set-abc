@@ -873,6 +873,15 @@ assert(/'=SUM\(1,2\)/.test(csv.serializeCsv([['kind', 'key', 'value'], ['setting
   'CSV neutralizes formula cells');
 const formulaSnap = csv.csvToSnapshot('kind,key,value\nmeta,format,rsabc-csv-v1\nsetting,roundSize,\'=3\n');
 assert(formulaSnap.settings.roundSize === '=3', 'CSV import strips the formula guard quote');
+const literalSnap = csv.csvToSnapshot('kind,key,value\nmeta,format,rsabc-csv-v1\nsetting,className,\'=literal\n');
+assert(literalSnap.className === '=literal', 'CSV import keeps =literal after guard strip');
+const literalRoundTrip = csv.serializeCsv([
+  ['kind', 'key', 'value'],
+  ['meta', 'format', 'rsabc-csv-v1'],
+  ['setting', 'className', '=literal'],
+]);
+assert(csv.csvToSnapshot(literalRoundTrip).className === '=literal',
+  'CSV round-trips =literal without losing the equals');
 const apostropheSnap = csv.csvToSnapshot('kind,id,name,emoji,color\nkid,k99,\'Pat,🐾,#5aa9f0\n');
 assert(apostropheSnap.roster[0] && apostropheSnap.roster[0].name === "'Pat",
   'CSV import keeps a leading apostrophe in kid names');

@@ -9,7 +9,7 @@
    flag is off; it does not reload the page. When the flag is on, install
    waits, and only SKIP_WAITING hands over. */
 
-const VERSION = 'rsabc-shell-v47-work-order';
+const VERSION = 'rsabc-shell-v48-codex-pass2';
 const OFFLINE_FLAG = 'rsabc-offline-on';
 const SHELL = [
   './',
@@ -830,6 +830,11 @@ self.addEventListener('message', (event) => {
   event.waitUntil((async () => {
     const candidate = `${VERSION}~${Date.now()}`;
     try {
+      const live = await liveShellCacheName();
+      const existing = await caches.keys();
+      await Promise.all(existing
+        .filter((n) => n.startsWith('rsabc-shell-') && n !== live && n !== candidate)
+        .map((n) => caches.delete(n)));
       const cache = await caches.open(candidate);
       const count = await precacheInto(cache, (done, total) => {
         port.postMessage({ type: 'progress', done, total });

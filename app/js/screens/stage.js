@@ -27,6 +27,7 @@ let activeLucy = null;
 
 export function teardown() {
   screenGen += 1;
+  audio.stopVoice();
   timers.forEach(clearTimeout);
   timers = [];
   if (activeLucy && activeLucy.dispose) activeLucy.dispose();
@@ -155,8 +156,7 @@ function promptFor(step, entry, trial) {
   }
   if (step === 'listen') return `Find the sound ${sound}.`;
   const pic = (trial && trial.picture) || entry;
-  if (soundAtEnd(entry)) return `${soundPhrase(entry, pic.word)}!`;
-  return `${entry.letter} is for ${pic.word}!`;
+  return `${soundPhrase(entry, pic.word)}!`;
 }
 
 function instructionBar(line) {
@@ -284,9 +284,10 @@ function listenPictureBoard(entry, trial, ctx, root, lucy) {
         audio.sfx('wrong');
         round.maybeHint();
         if (round.getRound().hinted && targetBtn) targetBtn.classList.add('hinted');
-        audio.sayPhoneme(entry);
-        const nudge = audio.nudge();
-        lucy.say(nudge, { syncTalk: true });
+        audio.sayPhoneme(entry).then(() => {
+          const nudge = audio.nudge();
+          lucy.say(nudge, { syncTalk: true });
+        });
         return;
       }
       if (result === 'right') listenSucceeded(ctx, root, entry, lucy);
@@ -302,7 +303,7 @@ function payoffBoard(entry, trial, ctx, root, lucy) {
     const card = el('button', {
       class: 'pillow stage-plate',
       type: 'button',
-      'aria-label': `${entry.letter} is for ${pic.word}`,
+      'aria-label': soundPhrase(entry, pic.word),
     },
       picturePlate(pic, { size: 'card' }),
       el('span', { class: 'stage-word' }, pic.word),

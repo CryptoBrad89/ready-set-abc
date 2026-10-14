@@ -2,7 +2,7 @@ import { el, icon, pressable, picturePlate } from '../ui.js';
 import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
 import { store } from '../store.js';
-import { letterByChar, picturesFor, activeKid } from '../data.js';
+import { letterByChar, picturesFor, activeKid, soundAtEnd } from '../data.js';
 import { openCloud, beatsFor } from '../clouds.js';
 import { nextTreat, starsToNext, TREATS } from '../closet.js';
 import { startRound } from '../round.js';
@@ -69,7 +69,9 @@ export function render(ctx) {
   const stars = store.totalStars();
   const today = store.starsToday();
 
-  const helloLine = `Hi ${name}! Let's find words that start with ${pick}!`;
+  const helloLine = soundAtEnd(pickEntry)
+    ? `Hi ${name}! Let's find words that end with ${pickEntry.phoneme || '/ks/'}!`
+    : `Hi ${name}! Let's find words that start with ${pick}!`;
   const peeks = helloPeeks(pickEntry);
 
   const lucy = createLucy({
@@ -373,7 +375,7 @@ export function render(ctx) {
       discover,
     );
   const phonicsRow = el('div', { class: 'hub-row hub-row--phonics' }, playBtn, soundCard, satCard, matchCard);
-  const funHead = el('div', { class: 'hub-section-row' },
+  const funHead = el('div', { class: 'hub-section-row hub-section-row--fun' },
     el('h2', { class: 'hub-section' },
       el('span', { class: 'hub-section-ico hub-section-ico--red', 'aria-hidden': 'true' }, icon('book')),
       'Storybooks & Fun Games',

@@ -1,5 +1,5 @@
 import { el, icon, pressable, picturePlate } from '../ui.js';
-import { picturesFor } from '../data.js';
+import { letterByChar, picturesFor, soundPhrase } from '../data.js';
 import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
 import { nextLetter } from '../profile.js';
@@ -15,12 +15,13 @@ const BEATS = [
 
 export function picnicStory(letter) {
   const L = String(letter || '').toUpperCase();
+  const entry = letterByChar(L) || { letter: L };
   const pics = picturesFor(L).slice(0, 4);
   const pages = [{
     kind: 'cover',
     title: "Lucy's Picnic Day",
     line: pics[0] ? `Lucy packs a picnic for ${L}.` : 'Lucy packs a picnic.',
-    lucy: pics[0] ? `${L} is for ${pics[0].word}!` : "Let's read!",
+    lucy: pics[0] ? `${soundPhrase(entry, pics[0].word)}!` : "Let's read!",
     plates: [],
   }];
   pics.forEach((pic, i) => {
@@ -38,7 +39,7 @@ export function picnicStory(letter) {
     kind: 'end',
     title: 'The End',
     line: pics[0] ? `${L} is in this picnic!` : 'The End',
-    lucy: pics[0] ? `${L} is for ${pics[0].word}!` : 'Woof!',
+    lucy: pics[0] ? `${soundPhrase(entry, pics[0].word)}!` : 'Woof!',
     plates: pics[0] ? [pics[0]] : [],
   });
   return { letter: L, pages };

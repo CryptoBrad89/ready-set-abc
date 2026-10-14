@@ -14,7 +14,7 @@ import { store } from '../store.js';
 import { toggleWear, wornHas, wornOutfitId, nextTreat, nextTreatNudge } from '../closet.js';
 import { burstConfetti, resetConfetti } from '../motion.js';
 import * as round from '../round.js';
-import { soundAtEnd } from '../data.js';
+import { soundAtEnd, soundPhrase } from '../data.js';
 
 export const chrome = { tabs: true, tab: 'home', who: true };
 
@@ -32,6 +32,11 @@ let fitGen = 0;
 function fitColumn(root) {
   const column = root.querySelector('.celebrate-col');
   if (!column || !root.isConnected) return;
+  /* Phone + short landscape: reflow in CSS — do not scale the whole column. */
+  if (window.matchMedia('(max-width: 520px), (orientation: landscape) and (max-height: 440px)').matches) {
+    column.style.transform = '';
+    return;
+  }
   const style = getComputedStyle(root);
   const availableH = root.clientHeight
     - parseFloat(style.paddingTop)
@@ -223,7 +228,7 @@ export function render(ctx) {
           el('span', { class: 'up' }, entry.letter),
           el('span', { class: 'low' }, entry.lower),
         ),
-        el('p', { class: 'trophy-isfor' }, 'is for ', el('b', {}, pic.word)),
+        el('p', { class: 'trophy-isfor' }, el('b', {}, soundPhrase(entry, pic.word))),
         el('p', { class: 'trophy-sound' }, 'Phonic sound: ',
           el('b', {}, soundAtEnd(entry)
             ? `${pic.word} ends with ${entry.phoneme}`

@@ -131,7 +131,7 @@ Turn **Offline only** on **once, on school Wi-Fi**, before that tablet goes into
 2. Open **Grown-Ups** (see PIN below).
 3. Tap **Device**.
 4. Turn **Offline only** on. That runs **Set up this device**. Watch the bar fill.
-5. When it says **Pinned** plus the shell version (Grown-Ups → Device, currently `rsabc-shell-v47-work-order`), you can turn the radio off.
+5. When it says **Pinned** plus the shell version (Grown-Ups → Device, currently `rsabc-shell-v48-codex-pass2`), you can turn the radio off.
 
 Turning **Offline only** off deletes that copy and the tablet uses the network again.
 
@@ -510,7 +510,7 @@ One page. Print it, or copy it onto an index card and tape it inside the cart li
 ## PIN, versions, storage (the sticky note)
 
 - PIN **`1234`**
-- Shell pin **`rsabc-shell-v47-work-order`** (Grown-Ups → Device)
+- Shell pin **`rsabc-shell-v48-codex-pass2`** (Grown-Ups → Device)
 - Content pin from `data/letters.json` (all 26 awake · 15-picture GAME-FLOW pool each · 390 plates, no two sharing an emoji)
 - Saved on the tablet under `rsabc.` keys: kid, classroom, roster, settings, audio, mode, hideChrome, pinnedLetter, cursor, nextAbcIndex, stars, stickers, outfit, progress, notes, cache, offlineOnly
 - Tablet copy / backup: Grown-Ups → Class → **Export CSV** writes `ready-set-abc.csv` (format `rsabc-csv-v1`). Import replaces this tablet — it never merges.
