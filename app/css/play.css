@@ -4666,39 +4666,75 @@ body[data-screen="trail"] .trail-board.cloud-letters {
 
 /* Celebration phone portrait: stack sections; pin actions (no whole-column scale). */
 @media (max-width: 520px) {
+  /* Two-row chrome: stamp + stars/sound/gate on row 1, tabs on row 2 (no cramming). */
   body[data-screen="celebrate"] .chrome {
-    grid-template-columns: auto auto minmax(0, 1fr) minmax(0, max-content);
-    grid-template-rows: auto;
-    row-gap: 0;
-    padding-block: 4px;
-    padding-inline: 6px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    row-gap: 8px;
+    column-gap: 6px;
+    padding-block: 8px;
+    padding-inline: 8px;
+    overflow: visible;
+    min-height: 0;
+    height: auto !important;
+    max-height: none;
   }
   body[data-screen="celebrate"] .chrome-left {
-    display: contents;
-  }
-  body[data-screen="celebrate"] .chrome-left > .brand {
+    display: flex;
     grid-column: 1;
     grid-row: 1;
-  }
-  body[data-screen="celebrate"] #who-slot {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  body[data-screen="celebrate"] .chrome .tabs {
-    grid-column: 3;
-    grid-row: 1;
-    width: auto;
+    max-width: min(130px, 34vw);
     min-width: 0;
+    align-items: center;
+    gap: 6px;
   }
   body[data-screen="celebrate"] .chrome-right {
-    grid-column: 4;
+    grid-column: 2 / 4;
     grid-row: 1;
     max-width: none;
+    flex-wrap: nowrap;
+    overflow: visible;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+  body[data-screen="celebrate"] .chrome .star-chip {
+    font-size: 11px;
+    padding: 4px 8px;
+    min-height: 44px;
+    flex-shrink: 0;
+  }
+  body[data-screen="celebrate"] .chrome .audio-cluster {
+    flex-shrink: 0;
+    padding: 4px 6px;
+    gap: 4px;
+  }
+  body[data-screen="celebrate"] .chrome .audio-toggle {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  body[data-screen="celebrate"] .chrome .gate-btn {
+    min-height: 44px;
+    min-width: 44px;
+    flex-shrink: 0;
+    padding: 0 8px;
+  }
+  body[data-screen="celebrate"] .chrome .tabs {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
   }
   body[data-screen="celebrate"] .chrome .tab {
-    min-height: 40px;
-    min-width: 40px;
+    min-height: 48px;
+    min-width: 48px;
     padding: 4px;
+    flex-shrink: 0;
+  }
+  body[data-screen="celebrate"] .who-chip--stamp {
+    flex-shrink: 0;
   }
   body[data-screen="celebrate"] .screen {
     padding-top: 4px;
@@ -4774,6 +4810,19 @@ body[data-screen="trail"] .trail-board.cloud-letters {
   }
   body[data-screen="celebrate"] .trophy-body {
     padding: 6px;
+  }
+  body[data-screen="celebrate"] .trophy-pic {
+    overflow: visible;
+    padding-top: 10px;
+    padding-left: 4px;
+  }
+  body[data-screen="celebrate"] .tasty-tag {
+    top: 2px;
+    left: 2px;
+    font-size: 10px;
+    padding: 2px 7px;
+    white-space: nowrap;
+    z-index: 2;
   }
   body[data-screen="celebrate"] .pouch-drop {
     flex: 0 0 auto;
