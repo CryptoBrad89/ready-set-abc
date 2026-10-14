@@ -1,0 +1,56 @@
+.is-squashed {
+  transform: scale(0.9, 1.16) !important;
+  transition: transform 0.08s linear !important;
+}
+.is-released {
+  animation: phase2-release 0.46s cubic-bezier(0.18, 1.55, 0.32, 1) !important;
+}
+@keyframes phase2-release {
+  0% { transform: scale(0.9, 1.16); }
+  45% { transform: scale(1.08, 0.9); }
+  100% { transform: scale(1, 1); }
+}
+body.is-transitioning .pop {
+  animation: none !important;
+  opacity: 0 !important;
+}
+#confetti {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 7;
+  pointer-events: none;
+}
+.proto {
+  position: fixed;
+  z-index: 9;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(10, 8, 12, 0.72);
+  backdrop-filter: blur(8px);
+}
+.proto button {
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: #f6efe2;
+  font-size: 13px;
+  font-weight: 700;
+}
+.proto button.is-here { background: #fff; color: #1a120c; }
+body.shot .proto, body.demo .proto { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
