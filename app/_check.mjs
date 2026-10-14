@@ -50,6 +50,28 @@ const letterList = lettersJson.letters || [];
 if (letterList.map((l) => l.letter).join('') !== ALPHABET26.join('')) {
   problem(`data/letters.json must list A–Z in order (got ${letterList.map((l) => l.letter).join('')})`);
 }
+/* `pictures` is the phonics pool: every plate there must BEGIN WITH THE
+   TAUGHT SOUND, not just the written letter — a trophy that says /s/ under a
+   Shoe teaches the wrong thing. X is taught as /ks/, which no picture word
+   starts with, so its plates end in x instead. Words that only start with
+   the letter in print live in `alphabetWords` and never deal into a phonics
+   board. The spelling rules catch the patterns; the list catches the words
+   the Codex review found, so they cannot drift back in. */
+const SPELLING_ONLY = new Set([
+  'shoe', 'ship', 'avocado', 'airplane', 'acorn', 'apron', 'knee', 'xylophone', 'city', 'giraffe',
+  'owl', 'unicorn', 'ukulele', 'eagle', 'ear', 'eye', 'island', 'ivy', 'ocean', 'onion', 'quiche',
+]);
+function soundProblem(L, word) {
+  const w = word.toLowerCase();
+  if (SPELLING_ONLY.has(w) || /^ice\b/.test(w) || /^x-?ray\b/.test(w) || /^xmas\b/.test(w)) return 'is spelled with the letter but does not start with its sound';
+  if (L === 'X') return /x$/.test(w) ? null : 'does not end in x, so it cannot carry /ks/';
+  if (w.charAt(0) !== L.toLowerCase()) return `does not start with ${L}`;
+  if (L === 'S' && /^sh/.test(w)) return 'starts with /sh/, not /s/';
+  if (L === 'K' && /^kn/.test(w)) return 'has a silent k';
+  if (L === 'C' && /^c[eiy]/.test(w)) return 'has a soft c';
+  return null;
+}
+
 const emojiOwner = new Map();
 const pictureIdOwner = new Map();
 for (const entry of letterList) {
@@ -62,17 +84,25 @@ for (const entry of letterList) {
     problem(`${L} say field is the letter name (${entry.say}) — say is the SOUND`);
   }
   const pool = entry.pictures || [];
-  if (pool.length !== 15) problem(`${L} picture pool has ${pool.length} pictures (want 15)`);
-  const words = new Set();
+  const spelling = entry.alphabetWords || [];
+  /* Payoff deals two different plates. */
+  if (pool.length < 2) problem(`${L} phonics pool has ${pool.length} pictures (want at least 2)`);
   for (const pic of pool) {
+    const why = pic && pic.word ? soundProblem(L, pic.word) : null;
+    if (why) problem(`${L} phonics pool has "${pic.word}", which ${why}`);
+  }
+  for (const pic of spelling) {
+    if (pic && pic.word && pic.word.charAt(0).toUpperCase() !== L) {
+      problem(`${L} alphabetWords has "${pic.word}", which does not start with ${L}`);
+    }
+  }
+  const words = new Set();
+  for (const pic of [...pool, ...spelling]) {
     if (!pic.id || !pic.word || !pic.emoji) {
       problem(`${L} has an incomplete picture: ${JSON.stringify(pic)}`);
       continue;
     }
     if (!/^[a-z0-9-]+$/.test(pic.id)) problem(`${L}/${pic.id} is not a plain lower-case id`);
-    if (pic.word.charAt(0).toUpperCase() !== L) {
-      problem(`${L} pool has "${pic.word}", which does not start with ${L}`);
-    }
     if (words.has(pic.word.toLowerCase())) problem(`${L} pool lists "${pic.word}" twice`);
     words.add(pic.word.toLowerCase());
     if (pictureIdOwner.has(pic.id)) {
@@ -86,8 +116,8 @@ for (const entry of letterList) {
   }
   /* The trail tile and the round have to show the same picture, or a child
      taps a moon and meets a mug. */
-  const anchor = pool.find((pic) => pic.word === entry.word);
-  if (!anchor) problem(`${L} stand-in word "${entry.word}" is not in its own pool`);
+  const anchor = pool[0] && pool[0].word === entry.word ? pool[0] : null;
+  if (!anchor) problem(`${L} stand-in word "${entry.word}" is not the first plate of its phonics pool`);
   else if (anchor.emoji !== entry.emoji) {
     problem(`${L} stand-in emoji ${entry.emoji} does not match ${anchor.word} ${anchor.emoji}`);
   }
@@ -103,6 +133,8 @@ for (const entry of letterList) {
     }
   }
 }
+/* Curating moves plates between lists; it never throws a drawn, recorded one away. */
+if (pictureIdOwner.size !== 390) problem(`letters.json carries ${pictureIdOwner.size} plates across both lists (want all 390)`);
 
 /* data/audio.json is the recording checklist, so it has to list every plate
    that can now come up — a woken letter with no placeholder is a picture
@@ -113,7 +145,7 @@ for (const entry of letterList) {
   if (!(`word-${entry.letter}` in wordIds)) {
     problem(`data/audio.json has no word-${entry.letter} fallback placeholder`);
   }
-  for (const pic of entry.pictures || []) {
+  for (const pic of [...(entry.pictures || []), ...(entry.alphabetWords || [])]) {
     if (!(`word-${entry.letter}-${pic.id}` in wordIds)) {
       problem(`data/audio.json has no placeholder for word-${entry.letter}-${pic.id}`);
     }
