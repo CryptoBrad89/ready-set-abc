@@ -31,7 +31,10 @@ export function el(tag, props = {}, ...children) {
 }
 
 export function clear(node) {
-  while (node && node.firstChild) node.removeChild(node.firstChild);
+  while (node && node.firstChild) {
+    const kid = node.firstChild;
+    try { node.removeChild(kid); } catch (err) { break; }
+  }
 }
 
 /* --------------------------------------------------------------- icons */

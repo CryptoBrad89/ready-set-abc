@@ -84,7 +84,7 @@ Do this on a prep period, never mid-lesson.
 Upload the **whole** `app/` tree every time. Do not rename paths.
 
 - **HTML, JS, CSS, JSON, `sw.js`, `manifest.webmanifest`:** serve with **no long-lived cache** (for example `Cache-Control: no-cache` or short `max-age` with revalidation). Teachers need the cart to pick up a new pin on the next visit.
-- **Fonts, audio, art, icons, vendor, lottie:** these paths are pinned in `sw.js` and can use **long cache** (`immutable` / one-year) because the shell pin changes when they change.
+- **Fonts, audio, art, icons, vendor, lottie:** these paths are pinned in `sw.js`. When the shell pin changes, tablets pick up new bytes on Get update and reload.
 - Upload **atomically** when you can (staging folder, then swap) so a tablet never reads half of a deploy mid-request.
 - After upload, one tablet on Wi-Fi should run **Get update** then **Reload to finish** so the service worker and offline shell match the files on disk.
 

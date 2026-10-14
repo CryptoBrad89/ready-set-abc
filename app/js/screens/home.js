@@ -373,19 +373,15 @@ export function render(ctx) {
       discover,
     );
   const phonicsRow = el('div', { class: 'hub-row hub-row--phonics' }, playBtn, soundCard, satCard, matchCard);
-  const playStack = el('div', { class: 'hub-play-stack' }, phonicsHead, phonicsRow);
-  root.append(
-    playStack,
-    heroPanel,
-    el('div', { class: 'hub-section-row' },
-      el('h2', { class: 'hub-section' },
-        el('span', { class: 'hub-section-ico hub-section-ico--red', 'aria-hidden': 'true' }, icon('book')),
-        'Storybooks & Fun Games',
-      ),
-      discoverStories,
+  const funHead = el('div', { class: 'hub-section-row' },
+    el('h2', { class: 'hub-section' },
+      el('span', { class: 'hub-section-ico hub-section-ico--red', 'aria-hidden': 'true' }, icon('book')),
+      'Storybooks & Fun Games',
     ),
-    laterRow,
+    discoverStories,
   );
+  const playStack = el('div', { class: 'hub-play-stack' }, phonicsHead, phonicsRow, funHead, laterRow);
+  root.append(playStack, heroPanel);
   lucy.bubble.classList.add('hub-lucy-bubble');
   root.querySelector('.hub-lucy-card')?.prepend(lucy.bubble);
 
