@@ -375,7 +375,8 @@ async function boot() {
   document.getElementById('rotate-icon').append(icon('rotate', { size: 96 }));
   const rotateEl = document.getElementById('rotate');
   const rotateDismiss = document.getElementById('rotate-dismiss');
-  const rotateQuery = window.matchMedia('(orientation: portrait) and (max-width: 900px)');
+  /* Phones in portrait can play here; tablets still get the sideways nudge. */
+  const rotateQuery = window.matchMedia('(orientation: portrait) and (min-width: 521px) and (max-width: 900px)');
   const rotateDismissed = () => sessionStorage.getItem('rsabc.rotateHint') === '1';
   const syncRotate = () => {
     const show = rotateQuery.matches && !rotateDismissed();

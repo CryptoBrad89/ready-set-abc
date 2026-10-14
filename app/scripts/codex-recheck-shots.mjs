@@ -112,6 +112,7 @@ const port = 4174;
 const server = await serve(port);
 const browser = await chromium.launch();
 try {
+  const shotsOnly = process.env.SHOTS?.split(',').map((s) => s.trim()).filter(Boolean);
   const shots = [
     {
       name: '01-trail-freeplay-1180x820.png',
@@ -129,7 +130,13 @@ try {
     {
       name: '03-home-phone-390x844.png',
       w: 390, h: 844,
-      run: async (page) => { await smoke(page, port, 'kid=k01'); },
+      run: async (page) => {
+        await page.goto(`http://127.0.0.1:${port}/_smoke.html?reset=1&kid=k01`);
+        await page.waitForURL(/index\.html/);
+        await page.evaluate(() => sessionStorage.setItem('rsabc.rotateHint', '1'));
+        await page.reload();
+        await page.waitForSelector('.hub-row--phonics', { timeout: 10000 });
+      },
     },
     {
       name: '04-grownups-device-844x390.png',
@@ -143,7 +150,10 @@ try {
     },
   ];
 
-  for (const shot of shots) {
+  const list = shotsOnly?.length
+    ? shots.filter((s) => shotsOnly.some((k) => s.name.includes(k)))
+    : shots;
+  for (const shot of list) {
     const context = await browser.newContext({ viewport: { width: shot.w, height: shot.h } });
     const page = await context.newPage();
     await shot.run(page);

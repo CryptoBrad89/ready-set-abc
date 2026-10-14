@@ -662,3 +662,11 @@ html[data-mode="whiteboard"] .lucy-prompt {
   box-shadow: 0 0 0 4px var(--on-surface), var(--shadow-2);
   padding: var(--space-md) var(--space-lg);
 }
+
+@media (orientation: landscape) and (max-height: 440px) {
+  .chrome {
+    height: auto !important;
+    min-height: 0 !important;
+    gap: 4px;
+  }
+}

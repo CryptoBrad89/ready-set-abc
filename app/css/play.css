@@ -4133,12 +4133,16 @@ html[data-skin="violet"] .match-card .word {
     grid-template-columns: auto auto minmax(0, 1fr);
     grid-template-rows: auto auto;
     column-gap: 4px;
-    row-gap: 3px;
-    padding-block: 3px;
+    row-gap: 2px;
+    padding-block: 2px;
     padding-inline: 6px;
-    min-height: 0;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none;
     overflow: visible;
+    flex: 0 0 auto;
   }
+  .chrome .audio-cluster { display: none; }
   .chrome-left { display: contents; }
   .chrome-left > .brand { grid-column: 1; grid-row: 1; }
   #who-slot {
@@ -4171,9 +4175,9 @@ html[data-skin="violet"] .match-card .word {
   }
   .chrome .tab {
     min-width: 0;
-    min-height: 40px;
-    padding: 3px 5px;
-    font-size: 10px;
+    min-height: 32px;
+    padding: 2px 5px;
+    font-size: 9px;
     flex: 0 0 auto;
   }
   .chrome .tab svg { display: none; }
@@ -4217,39 +4221,119 @@ html[data-skin="violet"] .match-card .word {
     padding: 0;
     min-height: 0;
   }
-  body[data-screen="home"] .hub-play-stack .hub-section-row:last-of-type,
-  body[data-screen="home"] .hub-row--later { display: none; }
-  body[data-screen="home"] .hub-section {
-    font-size: 13px;
+  body[data-screen="home"] .hub {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1 1 auto;
   }
-  body[data-screen="home"] .hub-discover {
-    min-height: 36px;
-    font-size: 11px;
-    padding-inline: 8px 12px;
-  }
+  body[data-screen="home"] .hub-hero-panel { display: none !important; height: 0; margin: 0; }
+  body[data-screen="home"] .foot { display: none; }
+  body[data-screen="home"] .hub-play-stack .hub-section-row,
+  body[data-screen="home"] .hub-row--later { display: none !important; }
   body[data-screen="home"] .hub-row--phonics {
     flex: 1 1 auto;
-    max-height: none;
+    max-height: none !important;
     min-height: 0;
+    overflow: visible;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1.25fr) repeat(3, minmax(0, 1fr));
     grid-template-rows: 1fr;
+    gap: 4px;
     align-content: stretch;
   }
   body[data-screen="home"] .hub-row--phonics .hub-card {
     min-height: 0;
-    padding: 6px;
+    max-height: none !important;
+    overflow: visible;
+    padding: 5px 6px;
+    gap: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
-  body[data-screen="home"] .hub-art { height: clamp(36px, 10vh, 52px); }
-  body[data-screen="home"] .hub-title { font-size: 13px; }
+  body[data-screen="home"] .hub-sub { display: none; }
+  body[data-screen="home"] .hub-badge {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
+  body[data-screen="home"] .hub-art {
+    height: clamp(22px, 6vh, 32px);
+    flex-shrink: 0;
+  }
+  body[data-screen="home"] .hub-title {
+    font-size: 10px;
+    line-height: 1.1;
+    flex: 0 1 auto;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  body[data-screen="home"] .hub-card--mission .hub-title {
+    font-size: 11px;
+  }
+  body[data-screen="home"] .hub-card-foot,
   body[data-screen="home"] .hub-row--phonics .hub-cta {
-    min-height: 40px;
-    font-size: 12px;
+    min-height: 32px;
+    padding: 4px 6px;
+    margin-top: auto;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+  body[data-screen="home"] .hub-play-disc {
+    width: 28px;
+    height: 28px;
+  }
+  body[data-screen="home"] .hub-play-disc svg { width: 16px; height: 16px; }
+  body[data-screen="home"] .hub-xp { font-size: 14px; }
+  body[data-screen="home"] .screen.hub,
+  body[data-screen="home"] .screen:has(.hub) {
+    padding-top: 2px;
+    padding-bottom: 0;
+  }
+  body[data-screen="home"] .hub { gap: 0; min-height: 0; }
+  body[data-screen="home"] .foot { padding-block: 2px; font-size: 9px; }
+}
+
+/* Phone portrait: mission + play row only (no rotate sheet on narrow phones). */
+@media (orientation: portrait) and (max-width: 520px) {
+  body[data-screen="home"] .hub-hero-panel { display: none; }
+  body[data-screen="home"] .hub-play-stack .hub-section-row,
+  body[data-screen="home"] .hub-row--later { display: none !important; }
+  body[data-screen="home"] .hub-play-stack {
+    flex: 1 1 auto;
+    min-height: 0;
+    gap: 6px;
+  }
+  body[data-screen="home"] .hub-row--phonics {
+    flex: 1 1 auto;
+    max-height: none !important;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 8px;
+  }
+  body[data-screen="home"] .hub-card--mission { grid-column: 1 / -1; }
+  body[data-screen="home"] .hub-row--phonics .hub-card {
+    min-height: 0;
+    max-height: none !important;
+    overflow: visible;
+    padding: 8px;
+  }
+  body[data-screen="home"] .hub-sub { display: none; }
+  body[data-screen="home"] .hub-art { height: clamp(40px, 6vh, 56px); }
+  body[data-screen="home"] .hub-title { font-size: 14px; }
+  body[data-screen="home"] .hub-card-foot,
+  body[data-screen="home"] .hub-row--phonics .hub-cta {
+    min-height: 44px;
+    margin-top: auto;
   }
   body[data-screen="home"] .screen.hub,
   body[data-screen="home"] .screen:has(.hub) {
-    padding-top: 4px;
-    padding-bottom: 2px;
+    padding-top: 6px;
+    padding-bottom: 4px;
   }
 }
 

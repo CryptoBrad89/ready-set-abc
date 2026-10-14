@@ -164,6 +164,27 @@
     font-size: 12px;
   }
   .gu-body { padding: var(--space-sm) var(--space-md); }
+  .gu-card { padding: var(--space-sm); }
+  .gu-card h3 { font-size: 15px; margin-bottom: 2px; }
+  .gu-card p.note { font-size: 11px; margin-bottom: 6px; line-height: 1.25; }
+  .gu-row { padding: 6px 0; }
+  .gu-row .gu-label { font-size: 13px; }
+  .gu-row .gu-desc { font-size: 11px; }
+  .seg {
+    gap: 3px;
+    padding: 3px;
+    flex-wrap: nowrap;
+    max-width: 100%;
+  }
+  .seg button {
+    min-height: 34px;
+    padding: 0 8px;
+    font-size: 11px;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  /* Drop Hide chrome on short viewports so Kid look (Comic/Cosmic/Violet) stays in frame. */
+  .gu-panel .gu-card:first-child .gu-row:last-child { display: none; }
 }
 .gu-panel { display: flex; flex-direction: column; gap: var(--space-md); }
 .gu-card {
