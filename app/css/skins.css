@@ -37,8 +37,12 @@ html:not([data-skin]) .chrome {
   background: #ffe600;
   box-shadow: 0 5px 0 #000000;
   border-bottom: 4px solid #000000;
-  height: 80px;
+  height: auto;
+  min-height: calc(var(--target-min) + 32px);
+  padding-block: 12px;
   gap: 8px;
+  align-items: center;
+  overflow: hidden;
 }
 html[data-skin="comic"] .brand-title,
 html:not([data-skin]) .brand-title { color: #1a1a1a; }

@@ -129,7 +129,7 @@ button { border: 0; background: none; cursor: pointer; padding: 0; }
 .tabs[hidden] { display: none; }
 .tab-label { display: inline; }
 /* Landscape tablets: icon tabs so labels are not clipped between brand and stars. */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .tabs { padding: 6px 8px; gap: 4px; }
   .tab {
     min-height: var(--target-min);
