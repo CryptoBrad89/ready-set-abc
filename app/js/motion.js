@@ -40,11 +40,20 @@ export function burstConfetti({ x = 0.5, y = 0.45, count = 72 } = {}) {
       origin: { x, y },
       colors: CONFETTI_COLORS,
       disableForReducedMotion: true,
+      zIndex: 35,
     });
     return true;
   } catch (err) {
     return false;
   }
+}
+
+/** Stop canvas-confetti particles so navigation does not leave confetti over modals. */
+export function resetConfetti() {
+  if (!hasConfetti()) return;
+  try {
+    if (typeof window.confetti.reset === 'function') window.confetti.reset();
+  } catch (err) { /* ignore */ }
 }
 
 export function squash(node) {

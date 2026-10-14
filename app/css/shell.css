@@ -576,27 +576,7 @@ body[data-screen="picture"] .foot,
 body[data-screen="bonus"] .foot { display: none; }
 @media (max-height: 620px) { .foot { display: none; } }
 
-/* ------------------------------------------------------- rotate nudge */
-.rotate { display: none; }
-@media (orientation: portrait) and (max-width: 900px) {
-  .rotate {
-    position: fixed;
-    inset: 0;
-    z-index: 90;
-    display: grid;
-    place-items: center;
-    background: var(--surface);
-    text-align: center;
-    padding: var(--space-xl);
-  }
-  .rotate svg { width: 96px; height: 96px; color: var(--sunny-yellow); }
-  .rotate p {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 24px;
-    color: var(--primary);
-  }
-}
+/* Portrait landscape hint — see layout-fixes.css (dismissible, never blocks play). */
 
 /* Whiteboard chrome: taller header, bigger tabs, room to tap from the rug.
    Kid actions use --target-min (140px). Header tabs sit just under that so
