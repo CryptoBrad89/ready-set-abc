@@ -4628,6 +4628,7 @@ body[data-screen="trail"] .trail-board.cloud-letters {
     display: none;
   }
   body[data-screen="trail"] .trail-board.cloud-letters {
+    transform: translateY(6px);
     grid-template-columns: repeat(9, minmax(0, 1fr)) !important;
     grid-auto-rows: minmax(68px, auto);
     align-content: start;
@@ -4871,6 +4872,7 @@ body[data-screen="trail"] .trail-board.cloud-letters {
   body[data-screen="celebrate"] .screen {
     padding-top: 2px;
     padding-bottom: 2px;
+    padding-inline: 10px;
     gap: 0;
     overflow: hidden;
     min-height: 0;
@@ -4973,7 +4975,7 @@ body[data-screen="trail"] .trail-board.cloud-letters {
     padding: 6px 8px;
   }
   body[data-screen="celebrate"] .celebrate-lucy .lucy-stage {
-    width: 52px;
+    display: none;
   }
   body[data-screen="celebrate"] .pouch-drop {
     display: none;
@@ -5033,10 +5035,12 @@ body[data-screen="trail"] .trail-board.cloud-letters {
   body[data-screen="celebrate"] .cta--quiet {
     order: 2;
     flex: 0 0 auto;
-    min-height: 36px;
+    min-height: 34px;
     width: 100%;
+    max-width: 100% !important;
     box-sizing: border-box;
-    font-size: 12px;
+    font-size: 11px;
+    padding: 4px 10px !important;
   }
   body[data-screen="celebrate"] .accuracy-tag {
     margin-top: 2px;
