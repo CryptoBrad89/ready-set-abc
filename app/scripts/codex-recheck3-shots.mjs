@@ -147,6 +147,9 @@ try {
         await seedFreeTrail(page, port);
         await page.goto(`http://127.0.0.1:${port}/index.html#/trail`);
         await page.waitForSelector('.trail-board.cloud-letters', { timeout: 15000 });
+        await page.locator('.trail-board.cloud-letters').evaluate((el) => {
+          el.scrollTop = el.scrollHeight;
+        });
         await page.waitForTimeout(400);
       },
     },
@@ -157,6 +160,9 @@ try {
         await seedFreeTrail(page, port);
         await page.goto(`http://127.0.0.1:${port}/index.html#/trail`);
         await page.waitForSelector('.trail-board.cloud-letters', { timeout: 15000 });
+        await page.locator('.trail-board.cloud-letters').evaluate((el) => {
+          el.scrollTop = el.scrollHeight;
+        });
         await page.waitForTimeout(400);
       },
     },

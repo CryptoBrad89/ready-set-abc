@@ -2869,6 +2869,30 @@ html[data-chrome="hidden"] .screen {
   line-height: 1.1;
   text-align: center;
 }
+.instruction.stage-instruction {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.stage-listen-replay--inline {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.stage-listen-replay--inline .stage-replay-face,
+.stage-listen-replay--inline svg {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  display: block;
+}
+
 @media (max-width: 520px) {
   body[data-screen="listen"] .stage-lucy { display: none; }
   body[data-screen="listen"] .stage-spark { display: none; }
@@ -2883,24 +2907,13 @@ html[data-chrome="hidden"] .screen {
   .stage-listen-p {
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
+    gap: 6px;
     width: 100%;
     min-height: 0;
+    flex: 1 1 auto;
   }
-  .stage-listen-replay {
-    width: var(--target-min);
-    height: var(--target-min);
-    min-width: var(--target-min);
-    min-height: var(--target-min);
-    align-self: center;
-    flex-shrink: 0;
-  }
-  .stage-listen-replay .stage-replay-face,
-  .stage-listen-replay svg {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
-    min-height: 48px;
+  body[data-screen="listen"] .stage-listen-p .stage-listen-replay {
+    display: none;
   }
   .stage-listen-pics {
     display: grid;
@@ -4525,35 +4538,121 @@ body[data-screen="trail"] .trail-board.cloud-letters {
   overflow: hidden;
 }
 
-/* Phone + short landscape: scrollable 4-column trail — tappable tiles, not 13×2 micro grid. */
-@media (max-width: 520px), (orientation: landscape) and (max-height: 440px) and (max-width: 900px) {
+/* Phone trail: 5-column scroll grid; room above the footer. */
+@media (max-width: 520px) {
   body[data-screen="trail"] .trail-say { display: none; }
   body[data-screen="trail"] .cloud-path { display: none; }
-  body[data-screen="trail"] .trail-head { flex-shrink: 0; }
-  body[data-screen="trail"] .trail-head h1 { font-size: clamp(16px, 4vw, 22px); }
+  body[data-screen="trail"] .screen {
+    padding-top: 6px;
+    padding-bottom: 4px;
+    gap: 4px;
+    min-height: 0;
+  }
+  body[data-screen="trail"] .clouds {
+    min-height: 0;
+    gap: 4px;
+    padding-top: 0;
+  }
+  body[data-screen="trail"] .trail-head {
+    flex-shrink: 0;
+    padding-top: 0;
+  }
+  body[data-screen="trail"] .trail-head h1 {
+    font-size: clamp(15px, 4vw, 20px);
+  }
+  body[data-screen="trail"] .trail-head .hub-chips {
+    gap: 4px;
+  }
+  body[data-screen="trail"] .trail-head .chip {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
   body[data-screen="trail"] .trail-board.cloud-letters {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    grid-auto-rows: minmax(88px, auto);
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    grid-auto-rows: minmax(72px, auto);
     align-content: start;
     overflow-x: hidden;
     overflow-y: auto;
-    gap: 8px;
+    gap: 6px;
+    padding-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  body[data-screen="trail"] .trail-board.cloud-letters .trail-tile {
+    min-height: 72px;
+    max-height: none;
+    padding: 4px 3px;
+    gap: 2px;
+    overflow: visible;
+  }
+  body[data-screen="trail"] .trail-tile .t-pic {
+    font-size: clamp(22px, 6vw, 30px);
+  }
+  body[data-screen="trail"] .trail-tile .t-word {
+    font-size: 9px;
+    line-height: 1.05;
+  }
+  body[data-screen="trail"] .trail-tile .t-glyph {
+    font-size: clamp(12px, 3vw, 15px);
+  }
+  body[data-screen="trail"] .trail-tile .t-beats {
+    font-size: 9px;
+  }
+}
+
+/* Short landscape trail: dense grid + scroll — all A–Z reachable. */
+@media (orientation: landscape) and (max-height: 440px) and (max-width: 900px) {
+  body[data-screen="trail"] .trail-say,
+  body[data-screen="trail"] .cloud-path { display: none; }
+  body[data-screen="trail"] .screen {
+    padding-top: 2px;
+    padding-bottom: 0;
+    gap: 2px;
+  }
+  body[data-screen="trail"] .clouds {
+    padding-top: 0;
+    gap: 2px;
+  }
+  body[data-screen="trail"] .trail-head {
+    flex-shrink: 0;
+    padding-top: 0;
+    min-height: 0;
+  }
+  body[data-screen="trail"] .trail-head h1 {
+    font-size: 13px;
+    gap: 4px;
+  }
+  body[data-screen="trail"] .trail-head .hub-chips { display: none; }
+  body[data-screen="trail"] .trail-board.cloud-letters {
+    grid-template-columns: repeat(9, minmax(0, 1fr)) !important;
+    grid-auto-rows: minmax(58px, auto);
+    align-content: start;
+    overflow-x: hidden;
+    overflow-y: auto;
+    gap: 3px;
+    padding-bottom: 4px;
     -webkit-overflow-scrolling: touch;
   }
   body[data-screen="trail"] .trail-board.cloud-letters .trail-tile {
-    min-height: 88px;
-    padding: 6px 4px;
-    gap: 3px;
+    min-height: 58px;
+    padding: 2px;
+    gap: 1px;
   }
   body[data-screen="trail"] .trail-tile .t-pic {
-    font-size: clamp(26px, 7vw, 36px);
+    font-size: clamp(16px, 3.5vh, 22px);
   }
   body[data-screen="trail"] .trail-tile .t-word {
-    font-size: 10px;
-    line-height: 1.1;
+    display: none;
   }
   body[data-screen="trail"] .trail-tile .t-glyph {
-    font-size: clamp(14px, 3.5vw, 18px);
+    font-size: 11px;
+  }
+  body[data-screen="trail"] .trail-tile .t-beats {
+    font-size: 8px;
+  }
+  body[data-screen="trail"] .trail-tile .t-flag {
+    font-size: 8px;
+    padding: 1px 3px;
   }
 }
 
@@ -4562,13 +4661,66 @@ body[data-screen="trail"] .trail-board.cloud-letters {
   body[data-screen="celebrate"] .screen {
     padding-top: 4px;
     padding-bottom: 4px;
-    gap: 4px;
-    overflow-y: auto;
+    gap: 0;
+    overflow: hidden;
+    min-height: 0;
+  }
+  body[data-screen="celebrate"] .celebrate {
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    justify-content: flex-start;
   }
   .celebrate-col {
     transform: none !important;
-    gap: 6px;
+    gap: 4px;
     justify-content: flex-start;
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .celebrate-head {
+    flex: 0 0 auto;
+  }
+  .celebrate-body {
+    flex: 0 1 auto;
+    min-height: 0;
+    max-height: min(34vh, 220px);
+  }
+  .pouch-drop {
+    flex: 0 0 auto;
+    min-height: 0;
+    max-height: min(22vh, 120px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .celebrate-actions {
+    flex: 0 0 auto;
+    margin-top: auto;
+    padding-top: 4px;
+    background: linear-gradient(180deg, transparent, var(--surface-container-low) 28%);
+    z-index: 2;
+  }
+  .celebrate-buttons {
+    flex-direction: column;
+    width: 100%;
+    align-items: stretch;
+  }
+  .celebrate-buttons .cta--next {
+    order: 1;
+    width: 100%;
+    max-width: none;
+  }
+  .celebrate-buttons .cta--quiet {
+    order: 2;
+    width: 100%;
+    min-height: 44px;
+  }
+  body[data-screen="celebrate"] .progress-wrap {
+    display: none;
   }
   .star-tray {
     padding: 6px 12px;
@@ -4610,10 +4762,64 @@ body[data-screen="trail"] .trail-board.cloud-letters {
   .trophy-letters .low { font-size: clamp(18px, 5vw, 32px); }
   .cta--next {
     min-height: max(var(--target-min), 56px);
-    font-size: clamp(16px, 4vw, 20px);
-    width: min(100%, 320px);
+    font-size: clamp(15px, 3.8vw, 18px);
+    width: 100%;
   }
-  .celebrate-buttons { gap: 8px; }
+  .celebrate-buttons { gap: 6px; }
+}
+
+@media (orientation: landscape) and (max-height: 440px) {
+  body[data-screen="celebrate"] .celebrate-col {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  body[data-screen="celebrate"] .celebrate-body {
+    max-height: none;
+  }
+  body[data-screen="celebrate"] .celebrate-lucy,
+  body[data-screen="celebrate"] .pouch-drop {
+    display: none;
+  }
+  body[data-screen="celebrate"] .trophy-ribbon,
+  body[data-screen="celebrate"] .hear-again {
+    display: none;
+  }
+  body[data-screen="celebrate"] .celebrate-head {
+    padding-bottom: 0;
+  }
+  body[data-screen="celebrate"] .star-tray {
+    padding: 4px 10px;
+    gap: 8px;
+  }
+  body[data-screen="celebrate"] .star-tray .big-star {
+    width: 40px;
+    height: 40px;
+  }
+  body[data-screen="celebrate"] .star-tray .big-star:nth-child(2) {
+    width: 44px;
+    height: 44px;
+    transform: translateY(-3px) scale(1.05);
+  }
+  body[data-screen="celebrate"] .celebrate-actions {
+    position: sticky;
+    bottom: 0;
+    background: var(--surface-container-low);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, .08);
+  }
+  body[data-screen="celebrate"] .cta--next {
+    min-height: max(var(--target-min), 52px);
+    width: 100%;
+  }
+  body[data-screen="trail"] .chrome .tab .tab-label { display: none; }
+  body[data-screen="trail"] .chrome .tab {
+    min-height: 34px;
+    min-width: 34px;
+    padding: 2px;
+  }
+  body[data-screen="trail"] .chrome .tabs {
+    padding: 2px;
+    gap: 2px;
+  }
 }
 
 /* Narrow home: show Fun row in a short horizontal strip without stealing Play. */

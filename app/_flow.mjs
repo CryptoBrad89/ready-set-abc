@@ -2883,8 +2883,10 @@ assert(/Find the sound \/p\//.test(textOf(pView)), 'P listen prompt is Find the 
 const pReplay = byClass(pView, 'stage-listen-replay');
 assert(pReplay.length === 1, 'P listen has one replay control');
 const pSpeaker = pReplay[0].querySelector('svg');
-assert(pSpeaker && pSpeaker.style.width === '72px' && pSpeaker.style.height === '72px',
-  'P replay speaker is drawn at 72px, not 0×0');
+assert(pSpeaker && pSpeaker.style.width === '32px' && pSpeaker.style.height === '32px',
+  'P replay speaker is drawn at 32px in the instruction bar, not 0×0');
+assert(/stage-listen-replay--inline/.test(pReplay[0].className || ''),
+  'P listen replay sits in the instruction bar');
 const pPics = byClass(pView, 'stage-listen-pic');
 assert(pPics.length === 3, 'P listen renders three pictures');
 assert(byClass(pView, 'stage-orb').length === 0, 'P listen renders no speaker orbs');
@@ -2898,7 +2900,11 @@ const picBoard = stageSrc.slice(
   stageSrc.indexOf('function listenPictureBoard'),
   stageSrc.indexOf('function payoffBoard'),
 );
-assert(picBoard.includes('audio.sayPhoneme(entry)'), 'P replay uses sayPhoneme');
+const listenReplayFn = stageSrc.slice(
+  stageSrc.indexOf('function listenReplayButton'),
+  stageSrc.indexOf('function listenPictureBoard'),
+);
+assert(listenReplayFn.includes('audio.sayPhoneme(entry)'), 'P replay uses sayPhoneme');
 assert(picBoard.includes('audio.sayPhoneme(entry)') && picBoard.includes('round.maybeHint'),
   'a wrong listen picture replays the target sound and can hint');
 assert(picBoard.includes('listenSucceeded'), 'a right P picture uses the listen success path');
@@ -2906,8 +2912,8 @@ assert(!picBoard.includes('sayWord') && !picBoard.includes('speechSynthesis'),
   'P listen does not play a word clip or TTS');
 assert(/function replayBeat\(entry, step, trial\)/.test(stageSrc) && /audio\.speakStageBeat\(step, entry\)/.test(stageSrc),
   'stage beats speak mapped clips through speakStageBeat');
-assert(/\.stage-listen-replay svg \{[^}]*width: 72px;[^}]*height: 72px;/.test(playCss),
-  'P replay speaker CSS gives the SVG a 72px box');
+assert(/\.stage-listen-replay--inline svg \{[^}]*width: 28px;[^}]*height: 28px;/.test(playCss),
+  'inline replay speaker CSS gives the SVG a visible box');
 stageMod.teardown();
 for (const letter of ['S', 'A', 'T', 'I', 'N']) {
   round.goHome();

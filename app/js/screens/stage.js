@@ -111,10 +111,13 @@ export function render(ctx) {
   activeLucy = lucy;
 
   const frame = el('div', { class: 'stage-board' });
+  let listenReplay = null;
   if (step === 'meet') frame.append(meetBoard(entry, trial, ctx, root, lucy));
   else if (step === 'choose') frame.append(chooseBoard(entry, trial, ctx, root, lucy));
-  else if (step === 'listen') frame.append(listenBoard(entry, trial, ctx, root, lucy));
-  else frame.append(payoffBoard(entry, trial, ctx, root, lucy));
+  else if (step === 'listen') {
+    listenReplay = listenReplayButton(entry);
+    frame.append(listenPictureBoard(entry, trial, ctx, root, lucy));
+  } else frame.append(payoffBoard(entry, trial, ctx, root, lucy));
 
   const spark = el('div', { class: 'stage-spark', 'aria-hidden': 'true' });
   lottiePlayer = mountLottie(spark, step === 'payoff' ? 'check' : 'sparkle', { loop: true });
@@ -128,7 +131,7 @@ export function render(ctx) {
     el('div', { class: 'xp-rail', 'aria-hidden': 'true' },
       el('span', { class: 'xp-fill', style: { width: `${xp}%` } }),
     ),
-    instructionBar(line),
+    instructionBar(line, listenReplay),
     frame,
     el('div', { class: 'stage-lucy' }, lucy.stage, lucy.bubble),
     spark,
@@ -159,12 +162,13 @@ function promptFor(step, entry, trial) {
   return `${soundPhrase(entry, pic.word)}!`;
 }
 
-function instructionBar(line) {
+function instructionBar(line, trailing) {
   return el('div', { class: 'instruction stage-instruction' },
     el('div', { class: 'instruction-left' },
       el('span', { class: 'megaphone', role: 'presentation' }, icon('sfx')),
       el('p', {}, line),
     ),
+    trailing || null,
   );
 }
 
@@ -248,19 +252,23 @@ function listenBoard(entry, trial, ctx, root, lucy) {
   return listenPictureBoard(entry, trial, ctx, root, lucy);
 }
 
-function listenPictureBoard(entry, trial, ctx, root, lucy) {
+function listenReplayButton(entry) {
   const sound = entry.phoneme || `/${entry.lower}/`;
   const replay = el('button', {
-    class: 'pillow stage-listen-replay',
+    class: 'pillow stage-listen-replay stage-listen-replay--inline',
     type: 'button',
     'aria-label': `Hear the sound ${sound} again`,
-  }, el('span', { class: 'stage-replay-face' }, icon('sfx', { size: 72 })));
+  }, el('span', { class: 'stage-replay-face' }, icon('sfx', { size: 32 })));
   pressable(replay, () => {
     audio.unlock();
     squash(replay);
     audio.sayPhoneme(entry);
   });
+  return replay;
+}
 
+function listenPictureBoard(entry, trial, ctx, root, lucy) {
+  const sound = entry.phoneme || `/${entry.lower}/`;
   const pics = el('div', { class: 'stage-listen-pics' });
   let targetBtn = null;
   (trial.pictures || []).forEach((pic) => {
@@ -294,7 +302,7 @@ function listenPictureBoard(entry, trial, ctx, root, lucy) {
     });
     pics.append(btn);
   });
-  return el('div', { class: 'stage-listen-p' }, replay, pics);
+  return el('div', { class: 'stage-listen-p' }, pics);
 }
 
 function payoffBoard(entry, trial, ctx, root, lucy) {
