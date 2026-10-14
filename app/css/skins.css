@@ -42,7 +42,8 @@ html:not([data-skin]) .chrome {
   padding-block: 12px;
   gap: 8px;
   align-items: center;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 html[data-skin="comic"] .brand-title,
 html:not([data-skin]) .brand-title { color: #1a1a1a; }
