@@ -67,7 +67,10 @@ export function render(ctx) {
     ? workLetters(ctx.kid)
     : ((open && open.letters) || []);
   const board = el('div', { class: 'trail-board cloud-letters' });
-  board.style.setProperty('--trail-cols', String(Math.max(letters.length, 1)));
+  const n = Math.max(letters.length, 1);
+  /* Two rows of 13 keeps A–Z inside the viewport; one row of 26 overflows at 88px mins. */
+  const cols = n > 13 ? 13 : n;
+  board.style.setProperty('--trail-cols', String(cols));
   letters.forEach((L) => {
     const entry = letterByChar(L) || { letter: L, lower: String(L).toLowerCase(), word: '', emoji: '' };
     const isCurrent = L === current;

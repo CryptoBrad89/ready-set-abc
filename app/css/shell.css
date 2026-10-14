@@ -129,7 +129,7 @@ button { border: 0; background: none; cursor: pointer; padding: 0; }
 .tabs[hidden] { display: none; }
 .tab-label { display: inline; }
 /* Phones / narrow portrait: icon tabs. Landscape tablets (e.g. 1180) keep labels. */
-@media (max-width: 1023px) {
+@media (max-width: 1023px) and (orientation: portrait) {
   .tabs { padding: 6px 8px; gap: 4px; }
   .tab {
     min-height: var(--target-min);

@@ -23,7 +23,10 @@ const DEVICE = '_device';
 
 function stripCsvFormula(s) {
   const t = String(s ?? '');
-  return t.length > 1 && t.startsWith("'") ? t.slice(1) : t;
+  /* Sheets prefixes '=… with a guard quote on export. Only strip that guard,
+     not a leading apostrophe that is part of the field (e.g. 'O’Brien). */
+  if (t.length > 1 && t.startsWith("'") && /^'[=+\-@\t\r]/.test(t)) return t.slice(1);
+  return t;
 }
 
 export function csvCell(value) {

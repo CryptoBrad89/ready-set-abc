@@ -144,6 +144,27 @@
 .gu-tab[aria-selected="true"] { background: var(--surface-container-low); color: var(--primary); }
 
 .gu-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: var(--space-lg); }
+
+@media (max-height: 520px), (orientation: landscape) and (max-height: 440px) {
+  .gu {
+    height: min(96vh, calc(100dvh - 12px));
+    max-height: calc(100dvh - 12px);
+  }
+  .gu-head { padding: var(--space-xs) var(--space-md); }
+  .gu-head h2 { font-size: 18px; }
+  .gu-tabs {
+    padding: 4px var(--space-md) 0;
+    gap: 4px;
+    flex-wrap: wrap;
+    row-gap: 2px;
+  }
+  .gu-tab {
+    min-height: 36px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+  .gu-body { padding: var(--space-sm) var(--space-md); }
+}
 .gu-panel { display: flex; flex-direction: column; gap: var(--space-md); }
 .gu-card {
   background: var(--surface-container-lowest);
