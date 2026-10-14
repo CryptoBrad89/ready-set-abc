@@ -41,8 +41,14 @@ export function openGrownUps(opts = {}) {
   if (opts.tab && TABS.some(([id]) => id === opts.tab)) activeTab = opts.tab;
   open = true;
   overlay.hidden = false;
+  const appRoot = document.getElementById('app');
+  if (appRoot) appRoot.inert = true;
   renderGate();
   document.addEventListener('keydown', onKey);
+  queueMicrotask(() => {
+    const focusable = overlay.querySelector('.gate-key, .gu-close, .gu-tab');
+    if (focusable && typeof focusable.focus === 'function') focusable.focus();
+  });
 }
 
 export function closeGrownUps() {
@@ -51,8 +57,12 @@ export function closeGrownUps() {
   gatePress = null;
   overlay.hidden = true;
   clear(overlay);
+  const appRoot = document.getElementById('app');
+  if (appRoot) appRoot.inert = false;
   document.removeEventListener('keydown', onKey);
   onChange();
+  const gate = document.getElementById('gate-btn');
+  if (gate && typeof gate.focus === 'function') gate.focus();
 }
 
 function gateDigit(event) {

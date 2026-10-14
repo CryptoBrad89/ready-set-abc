@@ -20,7 +20,7 @@ import * as color from './screens/color.js';
 import * as arcade from './screens/arcade.js';
 import * as coming from './screens/coming.js';
 import * as match from './screens/match.js';
-import { mountLottie } from './motion.js';
+import { mountLottie, resetConfetti } from './motion.js';
 import { openGrownUps, isOpen as gateOpen, setAudioChrome } from './screens/grownups.js';
 import { hasSession, isArcadeLocked, isLetterOpen, leaveSession, needsRoster } from './profile.js';
 import { nextTreat } from './closet.js';
@@ -177,6 +177,7 @@ function render() {
   const ctx = { params: route.params, go, kid, strayLetter: route.strayLetter || null, mode: store.getMode(), foot: paintFoot };
 
   if (currentScreen && currentScreen.teardown) currentScreen.teardown();
+  else if (document.body.dataset.screen === 'celebrate') resetConfetti();
   currentScreen = screen;
 
   clear(screenEl);
@@ -373,16 +374,25 @@ async function boot() {
   document.getElementById('gate-lock-icon').append(icon('lock'));
   document.getElementById('rotate-icon').append(icon('rotate', { size: 96 }));
   const rotateEl = document.getElementById('rotate');
+  const rotateDismiss = document.getElementById('rotate-dismiss');
   const rotateQuery = window.matchMedia('(orientation: portrait) and (max-width: 900px)');
+  const rotateDismissed = () => sessionStorage.getItem('rsabc.rotateHint') === '1';
   const syncRotate = () => {
-    if (rotateQuery.matches) {
+    const show = rotateQuery.matches && !rotateDismissed();
+    rotateEl.classList.toggle('is-visible', show);
+    if (show) {
       rotateEl.removeAttribute('aria-hidden');
-      rotateEl.inert = false;
     } else {
       rotateEl.setAttribute('aria-hidden', 'true');
-      rotateEl.inert = true;
     }
   };
+  if (rotateDismiss) {
+    rotateDismiss.addEventListener('click', () => {
+      sessionStorage.setItem('rsabc.rotateHint', '1');
+      syncRotate();
+      audio.sfx('tap');
+    });
+  }
   syncRotate();
   rotateQuery.addEventListener('change', syncRotate);
   const copy = document.getElementById('foot-copy');

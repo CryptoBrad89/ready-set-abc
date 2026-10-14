@@ -67,6 +67,7 @@ export function render(ctx) {
     ? workLetters(ctx.kid)
     : ((open && open.letters) || []);
   const board = el('div', { class: 'trail-board cloud-letters' });
+  board.style.setProperty('--trail-cols', String(Math.max(letters.length, 1)));
   letters.forEach((L) => {
     const entry = letterByChar(L) || { letter: L, lower: String(L).toLowerCase(), word: '', emoji: '' };
     const isCurrent = L === current;
