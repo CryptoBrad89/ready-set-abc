@@ -3103,29 +3103,60 @@ html[data-chrome="hidden"] .screen {
 /* Landscape tablet: paw | child stamp | labeled tabs | stars/sound/gate */
 @media (min-width: 1024px) and (max-width: 1280px) {
   html[data-skin="comic"] .chrome .tabs,
-  html[data-skin="cosmic"] .chrome .tabs,
-  html[data-skin="violet"] .chrome .tabs,
   html:not([data-skin]) .chrome .tabs {
+    padding: 3px 4px;
+    gap: 2px;
+    box-shadow: 2px 2px 0 #000000;
+  }
+  html[data-skin="comic"] .chrome .tab,
+  html:not([data-skin]) .chrome .tab {
+    min-width: 0;
+    min-height: 72px;
+    padding: 4px 5px;
+    font-size: 11.5px;
+    letter-spacing: 0;
+    border-width: 2.5px;
+    box-shadow: 1.5px 1.5px 0 #000000;
+  }
+  html[data-skin="cosmic"] .chrome .tabs,
+  html[data-skin="violet"] .chrome .tabs {
     padding: 4px 6px;
     gap: 3px;
   }
-  .chrome .tab {
+  html[data-skin="cosmic"] .chrome .tab,
+  html[data-skin="violet"] .chrome .tab {
     padding: 6px 6px;
     font-size: 13px;
   }
   .chrome .audio-toggle {
-    width: 56px;
-    height: 56px;
-    min-width: 56px;
-    min-height: 56px;
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    min-height: 52px;
   }
   .chrome .star-chip {
-    padding: 6px 8px;
-    font-size: 12px;
+    padding: 4px 6px;
+    font-size: 11px;
+    min-height: 52px;
   }
   .chrome .gate-btn {
-    padding: 0 8px;
-    font-size: 13px;
+    padding: 0 6px;
+    font-size: 12px;
+    min-height: 52px;
+  }
+  .chrome .brand-paw {
+    width: 48px;
+    height: 48px;
+  }
+  .chrome .who-face {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+  }
+  .chrome .who-chip--stamp {
+    min-height: 72px;
+    min-width: 72px;
+    max-width: 72px;
   }
 }
 @media (min-width: 1024px) {
@@ -3144,12 +3175,17 @@ html[data-chrome="hidden"] .screen {
     grid-column: 2;
     grid-row: 1;
     min-width: 0;
+    margin-right: 6px;
+    position: relative;
+    z-index: 2;
   }
   .chrome .tabs {
     grid-column: 3;
     grid-row: 1;
     justify-content: flex-start;
     overflow-x: auto;
+    margin-left: 2px;
+    min-width: 0;
   }
   .chrome-right {
     grid-column: 4;
@@ -3164,6 +3200,8 @@ html[data-chrome="hidden"] .screen {
   .chrome .tab svg { display: none; }
   .chrome .tab.is-locked svg { display: block; }
   .chrome .tab .tab-label { display: inline; }
+}
+@media (min-width: 1281px) {
   .chrome .audio-toggle {
     width: var(--target-min);
     height: var(--target-min);
@@ -3655,9 +3693,9 @@ html[data-skin="violet"] .match-card .word {
     row-gap: 10px;
   }
   .chrome .tab {
-    min-height: 64px;
-    min-width: 64px;
-    padding: 5px;
+    min-height: 56px;
+    min-width: 56px;
+    padding: 4px;
   }
   .chrome .audio-toggle {
     width: 48px;
@@ -3763,16 +3801,44 @@ html[data-skin="violet"] .match-card .word {
   body[data-screen="home"] .hub {
     height: 100%;
     min-height: 0;
+    gap: 4px;
+  }
+  body[data-screen="home"] #foot-copy {
+    display: none;
   }
   body[data-screen="home"] .hub-hero-panel {
-    max-height: 80px;
+    max-height: min(24vh, 108px);
+    flex-shrink: 0;
+  }
+  body[data-screen="home"] .hub-hero {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 6px;
+  }
+  body[data-screen="home"] .hub-lucy-card .lucy-stage {
+    width: 52px;
+  }
+  body[data-screen="home"] .hub-lucy-badge,
+  body[data-screen="home"] .hub-closet-btn {
+    display: none;
   }
   body[data-screen="home"] .hub-welcome {
-    font-size: 14px;
+    font-size: 12px;
     padding-bottom: 2px;
+    border-bottom-width: 1px;
   }
   body[data-screen="home"] .hub-stat {
-    padding: 4px 6px;
+    padding: 3px 5px;
+  }
+  body[data-screen="home"] .hub-stat-num {
+    font-size: 12px;
+  }
+  body[data-screen="home"] .hub-stat-ico {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+  body[data-screen="home"] .hub-stat-sub {
+    font-size: 9px;
   }
   body[data-screen="home"] .foot {
     padding-block: 2px;
@@ -3791,14 +3857,13 @@ html[data-skin="violet"] .match-card .word {
   .chrome {
     position: relative;
     z-index: 10;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    grid-template-rows: auto auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
     row-gap: 6px;
-    min-height: calc(var(--target-min) + 36px);
-    padding-block: 8px;
-    padding-inline: 8px;
-    overflow-x: auto;
-    overflow-y: visible;
+    min-height: 0;
+    padding-block: 6px;
+    padding-inline: 6px;
+    overflow: visible;
   }
   .stage {
     position: relative;
@@ -3810,36 +3875,78 @@ html[data-skin="violet"] .match-card .word {
     grid-row: 1;
     max-width: none;
     gap: 4px;
+    flex-shrink: 0;
+    z-index: 2;
+    justify-content: flex-start;
   }
   .chrome-right {
-    grid-column: 2 / 4;
-    grid-row: 1;
+    grid-column: 1;
+    grid-row: 2;
     max-width: none;
     justify-content: flex-end;
     flex-wrap: nowrap;
-    gap: 4px;
+    gap: 3px;
+    flex-shrink: 0;
+    z-index: 2;
+    width: 100%;
   }
   .chrome .tabs {
-    grid-column: 1 / -1;
-    grid-row: 2;
+    grid-column: 1;
+    grid-row: 3;
     width: 100%;
     flex-wrap: nowrap;
     overflow-x: auto;
     max-width: 100%;
+    z-index: 1;
   }
   .chrome .gate-btn {
     flex-shrink: 0;
-    min-width: var(--target-min);
-    min-height: var(--target-min);
-    padding: 0 10px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 6px;
   }
   .chrome .gate-label { display: none; }
   .chrome .audio-toggle {
-    width: 56px;
-    height: 56px;
-    min-width: 56px;
-    min-height: 56px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
     flex-shrink: 0;
+  }
+  .chrome .star-chip {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 4px;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+  .chrome .star-chip svg {
+    width: 18px;
+    height: 18px;
+  }
+  .chrome .tab {
+    min-height: 48px;
+    min-width: 48px;
+    flex-shrink: 0;
+  }
+  html[data-skin="comic"] .chrome .tabs,
+  html:not([data-skin]) .chrome .tabs {
+    padding: 4px;
+    gap: 3px;
+  }
+  .chrome .who-chip--stamp {
+    min-width: 56px;
+    max-width: 56px;
+    min-height: 56px;
+  }
+  .chrome .who-face {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+  .brand-paw {
+    width: 44px;
+    height: 44px;
   }
   body[data-screen="home"] .hub-section-row {
     margin-top: 4px;
@@ -3852,13 +3959,33 @@ html[data-skin="violet"] .match-card .word {
     display: none;
   }
   body[data-screen="home"] .hub-hero-panel {
-    max-height: min(16vh, 92px);
+    max-height: min(20vh, 96px);
+    flex-shrink: 0;
   }
-  body[data-screen="home"] .hub-stat-sub {
+  body[data-screen="home"] .hub {
+    gap: 4px;
+  }
+  body[data-screen="home"] .hub-section-ico {
     display: none;
   }
+  body[data-screen="home"] .screen.hub,
+  body[data-screen="home"] .screen:has(.hub) {
+    padding-top: 6px;
+    padding-bottom: 2px;
+  }
+  body[data-screen="home"] .hub-row--phonics {
+    max-height: min(46vh, 380px);
+  }
+  body[data-screen="home"] .hub-stats {
+    gap: 4px;
+  }
+  body[data-screen="home"] .hub-stat-sub {
+    font-size: 8px;
+    line-height: 1.1;
+  }
   body[data-screen="home"] .hub-discover {
-    padding-inline: 10px 20px;
+    padding-inline: 8px 16px;
+    max-width: 44%;
   }
   body[data-screen="home"] .hub-lucy-card .lucy-stage {
     width: min(100%, 80px);
