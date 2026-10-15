@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#faf5e8">
+<title>Phoneme test · Letter Post</title>
+<link rel="stylesheet" href="../../cursor-funpass/v1-letter-post/base.css">
+<link rel="stylesheet" href="../../cursor-funpass/v1-letter-post/style.css">
+<link rel="stylesheet" href="../test.css">
+</head>
+<body class="post">
+<a class="skip" href="#bench">Skip to the letter bench</a>
+<div class="world" aria-hidden="true"></div>
+<div class="app">
+<header id="header">
+  <a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true">P</span><span>Phoneme test<small>Letter Post</small></span></a>
+</header>
+<main id="main">
+  <p class="eyebrow">ElevenLabs v4</p>
+  <div class="bench-intro">
+    <h1>Does this voice match the sound?</h1>
+    <p class="help">Pick a letter. Hear the name, the sound, and the picture word in one voice, then the Starfall phoneme. The voice is Mary. Keys: arrows move, 1 name, 2 sound, 3 word, 4 Starfall, 0 plays all three, P pass, F fail.</p>
+  </div>
+  <p class="layout-links"><a href="../moonboat/index.html">Open the Moonboat bench</a><button class="ghost" id="clear-all" type="button">Clear all marks</button></p>
+  <p class="tally" id="tally" role="status"></p>
+  <div class="picker" id="picker" role="group" aria-label="Letters"></div>
+  <section class="bench" id="bench" tabindex="-1" aria-live="polite"></section>
+</main>
+</div>
+<div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+<script src="../test.js"></script>
+</body>
+</html>
