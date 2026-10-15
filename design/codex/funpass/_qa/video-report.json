@@ -1,0 +1,42 @@
+[
+  {
+    "dir": "v1-letter-post",
+    "source": "Playwright recordVideo on file://",
+    "moments": [
+      "intro",
+      "letter pick",
+      "miss",
+      "two-miss hint",
+      "correct",
+      "celebration",
+      "collection",
+      "theme switch"
+    ],
+    "size": 582597,
+    "duration": "16.000000",
+    "codec": "h264",
+    "pixelFormat": "yuv420p",
+    "faststart": true,
+    "silent": true
+  },
+  {
+    "dir": "v3-moonboat",
+    "source": "Playwright recordVideo on file://",
+    "moments": [
+      "intro",
+      "letter pick",
+      "miss",
+      "two-miss hint",
+      "correct",
+      "celebration",
+      "collection",
+      "theme switch"
+    ],
+    "size": 453086,
+    "duration": "15.966667",
+    "codec": "h264",
+    "pixelFormat": "yuv420p",
+    "faststart": true,
+    "silent": true
+  }
+]

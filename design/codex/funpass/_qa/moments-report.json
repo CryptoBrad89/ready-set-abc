@@ -1,0 +1,14 @@
+[
+  {
+    "dir": "v1-letter-post",
+    "collection": 6,
+    "normalMotionRewardCaptured": true,
+    "themeWeatherCaptured": true
+  },
+  {
+    "dir": "v3-moonboat",
+    "collection": 6,
+    "normalMotionRewardCaptured": true,
+    "themeWeatherCaptured": true
+  }
+]
