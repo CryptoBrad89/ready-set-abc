@@ -1,0 +1,146 @@
+{
+  "voice": {
+    "id": "oClOrzqamOXmtcB8iqTj",
+    "name": "Emma - Bright Kids Educator",
+    "rationale": "The supplied reference describes Emma as a warm American female voice for children's phonics and education, matching Bradley's preference. Use her for every letter name, phoneme attempt, and picture word so all three clips share one consistent voice; suitability remains to be checked by listening."
+  },
+  "ipa_approach": "Try isolated IPA first, except B, S, and T: their reported failures warrant trying the supplied plain cue before IPA. Otherwise follow IPA with the supplied plain cue, plus the documented aah respelling for A. Use eleven_v4 and the shared voice throughout; compare takes with Starfall, reject spoken slashes, letter names, repeats, and incorrect sounds, and leave chosen_filename null until reviewed. If all attempts fail, mark the letter failed during generation rather than selecting a bad take.",
+  "credits_ledger": 252.0,
+  "ratings": {
+    "A": {
+      "file": "phoneme-a-try1.mp3",
+      "rating": "clean",
+      "note": "STT empty; IPA /æ/ short clip — listen vs Starfall"
+    },
+    "B": {
+      "file": "phoneme-b-try1.mp3",
+      "rating": "iffy",
+      "note": "STT 'Bye' for buh — close but not crisp"
+    },
+    "C": {
+      "file": "phoneme-c-try1.mp3",
+      "rating": "iffy",
+      "note": "STT empty on /k/; tiny plain take discarded"
+    },
+    "D": {
+      "file": "phoneme-d-try2.mp3",
+      "rating": "iffy",
+      "note": "IPA read as slash; plain duh STT as So"
+    },
+    "E": {
+      "file": "phoneme-e-try1.mp3",
+      "rating": "iffy",
+      "note": "STT 'Yeah' for /ɛ/"
+    },
+    "F": {
+      "file": "phoneme-f-try1.mp3",
+      "rating": "clean",
+      "note": "STT empty on /f/ fricative (often good)"
+    },
+    "G": {
+      "file": "phoneme-g-try2.mp3",
+      "rating": "iffy",
+      "note": "IPA slash; plain guh STT You"
+    },
+    "H": {
+      "file": "phoneme-h-try2.mp3",
+      "rating": "clean",
+      "note": "IPA slash; plain huh STT 'Huh?'"
+    },
+    "I": {
+      "file": "phoneme-i-try1.mp3",
+      "rating": "iffy",
+      "note": "STT 'Oh' for /ɪ/"
+    },
+    "J": {
+      "file": "phoneme-j-try1.mp3",
+      "rating": "iffy",
+      "note": "STT 'So' for /dʒ/"
+    },
+    "K": {
+      "file": "phoneme-k-try2.mp3",
+      "rating": "iffy",
+      "note": "IPA generation failed; plain kuh STT So"
+    },
+    "L": {
+      "file": "phoneme-l-try1.mp3",
+      "rating": "clean",
+      "note": "STT empty on /l/"
+    },
+    "M": {
+      "file": "phoneme-m-try2.mp3",
+      "rating": "clean",
+      "note": "IPA slash; plain mmm STT 'Hmm.'"
+    },
+    "N": {
+      "file": "phoneme-n-try1.mp3",
+      "rating": "clean",
+      "note": "STT empty on /n/"
+    },
+    "O": {
+      "file": "phoneme-o-try1.mp3",
+      "rating": "iffy",
+      "note": "STT 'Arc' for /ɒ/; plain aw too tiny"
+    },
+    "P": {
+      "file": "phoneme-p-try2.mp3",
+      "rating": "iffy",
+      "note": "IPA slash; plain puh STT 'Poor Helen' — bad"
+    },
+    "Q": {
+      "file": "phoneme-q-try1.mp3",
+      "rating": "iffy",
+      "note": "STT 'Qua.' for /kw/"
+    },
+    "R": {
+      "file": "phoneme-r-try2.mp3",
+      "rating": "iffy",
+      "note": "IPA slash; plain rrr STT 'Ha!'"
+    },
+    "S": {
+      "file": "phoneme-s-try1.mp3",
+      "rating": "clean",
+      "note": "STT 'SSS' — clean"
+    },
+    "T": {
+      "file": "phoneme-t-try1.mp3",
+      "rating": "iffy",
+      "note": "STT 'So' for tuh — classic T fail mode"
+    },
+    "U": {
+      "file": "phoneme-u-try1.mp3",
+      "rating": "iffy",
+      "note": "STT 'Oh' for /ʌ/"
+    },
+    "V": {
+      "file": "phoneme-v-try2.mp3",
+      "rating": "clean",
+      "note": "IPA slash; plain vvv STT 'VV'"
+    },
+    "W": {
+      "file": "phoneme-w-try1.mp3",
+      "rating": "clean",
+      "note": "STT 'Wah.'"
+    },
+    "X": {
+      "file": "phoneme-x-try1.mp3",
+      "rating": "iffy",
+      "note": "STT empty on /ks/"
+    },
+    "Y": {
+      "file": "phoneme-y-try1.mp3",
+      "rating": "iffy",
+      "note": "STT 'Yee!' for /j/"
+    },
+    "Z": {
+      "file": "phoneme-z-try1.mp3",
+      "rating": "clean",
+      "note": "STT empty on /z/"
+    }
+  },
+  "summary": {
+    "clean": 10,
+    "iffy": 16,
+    "failed": 0
+  }
+}
