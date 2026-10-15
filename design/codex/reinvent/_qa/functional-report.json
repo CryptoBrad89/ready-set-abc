@@ -1,0 +1,59 @@
+[
+  {
+    "dir": "v1-letter-post",
+    "passed": true,
+    "checks": [
+      "Recorded name and phoneme ended in order",
+      "Two misses reveal actual answer",
+      "Correct answer celebrates",
+      "Leaving cancels voice sequence",
+      "All six letters played via keyboard",
+      "Arrow navigation",
+      "Reduced motion has zero running animations",
+      "All themes survive reload and complete play",
+      "No page errors",
+      "No network requests"
+    ],
+    "errors": [],
+    "remote": []
+  },
+  {
+    "dir": "v2-sound-garden",
+    "passed": true,
+    "checks": [
+      "Recorded name and phoneme ended in order",
+      "Two misses reveal actual answer",
+      "Correct answer celebrates",
+      "Leaving cancels voice sequence",
+      "All six letters played via keyboard",
+      "Arrow navigation",
+      "Reduced motion has zero running animations",
+      "All themes survive reload and complete play",
+      "No page errors",
+      "No network requests"
+    ],
+    "errors": [],
+    "remote": []
+  },
+  {
+    "dir": "v3-moonboat",
+    "passed": true,
+    "checks": [
+      "Recorded name and phoneme ended in order",
+      "Two misses reveal actual answer",
+      "Correct answer celebrates",
+      "Leaving cancels voice sequence",
+      "All six letters played via keyboard",
+      "Arrow navigation",
+      "Reduced motion has zero running animations",
+      "All themes survive reload and complete play",
+      "No page errors",
+      "No network requests"
+    ],
+    "errors": [],
+    "remote": []
+  },
+  {
+    "blockedStorageFallback": true
+  }
+]

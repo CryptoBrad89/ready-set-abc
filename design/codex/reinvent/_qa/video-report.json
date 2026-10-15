@@ -1,0 +1,23 @@
+[
+  {
+    "dir": "v1-letter-post",
+    "size": 1162225,
+    "duration": "15.666667",
+    "codec": "h264",
+    "pixelFormat": "yuv420p"
+  },
+  {
+    "dir": "v2-sound-garden",
+    "size": 858391,
+    "duration": "15.600000",
+    "codec": "h264",
+    "pixelFormat": "yuv420p"
+  },
+  {
+    "dir": "v3-moonboat",
+    "size": 983298,
+    "duration": "15.633333",
+    "codec": "h264",
+    "pixelFormat": "yuv420p"
+  }
+]
