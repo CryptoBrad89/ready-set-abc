@@ -1,0 +1,715 @@
+{
+  "model": "eleven_v4",
+  "voice_id": "acCWxmzPBgXdHwA63uzP",
+  "voice_name": "Mary - Sweet, Warm, Direct, Neutral American",
+  "voice_why": "One woman's General American voice for every clip, so the short vowels can sit next to the US Starfall sounds. Picked from the ElevenLabs voice list for educational narration. Voice id FgiNpTIapnCbaD6xiqIo was context only and was not used.",
+  "postprocess": "Each kept take was trimmed and saved as mono 64 kbps MP3. S, X, and Z were also made louder so the quiet fricatives can be heard. No second model was used.",
+  "letters": [
+    {
+      "letter": "A",
+      "lower": "a",
+      "ipa": "/æ/",
+      "say": "aaa",
+      "word": "Apple",
+      "picture_id": "apple",
+      "name_prompt": "A.",
+      "phoneme_prompt": "aaa",
+      "phoneme_prompts_tried": [
+        "/æ/",
+        "aaa"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Apple.",
+      "note": "IPA /æ/ was one quiet vowel. aaa is the single vowel that matched the say-field better.",
+      "files": {
+        "name": "audio/v4-name-a.mp3",
+        "phoneme": "audio/v4-phoneme-a.mp3",
+        "word": "audio/v4-word-a.mp3",
+        "reference": "audio/ref-phoneme-a.mp3"
+      }
+    },
+    {
+      "letter": "B",
+      "lower": "b",
+      "ipa": "/b/",
+      "say": "buh",
+      "word": "Ball",
+      "picture_id": "ball",
+      "name_prompt": "B.",
+      "phoneme_prompt": "buh",
+      "phoneme_prompts_tried": [
+        "/b/",
+        "buh"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Ball.",
+      "note": "IPA /b/ came out as several bursts, the slash marks spoken aloud. buh is one short syllable.",
+      "files": {
+        "name": "audio/v4-name-b.mp3",
+        "phoneme": "audio/v4-phoneme-b.mp3",
+        "word": "audio/v4-word-b.mp3",
+        "reference": "audio/ref-phoneme-b.mp3"
+      }
+    },
+    {
+      "letter": "C",
+      "lower": "c",
+      "ipa": "/k/",
+      "say": "kuh",
+      "word": "Cat",
+      "picture_id": "cat",
+      "name_prompt": "C.",
+      "phoneme_prompt": "kuh",
+      "phoneme_prompts_tried": [
+        "/k/",
+        "kuh"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Cat.",
+      "note": "IPA /k/ was silence. kuh is one syllable. The same take is copied to K.",
+      "files": {
+        "name": "audio/v4-name-c.mp3",
+        "phoneme": "audio/v4-phoneme-c.mp3",
+        "word": "audio/v4-word-c.mp3",
+        "reference": "audio/ref-phoneme-c.mp3"
+      }
+    },
+    {
+      "letter": "D",
+      "lower": "d",
+      "ipa": "/d/",
+      "say": "duh",
+      "word": "Dog",
+      "picture_id": "dog",
+      "name_prompt": "D.",
+      "phoneme_prompt": "/d/",
+      "phoneme_prompts_tried": [
+        "/d/",
+        "duh"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Dog.",
+      "note": "IPA /d/ stayed one burst and beat duh.",
+      "files": {
+        "name": "audio/v4-name-d.mp3",
+        "phoneme": "audio/v4-phoneme-d.mp3",
+        "word": "audio/v4-word-d.mp3",
+        "reference": "audio/ref-phoneme-d.mp3"
+      }
+    },
+    {
+      "letter": "E",
+      "lower": "e",
+      "ipa": "/ɛ/",
+      "say": "eh",
+      "word": "Egg",
+      "picture_id": "egg",
+      "name_prompt": "E.",
+      "phoneme_prompt": "/ɛ/",
+      "phoneme_prompts_tried": [
+        "/ɛ/",
+        "eh"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Egg.",
+      "note": "IPA /ɛ/ stayed one vowel. eh was very quiet.",
+      "files": {
+        "name": "audio/v4-name-e.mp3",
+        "phoneme": "audio/v4-phoneme-e.mp3",
+        "word": "audio/v4-word-e.mp3",
+        "reference": "audio/ref-phoneme-e.mp3"
+      }
+    },
+    {
+      "letter": "F",
+      "lower": "f",
+      "ipa": "/f/",
+      "say": "fff",
+      "word": "Fish",
+      "picture_id": "fish",
+      "name_prompt": "F.",
+      "phoneme_prompt": "fff",
+      "phoneme_prompts_tried": [
+        "/f/",
+        "fff",
+        "ffffff"
+      ],
+      "phoneme_status": "failed",
+      "word_prompt": "Fish.",
+      "note": "IPA /f/ was silence. fff and ffffff were separate eff syllables, not a sustained fricative. fff is the shorter failed take.",
+      "files": {
+        "name": "audio/v4-name-f.mp3",
+        "phoneme": "audio/v4-phoneme-f.mp3",
+        "word": "audio/v4-word-f.mp3",
+        "reference": "audio/ref-phoneme-f.mp3"
+      }
+    },
+    {
+      "letter": "G",
+      "lower": "g",
+      "ipa": "/g/",
+      "say": "guh",
+      "word": "Goat",
+      "picture_id": "goat",
+      "name_prompt": "G.",
+      "phoneme_prompt": "guh",
+      "phoneme_prompts_tried": [
+        "/g/",
+        "guh"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Goat.",
+      "note": "IPA /g/ was several bursts. guh is one syllable.",
+      "files": {
+        "name": "audio/v4-name-g.mp3",
+        "phoneme": "audio/v4-phoneme-g.mp3",
+        "word": "audio/v4-word-g.mp3",
+        "reference": "audio/ref-phoneme-g.mp3"
+      }
+    },
+    {
+      "letter": "H",
+      "lower": "h",
+      "ipa": "/h/",
+      "say": "huh",
+      "word": "Hat",
+      "picture_id": "hat",
+      "name_prompt": "H.",
+      "phoneme_prompt": "huh",
+      "phoneme_prompts_tried": [
+        "/h/",
+        "huh"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Hat.",
+      "note": "IPA /h/ was several bursts. huh is one syllable and less breathy than the Starfall clip.",
+      "files": {
+        "name": "audio/v4-name-h.mp3",
+        "phoneme": "audio/v4-phoneme-h.mp3",
+        "word": "audio/v4-word-h.mp3",
+        "reference": "audio/ref-phoneme-h.mp3"
+      }
+    },
+    {
+      "letter": "I",
+      "lower": "i",
+      "ipa": "/ɪ/",
+      "say": "ih",
+      "word": "Igloo",
+      "picture_id": "igloo",
+      "name_prompt": "I.",
+      "phoneme_prompt": "/ɪ/",
+      "phoneme_prompts_tried": [
+        "/ɪ/",
+        "ih"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Igloo.",
+      "note": "IPA /ɪ/ stayed one vowel and beat ih.",
+      "files": {
+        "name": "audio/v4-name-i.mp3",
+        "phoneme": "audio/v4-phoneme-i.mp3",
+        "word": "audio/v4-word-i.mp3",
+        "reference": "audio/ref-phoneme-i.mp3"
+      }
+    },
+    {
+      "letter": "J",
+      "lower": "j",
+      "ipa": "/dʒ/",
+      "say": "juh",
+      "word": "Juice",
+      "picture_id": "juice",
+      "name_prompt": "J.",
+      "phoneme_prompt": "/dʒ/",
+      "phoneme_prompts_tried": [
+        "/dʒ/",
+        "juh"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Juice.",
+      "note": "IPA /dʒ/ stayed one burst and slightly beat juh.",
+      "files": {
+        "name": "audio/v4-name-j.mp3",
+        "phoneme": "audio/v4-phoneme-j.mp3",
+        "word": "audio/v4-word-j.mp3",
+        "reference": "audio/ref-phoneme-j.mp3"
+      }
+    },
+    {
+      "letter": "K",
+      "lower": "k",
+      "ipa": "/k/",
+      "say": "kuh",
+      "word": "Key",
+      "picture_id": "key",
+      "name_prompt": "K.",
+      "phoneme_prompt": "kuh",
+      "phoneme_prompts_tried": [
+        "/k/",
+        "kuh"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Key.",
+      "note": "Same /k/ as C. IPA /k/ was silence, so the kuh take is used.",
+      "files": {
+        "name": "audio/v4-name-k.mp3",
+        "phoneme": "audio/v4-phoneme-k.mp3",
+        "word": "audio/v4-word-k.mp3",
+        "reference": "audio/ref-phoneme-k.mp3"
+      }
+    },
+    {
+      "letter": "L",
+      "lower": "l",
+      "ipa": "/l/",
+      "say": "lll",
+      "word": "Leaf",
+      "picture_id": "leaf",
+      "name_prompt": "L.",
+      "phoneme_prompt": "/l/",
+      "phoneme_prompts_tried": [
+        "/l/",
+        "lll"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Leaf.",
+      "note": "lll broke into three syllables. IPA /l/ stayed one sound.",
+      "files": {
+        "name": "audio/v4-name-l.mp3",
+        "phoneme": "audio/v4-phoneme-l.mp3",
+        "word": "audio/v4-word-l.mp3",
+        "reference": "audio/ref-phoneme-l.mp3"
+      }
+    },
+    {
+      "letter": "M",
+      "lower": "m",
+      "ipa": "/m/",
+      "say": "mmm",
+      "word": "Moon",
+      "picture_id": "moon",
+      "name_prompt": "M.",
+      "phoneme_prompt": "mmm",
+      "phoneme_prompts_tried": [
+        "/m/",
+        "mmm"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Moon.",
+      "note": "IPA /m/ was four bursts. mmm is one nasal.",
+      "files": {
+        "name": "audio/v4-name-m.mp3",
+        "phoneme": "audio/v4-phoneme-m.mp3",
+        "word": "audio/v4-word-m.mp3",
+        "reference": "audio/ref-phoneme-m.mp3"
+      }
+    },
+    {
+      "letter": "N",
+      "lower": "n",
+      "ipa": "/n/",
+      "say": "nnn",
+      "word": "Nose",
+      "picture_id": "nose",
+      "name_prompt": "N.",
+      "phoneme_prompt": "nnn",
+      "phoneme_prompts_tried": [
+        "/n/",
+        "nnn"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Nose.",
+      "note": "Both takes were one burst. nnn is the longer nasal, closer to the stretched Starfall clip.",
+      "files": {
+        "name": "audio/v4-name-n.mp3",
+        "phoneme": "audio/v4-phoneme-n.mp3",
+        "word": "audio/v4-word-n.mp3",
+        "reference": "audio/ref-phoneme-n.mp3"
+      }
+    },
+    {
+      "letter": "O",
+      "lower": "o",
+      "ipa": "/ɒ/",
+      "say": "aw",
+      "word": "Octopus",
+      "picture_id": "octopus",
+      "name_prompt": "O.",
+      "phoneme_prompt": "aw",
+      "phoneme_prompts_tried": [
+        "/ɒ/",
+        "aw"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Octopus.",
+      "note": "aw is the say-field. The picture word is Octopus, because Owl is a different vowel.",
+      "files": {
+        "name": "audio/v4-name-o.mp3",
+        "phoneme": "audio/v4-phoneme-o.mp3",
+        "word": "audio/v4-word-o.mp3",
+        "reference": "audio/ref-phoneme-o.mp3"
+      }
+    },
+    {
+      "letter": "P",
+      "lower": "p",
+      "ipa": "/p/",
+      "say": "puh",
+      "word": "Pig",
+      "picture_id": "pig",
+      "name_prompt": "P.",
+      "phoneme_prompt": "puh",
+      "phoneme_prompts_tried": [
+        "/p/",
+        "puh"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Pig.",
+      "note": "IPA /p/ came out as several bursts, the slash marks spoken aloud. puh is one syllable.",
+      "files": {
+        "name": "audio/v4-name-p.mp3",
+        "phoneme": "audio/v4-phoneme-p.mp3",
+        "word": "audio/v4-word-p.mp3",
+        "reference": "audio/ref-phoneme-p.mp3"
+      }
+    },
+    {
+      "letter": "Q",
+      "lower": "q",
+      "ipa": "/kw/",
+      "say": "kwuh",
+      "word": "Quilt",
+      "picture_id": "quilt",
+      "name_prompt": "Q.",
+      "phoneme_prompt": "kwuh",
+      "phoneme_prompts_tried": [
+        "/kw/",
+        "kwuh"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Quilt.",
+      "note": "kwuh keeps the stop-plus-vowel shape of /kw/.",
+      "files": {
+        "name": "audio/v4-name-q.mp3",
+        "phoneme": "audio/v4-phoneme-q.mp3",
+        "word": "audio/v4-word-q.mp3",
+        "reference": "audio/ref-phoneme-q.mp3"
+      }
+    },
+    {
+      "letter": "R",
+      "lower": "r",
+      "ipa": "/r/",
+      "say": "rrr",
+      "word": "Rain",
+      "picture_id": "rain",
+      "name_prompt": "R.",
+      "phoneme_prompt": "rrr",
+      "phoneme_prompts_tried": [
+        "/r/",
+        "rrr"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Rain.",
+      "note": "IPA /r/ was several bursts. rrr is one sound.",
+      "files": {
+        "name": "audio/v4-name-r.mp3",
+        "phoneme": "audio/v4-phoneme-r.mp3",
+        "word": "audio/v4-word-r.mp3",
+        "reference": "audio/ref-phoneme-r.mp3"
+      }
+    },
+    {
+      "letter": "S",
+      "lower": "s",
+      "ipa": "/s/",
+      "say": "sss",
+      "word": "Sun",
+      "picture_id": "sun",
+      "name_prompt": "S.",
+      "phoneme_prompt": "ssssssss",
+      "phoneme_prompts_tried": [
+        "/s/",
+        "sss",
+        "ssssssss"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Sun.",
+      "note": "IPA /s/ and sss added a vowel. Eight s letters became a real hiss. It was quiet, so the file level was raised. Still the eleven_v4 take.",
+      "files": {
+        "name": "audio/v4-name-s.mp3",
+        "phoneme": "audio/v4-phoneme-s.mp3",
+        "word": "audio/v4-word-s.mp3",
+        "reference": "audio/ref-phoneme-s.mp3"
+      }
+    },
+    {
+      "letter": "T",
+      "lower": "t",
+      "ipa": "/t/",
+      "say": "tuh",
+      "word": "Tree",
+      "picture_id": "tree",
+      "name_prompt": "T.",
+      "phoneme_prompt": "tuh",
+      "phoneme_prompts_tried": [
+        "/t/",
+        "tuh"
+      ],
+      "phoneme_status": "failed",
+      "word_prompt": "Tree.",
+      "note": "Neither take has the Starfall stop burst. tuh is one short vowel, the say-field, and is the failed take to hear.",
+      "files": {
+        "name": "audio/v4-name-t.mp3",
+        "phoneme": "audio/v4-phoneme-t.mp3",
+        "word": "audio/v4-word-t.mp3",
+        "reference": "audio/ref-phoneme-t.mp3"
+      }
+    },
+    {
+      "letter": "U",
+      "lower": "u",
+      "ipa": "/ʌ/",
+      "say": "uh",
+      "word": "Umbrella",
+      "picture_id": "umbrella",
+      "name_prompt": "U.",
+      "phoneme_prompt": "uh",
+      "phoneme_prompts_tried": [
+        "/ʌ/",
+        "uh"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Umbrella.",
+      "note": "Both were one vowel. uh matches the say-field and the short Starfall length.",
+      "files": {
+        "name": "audio/v4-name-u.mp3",
+        "phoneme": "audio/v4-phoneme-u.mp3",
+        "word": "audio/v4-word-u.mp3",
+        "reference": "audio/ref-phoneme-u.mp3"
+      }
+    },
+    {
+      "letter": "V",
+      "lower": "v",
+      "ipa": "/v/",
+      "say": "vvv",
+      "word": "Van",
+      "picture_id": "van",
+      "name_prompt": "V.",
+      "phoneme_prompt": "vvv",
+      "phoneme_prompts_tried": [
+        "/v/",
+        "vvv"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Van.",
+      "note": "IPA /v/ was several bursts. vvv is one voiced stretch.",
+      "files": {
+        "name": "audio/v4-name-v.mp3",
+        "phoneme": "audio/v4-phoneme-v.mp3",
+        "word": "audio/v4-word-v.mp3",
+        "reference": "audio/ref-phoneme-v.mp3"
+      }
+    },
+    {
+      "letter": "W",
+      "lower": "w",
+      "ipa": "/w/",
+      "say": "wuh",
+      "word": "Watermelon",
+      "picture_id": "watermelon",
+      "name_prompt": "W.",
+      "phoneme_prompt": "wuh",
+      "phoneme_prompts_tried": [
+        "/w/",
+        "wuh"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Watermelon.",
+      "note": "IPA /w/ was three bursts. wuh is one syllable.",
+      "files": {
+        "name": "audio/v4-name-w.mp3",
+        "phoneme": "audio/v4-phoneme-w.mp3",
+        "word": "audio/v4-word-w.mp3",
+        "reference": "audio/ref-phoneme-w.mp3"
+      }
+    },
+    {
+      "letter": "X",
+      "lower": "x",
+      "ipa": "/ks/",
+      "say": "ks",
+      "word": "Xylophone",
+      "picture_id": "xylophone",
+      "name_prompt": "X.",
+      "phoneme_prompt": "/ks/",
+      "phoneme_prompts_tried": [
+        "/ks/",
+        "ks"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Xylophone.",
+      "note": "ks was a vowel. IPA /ks/ is a short fricative and the level was raised. No picture word starts with /ks/; Xylophone starts with /z/.",
+      "files": {
+        "name": "audio/v4-name-x.mp3",
+        "phoneme": "audio/v4-phoneme-x.mp3",
+        "word": "audio/v4-word-x.mp3",
+        "reference": "audio/ref-phoneme-x.mp3"
+      }
+    },
+    {
+      "letter": "Y",
+      "lower": "y",
+      "ipa": "/j/",
+      "say": "yuh",
+      "word": "Yarn",
+      "picture_id": "yarn",
+      "name_prompt": "Y.",
+      "phoneme_prompt": "yuh",
+      "phoneme_prompts_tried": [
+        "/j/",
+        "yuh"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Yarn.",
+      "note": "yuh is closer to the Starfall glide than IPA /j/.",
+      "files": {
+        "name": "audio/v4-name-y.mp3",
+        "phoneme": "audio/v4-phoneme-y.mp3",
+        "word": "audio/v4-word-y.mp3",
+        "reference": "audio/ref-phoneme-y.mp3"
+      }
+    },
+    {
+      "letter": "Z",
+      "lower": "z",
+      "ipa": "/z/",
+      "say": "zzz",
+      "word": "Zebra",
+      "picture_id": "zebra",
+      "name_prompt": "Z.",
+      "phoneme_prompt": "zzz",
+      "phoneme_prompts_tried": [
+        "/z/",
+        "zzz"
+      ],
+      "phoneme_status": "ok",
+      "word_prompt": "Zebra.",
+      "note": "IPA /z/ was two bursts. zzz is a voiced buzz. The level was raised slightly.",
+      "files": {
+        "name": "audio/v4-name-z.mp3",
+        "phoneme": "audio/v4-phoneme-z.mp3",
+        "word": "audio/v4-word-z.mp3",
+        "reference": "audio/ref-phoneme-z.mp3"
+      }
+    }
+  ],
+  "audio_files": [
+    "audio/v4-name-a.mp3",
+    "audio/v4-phoneme-a.mp3",
+    "audio/v4-word-a.mp3",
+    "audio/ref-phoneme-a.mp3",
+    "audio/v4-name-b.mp3",
+    "audio/v4-phoneme-b.mp3",
+    "audio/v4-word-b.mp3",
+    "audio/ref-phoneme-b.mp3",
+    "audio/v4-name-c.mp3",
+    "audio/v4-phoneme-c.mp3",
+    "audio/v4-word-c.mp3",
+    "audio/ref-phoneme-c.mp3",
+    "audio/v4-name-d.mp3",
+    "audio/v4-phoneme-d.mp3",
+    "audio/v4-word-d.mp3",
+    "audio/ref-phoneme-d.mp3",
+    "audio/v4-name-e.mp3",
+    "audio/v4-phoneme-e.mp3",
+    "audio/v4-word-e.mp3",
+    "audio/ref-phoneme-e.mp3",
+    "audio/v4-name-f.mp3",
+    "audio/v4-phoneme-f.mp3",
+    "audio/v4-word-f.mp3",
+    "audio/ref-phoneme-f.mp3",
+    "audio/v4-name-g.mp3",
+    "audio/v4-phoneme-g.mp3",
+    "audio/v4-word-g.mp3",
+    "audio/ref-phoneme-g.mp3",
+    "audio/v4-name-h.mp3",
+    "audio/v4-phoneme-h.mp3",
+    "audio/v4-word-h.mp3",
+    "audio/ref-phoneme-h.mp3",
+    "audio/v4-name-i.mp3",
+    "audio/v4-phoneme-i.mp3",
+    "audio/v4-word-i.mp3",
+    "audio/ref-phoneme-i.mp3",
+    "audio/v4-name-j.mp3",
+    "audio/v4-phoneme-j.mp3",
+    "audio/v4-word-j.mp3",
+    "audio/ref-phoneme-j.mp3",
+    "audio/v4-name-k.mp3",
+    "audio/v4-phoneme-k.mp3",
+    "audio/v4-word-k.mp3",
+    "audio/ref-phoneme-k.mp3",
+    "audio/v4-name-l.mp3",
+    "audio/v4-phoneme-l.mp3",
+    "audio/v4-word-l.mp3",
+    "audio/ref-phoneme-l.mp3",
+    "audio/v4-name-m.mp3",
+    "audio/v4-phoneme-m.mp3",
+    "audio/v4-word-m.mp3",
+    "audio/ref-phoneme-m.mp3",
+    "audio/v4-name-n.mp3",
+    "audio/v4-phoneme-n.mp3",
+    "audio/v4-word-n.mp3",
+    "audio/ref-phoneme-n.mp3",
+    "audio/v4-name-o.mp3",
+    "audio/v4-phoneme-o.mp3",
+    "audio/v4-word-o.mp3",
+    "audio/ref-phoneme-o.mp3",
+    "audio/v4-name-p.mp3",
+    "audio/v4-phoneme-p.mp3",
+    "audio/v4-word-p.mp3",
+    "audio/ref-phoneme-p.mp3",
+    "audio/v4-name-q.mp3",
+    "audio/v4-phoneme-q.mp3",
+    "audio/v4-word-q.mp3",
+    "audio/ref-phoneme-q.mp3",
+    "audio/v4-name-r.mp3",
+    "audio/v4-phoneme-r.mp3",
+    "audio/v4-word-r.mp3",
+    "audio/ref-phoneme-r.mp3",
+    "audio/v4-name-s.mp3",
+    "audio/v4-phoneme-s.mp3",
+    "audio/v4-word-s.mp3",
+    "audio/ref-phoneme-s.mp3",
+    "audio/v4-name-t.mp3",
+    "audio/v4-phoneme-t.mp3",
+    "audio/v4-word-t.mp3",
+    "audio/ref-phoneme-t.mp3",
+    "audio/v4-name-u.mp3",
+    "audio/v4-phoneme-u.mp3",
+    "audio/v4-word-u.mp3",
+    "audio/ref-phoneme-u.mp3",
+    "audio/v4-name-v.mp3",
+    "audio/v4-phoneme-v.mp3",
+    "audio/v4-word-v.mp3",
+    "audio/ref-phoneme-v.mp3",
+    "audio/v4-name-w.mp3",
+    "audio/v4-phoneme-w.mp3",
+    "audio/v4-word-w.mp3",
+    "audio/ref-phoneme-w.mp3",
+    "audio/v4-name-x.mp3",
+    "audio/v4-phoneme-x.mp3",
+    "audio/v4-word-x.mp3",
+    "audio/ref-phoneme-x.mp3",
+    "audio/v4-name-y.mp3",
+    "audio/v4-phoneme-y.mp3",
+    "audio/v4-word-y.mp3",
+    "audio/ref-phoneme-y.mp3",
+    "audio/v4-name-z.mp3",
+    "audio/v4-phoneme-z.mp3",
+    "audio/v4-word-z.mp3",
+    "audio/ref-phoneme-z.mp3"
+  ]
+}
