@@ -1,0 +1,394 @@
+[
+  {
+    "d": "v1-letter-post",
+    "w": 280,
+    "h": 480,
+    "state": "home",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 280,
+    "h": 480,
+    "state": "listen",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 280,
+    "h": 480,
+    "state": "match",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 280,
+    "h": 480,
+    "state": "celebrate",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 480,
+    "h": 280,
+    "state": "home",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 480,
+    "h": 280,
+    "state": "listen",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 480,
+    "h": 280,
+    "state": "match",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 480,
+    "h": 280,
+    "state": "celebrate",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 320,
+    "h": 568,
+    "state": "home",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 320,
+    "h": 568,
+    "state": "listen",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 320,
+    "h": 568,
+    "state": "match",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 320,
+    "h": 568,
+    "state": "celebrate",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 568,
+    "h": 320,
+    "state": "home",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 568,
+    "h": 320,
+    "state": "listen",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 568,
+    "h": 320,
+    "state": "match",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 568,
+    "h": 320,
+    "state": "celebrate",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 1000,
+    "h": 1000,
+    "state": "home",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 1000,
+    "h": 1000,
+    "state": "listen",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 1000,
+    "h": 1000,
+    "state": "match",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 1000,
+    "h": 1000,
+    "state": "celebrate",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 2560,
+    "h": 1440,
+    "state": "home",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 2560,
+    "h": 1440,
+    "state": "listen",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 2560,
+    "h": 1440,
+    "state": "match",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "w": 2560,
+    "h": 1440,
+    "state": "celebrate",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v1-letter-post",
+    "orientationPreserved": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 280,
+    "h": 480,
+    "state": "home",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 280,
+    "h": 480,
+    "state": "listen",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 280,
+    "h": 480,
+    "state": "match",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 280,
+    "h": 480,
+    "state": "celebrate",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 480,
+    "h": 280,
+    "state": "home",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 480,
+    "h": 280,
+    "state": "listen",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 480,
+    "h": 280,
+    "state": "match",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 480,
+    "h": 280,
+    "state": "celebrate",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 320,
+    "h": 568,
+    "state": "home",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 320,
+    "h": 568,
+    "state": "listen",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 320,
+    "h": 568,
+    "state": "match",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 320,
+    "h": 568,
+    "state": "celebrate",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 568,
+    "h": 320,
+    "state": "home",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 568,
+    "h": 320,
+    "state": "listen",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 568,
+    "h": 320,
+    "state": "match",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 568,
+    "h": 320,
+    "state": "celebrate",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 1000,
+    "h": 1000,
+    "state": "home",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 1000,
+    "h": 1000,
+    "state": "listen",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 1000,
+    "h": 1000,
+    "state": "match",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 1000,
+    "h": 1000,
+    "state": "celebrate",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 2560,
+    "h": 1440,
+    "state": "home",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 2560,
+    "h": 1440,
+    "state": "listen",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 2560,
+    "h": 1440,
+    "state": "match",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "w": 2560,
+    "h": 1440,
+    "state": "celebrate",
+    "overflow": false,
+    "hit": true
+  },
+  {
+    "d": "v3-moonboat",
+    "orientationPreserved": true
+  }
+]

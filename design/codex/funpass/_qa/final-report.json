@@ -1,0 +1,637 @@
+{
+  "passed": true,
+  "mainLayoutCases": 48,
+  "layoutFailures": [],
+  "edgeCases": 48,
+  "edgeFailures": [],
+  "contrastCases": 36,
+  "contrastFailures": [],
+  "funSafetyPassed": true,
+  "functionalPassed": true,
+  "exactViewportStills": [
+    {
+      "path": "out/v1-letter-post/stills/home-1920x1080.png",
+      "expected": [
+        1920,
+        1080
+      ],
+      "actual": [
+        1920,
+        1080
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/listen-1920x1080.png",
+      "expected": [
+        1920,
+        1080
+      ],
+      "actual": [
+        1920,
+        1080
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/match-1920x1080.png",
+      "expected": [
+        1920,
+        1080
+      ],
+      "actual": [
+        1920,
+        1080
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/celebrate-1920x1080.png",
+      "expected": [
+        1920,
+        1080
+      ],
+      "actual": [
+        1920,
+        1080
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/home-1366x768.png",
+      "expected": [
+        1366,
+        768
+      ],
+      "actual": [
+        1366,
+        768
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/listen-1366x768.png",
+      "expected": [
+        1366,
+        768
+      ],
+      "actual": [
+        1366,
+        768
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/match-1366x768.png",
+      "expected": [
+        1366,
+        768
+      ],
+      "actual": [
+        1366,
+        768
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/celebrate-1366x768.png",
+      "expected": [
+        1366,
+        768
+      ],
+      "actual": [
+        1366,
+        768
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/home-820x1180.png",
+      "expected": [
+        820,
+        1180
+      ],
+      "actual": [
+        820,
+        1180
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/listen-820x1180.png",
+      "expected": [
+        820,
+        1180
+      ],
+      "actual": [
+        820,
+        1180
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/match-820x1180.png",
+      "expected": [
+        820,
+        1180
+      ],
+      "actual": [
+        820,
+        1180
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/celebrate-820x1180.png",
+      "expected": [
+        820,
+        1180
+      ],
+      "actual": [
+        820,
+        1180
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/home-1180x820.png",
+      "expected": [
+        1180,
+        820
+      ],
+      "actual": [
+        1180,
+        820
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/listen-1180x820.png",
+      "expected": [
+        1180,
+        820
+      ],
+      "actual": [
+        1180,
+        820
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/match-1180x820.png",
+      "expected": [
+        1180,
+        820
+      ],
+      "actual": [
+        1180,
+        820
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/celebrate-1180x820.png",
+      "expected": [
+        1180,
+        820
+      ],
+      "actual": [
+        1180,
+        820
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/home-390x844.png",
+      "expected": [
+        390,
+        844
+      ],
+      "actual": [
+        390,
+        844
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/listen-390x844.png",
+      "expected": [
+        390,
+        844
+      ],
+      "actual": [
+        390,
+        844
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/match-390x844.png",
+      "expected": [
+        390,
+        844
+      ],
+      "actual": [
+        390,
+        844
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/celebrate-390x844.png",
+      "expected": [
+        390,
+        844
+      ],
+      "actual": [
+        390,
+        844
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/home-844x390.png",
+      "expected": [
+        844,
+        390
+      ],
+      "actual": [
+        844,
+        390
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/listen-844x390.png",
+      "expected": [
+        844,
+        390
+      ],
+      "actual": [
+        844,
+        390
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/match-844x390.png",
+      "expected": [
+        844,
+        390
+      ],
+      "actual": [
+        844,
+        390
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v1-letter-post/stills/celebrate-844x390.png",
+      "expected": [
+        844,
+        390
+      ],
+      "actual": [
+        844,
+        390
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/home-1920x1080.png",
+      "expected": [
+        1920,
+        1080
+      ],
+      "actual": [
+        1920,
+        1080
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/listen-1920x1080.png",
+      "expected": [
+        1920,
+        1080
+      ],
+      "actual": [
+        1920,
+        1080
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/match-1920x1080.png",
+      "expected": [
+        1920,
+        1080
+      ],
+      "actual": [
+        1920,
+        1080
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/celebrate-1920x1080.png",
+      "expected": [
+        1920,
+        1080
+      ],
+      "actual": [
+        1920,
+        1080
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/home-1366x768.png",
+      "expected": [
+        1366,
+        768
+      ],
+      "actual": [
+        1366,
+        768
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/listen-1366x768.png",
+      "expected": [
+        1366,
+        768
+      ],
+      "actual": [
+        1366,
+        768
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/match-1366x768.png",
+      "expected": [
+        1366,
+        768
+      ],
+      "actual": [
+        1366,
+        768
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/celebrate-1366x768.png",
+      "expected": [
+        1366,
+        768
+      ],
+      "actual": [
+        1366,
+        768
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/home-820x1180.png",
+      "expected": [
+        820,
+        1180
+      ],
+      "actual": [
+        820,
+        1180
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/listen-820x1180.png",
+      "expected": [
+        820,
+        1180
+      ],
+      "actual": [
+        820,
+        1180
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/match-820x1180.png",
+      "expected": [
+        820,
+        1180
+      ],
+      "actual": [
+        820,
+        1180
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/celebrate-820x1180.png",
+      "expected": [
+        820,
+        1180
+      ],
+      "actual": [
+        820,
+        1180
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/home-1180x820.png",
+      "expected": [
+        1180,
+        820
+      ],
+      "actual": [
+        1180,
+        820
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/listen-1180x820.png",
+      "expected": [
+        1180,
+        820
+      ],
+      "actual": [
+        1180,
+        820
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/match-1180x820.png",
+      "expected": [
+        1180,
+        820
+      ],
+      "actual": [
+        1180,
+        820
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/celebrate-1180x820.png",
+      "expected": [
+        1180,
+        820
+      ],
+      "actual": [
+        1180,
+        820
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/home-390x844.png",
+      "expected": [
+        390,
+        844
+      ],
+      "actual": [
+        390,
+        844
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/listen-390x844.png",
+      "expected": [
+        390,
+        844
+      ],
+      "actual": [
+        390,
+        844
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/match-390x844.png",
+      "expected": [
+        390,
+        844
+      ],
+      "actual": [
+        390,
+        844
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/celebrate-390x844.png",
+      "expected": [
+        390,
+        844
+      ],
+      "actual": [
+        390,
+        844
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/home-844x390.png",
+      "expected": [
+        844,
+        390
+      ],
+      "actual": [
+        844,
+        390
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/listen-844x390.png",
+      "expected": [
+        844,
+        390
+      ],
+      "actual": [
+        844,
+        390
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/match-844x390.png",
+      "expected": [
+        844,
+        390
+      ],
+      "actual": [
+        844,
+        390
+      ],
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/stills/celebrate-844x390.png",
+      "expected": [
+        844,
+        390
+      ],
+      "actual": [
+        844,
+        390
+      ],
+      "passed": true
+    }
+  ],
+  "videos": [
+    {
+      "path": "out/v1-letter-post/motion.mp4",
+      "duration": 16.0,
+      "bytes": 582597,
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "passed": true
+    },
+    {
+      "path": "out/v3-moonboat/motion.mp4",
+      "duration": 15.966667,
+      "bytes": 453086,
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "faststart": true,
+      "passed": true
+    }
+  ],
+  "filesChecked": 210,
+  "oversizedFiles": [],
+  "largestFile": {
+    "path": "out/v1-letter-post/motion.mp4",
+    "bytes": 582597
+  },
+  "visualReview": {
+    "inspected": [
+      "Both landscape contact sheets (all 4 requested wide sizes, all 4 screens)",
+      "Both portrait contact sheets (both requested portrait sizes, all 4 screens)",
+      "All six home theme compositions",
+      "Phone hint states",
+      "Both full six-item phone collections",
+      "Moonboat rim-star reward",
+      "Both video contact sheets at 1, 3, 6, 8, 10, 12, 14.5 seconds",
+      "280px Moonboat celebration"
+    ],
+    "fixed": [
+      "Fast touch taps incorrectly suppressed by event.detail filtering",
+      "Reward stars crowding the Moonboat label",
+      "Rotated decorative reward ring producing scroll overflow at 280px"
+    ]
+  },
+  "limits": [
+    "Chromium automated desktop browser; no physical-device, Safari/Firefox or screen-reader usability test",
+    "Hidden-tab event logic exercised by controlled document.hidden override and visibilitychange",
+    "Playwright recordVideo is silent; recorded MP3 completion and WebAudio starts/stops verified separately"
+  ]
+}

@@ -1,0 +1,88 @@
+[
+  {
+    "dir": "v1-letter-post",
+    "passed": true,
+    "evidence": {
+      "runtime": {
+        "effects": 0,
+        "maxEffects": 1,
+        "maxParticles": 6,
+        "sfxStarted": 3,
+        "sfxWhileMuted": 0,
+        "sfxDuringVoice": 0,
+        "particles": 0,
+        "active": 0,
+        "sources": 0,
+        "muted": true,
+        "speaking": false,
+        "reduced": false
+      },
+      "maxRunning": 1,
+      "maxParticles": 6,
+      "sfxWhileMuted": 0,
+      "sfxDuringVoice": 0
+    },
+    "errors": [],
+    "consoleErrors": [],
+    "remote": [],
+    "checks": [
+      "No autoplay",
+      "Real WebAudio oscillator and noise instrumentation",
+      "Recorded voice has zero SFX sources",
+      "Rapid replay cancellation",
+      "Muted complete loop starts zero SFX/voice",
+      "12 rapid misses count once",
+      "12 rapid correct taps collect once",
+      "Useful two-miss hint",
+      "6 theme particles plus 6 reward stars = 12 max; all removed on navigation",
+      "Single WAAPI channel sampled each frame",
+      "Hidden idle pauses and clock stays still",
+      "Visit collection resets on reload",
+      "Reduced motion uses final states with zero animations/particles",
+      "Lucy clear of choices at 11 sizes"
+    ]
+  },
+  {
+    "dir": "v3-moonboat",
+    "passed": true,
+    "evidence": {
+      "runtime": {
+        "effects": 0,
+        "maxEffects": 1,
+        "maxParticles": 12,
+        "sfxStarted": 3,
+        "sfxWhileMuted": 0,
+        "sfxDuringVoice": 0,
+        "particles": 0,
+        "active": 0,
+        "sources": 0,
+        "muted": true,
+        "speaking": false,
+        "reduced": false
+      },
+      "maxRunning": 1,
+      "maxParticles": 12,
+      "sfxWhileMuted": 0,
+      "sfxDuringVoice": 0
+    },
+    "errors": [],
+    "consoleErrors": [],
+    "remote": [],
+    "checks": [
+      "No autoplay",
+      "Real WebAudio oscillator and noise instrumentation",
+      "Recorded voice has zero SFX sources",
+      "Rapid replay cancellation",
+      "Muted complete loop starts zero SFX/voice",
+      "12 rapid misses count once",
+      "12 rapid correct taps collect once",
+      "Useful two-miss hint",
+      "6 theme particles plus 6 reward stars = 12 max; all removed on navigation",
+      "Single WAAPI channel sampled each frame",
+      "Hidden idle pauses and clock stays still",
+      "Visit collection resets on reload",
+      "Reduced motion uses final states with zero animations/particles",
+      "Lucy clear of choices at 11 sizes"
+    ]
+  }
+]
