@@ -2,7 +2,7 @@
   "model": "eleven_v4",
   "voice_id": "acCWxmzPBgXdHwA63uzP",
   "voice_name": "Mary - Sweet, Warm, Direct, Neutral American",
-  "voice_why": "One woman's General American voice for every clip, so the short vowels can sit next to the US Starfall sounds. Picked from the ElevenLabs voice list for educational narration. Voice id FgiNpTIapnCbaD6xiqIo was context only and was not used.",
+  "voice_why": "Picture words stay Mary, voice acCWxmzPBgXdHwA63uzP. Letter names and letter sounds in this folder are the approved Lucy trims, voice FgiNpTIapnCbaD6xiqIo, model eleven_v4.",
   "postprocess": "Each kept take was trimmed and saved as mono 64 kbps MP3. S, X, and Z were also made louder so the quiet fricatives can be heard. No second model was used.",
   "letters": [
     {
