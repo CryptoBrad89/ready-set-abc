@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-mode="center">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#FFB800" />
+  <title>Cookie Table — Ready Set ABC</title>
+  <link rel="stylesheet" href="table.css" />
+  <script>
+    try {
+      var raw = JSON.parse(localStorage.getItem("cursorabc.state") || "null");
+      if (raw && raw.theme === "dark") document.documentElement.dataset.theme = "dark";
+      if (raw && raw.mode) document.documentElement.dataset.mode = raw.mode;
+      if (raw && raw.hideChrome) document.documentElement.classList.add("is-bare");
+    } catch (err) {}
+  </script>
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <button class="brand" id="brand" type="button">Ready Set <i>ABC</i></button>
+      <button class="who-chip" id="who" type="button" hidden></button>
+      <div class="spacer"></div>
+      <div class="audio" id="audio-cluster">
+        <button type="button" data-channel="music" aria-pressed="false">Music</button>
+        <button type="button" data-channel="sfx" aria-pressed="true">SFX</button>
+        <button type="button" data-channel="voice" aria-pressed="true">Voice</button>
+      </div>
+      <button class="quiet" id="theme" type="button" aria-pressed="false">Dark</button>
+      <button class="quiet" id="grown" type="button">Grown-Ups</button>
+    </header>
+    <main id="stage"></main>
+  </div>
+  <div id="grown-host" hidden></div>
+  <script type="module" src="js/game.js"></script>
+</body>
+</html>
