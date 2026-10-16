@@ -20,9 +20,9 @@ This build uses a separate local-storage key (`ready-set-abc-sound-garden-v1`) s
 
 The 26 picture cards, flower collection, layout, app icon, and play flow were created afresh using SVG/CSS/JS. Lucy has **no substitute dog illustration**. Until her new art is delivered, a clearly named Lucy paw badge occupies her scene. Speech causes a gentle bob; Reduce Motion always wins. All three requested Lucy scenes use entirely new poses and compositions. No archival reference image appears in play.
 
-`needs/needs.json` requests **3 PNG images + 4 short MP3 voice lines**. Paths in that file are relative to `design/codex/abc/`. Use the listed references together for Lucy’s exact likeness. Generate every requested voice with **Lucy `FgiNpTIapnCbaD6xiqIo`, `eleven_v4`** and the exact listed text. Do not regenerate any existing clip.
+`needs/needs.json` requests **3 PNG images + 0 voice lines**. Paths in that file are relative to `design/codex/abc/`. Use the listed references together for Lucy’s exact likeness. All four garden recordings (`welcome-garden`, `meet`, `plant`, `garden`) have been delivered in **Lucy `FgiNpTIapnCbaD6xiqIo`, `eleven_v4`** and are wired into the game. Their hashes, generation/flow IDs, durations, credits, and metadata source are recorded in `voice-manifest.json`. Do not regenerate any existing clip.
 
-Place each delivery at its requested path. The app automatically uses it; no wiring changes are necessary. The service worker already lists all seven future files. Grown-ups → Settings → Refresh offline files fetches deliveries on a previously installed device. A newly hosted deployment must be served again with connectivity to receive new assets before offline use.
+Place each image delivery at its requested path. The app automatically uses it; no wiring changes are necessary. All four delivered recordings are required precache assets; the three pending images remain optional. Grown-ups → Settings → Refresh offline files fetches deliveries on a previously installed device. A newly hosted deployment must be served again with connectivity to receive new assets before offline use.
 
 `LIKENESS.md` contains the required visual review. Hash tests enforce the reference lock and reject any game asset identical to any reference file. A checksum cannot judge a newly generated face: human likeness review remains necessary.
 
@@ -36,7 +36,9 @@ node design/codex/abc/tests/runtime_checks.cjs
 python3 design/codex/abc/tests/run_tests.py --strict
 ```
 
-Default tests allow only specifically declared undelivered needs. Strict mode requires every requested file, valid PNG deliveries, correct voice declarations, all paths, preserved source controls, and a complete precache. No dependencies beyond Python stdlib and Node built-ins. The runtime test uses the repository’s small DOM testing utility to exercise the real application event handlers across A–Z; it also executes the service worker in a cache/fetch simulator, including offline MP3 byte ranges, failed installs, cache repair, and isolation from neighboring worktrees.
+Default tests allow only specifically declared undelivered needs. Strict mode requires every requested file, valid PNG deliveries, correct voice declarations, all paths, preserved source controls, and a complete precache. Missing deliveries are reported once by the Needs check; all other checks still run. No dependencies beyond Python stdlib and Node built-ins. The runtime test uses a small local DOM harness to exercise real application event handlers across A–Z in both light and dark, repeated rewards, all garden replays, successful/cancelled audio queues, Lucy image fallbacks, and teacher controls and locks. It also executes the service worker in a cache/fetch simulator, including the four new recordings offline, MP3 byte ranges, failed installs, cache repair, and isolation from neighboring worktrees.
+
+Current result: **8/8 fallback checks pass; 7/8 strict checks pass. Strict fails ONLY because the three Lucy images are undelivered** (`art/lucy-welcome.png`, `art/lucy-guide.png`, `art/lucy-cheer.png`). The quality pass also fixes visual sound clues disappearing after theme/mute changes and keeps the theme button’s accessible label in sync with device color changes.
 
 After changing runtime code/assets, update the deterministic precache:
 
@@ -44,7 +46,7 @@ After changing runtime code/assets, update the deterministic precache:
 python3 design/codex/abc/tools/build_precache.py
 ```
 
-Future delivery files are already optional cache members; adding them does not require rebuilding. Existing asset edits do. Art/icon source scripts are in `tools/` and require only Python stdlib.
+Pending images are already optional cache members; placing them does not require rebuilding. When removing delivered entries from needs, rebuild to promote them to required cache members. Existing asset edits also require rebuilding. Art/icon source scripts are in `tools/` and require only Python stdlib.
 
 ### Current verification limits
 
@@ -54,6 +56,6 @@ The offline sandbox rejects local sockets and Chromium launch, so rendered scree
 2. Play the S, A, G, and X flows with sound; check the letter name/sound distinction and fox’s final sound. Replay audio rapidly, mute during speech, and navigate away mid-clip: voices must stop without overlap.
 3. Load once over localhost/HTTPS, wait for “Offline garden ready,” disconnect, reload, and finish a new letter. Verify approved letter and word playback offline.
 4. Verify PIN 2468, incorrect PIN, changed PIN, child switching, order/locks, CSV, reset confirmation, and return-from-background lock.
-5. Fulfil needs, review Lucy against `LIKENESS.md`, refresh offline files, rerun `--strict`, and repeat offline play with delivered art/audio.
+5. Fulfil the three image needs, review Lucy against `LIKENESS.md`, refresh offline files, rerun `--strict`, and repeat offline play with delivered art.
 
 No commit or push was made.

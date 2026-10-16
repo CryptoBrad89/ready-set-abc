@@ -38,7 +38,9 @@ def inside(name):
 
 def resolve(name):
     p = inside(name)
-    require(p.is_file() or (name in REQUESTS and not ARGS.strict), f'Missing asset: {name}')
+    # Audit wiring/cache integrity in both modes. delivery() is the strict release
+    # gate, so each missing delivery is reported once without hiding other bugs.
+    require(p.is_file() or name in REQUESTS, f'Missing asset: {name}')
     return p
 
 
@@ -116,8 +118,8 @@ def voices():
         p = resolve(name)
         if p.is_file():
             require(p.stat().st_size > 100, f'Empty voice {name}')
-            if n.get('sha256'):
-                require(sha(p) == n['sha256'], f'Voice hash changed {name}')
+            require(n.get('status') != 'requested', f'Delivered voice still requested: {name}')
+            require(n.get('sha256') == sha(p), f'Voice hash missing or changed {name}')
         else:
             require(name in {x['file'] for x in NEEDS['voice']}, f'Undeclared missing voice {name}')
     actual = {p.relative_to(ROOT).as_posix() for p in (ROOT/'audio').rglob('*.mp3')}
@@ -221,11 +223,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--strict',action='store_true',help='Require every delivery asset; full release checks')
     ARGS = parser.parse_args()
-    failures = 0
+    failures = []
     for label, fn in [('Approved audio',approved),('Lucy likeness lock',lucy),('Needs',delivery),('Voice manifest',voices),('Asset references',assets),('Offline PWA',offline),('Retained controls',retained),('Runtime',runtime)]:
         try:
             print(f'PASS {label}: {fn()}')
         except Exception as exc:
-            failures += 1; print(f'FAIL {label}: {exc}')
-    print(f'\n{8-failures}/8 checks passed · {"strict" if ARGS.strict else "fallback"} mode')
+            failures.append(label); print(f'FAIL {label}: {exc}')
+    print(f'\n{8-len(failures)}/8 checks passed · {"strict" if ARGS.strict else "fallback"} mode')
+    missing = [n for n in REQUESTS if not inside(n).is_file()]
+    if ARGS.strict and failures == ['Needs'] and missing and all(REQUESTS[n].get('lucy') for n in missing):
+        print(f'Strict fails ONLY because of {len(missing)} undelivered Lucy images: ' + ', '.join(missing))
     sys.exit(bool(failures))

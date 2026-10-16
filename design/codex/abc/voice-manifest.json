@@ -1419,7 +1419,17 @@
     "voice_id": "FgiNpTIapnCbaD6xiqIo",
     "voice_name": "Lucy",
     "model": "eleven_v4",
-    "status": "requested"
+    "status": "generated",
+    "kind": "short",
+    "sha256": "a385362c20678a2ff9e20428cb86309ffef6317e941cad77e23f1911c9736615",
+    "provenance": {
+      "source": "ElevenLabs creative_generate_speech 2026-10-16",
+      "metadata_source": "/workspace/rsabc-game-build/blank-voice.json",
+      "generation_id": "upAoG6WjERWhRMPuy525",
+      "flow_id": "WtxyxlIt9ViMiNbc1U5q",
+      "duration_seconds": 1.52,
+      "credits": 26.0
+    }
   },
   {
     "file": "audio/lines/meet.mp3",
@@ -1427,7 +1437,17 @@
     "voice_id": "FgiNpTIapnCbaD6xiqIo",
     "voice_name": "Lucy",
     "model": "eleven_v4",
-    "status": "requested"
+    "status": "generated",
+    "kind": "short",
+    "sha256": "2b2e8b4ff3322fb263e539a7b1e7827727f64eae2d6140d4718adbbc64a50bf4",
+    "provenance": {
+      "source": "ElevenLabs creative_generate_speech 2026-10-16",
+      "metadata_source": "/workspace/rsabc-game-build/blank-voice.json",
+      "generation_id": "XvZuHLBOja5nuS6ZtWBG",
+      "flow_id": "ZTb5AIbSiRC0Bh14lE21",
+      "duration_seconds": 3.76,
+      "credits": 53.0
+    }
   },
   {
     "file": "audio/lines/plant.mp3",
@@ -1435,7 +1455,17 @@
     "voice_id": "FgiNpTIapnCbaD6xiqIo",
     "voice_name": "Lucy",
     "model": "eleven_v4",
-    "status": "requested"
+    "status": "generated",
+    "kind": "short",
+    "sha256": "2850f4256f10ab7797b76031d175afe9149379e02bba9cd166c27bc7b9d64534",
+    "provenance": {
+      "source": "ElevenLabs creative_generate_speech 2026-10-16",
+      "metadata_source": "/workspace/rsabc-game-build/blank-voice.json",
+      "generation_id": "n3p0ELvglnEbJD1gtNOD",
+      "flow_id": "i9UlnmVbv5sTZZUbLjXI",
+      "duration_seconds": 2.72,
+      "credits": 36.0
+    }
   },
   {
     "file": "audio/lines/garden.mp3",
@@ -1443,6 +1473,16 @@
     "voice_id": "FgiNpTIapnCbaD6xiqIo",
     "voice_name": "Lucy",
     "model": "eleven_v4",
-    "status": "requested"
+    "status": "generated",
+    "kind": "short",
+    "sha256": "e04042512f02f6dddfbdedf1a80fb036a726ee1d750a4cdc7b694831be291877",
+    "provenance": {
+      "source": "ElevenLabs creative_generate_speech 2026-10-16",
+      "metadata_source": "/workspace/rsabc-game-build/blank-voice.json",
+      "generation_id": "BIPNOCb72YuOEiob8beq",
+      "flow_id": "YADZyN8lsPa0JN8jl3j1",
+      "duration_seconds": 4.88,
+      "credits": 63.00000000000001
+    }
   }
 ]

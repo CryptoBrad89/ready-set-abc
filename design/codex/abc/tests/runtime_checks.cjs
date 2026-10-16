@@ -65,26 +65,28 @@ class Element {
   querySelector(s){return this.querySelectorAll(s)[0]||null;}
   get elements(){return Object.fromEntries(this.querySelectorAll('[name]').map(n=>[n.name,n]));}
 }
+class ImageElement extends Element {}
 function parseHTML(html,root){
   const stack=[root],voids=new Set(['IMG','INPUT','META','LINK','BR','HR','SOURCE']);
   const regex=/<\/?[a-z][^>]*>|[^<]+/gi;let token;
   while((token=regex.exec(html))){const t=token[0];if(!t.startsWith('<')){stack.at(-1)._text+=t;continue;}
     if(t.startsWith('</')){if(stack.length>1)stack.pop();continue;}
     const tag=t.match(/^<([\w-]+)/)[1],attrs={};for(const m of t.slice(tag.length+1,-1).matchAll(/([\w-]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+)))?/g))attrs[m[1]]=m[2]??m[3]??m[4]??'';
-    const el=new Element(tag,attrs);stack.at(-1).append(el);if(!voids.has(el.tagName)&&!t.endsWith('/>'))stack.push(el);
+    const el=tag.toLowerCase()==='img'?new ImageElement(tag,attrs):new Element(tag,attrs);stack.at(-1).append(el);if(!voids.has(el.tagName)&&!t.endsWith('/>'))stack.push(el);
   }
 }
-function appHarness(saved=null,storageFail=false,reduced=false){
+function appHarness(saved=null,storageFail=false,reduced=false,audioMode='fail'){
   const document=new Element('document');document.hidden=false;document.body=new Element('body');document.append(document.body);
   document.body.innerHTML='<meta name="theme-color"><header id="header"></header><main id="main"></main><nav id="kid-nav"></nav><div id="spoken"></div><div id="effects"></div><dialog id="gate"></dialog><span id="offline-status"></span>';
   document.createElement=tag=>new Element(tag);document.getAnimations=()=>[];
-  const savedData={},played=[];if(saved)savedData['ready-set-abc-sound-garden-v1']=JSON.stringify(saved);
-  const timers=new Map();let timer=0;
+  const savedData={},played=[],audio=[];if(saved)savedData['ready-set-abc-sound-garden-v1']=JSON.stringify(saved);
+  const timers=new Map(),timerDelays=new Map();let timer=0;
   const media={};for(const query of ['(prefers-reduced-motion: reduce)','(prefers-color-scheme: dark)'])media[query]={matches:query.includes('motion')&&reduced,listeners:[],addEventListener(_k,fn){this.listeners.push(fn);}};
-  const sandbox={console,document,HTMLFormElement:Element,HTMLImageElement:class {},GameModel:M,SoundGarden:data,location:{protocol:'file:'},navigator:{},
+  const sandbox={console,document,HTMLFormElement:Element,HTMLImageElement:ImageElement,GameModel:M,SoundGarden:data,location:{protocol:'file:'},navigator:{},
     matchMedia:q=>media[q],getComputedStyle:()=>({getPropertyValue:()=> '#faf1df'}),
     localStorage:{getItem:k=>{if(storageFail)throw Error('blocked');return savedData[k]||null;},setItem:(k,v)=>{if(storageFail)throw Error('blocked');savedData[k]=v;}},
-    Audio:class {constructor(file){played.push(file);}play(){return Promise.reject(Error('unavailable'));}pause(){}},setTimeout:fn=>{timers.set(++timer,fn);return timer;},clearTimeout:id=>timers.delete(id),
+    Audio:class {constructor(file){this.file=file;this.paused=false;played.push(file);audio.push(this);}play(){return audioMode==='fail'?Promise.reject(Error('unavailable')):Promise.resolve();}pause(){this.paused=true;}},
+    setTimeout:(fn,delay)=>{timers.set(++timer,fn);timerDelays.set(timer,delay);return timer;},clearTimeout:id=>{timers.delete(id);timerDelays.delete(id);},
     FormData:class {constructor(form){this.form=form;}get(k){return this.form.elements[k]?.value??null;}},
     Blob,URL,crypto:require('node:crypto').webcrypto,addEventListener(){},scrollTo(){},
   };sandbox.window=sandbox;
@@ -94,7 +96,7 @@ function appHarness(saved=null,storageFail=false,reduced=false){
   function click(selector){const b=typeof selector==='string'?$(selector):selector;assert.ok(b,'Missing button '+selector);assert.equal(b.disabled,false,'Disabled button '+selector);for(const fn of document.listeners.click||[])fn({target:b});}
   function submit(id,values){const f=$('#'+id);assert.ok(f,'Missing form '+id);for(const[k,v]of Object.entries(values))f.elements[k].value=v;for(const fn of document.listeners.submit||[])fn({target:f,preventDefault(){}});}
   function change(selector,value){const t=$(selector);if(t.type==='checkbox')t.checked=value;else t.value=value;for(const fn of document.listeners.change||[])fn({target:t});}
-  return {$,click,submit,change,document,saved:()=>JSON.parse(savedData['ready-set-abc-sound-garden-v1']||'null'),sandbox,timers,media,played};
+  return {$,click,submit,change,document,saved:()=>JSON.parse(savedData['ready-set-abc-sound-garden-v1']||'null'),sandbox,timers,timerDelays,media,played,audio};
 }
 function contentChecks(){
  assert.equal(data.letters.length,26);
@@ -119,7 +121,9 @@ async function appChecks(){
  const resumed=appHarness(h.saved());resumed.click('[data-action="play"]');assert.equal(resumed.document.body.dataset.screen,'picture');
  click('[data-answer="A"]');click('[data-action="advance"]');assert.equal(h.document.body.dataset.screen,'bonus');
  await new Promise(resolve=>setImmediate(resolve));assert.equal(h.$('.mystery-cue').hidden,false,'Failed audio must show visual clue');
+ click('[data-action="dark"]');assert.equal(h.$('.mystery-cue').hidden,false,'Theme changes must retain failed-audio clue');
  click('[data-action="mute"]');assert.equal(h.$('.mystery-cue').hidden,false);
+ click('[data-action="mute"]');assert.equal(h.$('.mystery-cue').hidden,false,'Unmuting must retain visual clue');
  click('[data-answer="A"]');click('[data-action="advance"]');assert.equal(h.document.body.dataset.screen,'celebrate');assert.equal(h.saved().children[0].progress.A.completions,1);assert.equal(h.saved().children[0].session,null);
  click('[data-route="garden"]');assert.ok(h.$('[data-flower="A"]'));click('[data-flower="A"]');assert.match(h.$('#spoken').textContent,/apple/);
  click('[data-action="teacher"]');h.submit('pin-gate',{pin:'0000'});assert.match(h.$('#gate-error').textContent,/didn’t match/);h.submit('pin-gate',{pin:'2468'});assert.equal(h.document.body.dataset.screen,'teacher');
@@ -131,14 +135,40 @@ async function appChecks(){
  click('[data-tab="progress"]');click('[data-action="export"]');assert.match(h.$('#spoken').textContent,/CSV exported/);
  click('[data-route="home"]');click('[data-route="profiles"]');click(`[data-child="${second}"]`);assert.equal(h.saved().active,second);assert.deepEqual(h.saved().children[1].progress,{});
  click('[data-action="teacher"]');h.submit('pin-gate',{pin:'2468'});assert.equal(h.$('#gate').open,true,'Changed PIN must reject old PIN');h.submit('pin-gate',{pin:'8642'});click('[data-tab="progress"]');click('[data-reset-child]');h.submit('reset-confirm',{confirm:'RESET'});assert.equal(h.saved().children[1].session,null);
- // Complete all 26 letters through the actual event handlers, including repeated play.
- const allState=M.fresh();allState.settings.muted=true;const all=appHarness(allState);
- for(const l of M.ALPHABET){all.click('[data-route="map"]');all.click(`[data-letter="${l}"]`);all.click('[data-listen="name"]');all.click('[data-listen="sound"]');all.click('[data-action="advance"]');for(const stage of ['case','picture','bonus']){assert.equal(all.document.body.dataset.screen,stage);all.click(`[data-answer="${l}"]`);all.click('[data-action="advance"]');}assert.equal(all.document.body.dataset.screen,'celebrate');}
+ // Complete every activity in both palettes, including repeat rewards and replay.
+ function finishLetter(all,l){all.click('[data-route="map"]');all.click(`[data-letter="${l}"]`);all.click('[data-listen="name"]');all.click('[data-listen="sound"]');all.click('[data-action="advance"]');for(const stage of ['case','picture','bonus']){assert.equal(all.document.body.dataset.screen,stage);assert.equal(all.$('.choices').children.length,M.stars(all.saved().children[0])>=6?3:2);all.click(`[data-answer="${l}"]`);all.click('[data-action="advance"]');}assert.equal(all.document.body.dataset.screen,'celebrate');}
+ for(const color of ['light','dark']){
+ const allState=M.fresh();allState.settings.muted=true;allState.settings.dark=color;const all=appHarness(allState);
+ for(const l of M.ALPHABET){finishLetter(all,l);assert.equal(all.document.body.dataset.dark,String(color==='dark'));}
  assert.equal(M.stars(all.saved().children[0]),26);all.click('[data-route="garden"]');assert.equal(all.document.querySelectorAll('[data-flower]').length,26);
+ for(const l of M.ALPHABET){all.click(`[data-flower="${l}"]`);assert.match(all.$('#spoken').textContent,new RegExp(data.letters.find(x=>x.upper===l).word));}
+ finishLetter(all,'A');assert.equal(M.stars(all.saved().children[0]),26);assert.equal(all.saved().children[0].progress.A.completions,2);
  all.click('[data-action="teacher"]');all.submit('pin-gate',{pin:'2468'});all.click('[data-tab="settings"]');all.click('[data-action="reset-all"]');all.submit('reset-confirm',{confirm:'RESET'});assert.equal(M.stars(all.saved().children[0]),0);assert.equal(all.document.body.dataset.screen,'home');
+ }
  const blocked=appHarness(null,true);assert.ok(blocked.$('.storage-banner'));blocked.click('[data-action="play"]');assert.equal(blocked.document.body.dataset.screen,'listen');
  const reduced=appHarness(null,false,true);assert.equal(reduced.document.body.dataset.motion,'off');
  const idle=appHarness();idle.click('[data-action="teacher"]');idle.submit('pin-gate',{pin:'2468'});idle.document.hidden=true;for(const fn of idle.document.listeners.visibilitychange)fn();assert.equal(idle.document.body.dataset.screen,'home');idle.click('[data-action="teacher"]');assert.equal(idle.$('#gate').open,true);
+ const timed=appHarness();timed.click('[data-action="teacher"]');timed.submit('pin-gate',{pin:'2468'});const lock=[...timed.timerDelays].find(([,delay])=>delay===300000);assert.ok(lock);timed.timers.get(lock[0])();assert.equal(timed.document.body.dataset.screen,'home');timed.click('[data-action="teacher"]');assert.equal(timed.$('#gate').open,true);
+ const colors=appHarness();const device=colors.media['(prefers-color-scheme: dark)'];device.matches=true;device.listeners.forEach(fn=>fn());assert.equal(colors.document.body.dataset.dark,'true');assert.equal(colors.$('[data-action="dark"]').getAttribute('aria-label'),'Use light colors');colors.click('[data-action="dark"]');assert.equal(colors.saved().settings.dark,'light');device.listeners.forEach(fn=>fn());assert.equal(colors.document.body.dataset.dark,'false');
+}
+
+async function mediaChecks(){
+ const tick=()=>new Promise(resolve=>setImmediate(resolve)),h=appHarness(null,false,false,'manual');
+ const emit=(type,target)=>h.document.listeners[type].forEach(fn=>fn({target}));
+ // All pending Lucy scenes keep their badges after an image error and navigation.
+ function imageFallback(pose){const img=h.$('.lucy').querySelector('img');assert.equal(img.getAttribute('src'),data.lucy[pose]);emit('error',img);assert.equal(img.hidden,true);assert.equal(h.$('.lucy-fallback').hidden,false);}
+ imageFallback('welcome');h.click('[data-route="home"]');assert.equal(h.$('.lucy').querySelector('img'),null);
+ assert.equal(h.audio.at(-1).file,data.lines['welcome-garden']);
+ h.click('[data-action="play"]');assert.equal(h.audio.at(-2).paused,true);assert.equal(h.audio.at(-1).file,data.lines.meet);imageFallback('guide');
+ h.click('[data-listen="name"]');const name=h.audio.at(-1);h.click('[data-listen="sound"]');assert.equal(name.paused,true);assert.equal(name.onended,null);assert.equal(h.audio.at(-1).file,'audio/letters/s-sound-trim.mp3');
+ h.click('[data-action="advance"]');assert.equal(h.audio.at(-1).file,data.lines['case-lower']);h.audio.at(-1).onended();await tick();assert.equal(h.audio.at(-1).file,'audio/letters/s-name-trim.mp3');
+ h.click('[data-answer="S"]');const cheer=h.audio.at(-1);h.click('[data-route="home"]');assert.equal(cheer.paused,true);await tick();assert.equal(h.audio.at(-1).file,data.lines['welcome-garden'],'Navigation must cancel the old speech queue');
+ // Complete a real flow with successful speech, then verify the delivered reward.
+ h.click('[data-action="play"]');for(const stage of ['case','picture','bonus']){assert.equal(h.document.body.dataset.screen,stage);h.click('[data-answer="S"]');h.click('[data-action="advance"]');}
+ imageFallback('cheer');assert.equal(h.audio.at(-1).file,data.lines.plant);h.audio.at(-1).onended();await tick();assert.equal(h.audio.at(-1).file,'audio/lines/word-sun.mp3');
+ h.click('[data-route="garden"]');assert.equal(h.audio.at(-1).file,data.lines.garden);h.click('[data-action="mute"]');assert.equal(h.audio.at(-1).paused,true);assert.ok(!h.document.body.className.includes('speaking'));
+ // Loaded art hides only its badge; the failure path above never hides it.
+ const loaded=appHarness();const img=loaded.$('.lucy').querySelector('img');loaded.document.listeners.load.forEach(fn=>fn({target:img}));assert.equal(loaded.$('.lucy-fallback').hidden,true);
 }
 async function serviceWorkerChecks(){
  const events={},cacheStore=new Map(),scope='https://local.test/design/codex/abc/';let network=true,fail=false,skips=0;
@@ -153,6 +183,7 @@ async function serviceWorkerChecks(){
  network=false;
  const request=(file,headers={})=>new Request(scope+file,{headers});
  const audio=await trigger('fetch',{request:request('audio/letters/z-sound-trim.mp3')});assert.equal(audio.status,200);assert.deepEqual(Buffer.from(await audio.arrayBuffer()),fs.readFileSync(path.join(ROOT,'audio/letters/z-sound-trim.mp3')));
+ for(const id of ['welcome-garden','meet','plant','garden']){const file=data.lines[id];const response=await trigger('fetch',{request:request(file)});assert.equal(response.status,200);assert.deepEqual(Buffer.from(await response.arrayBuffer()),fs.readFileSync(path.join(ROOT,file)),`${id} must play offline`);}
  const partial=await trigger('fetch',{request:request('audio/letters/z-sound-trim.mp3',{Range:'bytes=10-29'})});assert.equal(partial.status,206);assert.equal((await partial.arrayBuffer()).byteLength,20);
  const suffix=await trigger('fetch',{request:request('audio/letters/z-sound-trim.mp3',{Range:'bytes=-20'})});assert.equal(suffix.status,206);assert.equal((await suffix.arrayBuffer()).byteLength,20);
  const bad=await trigger('fetch',{request:request('audio/letters/z-sound-trim.mp3',{Range:'bytes=99999999-'})});assert.equal(bad.status,416);
@@ -164,4 +195,4 @@ async function serviceWorkerChecks(){
 }
 if(process.argv.includes('--assets')){
  console.log(JSON.stringify([...new Set([...data.letters.flatMap(l=>[l.image,l.name,l.sound,l.wordAudio]),...Object.values(data.lucy),...Object.values(data.lines)])]));
-}else{(async()=>{modelChecks();contentChecks();await appChecks();await serviceWorkerChecks();console.log('PASS Node runtime: A–Z play, audio wiring/fallbacks, hints/resume, rewards, teacher/PIN/profiles/CSV/reset, dark mode, storage, reduced motion, PWA cache/ranges/isolation');})().catch(err=>{console.error(err);process.exitCode=1;});}
+}else{(async()=>{modelChecks();contentChecks();await appChecks();await mediaChecks();await serviceWorkerChecks();console.log('PASS Node runtime: A–Z in light/dark, delivered voice/queues/interruption, Lucy fallbacks, hints/resume, repeat rewards/replay, teacher/PIN/profiles/CSV/reset/lock, device colors, storage, reduced motion, PWA cache/ranges/isolation');})().catch(err=>{console.error(err);process.exitCode=1;});}

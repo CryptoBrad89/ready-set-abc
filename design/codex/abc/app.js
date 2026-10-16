@@ -6,7 +6,7 @@ const KEY='ready-set-abc-sound-garden-v1';
 const reduce=matchMedia('(prefers-reduced-motion: reduce)'),dark=matchMedia('(prefers-color-scheme: dark)');
 const byLetter=Object.fromEntries(D.letters.map(l=>[l.upper,l]));
 let state,storageOK=true,screen='home',teacherTab='progress',teacherChild='';
-let current=null,choices=[],solved=false,misses=0,tried=new Set(),teacherOpen=false;
+let current=null,choices=[],solved=false,misses=0,tried=new Set(),teacherOpen=false,bonusCueShown=false;
 let voiceEpoch=0,player=null,finishClip=null,voiceTimer=0,captionTimer=0,teacherTimer=0,gateFailures=0;
 let oscillator=null,context=null,effectTimer=0;
 const missingAudio=new Set(),missingImages=new Set();
@@ -44,7 +44,7 @@ function shell(){
 }
 function stopVoice(){voiceEpoch++;clearTimeout(voiceTimer);if(player){player.pause();player.onended=null;player.onerror=null;player=null;}if(finishClip){finishClip(false);finishClip=null;}document.body.classList.remove('speaking');}
 function caption(text){clearTimeout(captionTimer);$('#spoken').textContent=text;captionTimer=setTimeout(()=>{$('#spoken').textContent='';},5000);}
-function revealCue(){if(screen==='bonus'&&$('.mystery-cue'))$('.mystery-cue').hidden=false;}
+function revealCue(){if(screen==='bonus'&&$('.mystery-cue')){bonusCueShown=true;$('.mystery-cue').hidden=false;}}
 async function speak(files,text=''){
  stopVoice();hush();const mine=voiceEpoch;if(text)caption(text);
  if(state.settings.muted||document.hidden){revealCue();return;}
@@ -86,9 +86,9 @@ function answerCards(kind){return `<div class="choices" style="--count:${choices
 function feedback(){return `<p class="feedback" role="status">${solved?'✓ You found it!':misses>=2?'Try the sunny card.':misses?'Let’s try another one.':'Take your time.'}</p>`;}
 function caseMatch(){return activity('Who’s my little letter?','Big and little. A happy pair.',`<div class="cue"><button class="target" data-action="replay-name" aria-label="Hear ${current.upper}">${current.upper}</button></div>${answerCards('case')}${feedback()}${nextButton()}`);}
 function pictureMatch(){return activity('Find a sound friend',current.upper==='X'?'Listen for the sound at the end.':'Which picture starts with this sound?',`<div class="cue"><span class="target">${current.upper}${current.lower}</span><button class="replay" data-action="instruction">${ico('sound')} Hear sound</button></div>${answerCards('picture')}${feedback()}${nextButton()}`);}
-function bonus(){return activity('One sound to grow','Listen. Which letter did you hear?',`<div class="cue"><button class="replay" data-action="instruction">${ico('sound')} Hear again</button><span class="mystery-cue" ${state.settings.muted?'':'hidden'} aria-label="Visual sound clue">${current.upper}${current.lower}</span></div>${answerCards('bonus')}${feedback()}${nextButton()}`);}
+function bonus(){return activity('One sound to grow','Listen. Which letter did you hear?',`<div class="cue"><button class="replay" data-action="instruction">${ico('sound')} Hear again</button><span class="mystery-cue" ${state.settings.muted||bonusCueShown?'':'hidden'} aria-label="Visual sound clue">${current.upper}${current.lower}</span></div>${answerCards('bonus')}${feedback()}${nextButton()}`);}
 function celebrate(){return `<section class="screen"><div class="celebrate-grid"><div class="scene celebrate-scene"><span class="bubble">Look what you grew!</span>${lucy('cheer')}<span class="scene-label">A HAPPY LITTLE DISCOVERY</span></div><div class="celebrate-copy"><p class="eyebrow">A new sound in your garden</p><h1>Hip, hip, hooray!</h1><p>${flower(current.upper)} ${current.upper} ${current.lower} · ${current.word}<br>${M.stars(kid())} lovely ${M.stars(kid())===1?'flower':'flowers'} and growing.</p><div class="finish-actions"><button class="primary" data-action="next-letter">Grow another ${ico('arrow')}</button><button class="secondary" data-route="garden">${ico('leaf')} My garden</button></div></div></div></section>`;}
-function choose(){choices=D.options(current,M.stars(kid())>=6?3:2);solved=false;misses=0;tried=new Set();}
+function choose(){choices=D.options(current,M.stars(kid())>=6?3:2);solved=false;misses=0;tried=new Set();bonusCueShown=false;}
 function go(route,{prompt=false,focus=true}={}){
  if(route==='teacher'&&!teacherOpen){openGate();return;}
  if(['listen','case','picture','bonus'].includes(route)&&(!current||!session()))route='home';
@@ -192,7 +192,7 @@ function routeAction(b){
  if(action==='advance')advance();
  if(action==='instruction')instruction();
  if(action==='replay-name')speak([current.name],current.upper);
- if(action==='mute'){state.settings.muted=!state.settings.muted;stopVoice();hush();save();go(screen,{focus:false});caption(state.settings.muted?'Sound off. Follow the pictures.':'Sound on.');}
+ if(action==='mute'){state.settings.muted=!state.settings.muted;if(state.settings.muted)revealCue();stopVoice();hush();save();go(screen,{focus:false});caption(state.settings.muted?'Sound off. Follow the pictures.':'Sound on.');}
  if(action==='dark'){state.settings.dark=document.body.dataset.dark==='true'?'light':'dark';save();go(screen,{focus:false});}
  if(action==='teacher')openGate();
  if(!teacherOpen)return;
@@ -272,7 +272,7 @@ main.addEventListener('keydown',ev=>{
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!gate.open&&screen!=='home')go('home');});
 document.addEventListener('load',ev=>{if(ev.target instanceof HTMLImageElement){const fallback=ev.target.closest('.lucy')?.querySelector('.lucy-fallback');if(fallback)fallback.hidden=true;}},true);
 document.addEventListener('error',ev=>{if(!(ev.target instanceof HTMLImageElement))return;const img=ev.target;missingImages.add(img.getAttribute('src'));img.hidden=true;},true);
-reduce.addEventListener('change',()=>{clearEffects();applySettings();});dark.addEventListener('change',applySettings);
+reduce.addEventListener('change',()=>{clearEffects();applySettings();});dark.addEventListener('change',shell);
 document.addEventListener('visibilitychange',()=>{if(document.hidden){stopVoice();hush();clearEffects();if(teacherOpen){teacherOpen=false;clearTimeout(teacherTimer);closeGate();go('home');}}});
 window.addEventListener('pagehide',()=>{stopVoice();hush();clearEffects();save();});
 async function registerOffline(force=false){

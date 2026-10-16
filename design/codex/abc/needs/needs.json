@@ -40,30 +40,5 @@
       "transparent": true
     }
   ],
-  "voice": [
-    {
-      "id": "welcome-garden",
-      "file": "audio/lines/welcome-garden.mp3",
-      "text": "Come grow a sound with me!",
-      "kind": "short"
-    },
-    {
-      "id": "meet",
-      "file": "audio/lines/meet.mp3",
-      "text": "Tap to hear the letter\u2019s name. Tap to hear its sound.",
-      "kind": "short"
-    },
-    {
-      "id": "plant",
-      "file": "audio/lines/plant.mp3",
-      "text": "You did it! Let\u2019s plant your flower!",
-      "kind": "short"
-    },
-    {
-      "id": "garden",
-      "file": "audio/lines/garden.mp3",
-      "text": "Every flower is a sound you explored. Tap one to hear it again.",
-      "kind": "short"
-    }
-  ]
+  "voice": []
 }
