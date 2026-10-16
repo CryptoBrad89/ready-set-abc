@@ -182,6 +182,7 @@ async function serviceWorkerChecks(){
  let result;const message={data:{type:'CACHE_STATUS'},ports:[{postMessage:v=>result=v}]};await trigger('message',message);assert.equal(result.ready,true);assert.equal(result.pending,Object.values(JSON.parse(fs.readFileSync(path.join(ROOT,'needs/needs.json')))).flat().filter(n=>!fs.existsSync(path.join(ROOT,n.file))).length);
  network=false;
  const request=(file,headers={})=>new Request(scope+file,{headers});
+ for(const file of [...Object.values(data.lucy),'polish.css']){const response=await trigger('fetch',{request:request(file)});assert.equal(response.status,200);assert.deepEqual(Buffer.from(await response.arrayBuffer()),fs.readFileSync(path.join(ROOT,file)),`${file} must be intact offline`);}
  const audio=await trigger('fetch',{request:request('audio/letters/z-sound-trim.mp3')});assert.equal(audio.status,200);assert.deepEqual(Buffer.from(await audio.arrayBuffer()),fs.readFileSync(path.join(ROOT,'audio/letters/z-sound-trim.mp3')));
  for(const id of ['welcome-garden','meet','plant','garden']){const file=data.lines[id];const response=await trigger('fetch',{request:request(file)});assert.equal(response.status,200);assert.deepEqual(Buffer.from(await response.arrayBuffer()),fs.readFileSync(path.join(ROOT,file)),`${id} must play offline`);}
  const partial=await trigger('fetch',{request:request('audio/letters/z-sound-trim.mp3',{Range:'bytes=10-29'})});assert.equal(partial.status,206);assert.equal((await partial.arrayBuffer()).byteLength,20);

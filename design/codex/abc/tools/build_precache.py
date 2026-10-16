@@ -1,9 +1,9 @@
-"""Run after app edits. Future delivered needs are already in the optional cache list."""
+"""Run after app edits. Delivered needs are required, versioned offline files."""
 from pathlib import Path
 import json,hashlib
 ROOT=Path(__file__).resolve().parents[1]
 needs=json.loads((ROOT/'needs/needs.json').read_text())
-optional=sorted(n['file'] for group in needs.values() for n in group)
+optional=sorted(n['file'] for group in needs.values() for n in group if n.get('status') != 'delivered')
 required=sorted(p.relative_to(ROOT).as_posix() for p in ROOT.rglob('*') if p.is_file() and p.suffix in {'.html','.css','.js','.svg','.woff2','.mp3','.webmanifest','.png'} and p.parts[len(ROOT.parts)] not in {'lucy-reference','tests','tools'} and p.name not in {'sw.js'} and p.relative_to(ROOT).as_posix() not in optional)
 config={'required':required,'optional':optional}
 (ROOT/'precache.json').write_text(json.dumps(config,indent=2)+'\n')

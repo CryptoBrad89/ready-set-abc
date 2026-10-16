@@ -17,6 +17,9 @@
     "art/jellyfish.svg",
     "art/kite.svg",
     "art/leaf.svg",
+    "art/lucy-cheer.png",
+    "art/lucy-guide.png",
+    "art/lucy-welcome.png",
     "art/moon.svg",
     "art/nest.svg",
     "art/octopus.svg",
@@ -133,11 +136,8 @@
     "index.html",
     "manifest.webmanifest",
     "model.js",
+    "polish.css",
     "style.css"
   ],
-  "optional": [
-    "art/lucy-cheer.png",
-    "art/lucy-guide.png",
-    "art/lucy-welcome.png"
-  ]
+  "optional": []
 }

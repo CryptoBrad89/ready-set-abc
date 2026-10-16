@@ -12,4 +12,6 @@ Review each NEW delivery (`art/lucy-welcome.png`, `art/lucy-guide.png`, `art/luc
 
 Do not weaken likeness to meet a scene prompt. Regenerate an inaccurate delivery. A passed byte/hash check is necessary but does not constitute visual likeness approval.
 
-Current status: **awaiting all three new Lucy images and visual review**. Gameplay currently uses a named paw badge, never an invented alternate likeness.
+Current status: **all three 1024×1024 transparent RGBA PNGs delivered and reviewed alongside default/specs/bows references during the design polish**. Welcome retains Lucy's golden fur, soft ears, large brown eyes and broad dark nose in a fresh gate/watering-can scene. Guide retains blue round glasses and an attentive raised paw; cheer retains the pink dotted bow and a fresh two-paw celebration with a flower pot. No harness or embedded lettering was seen. The poses and full silhouettes are distinct from the references. Files remain byte-identical and are hash-pinned in the tests.
+
+The stage frames use `object-fit: contain`, and speech bubbles occupy a separate row above the art. The image-error paw badge is retained. Final human likeness approval and rendered light/dark tablet review remain manual: Chromium cannot launch in this sandbox, so this pass does not claim an in-browser compositing review.
