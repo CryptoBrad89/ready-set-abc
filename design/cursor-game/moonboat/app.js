@@ -276,7 +276,7 @@ function wave() {
 function pic(mood, line) {
   const visor = space() ? '<span class="visor" aria-hidden="true"></span>' : '';
   const salute = space() ? `<span class="salute" aria-hidden="true">${ico('paw')}</span>` : '';
-  return `<figure class="lucy ${mood === 'celebrate' ? 'mood-celebrate' : ''}">${line ? `<div class="speech">${line}</div>` : ''}<div class="lucy-portrait">${visor}<img src="../reference/lucy/lucy-${mood}.jpg" alt="Lucy the golden retriever${mood === 'celebrate' ? ', celebrating' : ''}" draggable="false"></div>${salute}<figcaption>${ico('paw')} LUCY</figcaption><span class="spark one" aria-hidden="true">✦</span><span class="spark two" aria-hidden="true">✦</span></figure>`;
+  return `<figure class="lucy ${mood === 'celebrate' ? 'mood-celebrate' : ''}">${line ? `<div class="speech">${line}</div>` : ''}<div class="lucy-portrait">${visor}<img src="../lucy-lock/lucy-${mood}.jpg" alt="Lucy the golden retriever${mood === 'celebrate' ? ', celebrating' : ''}" draggable="false"></div>${salute}<figcaption>${ico('paw')} LUCY</figcaption><span class="spark one" aria-hidden="true">✦</span><span class="spark two" aria-hidden="true">✦</span></figure>`;
 }
 
 function header() {

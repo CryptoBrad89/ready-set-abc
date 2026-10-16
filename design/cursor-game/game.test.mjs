@@ -82,7 +82,7 @@ test('the game plays approved name and sound clips', () => {
     const source = readFileSync(join(root, layout, 'app.js'), 'utf8');
     assert.match(source, /-name-trim\.mp3/);
     assert.match(source, /-sound-trim\.mp3/);
-    assert.match(source, /\.\.\/reference\/lucy\/lucy-\$\{mood\}\.jpg/);
+    assert.match(source, /\.\.\/lucy-lock\/lucy-\$\{mood\}\.jpg/);
     assert.doesNotMatch(source, /assets\/lucy-\$\{mood\}\.jpg/);
   }
 });
@@ -91,7 +91,7 @@ test('locked Lucy reference files are unchanged copies of the originals', () => 
   const rows = parseSums(readFileSync(join(root, 'lucy-reference-sha256.txt'), 'utf8'));
   assert.ok(rows.length > 0);
   const listed = new Set(rows.map((row) => row.file));
-  const refDir = join(root, 'reference', 'lucy');
+  const refDir = join(root, 'lucy-lock');
   const origDir = join(repo, 'app/art/lucy');
   for (const row of rows) {
     assert.equal(sha256(join(refDir, row.file)), row.hash, row.file);
