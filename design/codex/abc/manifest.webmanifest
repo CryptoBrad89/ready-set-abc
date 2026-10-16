@@ -1,0 +1,31 @@
+{
+  "id": "./",
+  "name": "Lucy\u2019s Sound Garden \u00b7 Ready Set ABC",
+  "short_name": "Sound Garden",
+  "description": "Hear a little sound. Grow something wonderful.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff8f5",
+  "theme_color": "#fff8f5",
+  "icons": [
+    {
+      "src": "art/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "art/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "art/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
