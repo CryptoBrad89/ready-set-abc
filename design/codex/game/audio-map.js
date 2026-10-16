@@ -112,7 +112,27 @@ window.GAME_AUDIO = {
     "tiger": "assets/lucy-word-t-tiger.mp3",
     "pig": "assets/lucy-word-p-pig.mp3",
     "insect": "assets/lucy-word-i-insect.mp3",
-    "moon": "assets/lucy-word-m-moon.mp3"
+    "moon": "assets/lucy-word-m-moon.mp3",
+    "ball": "../audio/words/word-ball.mp3",
+    "cat": "../audio/words/word-cat.mp3",
+    "duck": "../audio/words/word-duck.mp3",
+    "egg": "../audio/words/word-egg.mp3",
+    "fish": "../audio/words/word-fish.mp3",
+    "goat": "../audio/words/word-goat.mp3",
+    "hat": "../audio/words/word-hat.mp3",
+    "jellyfish": "../audio/words/word-jellyfish.mp3",
+    "kite": "../audio/words/word-kite.mp3",
+    "leaf": "../audio/words/word-leaf.mp3",
+    "nest": "../audio/words/word-nest.mp3",
+    "octopus": "../audio/words/word-octopus.mp3",
+    "quilt": "../audio/words/word-quilt.mp3",
+    "rabbit": "../audio/words/word-rabbit.mp3",
+    "umbrella": "../audio/words/word-umbrella.mp3",
+    "van": "../audio/words/word-van.mp3",
+    "web": "../audio/words/word-web.mp3",
+    "fox": "../audio/words/word-fox.mp3",
+    "yak": "../audio/words/word-yak.mp3",
+    "zebra": "../audio/words/word-zebra.mp3"
   },
   "feedback": {
     "cheers": [

@@ -1045,5 +1045,345 @@
    "note": "Regenerated in Lucy/eleven_v4 for voice consistency (Bradley approved)"
   },
   "sha256": "2fdf6496646d574dd0cdaf2e69d3bb0f8112a6828edb84a92cf196772ad70b34"
+ },
+ {
+  "file": "audio/words/word-ball.mp3",
+  "text": "Ball!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "hxP6owo9lyklIRIK1qLB",
+   "credits": 5.000000000000001,
+   "stt": "Ball",
+   "stt_ok": true
+  },
+  "sha256": "8744b3857df0fbdead5fa1ddb5ac254568895971b323f7a6cc415ce513be1d84"
+ },
+ {
+  "file": "audio/words/word-cat.mp3",
+  "text": "Cat!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "BG4PYkJm28rXDjgyEoF7",
+   "credits": 4.0,
+   "stt": "Cat!",
+   "stt_ok": true
+  },
+  "sha256": "41a8adf8e594248e918d1fc384df663da96e541424d30fb44ff25a3f5c35cc99"
+ },
+ {
+  "file": "audio/words/word-duck.mp3",
+  "text": "Duck!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "PWLtnlqyW9h16m5Xr0OK",
+   "credits": 5.000000000000001,
+   "stt": "Duck!",
+   "stt_ok": true
+  },
+  "sha256": "f8740a51e6762922f0d245bd6172b42f6b192b5cc3e9620d574c301598bfe903"
+ },
+ {
+  "file": "audio/words/word-egg.mp3",
+  "text": "Egg!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "UaleXD9yOIZiHFohlkDr",
+   "credits": 4.0,
+   "stt": "Egg!",
+   "stt_ok": true
+  },
+  "sha256": "97950924d3e9595644642b294e593afc0757374f02d73d8c7bec4494aac4ed78"
+ },
+ {
+  "file": "audio/words/word-fish.mp3",
+  "text": "Fish!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "eXinW4IHZ0D7ZcORxlJu",
+   "credits": 5.000000000000001,
+   "stt": "Fish!",
+   "stt_ok": true
+  },
+  "sha256": "9de6bece2e883a46e9eb8209b1fba6036724d273d4d2836f071414e8d4eb463e"
+ },
+ {
+  "file": "audio/words/word-goat.mp3",
+  "text": "Goat!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "Z9wZDPI1FhNH8jJWzWPz",
+   "credits": 5.000000000000001,
+   "stt": "GOAT!",
+   "stt_ok": true
+  },
+  "sha256": "4a4709c121e80f3597af181884fd62c65f601381566e95c25c6f3246ac2b440e"
+ },
+ {
+  "file": "audio/words/word-hat.mp3",
+  "text": "Hat!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "8VnOWC2A97mjx9cIn5md",
+   "credits": 4.0,
+   "stt": "Hat!",
+   "stt_ok": true
+  },
+  "sha256": "ab5deac6757b61f07163e4847ca818307420f1ddd54beaa453b338c53ec725bd"
+ },
+ {
+  "file": "audio/words/word-jellyfish.mp3",
+  "text": "Jellyfish!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "FgbnT6IJQdEqJwUMtvUC",
+   "credits": 10.000000000000002,
+   "stt": "Jellyfish!",
+   "stt_ok": true
+  },
+  "sha256": "2fd233b33f4c36a868f6f1ddbb5c654a64d6986c2506e52702423cc1e036a02b"
+ },
+ {
+  "file": "audio/words/word-kite.mp3",
+  "text": "Kite!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "8N32rVWEU7ZfQ9F3gILK",
+   "credits": 5.000000000000001,
+   "stt": "Kite!",
+   "stt_ok": true
+  },
+  "sha256": "23b8932dcd7f2c80fa0a2d792ac6715dd41788c4b89936c70b41eeb324c482d9"
+ },
+ {
+  "file": "audio/words/word-leaf.mp3",
+  "text": "Leaf!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "cPI8G9Ndak37EKkbPDAp",
+   "credits": 5.000000000000001,
+   "stt": "LEAF!",
+   "stt_ok": true
+  },
+  "sha256": "57e0ec14b77a2efe802f5b5ecea6f02302b498b8a9339e5742cc24fb98949d95"
+ },
+ {
+  "file": "audio/words/word-nest.mp3",
+  "text": "Nest!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "Bo6FGqXWU1uBjTutkWPS",
+   "credits": 5.000000000000001,
+   "stt": "NEST",
+   "stt_ok": true
+  },
+  "sha256": "d5ec08a5014730d0d6016605b96370714f69a87460c867836a0ccce72b566546"
+ },
+ {
+  "file": "audio/words/word-octopus.mp3",
+  "text": "Octopus!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "6QYNT00CvyrhZvSB4utU",
+   "credits": 8.0,
+   "stt": "Octopus!",
+   "stt_ok": true
+  },
+  "sha256": "9363de5a7139d11f1af4f179902520cef07f6e3bd39efc6a5a554c148de23c23"
+ },
+ {
+  "file": "audio/words/word-quilt.mp3",
+  "text": "Quilt!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "LbjNrDviQV1Quok0pflA",
+   "credits": 6.000000000000001,
+   "stt": "Quilt!",
+   "stt_ok": true
+  },
+  "sha256": "0e9189a3f9375993e036b2c301039b01737c3e21e54f48e2c27e8fd9ec146720"
+ },
+ {
+  "file": "audio/words/word-rabbit.mp3",
+  "text": "Rabbit!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "8p6MNOpiOIXmL106waKV",
+   "credits": 7.000000000000001,
+   "stt": "Rabbit",
+   "stt_ok": true
+  },
+  "sha256": "ba6a546a009b031c1698a871a5db23002920198c478acef1d1dabb74880070f1"
+ },
+ {
+  "file": "audio/words/word-umbrella.mp3",
+  "text": "Umbrella!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "5yKTyz3EhIjY0vpT93gB",
+   "credits": 9.0,
+   "stt": "Umbrella!",
+   "stt_ok": true
+  },
+  "sha256": "56bc3a8274fd691b5fea64e57fc97cf69aa6729cf7539408cc615d90391365d4"
+ },
+ {
+  "file": "audio/words/word-van.mp3",
+  "text": "Van!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "rQnIHmGk4TXoENAzz4WZ",
+   "credits": 4.0,
+   "stt": "VAN!",
+   "stt_ok": true
+  },
+  "sha256": "ed77a135fb1b6663b2f198fd18cf5219a4a7c40b60330529b798b839b0933318"
+ },
+ {
+  "file": "audio/words/word-web.mp3",
+  "text": "Web!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "DuRgIqW5MJ79wcR89rLF",
+   "credits": 4.0,
+   "stt": "Web!",
+   "stt_ok": true
+  },
+  "sha256": "419eaeb2616dcc2ad703fe413f8a93b54be0246fc1b481c8665061e53b3cbb5b"
+ },
+ {
+  "file": "audio/words/word-fox.mp3",
+  "text": "Fox!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "hfUhMb6SaETLcnYQGFPW",
+   "credits": 4.0,
+   "stt": "Fox.",
+   "stt_ok": true
+  },
+  "sha256": "3049ae7cf30d73bef3c567b2e857dcf07460dbd0ad0e8e11ac1410ca4a85a97d"
+ },
+ {
+  "file": "audio/words/word-yak.mp3",
+  "text": "Yak!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "zM4aANzgcmv0YDNjVn0v",
+   "credits": 4.0,
+   "stt": "YAT!",
+   "stt_ok": false
+  },
+  "sha256": "dc822d1465a817a7d4c6f89044687e1ff8cf6fc5176eb5d4e448025cd96e0324"
+ },
+ {
+  "file": "audio/words/word-zebra.mp3",
+  "text": "Zebra!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "kind": "short",
+  "status": "generated",
+  "provenance": {
+   "source": "ElevenLabs creative_generate_speech 2026-10-16",
+   "generation_id": "EE8QCXoXeSOw8dTp9g5W",
+   "credits": 6.000000000000001,
+   "stt": "Zebra!",
+   "stt_ok": true
+  },
+  "sha256": "6d963659455815fec0b92b749971711440125a2cf2095e10aa5fca632f2f827b"
  }
 ]

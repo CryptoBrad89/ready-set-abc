@@ -6,6 +6,7 @@ import json
 import re
 import string
 import sys
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,6 +16,26 @@ GAMES = ('v1-letter-post', 'v3-moonboat')
 AUDIO_EXT = {'.mp3', '.wav', '.ogg', '.m4a', '.aac', '.flac', '.opus', '.webm'}
 EXPECTED = {f'{letter}-{kind}-trim.mp3' for letter in string.ascii_lowercase
             for kind in ('name', 'sound')} | {'i-long-extra-trim.mp3'}
+WORDS = dict(zip(string.ascii_uppercase, (
+    'apple ball cat duck egg fish goat hat insect jellyfish kite leaf moon '
+    'nest octopus pig quilt rabbit sun tiger umbrella van web fox yak zebra'
+).split()))
+
+
+def assignment(path, name):
+    match = re.fullmatch(r'window\.' + re.escape(name) + r' = (.*);\s*', path.read_text(), re.S)
+    require(match is not None, f'{path.name}: expected a static JSON assignment')
+    return json.loads(match[1])
+
+
+def game_letters(game):
+    app = (ROOT / game / 'app.js').read_text()
+    match = re.search(r'const letters=(\[.*?\])\.map\(', app, re.S)
+    require(match is not None, f'{game}: missing static letter list')
+    rows = json.loads(match[1])
+    require(isinstance(rows, list) and all(isinstance(row, list) and len(row) == 3 for row in rows),
+            f'{game}: invalid letter data')
+    return rows
 
 
 def require(condition, message):
@@ -122,7 +143,7 @@ def wiring():
                          'A.feedback.cheers[visited.size%2]'):
             require(fragment in app, f'{game}: missing playback wiring {fragment}')
         require(app.count('new Audio(') == 1, f'{game}: unexpected playback entry point')
-        require(set(audio['words']) == {'sun', 'apple', 'tiger', 'pig', 'insect', 'moon'}, 'Missing picture word mapping')
+        require(set(audio['words']) == set(WORDS.values()), 'Picture word map must cover the 26 A-Z words')
     # Scan every game JS/HTML, including files not currently loaded.
     for file in sorted(ROOT.rglob('*')):
         if file.suffix not in {'.js', '.html'}:
@@ -181,13 +202,84 @@ def voice_inventory(allow):
     return f'{len(indexed)} audio files inventoried with matching hashes' + (f'; {len(known)} known mismatches allowed' if allow else '')
 
 
+def alphabet():
+    audio = assignment(ROOT / 'audio-map.js', 'GAME_AUDIO')
+    manifest = {entry['file']: entry for entry in json.loads((ROOT / 'voice-manifest.json').read_text())}
+    for game in GAMES:
+        rows = game_letters(game)
+        require([row[0] for row in rows] == list(string.ascii_uppercase),
+                f'{game}: must list all 26 letters once, in A-Z order')
+        art = (ROOT / game / 'art.js').read_text()
+        face = re.search(r"const face='([^']+)';", art)
+        require(face is not None, f'{game}: missing original SVG face vocabulary')
+        shapes = dict(re.findall(r'^\s*([a-z]+):([^\n]+)', art, re.M))
+        for letter, word, sound in rows:
+            require(word == WORDS[letter], f'{game}: {letter} must use {WORDS[letter]}')
+            require(isinstance(sound, str) and re.fullmatch(r'/[^/\s]+/', sound),
+                    f'{game}: missing sound for {letter}')
+            clip = inside(ROOT / game / audio['words'][word])
+            require(clip.is_file(), f'{game}: missing {word} clip')
+            name = clip.relative_to(ROOT).as_posix()
+            entry = manifest.get(name)
+            require(entry is not None, f'{game}: unmanifested word clip: {name}')
+            require((entry.get('voice_id'), entry.get('voice_name'), entry.get('model')) == (VOICE, 'Lucy', MODEL),
+                    f'{game}: {word} must be Lucy / eleven_v4')
+            require(entry.get('text', '').strip().rstrip('!.').casefold() == word,
+                    f'{game}: {word} clip has mismatched text')
+            if letter not in 'SATPIM':
+                require(name == f'audio/words/word-{word}.mp3', f'{game}: must reuse supplied {word} clip')
+            require(word in shapes, f'{game}: missing explicit SVG for {word} (fallback does not count)')
+            literal = re.match(r"([`'\"])(.*?)\1", shapes[word])
+            require(literal is not None, f'{game}: invalid SVG literal for {word}')
+            markup = literal[2].replace('${face}', face[1])
+            require('${' not in markup, f'{game}: unresolved SVG template for {word}')
+            try:
+                svg = ET.fromstring(f'<svg xmlns="http://www.w3.org/2000/svg">{markup}</svg>')
+            except ET.ParseError as exc:
+                raise AssertionError(f'{game}: malformed {word} SVG: {exc}') from exc
+            require(len(svg) > 0 and any(node.tag.rsplit('}', 1)[-1] in {'path', 'circle', 'ellipse', 'rect'}
+                                        for node in svg.iter()), f'{game}: empty SVG for {word}')
+        require(dict((letter, sound) for letter, _, sound in rows)['X'] == '/ks/', f'{game}: X must use /ks/')
+    require(game_letters(GAMES[0]) == game_letters(GAMES[1]), 'Games must teach the same A-Z vocabulary')
+    return 'both games: 26 ordered letters, supplied words, Lucy/eleven_v4 clips and valid explicit SVGs'
+
+
+def themes():
+    for game in GAMES:
+        config = assignment(ROOT / game / 'config.js', 'CONCEPT')
+        expected = ['Air mail', 'Candy post', 'Dark'] if config['kind'] == 'post' else ['Dark', 'Cloud day', 'Plum dusk']
+        require(config['themes'] == expected, f'{game}: preserve the original three themes')
+        css = (ROOT / game / 'style.css').read_text()
+        base = {}
+        overrides = {}
+        for match in re.finditer(r'body\.' + config['kind'] + r'(?:\[data-theme="(\d+)"\])?\{([^}]+)\}', css):
+            tokens = dict(re.findall(r'(--[\w-]+):([^;}]+)', match[2]))
+            if match[1] is None:
+                base.update(tokens)
+            else:
+                overrides.setdefault(int(match[1]), {}).update(tokens)
+        brightness = []
+        for index, theme in enumerate(config['themes']):
+            tokens = dict(base, **overrides.get(index, {}))
+            require(all(key in tokens for key in ('--bg', '--ink', '--focus', '--card')),
+                    f'{game}: {theme} missing theme colors')
+            color = tokens['--bg']
+            require(re.fullmatch(r'#[0-9a-fA-F]{6}', color), f'{game}: invalid {theme} background')
+            rgb = [int(color[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+            linear = [c / 12.92 if c <= .04045 else ((c + .055) / 1.055) ** 2.4 for c in rgb]
+            brightness.append(sum(c * weight for c, weight in zip(linear, (.2126, .7152, .0722))))
+        require(min(brightness) < .1 and max(brightness) > .6, f'{game}: needs both dark and light themes')
+    return 'original Letter Post and Moonboat themes retained, with dark and light backgrounds'
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--allow-known-mismatches', action='store_true')
     args = parser.parse_args()
     failed = 0
     checks = [('approved audio', approved_audio), ('trim metadata', trim_metadata),
-              ('wiring', wiring), ('voice', lambda: voice_inventory(args.allow_known_mismatches))]
+              ('wiring', wiring), ('voice', lambda: voice_inventory(args.allow_known_mismatches)),
+              ('alphabet', alphabet), ('themes', themes)]
     for name, check in checks:
         try:
             print(f'PASS {name}: {check()}')
