@@ -419,14 +419,26 @@
    "credits": 18,
    "full_duration": 1.68,
    "stt_full": "The letter is J.",
-   "stt_trim": "Jay",
+   "stt_trim": "J.",
    "trim_window": [
-    0.98,
+    1.04,
     1.65
    ],
-   "trim_duration": 0.67,
+   "trim_duration": 0.65,
    "trim_retries": 1,
-   "slash_spoken": false
+   "slash_spoken": false,
+   "retrim": {
+    "old": {
+     "window": [
+      0.98,
+      1.65
+     ],
+     "dur": 0.67,
+     "stt": "Jay"
+    },
+    "method": "manual sweep 0.99-1.18 @10ms; passing 0.99-1.10 (1.01 blank, 1.12 isolated), onset clipping from 1.11 (Yay/day/Hey). Picked 1.04 (mid between earliest pass and latest-20ms, erring early to keep j onset).",
+    "fade_in_ms": 20
+   }
   },
   {
    "id": "j-sound",
