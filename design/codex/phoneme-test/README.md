@@ -47,3 +47,7 @@ The execution sandbox blocks Chrome startup and local HTTP listeners, so live br
 ## Redo 2026-10-15 — quoted IPA (`ipa-quoted`)
 
 T, S, B, M, A regenerated with eleven_v4 (no fallback), Emma voice, 3 takes each; text was exactly `"/t/"`, `"/s/"`, `"/b/"`, `"/m/"`, `"/æ/"` (quotes included). Result: every T/S/B/M take speaks the slashes ("slash t slash"), so those letters are marked **failed** with no chosen take. A gave short "ah"-like vowels with no spoken slashes; take3 chosen, rated iffy pending listening. Files: `audio/v4/phoneme-<l>-v4q-take1..3.mp3`. ~75 credits.
+
+## Redo 2026-10-15 — Lucy, all 26 names + sounds (`ipa-quoted-lucy`)
+
+eleven_v4 only, Lucy (FgiNpTIapnCbaD6xiqIo), 3 takes each; names text `"/A/"`…`"/Z/"`, sounds `"/a/"`…`"/z/"` (quotes included). Result: **0 of 52 passed** — all 156 takes say "slash X slash". Every name and sound is marked failed with `chosen_filename: null`. Files `name-<l>-v4q-take1..3.mp3`, `phoneme-<l>-v4q-take1..3.mp3`; the earlier Emma quoted takes were renamed `phoneme-<l>-v4q-emma-take1..3.mp3`. Note: test.js plays `name.filename` and ignores `name.chosen_filename`, and its labels still say Emma (site code not edited). 780 credits.

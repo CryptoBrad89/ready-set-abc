@@ -15,7 +15,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/æ/",
       "name": {
         "prompt": "A",
-        "filename": "name-a.mp3"
+        "filename": "name-a.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/A/\"",
+            "filename": "name-a-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash a slash (1.88s)"
+          },
+          {
+            "prompt": "\"/A/\"",
+            "filename": "name-a-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash a slash (1.57s)"
+          },
+          {
+            "prompt": "\"/A/\"",
+            "filename": "name-a-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash a slash (2.12s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-a.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -36,26 +62,50 @@ window.PHONEME_CLIPS = {
           },
           {
             "prompt": "\"/æ/\"",
+            "filename": "phoneme-a-v4q-emma-take1.mp3",
+            "style": "ipa-quoted",
+            "stt": "Ah (0.68s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/æ/\"",
+            "filename": "phoneme-a-v4q-emma-take2.mp3",
+            "style": "ipa-quoted",
+            "stt": "Oh (0.76s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/æ/\"",
+            "filename": "phoneme-a-v4q-emma-take3.mp3",
+            "style": "ipa-quoted",
+            "stt": "Ah (0.68s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/a/\"",
             "filename": "phoneme-a-v4q-take1.mp3",
-            "style": "ipa-quoted",
-            "stt": "Ah (0.68s)"
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash A Slash (1.72s)"
           },
           {
-            "prompt": "\"/æ/\"",
+            "prompt": "\"/a/\"",
             "filename": "phoneme-a-v4q-take2.mp3",
-            "style": "ipa-quoted",
-            "stt": "Oh (0.76s)"
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash A Slash (1.72s)"
           },
           {
-            "prompt": "\"/æ/\"",
+            "prompt": "\"/a/\"",
             "filename": "phoneme-a-v4q-take3.mp3",
-            "style": "ipa-quoted",
-            "stt": "Ah (0.68s)"
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash A. Slash. (1.96s)"
           }
         ],
-        "chosen_filename": "phoneme-a-v4q-take3.mp3",
-        "rating": "iffy",
-        "stt_note": "ipa-quoted redo 2026-10-15: no spoken slashes/quotes, no letter name. STT Ah/Oh/Ah, 0.68-0.76s. Whisper cannot tell short /æ/ from \"ah\"; take3 picked (most voiced, STT Ah). Listen vs Starfall to confirm short-a."
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/a/\", eleven_v4): all 3 takes say \"slash a slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Apple",
@@ -68,7 +118,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/b/",
       "name": {
         "prompt": "B",
-        "filename": "name-b.mp3"
+        "filename": "name-b.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/B/\"",
+            "filename": "name-b-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash B Slash (1.65s)"
+          },
+          {
+            "prompt": "\"/B/\"",
+            "filename": "name-b-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "(empty) (1.65s)"
+          },
+          {
+            "prompt": "\"/B/\"",
+            "filename": "name-b-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash부� (1.96s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-b.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -84,26 +160,50 @@ window.PHONEME_CLIPS = {
           },
           {
             "prompt": "\"/b/\"",
-            "filename": "phoneme-b-v4q-take1.mp3",
+            "filename": "phoneme-b-v4q-emma-take1.mp3",
             "style": "ipa-quoted",
-            "stt": "Slash B Slash (1.57s)"
+            "stt": "Slash B Slash (1.57s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/b/\"",
+            "filename": "phoneme-b-v4q-emma-take2.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash B slash (1.49s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/b/\"",
+            "filename": "phoneme-b-v4q-emma-take3.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash b slash (1.49s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/b/\"",
+            "filename": "phoneme-b-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash B Slash (2.04s)"
           },
           {
             "prompt": "\"/b/\"",
             "filename": "phoneme-b-v4q-take2.mp3",
-            "style": "ipa-quoted",
-            "stt": "slash B slash (1.49s)"
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash B slash. (1.57s)"
           },
           {
             "prompt": "\"/b/\"",
             "filename": "phoneme-b-v4q-take3.mp3",
-            "style": "ipa-quoted",
-            "stt": "slash b slash (1.49s)"
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash B Slash (1.57s)"
           }
         ],
         "chosen_filename": null,
         "rating": "failed",
-        "stt_note": "ipa-quoted redo 2026-10-15 (\"/b/\" as text, eleven_v4, Emma): all 3 takes speak the slashes aloud (\"slash b slash\"). Failed; no take chosen. Earlier plain/ipa attempts kept above for reference."
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/b/\", eleven_v4): all 3 takes say \"slash b slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Ball",
@@ -116,7 +216,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/k/",
       "name": {
         "prompt": "C",
-        "filename": "name-c.mp3"
+        "filename": "name-c.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/C/\"",
+            "filename": "name-c-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Flash see slash (1.72s)"
+          },
+          {
+            "prompt": "\"/C/\"",
+            "filename": "name-c-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash, C, slash. (1.96s)"
+          },
+          {
+            "prompt": "\"/C/\"",
+            "filename": "name-c-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash C Slash (2.04s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-c.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -129,11 +255,32 @@ window.PHONEME_CLIPS = {
             "prompt": "kuh",
             "filename": "phoneme-c-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/c/\"",
+            "filename": "phoneme-c-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash C slash (1.65s)"
+          },
+          {
+            "prompt": "\"/c/\"",
+            "filename": "phoneme-c-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash C Slash (1.72s)"
+          },
+          {
+            "prompt": "\"/c/\"",
+            "filename": "phoneme-c-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash C Slash (1.65s)"
           }
         ],
-        "chosen_filename": "phoneme-c-try1.mp3",
-        "rating": "iffy",
-        "stt_note": "STT empty on /k/; tiny plain take discarded"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/c/\", eleven_v4): all 3 takes say \"slash c slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Cat",
@@ -146,7 +293,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/d/",
       "name": {
         "prompt": "D",
-        "filename": "name-d.mp3"
+        "filename": "name-d.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/D/\"",
+            "filename": "name-d-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash D Slash (1.8s)"
+          },
+          {
+            "prompt": "\"/D/\"",
+            "filename": "name-d-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash D Slash (1.96s)"
+          },
+          {
+            "prompt": "\"/D/\"",
+            "filename": "name-d-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash D Slash (1.8s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-d.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -159,11 +332,32 @@ window.PHONEME_CLIPS = {
             "prompt": "duh",
             "filename": "phoneme-d-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/d/\"",
+            "filename": "phoneme-d-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash D slash (1.96s)"
+          },
+          {
+            "prompt": "\"/d/\"",
+            "filename": "phoneme-d-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash D slash. (1.72s)"
+          },
+          {
+            "prompt": "\"/d/\"",
+            "filename": "phoneme-d-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash D slash. (1.65s)"
           }
         ],
-        "chosen_filename": "phoneme-d-try2.mp3",
-        "rating": "iffy",
-        "stt_note": "IPA read as slash; plain duh STT as So"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/d/\", eleven_v4): all 3 takes say \"slash d slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Dog",
@@ -176,7 +370,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/ɛ/",
       "name": {
         "prompt": "E",
-        "filename": "name-e.mp3"
+        "filename": "name-e.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/E/\"",
+            "filename": "name-e-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash e slash (1.88s)"
+          },
+          {
+            "prompt": "\"/E/\"",
+            "filename": "name-e-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash E Slash (2.04s)"
+          },
+          {
+            "prompt": "\"/E/\"",
+            "filename": "name-e-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash E Slash (1.96s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-e.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -189,11 +409,32 @@ window.PHONEME_CLIPS = {
             "prompt": "eh",
             "filename": "phoneme-e-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/e/\"",
+            "filename": "phoneme-e-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash E Slash (1.96s)"
+          },
+          {
+            "prompt": "\"/e/\"",
+            "filename": "phoneme-e-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash E slash (1.72s)"
+          },
+          {
+            "prompt": "\"/e/\"",
+            "filename": "phoneme-e-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash E Slash (1.72s)"
           }
         ],
-        "chosen_filename": "phoneme-e-try1.mp3",
-        "rating": "iffy",
-        "stt_note": "STT 'Yeah' for /ɛ/"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/e/\", eleven_v4): all 3 takes say \"slash e slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Egg",
@@ -206,7 +447,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/f/",
       "name": {
         "prompt": "F",
-        "filename": "name-f.mp3"
+        "filename": "name-f.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/F/\"",
+            "filename": "name-f-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash. (1.72s)"
+          },
+          {
+            "prompt": "\"/F/\"",
+            "filename": "name-f-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Flash F Flash (1.8s)"
+          },
+          {
+            "prompt": "\"/F/\"",
+            "filename": "name-f-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash F slash. (1.96s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-f.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -219,11 +486,32 @@ window.PHONEME_CLIPS = {
             "prompt": "fff",
             "filename": "phoneme-f-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/f/\"",
+            "filename": "phoneme-f-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash F Slash (1.65s)"
+          },
+          {
+            "prompt": "\"/f/\"",
+            "filename": "phoneme-f-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash F slash (1.88s)"
+          },
+          {
+            "prompt": "\"/f/\"",
+            "filename": "phoneme-f-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash F Slash (1.57s)"
           }
         ],
-        "chosen_filename": "phoneme-f-try1.mp3",
-        "rating": "clean",
-        "stt_note": "STT empty on /f/ fricative (often good)"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/f/\", eleven_v4): all 3 takes say \"slash f slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Fish",
@@ -236,7 +524,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/g/",
       "name": {
         "prompt": "G",
-        "filename": "name-g.mp3"
+        "filename": "name-g.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/G/\"",
+            "filename": "name-g-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash G slash (1.8s)"
+          },
+          {
+            "prompt": "\"/G/\"",
+            "filename": "name-g-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash G Slash (2.04s)"
+          },
+          {
+            "prompt": "\"/G/\"",
+            "filename": "name-g-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash G Slash (1.65s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-g.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -249,11 +563,32 @@ window.PHONEME_CLIPS = {
             "prompt": "guh",
             "filename": "phoneme-g-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/g/\"",
+            "filename": "phoneme-g-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash G Slash. (1.65s)"
+          },
+          {
+            "prompt": "\"/g/\"",
+            "filename": "phoneme-g-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "1, 2, 3, 6, 7, 8, 9, 10, 10! (1.88s)"
+          },
+          {
+            "prompt": "\"/g/\"",
+            "filename": "phoneme-g-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash G Slash (1.88s)"
           }
         ],
-        "chosen_filename": "phoneme-g-try2.mp3",
-        "rating": "iffy",
-        "stt_note": "IPA slash; plain guh STT You"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/g/\", eleven_v4): all 3 takes say \"slash g slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Goat",
@@ -266,7 +601,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/h/",
       "name": {
         "prompt": "H",
-        "filename": "name-h.mp3"
+        "filename": "name-h.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/H/\"",
+            "filename": "name-h-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash H slash (2.19s)"
+          },
+          {
+            "prompt": "\"/H/\"",
+            "filename": "name-h-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash H Slash. (1.96s)"
+          },
+          {
+            "prompt": "\"/H/\"",
+            "filename": "name-h-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash H Slash. (2.19s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-h.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -279,11 +640,32 @@ window.PHONEME_CLIPS = {
             "prompt": "huh",
             "filename": "phoneme-h-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/h/\"",
+            "filename": "phoneme-h-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash H slash (1.96s)"
+          },
+          {
+            "prompt": "\"/h/\"",
+            "filename": "phoneme-h-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash H Slash (2.04s)"
+          },
+          {
+            "prompt": "\"/h/\"",
+            "filename": "phoneme-h-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash H Slash (1.88s)"
           }
         ],
-        "chosen_filename": "phoneme-h-try2.mp3",
-        "rating": "clean",
-        "stt_note": "IPA slash; plain huh STT 'Huh?'"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/h/\", eleven_v4): all 3 takes say \"slash h slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Hat",
@@ -296,7 +678,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/ɪ/",
       "name": {
         "prompt": "I",
-        "filename": "name-i.mp3"
+        "filename": "name-i.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/I/\"",
+            "filename": "name-i-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash i slash. (1.72s)"
+          },
+          {
+            "prompt": "\"/I/\"",
+            "filename": "name-i-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash i slash (2.12s)"
+          },
+          {
+            "prompt": "\"/I/\"",
+            "filename": "name-i-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash I slash. (1.72s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-i.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -309,11 +717,32 @@ window.PHONEME_CLIPS = {
             "prompt": "ih",
             "filename": "phoneme-i-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/i/\"",
+            "filename": "phoneme-i-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash I, slash. (1.88s)"
+          },
+          {
+            "prompt": "\"/i/\"",
+            "filename": "phoneme-i-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash I slash (2.12s)"
+          },
+          {
+            "prompt": "\"/i/\"",
+            "filename": "phoneme-i-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash I slash. (2.04s)"
           }
         ],
-        "chosen_filename": "phoneme-i-try1.mp3",
-        "rating": "iffy",
-        "stt_note": "STT 'Oh' for /ɪ/"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/i/\", eleven_v4): all 3 takes say \"slash i slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Igloo",
@@ -326,7 +755,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/dʒ/",
       "name": {
         "prompt": "J",
-        "filename": "name-j.mp3"
+        "filename": "name-j.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/J/\"",
+            "filename": "name-j-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash j slash (1.72s)"
+          },
+          {
+            "prompt": "\"/J/\"",
+            "filename": "name-j-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash j slash (1.96s)"
+          },
+          {
+            "prompt": "\"/J/\"",
+            "filename": "name-j-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash j slash (1.88s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-j.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -339,11 +794,32 @@ window.PHONEME_CLIPS = {
             "prompt": "juh",
             "filename": "phoneme-j-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/j/\"",
+            "filename": "phoneme-j-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash j slash (2.04s)"
+          },
+          {
+            "prompt": "\"/j/\"",
+            "filename": "phoneme-j-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash J Slash (1.96s)"
+          },
+          {
+            "prompt": "\"/j/\"",
+            "filename": "phoneme-j-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash j slash (1.88s)"
           }
         ],
-        "chosen_filename": "phoneme-j-try1.mp3",
-        "rating": "iffy",
-        "stt_note": "STT 'So' for /dʒ/"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/j/\", eleven_v4): all 3 takes say \"slash j slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Juice",
@@ -356,7 +832,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/k/",
       "name": {
         "prompt": "K",
-        "filename": "name-k.mp3"
+        "filename": "name-k.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/K/\"",
+            "filename": "name-k-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash k slash (1.8s)"
+          },
+          {
+            "prompt": "\"/K/\"",
+            "filename": "name-k-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash k slash (2.12s)"
+          },
+          {
+            "prompt": "\"/K/\"",
+            "filename": "name-k-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash k slash (2.04s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-k.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -369,11 +871,32 @@ window.PHONEME_CLIPS = {
             "prompt": "kuh",
             "filename": "phoneme-k-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/k/\"",
+            "filename": "phoneme-k-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash k slash (2.27s)"
+          },
+          {
+            "prompt": "\"/k/\"",
+            "filename": "phoneme-k-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash k slash (1.88s)"
+          },
+          {
+            "prompt": "\"/k/\"",
+            "filename": "phoneme-k-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash K slash. (1.8s)"
           }
         ],
-        "chosen_filename": "phoneme-k-try2.mp3",
-        "rating": "iffy",
-        "stt_note": "IPA generation failed; plain kuh STT So"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/k/\", eleven_v4): all 3 takes say \"slash k slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Key",
@@ -386,7 +909,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/l/",
       "name": {
         "prompt": "L",
-        "filename": "name-l.mp3"
+        "filename": "name-l.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/L/\"",
+            "filename": "name-l-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash L slash (1.88s)"
+          },
+          {
+            "prompt": "\"/L/\"",
+            "filename": "name-l-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash-l-slash (2.35s)"
+          },
+          {
+            "prompt": "\"/L/\"",
+            "filename": "name-l-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash L slash (2.04s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-l.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -399,11 +948,32 @@ window.PHONEME_CLIPS = {
             "prompt": "lll",
             "filename": "phoneme-l-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/l/\"",
+            "filename": "phoneme-l-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash L slash (2.04s)"
+          },
+          {
+            "prompt": "\"/l/\"",
+            "filename": "phoneme-l-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash, slash. (2.43s)"
+          },
+          {
+            "prompt": "\"/l/\"",
+            "filename": "phoneme-l-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash L slash (1.96s)"
           }
         ],
-        "chosen_filename": "phoneme-l-try1.mp3",
-        "rating": "clean",
-        "stt_note": "STT empty on /l/"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/l/\", eleven_v4): all 3 takes say \"slash l slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Leaf",
@@ -416,7 +986,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/m/",
       "name": {
         "prompt": "M",
-        "filename": "name-m.mp3"
+        "filename": "name-m.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/M/\"",
+            "filename": "name-m-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash M Slash (1.72s)"
+          },
+          {
+            "prompt": "\"/M/\"",
+            "filename": "name-m-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash M Slash (1.88s)"
+          },
+          {
+            "prompt": "\"/M/\"",
+            "filename": "name-m-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash M slash (1.88s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-m.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -432,26 +1028,50 @@ window.PHONEME_CLIPS = {
           },
           {
             "prompt": "\"/m/\"",
-            "filename": "phoneme-m-v4q-take1.mp3",
+            "filename": "phoneme-m-v4q-emma-take1.mp3",
             "style": "ipa-quoted",
-            "stt": "slash M slash (1.96s)"
+            "stt": "slash M slash (1.96s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/m/\"",
+            "filename": "phoneme-m-v4q-emma-take2.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash M slash (1.65s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/m/\"",
+            "filename": "phoneme-m-v4q-emma-take3.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash m slash (1.49s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/m/\"",
+            "filename": "phoneme-m-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": ". (1.88s)"
           },
           {
             "prompt": "\"/m/\"",
             "filename": "phoneme-m-v4q-take2.mp3",
-            "style": "ipa-quoted",
-            "stt": "slash M slash (1.65s)"
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "We'll see you in the next video, thank you very much. (1.72s)"
           },
           {
             "prompt": "\"/m/\"",
             "filename": "phoneme-m-v4q-take3.mp3",
-            "style": "ipa-quoted",
-            "stt": "slash m slash (1.49s)"
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash m slash (1.65s)"
           }
         ],
         "chosen_filename": null,
         "rating": "failed",
-        "stt_note": "ipa-quoted redo 2026-10-15 (\"/m/\" as text, eleven_v4, Emma): all 3 takes speak the slashes aloud (\"slash m slash\"). Failed; no take chosen. Earlier plain/ipa attempts kept above for reference."
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/m/\", eleven_v4): all 3 takes say \"slash m slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Moon",
@@ -464,7 +1084,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/n/",
       "name": {
         "prompt": "N",
-        "filename": "name-n.mp3"
+        "filename": "name-n.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/N/\"",
+            "filename": "name-n-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash and slash. (1.88s)"
+          },
+          {
+            "prompt": "\"/N/\"",
+            "filename": "name-n-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash and slash (1.96s)"
+          },
+          {
+            "prompt": "\"/N/\"",
+            "filename": "name-n-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash and slash (1.8s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-n.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -477,11 +1123,32 @@ window.PHONEME_CLIPS = {
             "prompt": "nnn",
             "filename": "phoneme-n-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/n/\"",
+            "filename": "phoneme-n-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "The end. slash and slash. (2.12s)"
+          },
+          {
+            "prompt": "\"/n/\"",
+            "filename": "phoneme-n-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash and slash (1.96s)"
+          },
+          {
+            "prompt": "\"/n/\"",
+            "filename": "phoneme-n-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash n slash (2.04s)"
           }
         ],
-        "chosen_filename": "phoneme-n-try1.mp3",
-        "rating": "clean",
-        "stt_note": "STT empty on /n/"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/n/\", eleven_v4): all 3 takes say \"slash n slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Nose",
@@ -494,7 +1161,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/ɒ/",
       "name": {
         "prompt": "O",
-        "filename": "name-o.mp3"
+        "filename": "name-o.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/O/\"",
+            "filename": "name-o-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash-o-slash (1.8s)"
+          },
+          {
+            "prompt": "\"/O/\"",
+            "filename": "name-o-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash-o-slash. (1.88s)"
+          },
+          {
+            "prompt": "\"/O/\"",
+            "filename": "name-o-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash o slash (1.88s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-o.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -507,11 +1200,32 @@ window.PHONEME_CLIPS = {
             "prompt": "aw",
             "filename": "phoneme-o-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/o/\"",
+            "filename": "phoneme-o-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash O slash. (1.57s)"
+          },
+          {
+            "prompt": "\"/o/\"",
+            "filename": "phoneme-o-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash, O, slash (2.04s)"
+          },
+          {
+            "prompt": "\"/o/\"",
+            "filename": "phoneme-o-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash o slash (1.72s)"
           }
         ],
-        "chosen_filename": "phoneme-o-try1.mp3",
-        "rating": "iffy",
-        "stt_note": "STT 'Arc' for /ɒ/; plain aw too tiny"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/o/\", eleven_v4): all 3 takes say \"slash o slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Owl",
@@ -524,7 +1238,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/p/",
       "name": {
         "prompt": "P",
-        "filename": "name-p.mp3"
+        "filename": "name-p.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/P/\"",
+            "filename": "name-p-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Flash P, Flash (1.96s)"
+          },
+          {
+            "prompt": "\"/P/\"",
+            "filename": "name-p-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash P slash. (1.65s)"
+          },
+          {
+            "prompt": "\"/P/\"",
+            "filename": "name-p-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Flash P, Slash. (1.96s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-p.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -537,11 +1277,32 @@ window.PHONEME_CLIPS = {
             "prompt": "puh",
             "filename": "phoneme-p-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/p/\"",
+            "filename": "phoneme-p-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash P Slash (1.72s)"
+          },
+          {
+            "prompt": "\"/p/\"",
+            "filename": "phoneme-p-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash. (1.72s)"
+          },
+          {
+            "prompt": "\"/p/\"",
+            "filename": "phoneme-p-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash P slash (1.49s)"
           }
         ],
-        "chosen_filename": "phoneme-p-try2.mp3",
-        "rating": "iffy",
-        "stt_note": "IPA slash; plain puh STT 'Poor Helen' — bad"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/p/\", eleven_v4): all 3 takes say \"slash p slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Pig",
@@ -554,7 +1315,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/kw/",
       "name": {
         "prompt": "Q",
-        "filename": "name-q.mp3"
+        "filename": "name-q.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/Q/\"",
+            "filename": "name-q-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash Q Slash (1.96s)"
+          },
+          {
+            "prompt": "\"/Q/\"",
+            "filename": "name-q-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash q slash (1.96s)"
+          },
+          {
+            "prompt": "\"/Q/\"",
+            "filename": "name-q-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash q slash (1.96s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-q.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -567,11 +1354,32 @@ window.PHONEME_CLIPS = {
             "prompt": "kwuh",
             "filename": "phoneme-q-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/q/\"",
+            "filename": "phoneme-q-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash, q, slash (1.96s)"
+          },
+          {
+            "prompt": "\"/q/\"",
+            "filename": "phoneme-q-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash q slash (1.88s)"
+          },
+          {
+            "prompt": "\"/q/\"",
+            "filename": "phoneme-q-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash Q Slash (1.72s)"
           }
         ],
-        "chosen_filename": "phoneme-q-try1.mp3",
-        "rating": "iffy",
-        "stt_note": "STT 'Qua.' for /kw/"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/q/\", eleven_v4): all 3 takes say \"slash q slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Quilt",
@@ -584,7 +1392,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/r/",
       "name": {
         "prompt": "R",
-        "filename": "name-r.mp3"
+        "filename": "name-r.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/R/\"",
+            "filename": "name-r-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash r slash (2.04s)"
+          },
+          {
+            "prompt": "\"/R/\"",
+            "filename": "name-r-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash r slash (1.88s)"
+          },
+          {
+            "prompt": "\"/R/\"",
+            "filename": "name-r-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash r slash (2.12s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-r.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -597,11 +1431,32 @@ window.PHONEME_CLIPS = {
             "prompt": "rrr",
             "filename": "phoneme-r-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/r/\"",
+            "filename": "phoneme-r-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash r slash (2.04s)"
+          },
+          {
+            "prompt": "\"/r/\"",
+            "filename": "phoneme-r-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash r slash. (1.72s)"
+          },
+          {
+            "prompt": "\"/r/\"",
+            "filename": "phoneme-r-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash R, slash. (2.04s)"
           }
         ],
-        "chosen_filename": "phoneme-r-try2.mp3",
-        "rating": "iffy",
-        "stt_note": "IPA slash; plain rrr STT 'Ha!'"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/r/\", eleven_v4): all 3 takes say \"slash r slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Rain",
@@ -614,7 +1469,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/s/",
       "name": {
         "prompt": "S",
-        "filename": "name-s.mp3"
+        "filename": "name-s.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/S/\"",
+            "filename": "name-s-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash S Slash (1.88s)"
+          },
+          {
+            "prompt": "\"/S/\"",
+            "filename": "name-s-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash S Slash (1.96s)"
+          },
+          {
+            "prompt": "\"/S/\"",
+            "filename": "name-s-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash S Slash (1.96s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-s.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -630,26 +1511,50 @@ window.PHONEME_CLIPS = {
           },
           {
             "prompt": "\"/s/\"",
-            "filename": "phoneme-s-v4q-take1.mp3",
+            "filename": "phoneme-s-v4q-emma-take1.mp3",
             "style": "ipa-quoted",
-            "stt": "slash S (1.31s)"
+            "stt": "slash S (1.31s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/s/\"",
+            "filename": "phoneme-s-v4q-emma-take2.mp3",
+            "style": "ipa-quoted",
+            "stt": "\"Slash S Slash\" (1.49s; empty on first STT pass, re-run with padding)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/s/\"",
+            "filename": "phoneme-s-v4q-emma-take3.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash s slash (1.49s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/s/\"",
+            "filename": "phoneme-s-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash S. Slash. (2.04s)"
           },
           {
             "prompt": "\"/s/\"",
             "filename": "phoneme-s-v4q-take2.mp3",
-            "style": "ipa-quoted",
-            "stt": "\"Slash S Slash\" (1.49s; empty on first STT pass, re-run with padding)"
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash S Slash (1.96s)"
           },
           {
             "prompt": "\"/s/\"",
             "filename": "phoneme-s-v4q-take3.mp3",
-            "style": "ipa-quoted",
-            "stt": "slash s slash (1.49s)"
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash S Slash (1.8s)"
           }
         ],
         "chosen_filename": null,
         "rating": "failed",
-        "stt_note": "ipa-quoted redo 2026-10-15 (\"/s/\" as text, eleven_v4, Emma): all 3 takes speak the slashes aloud (\"slash s slash\"). Failed; no take chosen. Earlier plain/ipa attempts kept above for reference."
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/s/\", eleven_v4): all 3 takes say \"slash s slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Sun",
@@ -662,7 +1567,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/t/",
       "name": {
         "prompt": "T",
-        "filename": "name-t.mp3"
+        "filename": "name-t.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/T/\"",
+            "filename": "name-t-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash t slash (1.88s)"
+          },
+          {
+            "prompt": "\"/T/\"",
+            "filename": "name-t-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash t slash (1.96s)"
+          },
+          {
+            "prompt": "\"/T/\"",
+            "filename": "name-t-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash T Slash (1.88s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-t.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -678,26 +1609,50 @@ window.PHONEME_CLIPS = {
           },
           {
             "prompt": "\"/t/\"",
-            "filename": "phoneme-t-v4q-take1.mp3",
+            "filename": "phoneme-t-v4q-emma-take1.mp3",
             "style": "ipa-quoted",
-            "stt": "slash t slash (1.57s)"
+            "stt": "slash t slash (1.57s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/t/\"",
+            "filename": "phoneme-t-v4q-emma-take2.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash t slash (1.57s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/t/\"",
+            "filename": "phoneme-t-v4q-emma-take3.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash t slash (1.57s)",
+            "voice": "Emma oClOrzqamOXmtcB8iqTj"
+          },
+          {
+            "prompt": "\"/t/\"",
+            "filename": "phoneme-t-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash t, slash (2.04s)"
           },
           {
             "prompt": "\"/t/\"",
             "filename": "phoneme-t-v4q-take2.mp3",
-            "style": "ipa-quoted",
-            "stt": "slash t slash (1.57s)"
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash t slash (1.65s)"
           },
           {
             "prompt": "\"/t/\"",
             "filename": "phoneme-t-v4q-take3.mp3",
-            "style": "ipa-quoted",
-            "stt": "slash t slash (1.57s)"
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash t slash (1.88s)"
           }
         ],
         "chosen_filename": null,
         "rating": "failed",
-        "stt_note": "ipa-quoted redo 2026-10-15 (\"/t/\" as text, eleven_v4, Emma): all 3 takes speak the slashes aloud (\"slash t slash\"). Failed; no take chosen. Earlier plain/ipa attempts kept above for reference."
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/t/\", eleven_v4): all 3 takes say \"slash t slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Tree",
@@ -710,7 +1665,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/ʌ/",
       "name": {
         "prompt": "U",
-        "filename": "name-u.mp3"
+        "filename": "name-u.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/U/\"",
+            "filename": "name-u-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash u slash (2.04s)"
+          },
+          {
+            "prompt": "\"/U/\"",
+            "filename": "name-u-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash u slash (1.96s)"
+          },
+          {
+            "prompt": "\"/U/\"",
+            "filename": "name-u-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash U. (1.88s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-u.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -723,11 +1704,32 @@ window.PHONEME_CLIPS = {
             "prompt": "uh",
             "filename": "phoneme-u-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/u/\"",
+            "filename": "phoneme-u-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash U, slash. (1.8s)"
+          },
+          {
+            "prompt": "\"/u/\"",
+            "filename": "phoneme-u-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash U, Slash. (1.8s)"
+          },
+          {
+            "prompt": "\"/u/\"",
+            "filename": "phoneme-u-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash u slash (1.72s)"
           }
         ],
-        "chosen_filename": "phoneme-u-try1.mp3",
-        "rating": "iffy",
-        "stt_note": "STT 'Oh' for /ʌ/"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/u/\", eleven_v4): all 3 takes say \"slash u slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Umbrella",
@@ -740,7 +1742,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/v/",
       "name": {
         "prompt": "V",
-        "filename": "name-v.mp3"
+        "filename": "name-v.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/V/\"",
+            "filename": "name-v-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash V Slash (1.72s)"
+          },
+          {
+            "prompt": "\"/V/\"",
+            "filename": "name-v-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash v slash (2.04s)"
+          },
+          {
+            "prompt": "\"/V/\"",
+            "filename": "name-v-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash, V, slash. (2.04s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-v.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -753,11 +1781,32 @@ window.PHONEME_CLIPS = {
             "prompt": "vvv",
             "filename": "phoneme-v-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/v/\"",
+            "filename": "phoneme-v-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash v slash (1.65s)"
+          },
+          {
+            "prompt": "\"/v/\"",
+            "filename": "phoneme-v-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash v slash (1.72s)"
+          },
+          {
+            "prompt": "\"/v/\"",
+            "filename": "phoneme-v-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash the slash (1.8s)"
           }
         ],
-        "chosen_filename": "phoneme-v-try2.mp3",
-        "rating": "clean",
-        "stt_note": "IPA slash; plain vvv STT 'VV'"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/v/\", eleven_v4): all 3 takes say \"slash v slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Van",
@@ -770,7 +1819,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/w/",
       "name": {
         "prompt": "W",
-        "filename": "name-w.mp3"
+        "filename": "name-w.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/W/\"",
+            "filename": "name-w-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash w slash. (1.72s)"
+          },
+          {
+            "prompt": "\"/W/\"",
+            "filename": "name-w-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash. (1.72s)"
+          },
+          {
+            "prompt": "\"/W/\"",
+            "filename": "name-w-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash w slash (1.65s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-w.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -783,11 +1858,32 @@ window.PHONEME_CLIPS = {
             "prompt": "wuh",
             "filename": "phoneme-w-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/w/\"",
+            "filename": "phoneme-w-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash w slash (1.72s)"
+          },
+          {
+            "prompt": "\"/w/\"",
+            "filename": "phoneme-w-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash w slash (1.96s)"
+          },
+          {
+            "prompt": "\"/w/\"",
+            "filename": "phoneme-w-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash, w, slash. (2.19s)"
           }
         ],
-        "chosen_filename": "phoneme-w-try1.mp3",
-        "rating": "clean",
-        "stt_note": "STT 'Wah.'"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/w/\", eleven_v4): all 3 takes say \"slash w slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Watermelon",
@@ -800,7 +1896,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/ks/",
       "name": {
         "prompt": "X",
-        "filename": "name-x.mp3"
+        "filename": "name-x.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/X/\"",
+            "filename": "name-x-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash x slash (2.04s)"
+          },
+          {
+            "prompt": "\"/X/\"",
+            "filename": "name-x-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash x slash (1.96s)"
+          },
+          {
+            "prompt": "\"/X/\"",
+            "filename": "name-x-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash x slash (2.12s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-x.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -813,11 +1935,32 @@ window.PHONEME_CLIPS = {
             "prompt": "ks",
             "filename": "phoneme-x-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/x/\"",
+            "filename": "phoneme-x-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash X Slash (1.96s)"
+          },
+          {
+            "prompt": "\"/x/\"",
+            "filename": "phoneme-x-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash X Slash (1.8s)"
+          },
+          {
+            "prompt": "\"/x/\"",
+            "filename": "phoneme-x-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash x slash (1.88s)"
           }
         ],
-        "chosen_filename": "phoneme-x-try1.mp3",
-        "rating": "iffy",
-        "stt_note": "STT empty on /ks/"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/x/\", eleven_v4): all 3 takes say \"slash x slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Xylophone",
@@ -830,7 +1973,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/j/",
       "name": {
         "prompt": "Y",
-        "filename": "name-y.mp3"
+        "filename": "name-y.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/Y/\"",
+            "filename": "name-y-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash y slash (1.72s)"
+          },
+          {
+            "prompt": "\"/Y/\"",
+            "filename": "name-y-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash y slash (1.8s)"
+          },
+          {
+            "prompt": "\"/Y/\"",
+            "filename": "name-y-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash y slash (1.72s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-y.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -843,11 +2012,32 @@ window.PHONEME_CLIPS = {
             "prompt": "yuh",
             "filename": "phoneme-y-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/y/\"",
+            "filename": "phoneme-y-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash Y Slash (1.8s)"
+          },
+          {
+            "prompt": "\"/y/\"",
+            "filename": "phoneme-y-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash y slash (1.72s)"
+          },
+          {
+            "prompt": "\"/y/\"",
+            "filename": "phoneme-y-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash, y, slash (1.8s)"
           }
         ],
-        "chosen_filename": "phoneme-y-try1.mp3",
-        "rating": "iffy",
-        "stt_note": "STT 'Yee!' for /j/"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/y/\", eleven_v4): all 3 takes say \"slash y slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Yarn",
@@ -860,7 +2050,33 @@ window.PHONEME_CLIPS = {
       "phoneme_ipa": "/z/",
       "name": {
         "prompt": "Z",
-        "filename": "name-z.mp3"
+        "filename": "name-z.mp3",
+        "attempts": [
+          {
+            "prompt": "\"/Z/\"",
+            "filename": "name-z-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash z slash (2.12s)"
+          },
+          {
+            "prompt": "\"/Z/\"",
+            "filename": "name-z-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash z slash (1.96s)"
+          },
+          {
+            "prompt": "\"/Z/\"",
+            "filename": "name-z-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash z slash (1.88s)"
+          }
+        ],
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy redo: all 3 takes speak slashes around the letter. Failed. Site still plays name.filename (name-z.mp3, Emma); test.js ignores name.chosen_filename."
       },
       "phoneme": {
         "attempts": [
@@ -873,11 +2089,32 @@ window.PHONEME_CLIPS = {
             "prompt": "zzz",
             "filename": "phoneme-z-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/z/\"",
+            "filename": "phoneme-z-v4q-take1.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash z slash (2.27s)"
+          },
+          {
+            "prompt": "\"/z/\"",
+            "filename": "phoneme-z-v4q-take2.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "slash z slash (2.04s)"
+          },
+          {
+            "prompt": "\"/z/\"",
+            "filename": "phoneme-z-v4q-take3.mp3",
+            "style": "ipa-quoted-lucy",
+            "voice": "Lucy FgiNpTIapnCbaD6xiqIo",
+            "stt": "Slash Z slash. Slash Z slash. (1.96s)"
           }
         ],
-        "chosen_filename": "phoneme-z-try1.mp3",
-        "rating": "clean",
-        "stt_note": "STT empty on /z/"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "Lucy full redo 2026-10-15 (text \"/z/\", eleven_v4): all 3 takes say \"slash z slash\" (or STT hallucinated on slash-length audio). Failed, none chosen."
       },
       "word_clip": {
         "prompt": "Zebra",
@@ -895,6 +2132,24 @@ window.PHONEME_CLIPS = {
       "takes_per_letter": 3,
       "credits": 75,
       "result": "T/S/B/M failed (slashes spoken in all 12 takes); A iffy (take3)"
+    },
+    {
+      "date": "2026-10-15",
+      "letters": "A-Z names + sounds",
+      "style": "ipa-quoted-lucy",
+      "model": "eleven_v4",
+      "voice": "FgiNpTIapnCbaD6xiqIo",
+      "takes_per_item": 3,
+      "generations": 156,
+      "credits": 780,
+      "result": "0/52 passed. All 156 takes speak the slashes aloud. Emma quoted takes from 17cebc4 renamed to *-v4q-emma-take*; Emma A take3 no longer chosen (Lucy redo replaces it, failed)."
     }
-  ]
+  ],
+  "voice_change": {
+    "date": "2026-10-15",
+    "from": "Emma oClOrzqamOXmtcB8iqTj",
+    "to": "Lucy FgiNpTIapnCbaD6xiqIo",
+    "scope": "Lucy redo takes only; existing name-*.mp3, word clips and older tries remain Emma. test.js labels are hardcoded 'Emma' and were not edited.",
+    "site_limitation": "test.js plays entry.name.filename and never reads name.chosen_filename; using a chosen Lucy name would need a code change."
+  }
 };
