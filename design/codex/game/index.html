@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#faf1df">
+  <meta name="description" content="Little letters. Big adventures. An offline alphabet playground with Lucy.">
+  <title>Ready Set ABC · Lucy’s little adventures</title>
+  <link rel="icon" href="art/icon-192.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="art/icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js" defer></script>
+  <script src="model.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to play</a>
+  <div class="app-shell">
+    <header id="header"></header>
+    <main id="main" tabindex="-1"></main>
+    <nav id="kid-nav" aria-label="Your playground"></nav>
+    <footer><span>Little sounds. Big discoveries.</span><span id="offline-status" role="status">Ready to play</span></footer>
+  </div>
+  <div id="spoken" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div id="effects" aria-hidden="true"></div>
+  <dialog id="gate" aria-labelledby="gate-title"></dialog>
+  <noscript>This alphabet playground needs JavaScript enabled. All play stays on this device.</noscript>
+</body>
+</html>
