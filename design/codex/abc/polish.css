@@ -1,0 +1,187 @@
+/* Garden storybook. Child stage only: header/theme toggle, footer/gate and
+   teacher room deliberately inherit the original styles without overrides. */
+#main > .screen:not(.teacher) {
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --target-min: 88px;
+  --type-label: 18px;
+  --type-instruction: 22px;
+  --type-action: 26px;
+  --type-hero: clamp(40px, 4.5vw, 64px);
+  --reading-ink: #514532;
+  --sky-ink: #00658d;
+  --picture-well: #fff1ea;
+  --pillow-lip: 6px;
+  --radius-card: 36px;
+}
+body[data-dark=true] #main > .screen:not(.teacher) {
+  --reading-ink: #c5c5b2;
+  --sky-ink: #9bdef9;
+  --picture-well: #4b412c;
+}
+
+#main .screen:not(.teacher) button { min-height: var(--target-min); min-width: var(--target-min); }
+#main .screen:not(.teacher) .primary { font-size: var(--type-action); box-shadow: 0 8px 0 var(--lip); }
+#main .screen:not(.teacher) .primary:active { box-shadow: 0 2px 0 var(--lip); }
+#main .screen:not(.teacher) .eyebrow, #main .screen:not(.teacher) .tag {
+  font-size: var(--type-label);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--reading-ink);
+}
+#main .screen:not(.teacher) .tag { padding: 8px 16px; margin-bottom: var(--space-lg); }
+#main .screen:not(.teacher) .intro, #main .screen:not(.teacher) .guide p, #main .screen:not(.teacher) .garden-intro {
+  font-size: var(--type-instruction);
+  color: var(--reading-ink);
+}
+#main .screen:not(.teacher) .hero { gap: var(--space-xl); grid-template-columns: 1.05fr 1fr; }
+#main .screen:not(.teacher) .hero-copy { padding-left: 0; min-width: 0; }
+#main .screen:not(.teacher) .hero h1 { font-size: var(--type-hero); letter-spacing: -2px; }
+#main .screen:not(.teacher) .hero h1 em { white-space: normal; }
+#main .screen:not(.teacher) .hero h1 em:after { height: 7px; width: 80%; margin-top: 8px; }
+#main .screen:not(.teacher) .intro { margin: 24px 0 32px; }
+#main .screen:not(.teacher) .launch { min-height: 96px; padding: 16px 24px; gap: 16px; max-width: 100%; }
+#main .screen:not(.teacher) .primary small { font-size: var(--type-label); line-height: 1.4; margin-top: 4px; }
+#main .screen:not(.teacher) .hero-note { font-size: var(--type-label); color: var(--reading-ink); margin-top: 24px; }
+
+/* The bubble gets its own row; no words or decorative glyphs cover her face.
+   object-fit preserves the entire delivered silhouette, including her paws. */
+#main .screen:not(.teacher) .scene {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+  justify-content: flex-end;
+  padding: 24px 16px 16px;
+  border-radius: 48% 48% 36px 36px;
+  min-height: 400px;
+}
+#main .screen:not(.teacher) .bubble {
+  position: relative;
+  top: auto;
+  left: auto;
+  align-self: flex-start;
+  margin-left: 8px;
+  transform: rotate(-2deg);
+  font-size: 22px;
+  padding: 10px 18px;
+  line-height: 1.4;
+  border-radius: 28px 28px 28px 8px;
+}
+#main .screen:not(.teacher) .scene .lucy { width: 100%; height: 310px; min-height: 0; align-self: center; }
+#main .screen:not(.teacher) .lucy img { object-fit: contain; }
+#main .screen:not(.teacher) .floating-letter, #main .screen:not(.teacher) .scene-label { display: none; }
+#main .screen:not(.teacher) .celebrate-scene { border-radius: var(--radius-card); }
+#main .screen:not(.teacher) .celebrate-scene .lucy { height: 330px; }
+
+#main .screen:not(.teacher) .journey { gap: 24px; margin-top: 32px; }
+#main .screen:not(.teacher) .journey-item { padding: 20px 0 0; gap: 12px; }
+#main .screen:not(.teacher) .journey-item h3 { font: 800 22px/1.3 Nunito, system-ui, sans-serif; }
+#main .screen:not(.teacher) .journey-item p { font-size: var(--type-label); color: var(--reading-ink); }
+#main .screen:not(.teacher) .journey-icon { width: 64px; height: 64px; }
+#main .screen:not(.teacher) .journey-icon img { width: 52px; height: 52px; }
+
+#main .screen:not(.teacher) .stepbar button { font-size: var(--type-label); }
+#main .screen:not(.teacher) .step-title { font-size: var(--type-label); color: var(--reading-ink); }
+#main .screen:not(.teacher) .steps span { height: 12px; width: 24px; }
+#main .screen:not(.teacher) .steps span.active { height: 20px; width: 36px; border: 2px solid var(--accent-ink); }
+#main .screen:not(.teacher) .steps span.done { background: var(--good); }
+#main .screen:not(.teacher) .activity-grid { grid-template-columns: minmax(220px, .8fr) minmax(0, 2fr); gap: 32px; }
+#main .screen:not(.teacher) .guide { gap: 24px; }
+#main .screen:not(.teacher) .guide h1 { font-size: 32px; line-height: 1.3; }
+#main .screen:not(.teacher) .guide .eyebrow { margin-bottom: 12px; }
+#main .screen:not(.teacher) .guide .lucy { width: 100%; height: 240px; }
+#main .screen:not(.teacher) .work { padding: 24px; gap: 24px; border-radius: var(--radius-card); }
+#main .screen:not(.teacher) .listen-pair, #main .screen:not(.teacher) .choices { gap: 24px; }
+#main .screen:not(.teacher) .listen-button { border-radius: 32px; }
+#main .screen:not(.teacher) .listen-button small, #main .screen:not(.teacher) .choice .word, #main .screen:not(.teacher) .activity-caption,
+#main .screen:not(.teacher) .feedback, #main .screen:not(.teacher) .replay, #main .screen:not(.teacher) .flower-tile small { font-size: var(--type-label); }
+#main .screen:not(.teacher) .activity-caption { color: var(--reading-ink); }
+#main .screen:not(.teacher) .choice { border-radius: 32px; box-shadow: 0 var(--pillow-lip) 0 var(--lip); }
+#main .screen:not(.teacher) .choice img { background: var(--picture-well); border-radius: 28px; padding: 8px; }
+#main .screen:not(.teacher) .choice.correct { background: var(--blue); }
+#main .screen:not(.teacher) .choice.correct img { background: var(--paper); }
+#main .screen:not(.teacher) .choice:active { box-shadow: 0 2px 0 var(--lip); }
+#main .screen:not(.teacher) .choice.hint { outline-width: 5px; outline-offset: 5px; }
+#main .screen:not(.teacher) .target { color: var(--sky-ink); }
+#main .screen:not(.teacher) .target:is(button) { min-height: 112px; min-width: 112px; }
+#main .screen:not(.teacher) .feedback { color: var(--good); }
+#main .screen:not(.teacher) .map-grid { grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 24px; }
+#main .screen:not(.teacher) .flower-grid { grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 24px; padding: 24px; background-image: none; }
+#main .screen:not(.teacher) .letter-tile, #main .screen:not(.teacher) .flower-tile { border-radius: 32px; }
+#main .screen:not(.teacher) .letter-tile.locked, #main .screen:not(.teacher) .empty-flower { opacity: 1; }
+#main .screen:not(.teacher) .letter-tile.locked { background: var(--bg); border-style: dashed; color: var(--reading-ink); box-shadow: none; }
+#main .screen:not(.teacher) .empty-flower { color: var(--reading-ink); }
+#main .screen:not(.teacher) .celebrate-copy p { color: var(--reading-ink); font-size: 22px; }
+#main .screen:not(.teacher) .celebrate-copy h1 { font-size: clamp(36px, 4vw, 52px); line-height: 1.3; }
+
+@media (max-width: 900px) {
+  #main .screen:not(.teacher) .hero { gap: 24px; }
+  #main .screen:not(.teacher) .hero h1 { font-size: 44px; }
+  #main .screen:not(.teacher) .journey-item { flex-direction: column; align-items: flex-start; }
+  #main .screen:not(.teacher) .journey-item p { font-size: 18px; }
+  #main .screen:not(.teacher) .activity-grid { grid-template-columns: 190px minmax(0, 1fr); gap: 24px; }
+  #main .screen:not(.teacher) .guide h1 { font-size: 28px; }
+  #main .screen:not(.teacher) .guide .lucy { height: 220px; }
+  #main .screen:not(.teacher) .guide p { font-size: 20px; }
+  #main .screen:not(.teacher) .work { padding: 20px; }
+  #main .screen:not(.teacher) .stepbar { flex-wrap: wrap; }
+}
+@media (max-width: 620px) {
+  #main .screen:not(.teacher) .hero { grid-template-columns: 1fr; gap: 24px; }
+  #main .screen:not(.teacher) .hero .scene { min-height: 0; padding: 16px 12px 12px; }
+  #main .screen:not(.teacher) .scene .lucy { height: 210px; }
+  #main .screen:not(.teacher) .bubble { font-size: 20px; padding: 8px 16px; }
+  #main .screen:not(.teacher) .tag { margin-bottom: 16px; font-size: 18px; }
+  #main .screen:not(.teacher) .hero h1 { font-size: 40px; }
+  #main .screen:not(.teacher) .hero h1 em:after { margin: 8px auto 0; }
+  #main .screen:not(.teacher) .intro { font-size: 22px; margin: 24px auto; }
+  #main .screen:not(.teacher) .launch { width: 100%; min-width: 0; font-size: 26px; padding: 16px; gap: 12px; }
+  #main .screen:not(.teacher) .launch .play-disc { flex-shrink: 0; }
+  #main .screen:not(.teacher) .launch small { font-size: 18px; }
+  #main .screen:not(.teacher) .launch > .icon { display: none; }
+  #main .screen:not(.teacher) .journey { gap: 12px; }
+  #main .screen:not(.teacher) .journey-item { align-items: center; }
+  #main .screen:not(.teacher) .journey-item h3 { font-size: 18px; }
+  #main .screen:not(.teacher) .hero-note { justify-content: center; }
+  #main .screen:not(.teacher) .activity-grid { grid-template-columns: 1fr; gap: 24px; }
+  #main .screen:not(.teacher) .guide { gap: 12px; }
+  #main .screen:not(.teacher) .guide h1 { font-size: 28px; }
+  #main .screen:not(.teacher) .guide p { font-size: 20px; }
+  #main .screen:not(.teacher) .guide .lucy { width: 104px; height: 128px; }
+  #main .screen:not(.teacher) .stepbar button { width: 88px; padding: 16px; font-size: 0; }
+  #main .screen:not(.teacher) .stepbar .step-title { font-size: 18px; }
+  #main .screen:not(.teacher) .steps { gap: 4px; }
+  #main .screen:not(.teacher) .steps span { width: 16px; }
+  #main .screen:not(.teacher) .steps span.active { width: 24px; }
+  #main .screen:not(.teacher) .work { padding: 24px 12px; gap: 24px; }
+  #main .screen:not(.teacher) .listen-pair, #main .screen:not(.teacher) .choices { gap: 16px; }
+  #main .screen:not(.teacher) .listen-button { height: 196px; padding: 8px; }
+  #main .screen:not(.teacher) .listen-button small { font-size: 18px; }
+  #main .screen:not(.teacher) .listen-button small .icon { display: block; margin: 0 auto 4px; }
+  #main .screen:not(.teacher) .choices[style*="3"] { grid-template-columns: 1fr; max-width: 290px; }
+  #main .screen:not(.teacher) .choices[style*="3"] .choice { min-height: 112px; }
+  #main .screen:not(.teacher) .choices[style*="3"] .choice:has(img) { grid-template-columns: 104px 1fr; gap: 8px; }
+  #main .screen:not(.teacher) .choices[style*="3"] .choice img { width: 104px; height: 96px; }
+  #main .screen:not(.teacher) .choices[style*="3"] .choice .glyph { font-size: 64px; }
+  #main .screen:not(.teacher) .cue { flex-wrap: wrap; }
+  #main .screen:not(.teacher) .map-grid { grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)); gap: 16px; }
+  #main .screen:not(.teacher) .flower-grid { grid-template-columns: repeat(2, minmax(88px, 1fr)); gap: 16px; padding: 16px; }
+  #main .screen:not(.teacher) .screen-heading { flex-wrap: wrap; }
+  #main .screen:not(.teacher) .screen-heading h1 { font-size: 32px; }
+  #main .screen:not(.teacher) .celebrate-scene { min-height: 0; padding: 16px; }
+  #main .screen:not(.teacher) .celebrate-scene .lucy { height: 250px; }
+  #main .screen:not(.teacher) .finish-actions { flex-direction: column; }
+}
+/* Calm under both the device preference and the existing grown-up setting.
+   Press depth is instantaneous; even the press translation stays at rest. */
+@media (prefers-reduced-motion: reduce) {
+  #main .screen:not(.teacher), #main .screen:not(.teacher) * {
+    animation: none !important;
+    transition: none !important;
+  }
+  #main .screen:not(.teacher) button:active { transform: none; }
+}
+body[data-motion=off] #main .screen:not(.teacher) button:active { transform: none; }

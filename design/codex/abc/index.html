@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#fff8f5">
+  <meta name="description" content="Little letters, lovely sounds. Grow a sound garden with Lucy. A gentle offline phonics game for ages 3–4.">
+  <title>Lucy’s Sound Garden · Ready Set ABC</title>
+  <link rel="icon" href="art/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="grownups.css">
+  <link rel="stylesheet" href="polish.css">
+  <script src="model.js" defer></script>
+  <script src="content.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to play</a>
+  <div class="app-shell">
+    <header id="header"></header>
+    <main id="main" tabindex="-1"></main>
+    <nav id="kid-nav" aria-label="Places to play"></nav>
+    <footer><span id="offline-status" role="status">Ready to grow</span><button class="grownup-entry" data-action="teacher">Grown-ups ↗</button></footer>
+  </div>
+  <div id="spoken" role="status" aria-live="polite"></div>
+  <div id="effects" aria-hidden="true"></div>
+  <dialog id="gate" aria-labelledby="gate-title"></dialog>
+  <noscript>This little garden needs JavaScript. Please enable it to play.</noscript>
+</body>
+</html>

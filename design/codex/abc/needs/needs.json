@@ -1,0 +1,47 @@
+{
+  "images": [
+    {
+      "id": "lucy-welcome",
+      "status": "delivered",
+      "file": "art/lucy-welcome.png",
+      "prompt": "Create a completely NEW illustration of Lucy using the supplied locked reference images for exact likeness. Preserve her exact golden retriever face, eye shape, muzzle, ear shape, fur color, proportions, and recognizable identity. Do not copy, trace, crop, recolor, or reuse a reference composition. No harness. Premium warm storybook 3D illustration, soft plush fur, rounded friendly forms, sunny golden light, gentle cocoa outlines, sky blue and mint accents, matching a cream and sunflower-yellow preschool game. No text, letters, logos, watermarks, or borders. Transparent background; clean full silhouette with generous safe margins. Lucy sitting at a tiny mint garden gate, holding a small sky-blue watering can beside a single yellow flower, one front paw lifted in a welcoming wave, looking directly at the child with a lively open-mouth smile. Three-quarter full body composition. No clothing.",
+      "lucy": true,
+      "reference": [
+        "lucy-reference/app/art/lucy/lucy-default.jpg",
+        "lucy-reference/app/art/lucy/lucy-specs.jpg",
+        "lucy-reference/app/art/lucy/lucy-bows.jpg"
+      ],
+      "size": "1024x1024",
+      "transparent": true
+    },
+    {
+      "id": "lucy-guide",
+      "status": "delivered",
+      "file": "art/lucy-guide.png",
+      "prompt": "Create a completely NEW illustration of Lucy using the supplied locked reference images for exact likeness. Preserve her exact golden retriever face, eye shape, muzzle, ear shape, fur color, proportions, and recognizable identity. Do not copy, trace, crop, recolor, or reuse a reference composition. No harness. Premium warm storybook 3D illustration, soft plush fur, rounded friendly forms, sunny golden light, gentle cocoa outlines, sky blue and mint accents, matching a cream and sunflower-yellow preschool game. No text, letters, logos, watermarks, or borders. Transparent background; clean full silhouette with generous safe margins. Lucy wearing the exact reference teaching glasses, seated with a front paw lifted to her ear in a listening pose, inquisitive happy expression, angled slightly to the left with eye contact. Full body, no background scenery.",
+      "lucy": true,
+      "reference": [
+        "lucy-reference/app/art/lucy/lucy-default.jpg",
+        "lucy-reference/app/art/lucy/lucy-specs.jpg",
+        "lucy-reference/app/art/lucy/lucy-bows.jpg"
+      ],
+      "size": "1024x1024",
+      "transparent": true
+    },
+    {
+      "id": "lucy-cheer",
+      "status": "delivered",
+      "file": "art/lucy-cheer.png",
+      "prompt": "Create a completely NEW illustration of Lucy using the supplied locked reference images for exact likeness. Preserve her exact golden retriever face, eye shape, muzzle, ear shape, fur color, proportions, and recognizable identity. Do not copy, trace, crop, recolor, or reuse a reference composition. No harness. Premium warm storybook 3D illustration, soft plush fur, rounded friendly forms, sunny golden light, gentle cocoa outlines, sky blue and mint accents, matching a cream and sunflower-yellow preschool game. No text, letters, logos, watermarks, or borders. Transparent background; clean full silhouette with generous safe margins. Lucy wearing the reference celebratory bows, bouncing joyfully with two front paws raised beside a small terracotta pot with a mint stem and sunflower-yellow flower. Energetic playful full body pose, a few large simple confetti shapes. Keep face clearly visible.",
+      "lucy": true,
+      "reference": [
+        "lucy-reference/app/art/lucy/lucy-default.jpg",
+        "lucy-reference/app/art/lucy/lucy-specs.jpg",
+        "lucy-reference/app/art/lucy/lucy-bows.jpg"
+      ],
+      "size": "1024x1024",
+      "transparent": true
+    }
+  ],
+  "voice": []
+}
