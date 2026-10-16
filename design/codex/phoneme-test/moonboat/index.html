@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#191d39"><title>Lucy's Moonboat · Phoneme test</title>
+  <link rel="stylesheet" href="../test.css"><link rel="stylesheet" href="theme.css">
+  <script src="../clips-data.js" defer></script><script src="../test.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#inspector">Skip to selected letter</a>
+<div class="shell">
+  <header class="topbar">
+    <a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true">☾</span><span>Lucy's Moonboat<small>Ready Set ABC · phoneme test</small></span></a>
+    <nav class="nav" aria-label="Test layouts"><a href="../index.html">All layouts</a><a href="../letter-post/index.html">Letter Post →</a></nav>
+  </header>
+  <main>
+    <section class="hero"><div><p class="eyebrow">Section 2 · The listening constellation</p><h1>Little letters.<br><em>Listen closely.</em></h1><p class="lead">Tap a letter. Hear its name, sound, and word. Compare Emma's v4 sound with Starfall, then rate what you hear.</p></div><img class="mascot" src="../letter-post/assets/lucy-default.jpg" alt="Lucy the dog" width="102" height="102"></section>
+    <div class="workspace">
+      <section class="collection" aria-labelledby="collection-title">
+        <div class="collection-heading"><div><h2 id="collection-title">The A–Z sound constellation</h2><p id="availability">Checking local audio…</p></div><p id="progress">0 / 26 rated</p></div>
+        <div id="letters" class="letters" role="group" aria-label="A to Z. Arrow keys select; Enter or Space plays."></div>
+        <p class="keyboard"><kbd>←</kbd> <kbd>↑</kbd> <kbd>↓</kbd> <kbd>→</kbd> select · <kbd>Enter</kbd> / <kbd>Space</kbd> play<br><kbd>1</kbd> Pass · <kbd>0</kbd> Fail · <kbd>Esc</kbd> stop</p>
+      </section>
+      <section class="inspector" id="inspector" aria-label="Selected letter comparison" tabindex="-1">
+        <div class="selection"><div class="selected-glyph" aria-hidden="true"><span><span id="selected-letter">A</span><small id="selected-lower">a</small></span></div><div><p class="eyebrow" style="margin-bottom:3px">Selected letter</p><h2 id="selected-word">Apple</h2><p class="ipa" id="selected-ipa">/æ/</p></div></div>
+        <button id="play-chain" class="chain" type="button" disabled>Checking audio…</button>
+        <p class="chain-note" id="chain-note">Looking for local audio files.</p>
+        <h3>Compare the phoneme</h3>
+        <div class="compare">
+          <section aria-label="Starfall reference"><h3>Starfall</h3><p class="meta">Reference</p><button type="button" id="play-starfall" disabled aria-label="Play Starfall phoneme">▶ Play sound</button><span class="filename" id="starfall-file">Checking…</span></section>
+          <section aria-label="ElevenLabs v4 phoneme"><h3>ElevenLabs v4</h3><p class="meta">Emma</p><button type="button" id="play-v4" disabled aria-label="Play ElevenLabs v4 phoneme">▶ Play sound</button><span class="filename" id="v4-file">Checking…</span></section>
+        </div>
+        <div class="rating"><h3>Does the v4 sound pass?</h3><div class="rating-buttons" role="group" aria-label="Rate selected letter"><button type="button" id="pass" aria-pressed="false">✓ Pass <span class="meta">[1]</span></button><button type="button" id="fail" aria-pressed="false">× Fail <span class="meta">[0]</span></button></div><p class="rating-status" id="rating-status">Not rated yet</p></div>
+        <p id="status" class="status" role="status" aria-live="polite" aria-atomic="true">Checking local audio…</p>
+        <div class="utility"><button type="button" id="stop" disabled>■ Stop</button><button type="button" id="refresh">Check for new clips</button></div>
+      </section>
+    </div>
+    <noscript><p>Please enable JavaScript to compare the local audio clips and save ratings.</p></noscript>
+  </main>
+  <footer class="footer"><span>Emma · eleven_v4 · Section 2 test only</span><span id="storage-note">Ratings saved on this browser.</span></footer>
+</div>
+</body></html>

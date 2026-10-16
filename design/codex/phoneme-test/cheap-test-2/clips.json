@@ -1,0 +1,178 @@
+[
+ {
+  "id": "t-name",
+  "letter": "T",
+  "intended": "name T",
+  "text": "The letter is \"T\".",
+  "model": "eleven_v4",
+  "normalization": "default (auto) — route cannot set off",
+  "credits": 18,
+  "full": "audio/t-name-full.mp3",
+  "trimmed": "audio/t-name-trim.mp3",
+  "full_duration": 1.84,
+  "stt_full": "The letter is T.",
+  "trim_window": [
+   1.223,
+   1.736
+  ],
+  "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+  "trim_duration": 0.51,
+  "stt_trim": "T",
+  "slash_spoken": false,
+  "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+ },
+ {
+  "id": "g-name",
+  "letter": "G",
+  "intended": "name G",
+  "text": "The letter is \"G\".",
+  "model": "eleven_v4",
+  "normalization": "default (auto) — route cannot set off",
+  "credits": 18,
+  "full": "audio/g-name-full.mp3",
+  "trimmed": "audio/g-name-trim.mp3",
+  "full_duration": 1.68,
+  "stt_full": "The letter is G.",
+  "trim_window": [
+   1.05,
+   1.599
+  ],
+  "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades (start hand-adjusted from energy envelope)",
+  "trim_duration": 0.55,
+  "stt_trim": "G.",
+  "slash_spoken": false,
+  "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+ },
+ {
+  "id": "i-name",
+  "letter": "I",
+  "intended": "name I",
+  "text": "The letter is \"I\".",
+  "model": "eleven_v4",
+  "normalization": "default (auto) — route cannot set off",
+  "credits": 18,
+  "full": "audio/i-name-full.mp3",
+  "trimmed": "audio/i-name-trim.mp3",
+  "full_duration": 1.68,
+  "stt_full": "The letter is I.",
+  "trim_window": [
+   1.04,
+   1.591
+  ],
+  "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+  "trim_duration": 0.55,
+  "stt_trim": "I",
+  "slash_spoken": false,
+  "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+ },
+ {
+  "id": "t-sound",
+  "letter": "T",
+  "intended": "sound /t/",
+  "text": "The sound is \"/t/\".",
+  "model": "eleven_v4",
+  "normalization": "default (auto) — route cannot set off",
+  "credits": 19,
+  "full": "audio/t-sound-full.mp3",
+  "trimmed": "audio/t-sound-trim.mp3",
+  "full_duration": 1.76,
+  "stt_full": "The sound is t.",
+  "trim_window": [
+   1.308,
+   1.522
+  ],
+  "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+  "trim_duration": 0.21,
+  "stt_trim": "(nothing)",
+  "slash_spoken": false,
+  "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+ },
+ {
+  "id": "g-hard",
+  "letter": "G",
+  "intended": "hard G /ɡ/",
+  "text": "The sound is \"/ɡ/\".",
+  "model": "eleven_v4",
+  "normalization": "default (auto) — route cannot set off",
+  "credits": 19,
+  "full": "audio/g-hard-full.mp3",
+  "trimmed": "audio/g-hard-trim.mp3",
+  "full_duration": 1.92,
+  "stt_full": "The sound is guh.",
+  "trim_window": [
+   1.351,
+   1.74
+  ],
+  "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+  "trim_duration": 0.39,
+  "stt_trim": "G.",
+  "slash_spoken": false,
+  "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+ },
+ {
+  "id": "g-soft",
+  "letter": "G",
+  "intended": "soft G /dʒ/",
+  "text": "The sound is \"/dʒ/\".",
+  "model": "eleven_v4",
+  "normalization": "default (auto) — route cannot set off",
+  "credits": 20,
+  "full": "audio/g-soft-full.mp3",
+  "trimmed": "audio/g-soft-trim.mp3",
+  "full_duration": 1.92,
+  "stt_full": "The sound is jh.",
+  "trim_window": [
+   1.361,
+   1.791
+  ],
+  "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+  "trim_duration": 0.43,
+  "stt_trim": "J.",
+  "slash_spoken": false,
+  "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+ },
+ {
+  "id": "i-short",
+  "letter": "I",
+  "intended": "short I /ɪ/",
+  "text": "The sound is \"/ɪ/\".",
+  "model": "eleven_v4",
+  "normalization": "default (auto) — route cannot set off",
+  "credits": 19,
+  "full": "audio/i-short-full.mp3",
+  "trimmed": "audio/i-short-trim.mp3",
+  "full_duration": 1.76,
+  "stt_full": "The sound is IH.",
+  "trim_window": [
+   1.245,
+   1.614
+  ],
+  "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+  "trim_duration": 0.37,
+  "stt_trim": "EH",
+  "slash_spoken": false,
+  "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+ },
+ {
+  "id": "i-long",
+  "letter": "I",
+  "intended": "long I /aɪ/",
+  "text": "The sound is \"/aɪ/\".",
+  "model": "eleven_v4",
+  "normalization": "default (auto) — route cannot set off",
+  "credits": 20,
+  "full": "audio/i-long-full.mp3",
+  "trimmed": "audio/i-long-trim.mp3",
+  "full_duration": 1.84,
+  "stt_full": "The sound is I.",
+  "trim_window": [
+   1.04,
+   1.632
+  ],
+  "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+  "trim_duration": 0.59,
+  "stt_trim": "I",
+  "slash_spoken": false,
+  "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+ }
+]
