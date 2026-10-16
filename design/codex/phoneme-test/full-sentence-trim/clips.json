@@ -6,7 +6,8 @@
   "total_credits": 985,
   "generations": 53,
   "trim_method": "Whisper word timestamps + energy-envelope gap detection after \"is\" (-32 dB rel), end at last frame >-45 dB; pad 40 ms before, 60 ms after (150 ms for stop sounds b d g k p t); 15/30 ms fades",
-  "stt_note": "Whisper small.en; trimmed clips padded with 0.5 s silence. STT cannot judge phoneme quality; short sounds often transcribe as a letter name or nothing."
+  "stt_note": "Whisper small.en; trimmed clips padded with 0.5 s silence. STT cannot judge phoneme quality; short sounds often transcribe as a letter name or nothing.",
+  "retrim_note": "K Q P U V D names re-trimmed (retrim.py): start after \"is\" via silence gap / z-frication end, 10 ms margin, 20 ms fade-in, STT-verified. No new generation; 0 credits."
  },
  "items": [
   {
@@ -149,12 +150,31 @@
    "stt_full": "The letter is D.",
    "stt_trim": "D",
    "trim_window": [
-    0.92,
+    1.05,
     1.55
    ],
-   "trim_duration": 0.63,
+   "trim_duration": 0.5,
    "trim_retries": 1,
-   "slash_spoken": false
+   "slash_spoken": false,
+   "retrim": {
+    "old": {
+     "window": [
+      0.92,
+      1.55
+     ],
+     "dur": 0.63,
+     "stt": "D"
+    },
+    "method": "gap",
+    "is_word": [
+     0.48,
+     0.92
+    ],
+    "target_start": 0.92,
+    "gap_end": 1.1,
+    "nudges": 0,
+    "fade_in_ms": 20
+   }
   },
   {
    "id": "d-sound",
@@ -441,14 +461,33 @@
    "credits": 18,
    "full_duration": 1.6,
    "stt_full": "The letter is K.",
-   "stt_trim": "K.",
+   "stt_trim": "K",
    "trim_window": [
-    0.9,
+    0.95,
     1.56
    ],
-   "trim_duration": 0.66,
+   "trim_duration": 0.61,
    "trim_retries": 1,
-   "slash_spoken": false
+   "slash_spoken": false,
+   "retrim": {
+    "old": {
+     "window": [
+      0.9,
+      1.56
+     ],
+     "dur": 0.66,
+     "stt": "K."
+    },
+    "method": "gap",
+    "is_word": [
+     0.52,
+     0.9
+    ],
+    "target_start": 0.9,
+    "gap_end": 1.01,
+    "nudges": 0,
+    "fade_in_ms": 20
+   }
   },
   {
    "id": "k-sound",
@@ -651,14 +690,33 @@
    "credits": 18,
    "full_duration": 2.0,
    "stt_full": "The letter is P.",
-   "stt_trim": "(nothing)",
+   "stt_trim": "P.",
    "trim_window": [
-    0.88,
+    1.31,
     1.87
    ],
-   "trim_duration": 0.99,
+   "trim_duration": 0.56,
    "trim_retries": 0,
-   "slash_spoken": false
+   "slash_spoken": false,
+   "retrim": {
+    "old": {
+     "window": [
+      0.88,
+      1.87
+     ],
+     "dur": 0.99,
+     "stt": "(nothing)"
+    },
+    "method": "gap",
+    "is_word": [
+     0.6,
+     1.12
+    ],
+    "target_start": 1.12,
+    "gap_end": 1.37,
+    "nudges": 0,
+    "fade_in_ms": 20
+   }
   },
   {
    "id": "p-sound",
@@ -695,12 +753,31 @@
    "stt_full": "The letter is Q.",
    "stt_trim": "Queue!",
    "trim_window": [
-    0.9,
+    0.94,
     1.68
    ],
-   "trim_duration": 0.78,
+   "trim_duration": 0.74,
    "trim_retries": 1,
-   "slash_spoken": false
+   "slash_spoken": false,
+   "retrim": {
+    "old": {
+     "window": [
+      0.9,
+      1.68
+     ],
+     "dur": 0.78,
+     "stt": "Queue!"
+    },
+    "method": "gap",
+    "is_word": [
+     0.48,
+     0.9
+    ],
+    "target_start": 0.9,
+    "gap_end": 1.0,
+    "nudges": 0,
+    "fade_in_ms": 20
+   }
   },
   {
    "id": "q-sound",
@@ -861,14 +938,33 @@
    "credits": 18,
    "full_duration": 1.68,
    "stt_full": "The letter is U.",
-   "stt_trim": "You",
+   "stt_trim": "you",
    "trim_window": [
-    0.94,
+    0.99,
     1.64
    ],
-   "trim_duration": 0.7,
+   "trim_duration": 0.65,
    "trim_retries": 1,
-   "slash_spoken": false
+   "slash_spoken": false,
+   "retrim": {
+    "old": {
+     "window": [
+      0.94,
+      1.64
+     ],
+     "dur": 0.7,
+     "stt": "You"
+    },
+    "method": "no-gap",
+    "is_word": [
+     0.52,
+     0.94
+    ],
+    "target_start": 0.94,
+    "gap_end": null,
+    "nudges": 0,
+    "fade_in_ms": 20
+   }
   },
   {
    "id": "u-sound",
@@ -903,14 +999,33 @@
    "credits": 18,
    "full_duration": 1.68,
    "stt_full": "The letter is V.",
-   "stt_trim": "V.",
+   "stt_trim": "B.",
    "trim_window": [
-    0.9,
+    1.04,
     1.57
    ],
-   "trim_duration": 0.67,
+   "trim_duration": 0.53,
    "trim_retries": 1,
-   "slash_spoken": false
+   "slash_spoken": false,
+   "retrim": {
+    "old": {
+     "window": [
+      0.9,
+      1.57
+     ],
+     "dur": 0.67,
+     "stt": "V."
+    },
+    "method": "no-gap",
+    "is_word": [
+     0.5,
+     0.9
+    ],
+    "target_start": 0.9,
+    "gap_end": null,
+    "nudges": 0,
+    "fade_in_ms": 20
+   }
   },
   {
    "id": "v-sound",
