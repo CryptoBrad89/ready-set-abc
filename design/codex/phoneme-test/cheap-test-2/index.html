@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Ready Set ABC — ElevenLabs v4 sentence-context test 2 (T, G, I)</title>
+  <style>
+    :root { color-scheme: light; --ink: #203b3b; --muted: #596c6b; --line: #dce4df; --teal: #146653; --paper: #fff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f5f6f0; color: var(--ink); font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.55; }
+    .wrap { max-width: 1120px; margin: auto; padding: 52px 28px 64px; }
+    .eyebrow { margin: 0 0 12px; color: var(--teal); font-size: .75rem; font-weight: 750; letter-spacing: .15em; text-transform: uppercase; }
+    h1 { max-width: 960px; margin: 0; font-size: clamp(1.8rem, 3.8vw, 2.8rem); line-height: 1.17; letter-spacing: -.04em; }
+    .summary { display: flex; flex-wrap: wrap; gap: 8px; margin: 23px 0 20px; }
+    .pill { padding: 5px 11px; background: #e5eee6; border-radius: 6px; font-size: .82rem; font-weight: 650; }
+    .notes { padding: 19px 22px; border: 1px solid var(--line); border-radius: 12px; background: #edf1e9; font-size: .9rem; }
+    .notes p { margin: 0; }
+    .notes p + p { margin-top: 9px; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace; }
+    .notes code { overflow-wrap: anywhere; }
+    .group-nav { display: flex; gap: 8px; margin-top: 23px; }
+    .group-nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border: 1px solid #c7d5cb; border-radius: 8px; color: var(--teal); text-decoration: none; font-weight: 750; background: #fff; }
+    .group-nav a:hover { background: #e5eee6; }
+    a:focus-visible, audio:focus-visible { outline: 3px solid #bd7119; outline-offset: 4px; }
+    .group { margin-top: 38px; scroll-margin-top: 24px; }
+    .group-heading { display: flex; align-items: baseline; gap: 13px; margin-bottom: 15px; }
+    h2 { margin: 0; font-size: 1.6rem; letter-spacing: -.04em; }
+    .count { color: var(--muted); font-size: .85rem; }
+    .card { margin-bottom: 18px; padding: 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 3px 10px #203b3b04; }
+    .card-heading { display: flex; align-items: center; gap: 13px; flex-wrap: wrap; }
+    .letter { display: grid; place-items: center; width: 45px; height: 45px; background: #e9f0e8; color: var(--teal); border-radius: 10px; font-size: 1.6rem; font-weight: 750; }
+    h3 { margin: 0; font-size: 1.1rem; font-weight: 650; }
+    .badge { padding: 4px 9px; color: #a21f25; background: #ffebec; border: 1px solid #f4b9bc; border-radius: 5px; font-size: .78rem; font-weight: 750; }
+    .label { display: block; margin-bottom: 5px; color: var(--muted); font-size: .72rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+    .prompt { margin-top: 19px; }
+    pre { margin: 0; padding: 12px 15px; border-radius: 7px; background: #f5f7f3; font-size: .98rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .metadata { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 17px 0 21px; font-size: .84rem; }
+    .metadata div { min-width: 100px; }
+    dt { color: var(--muted); margin-bottom: 3px; }
+    dd { margin: 0; }
+    .players { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border-top: 1px solid var(--line); padding-top: 19px; gap: 24px; }
+    .player-title { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+    h4 { margin: 0; font-size: .93rem; }
+    .duration { color: var(--muted); font-size: .8rem; font-variant-numeric: tabular-nums; }
+    audio { display: block; width: 100%; height: 42px; }
+    .window { margin: 9px 0 0; font-size: .77rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .transcript { margin: 12px 0 0; font-size: .87rem; overflow-wrap: anywhere; }
+    .transcript .label { font-size: .65rem; margin-bottom: 3px; }
+    details { margin-top: 17px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
+    summary { cursor: pointer; width: fit-content; }
+    details p { margin: 7px 0 0; }
+    footer { margin-top: 30px; color: var(--muted); font-size: .8rem; }
+    @media (max-width: 600px) {
+      .wrap { padding: 28px 16px 40px; }
+      .card { padding: 18px; }
+      .players { gap: 15px; }
+      .player-title { display: block; }
+      .duration { display: block; margin-top: 3px; }
+      .metadata { gap: 12px 20px; }
+      .notes { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">Ready Set ABC / Voice lab</p>
+      <h1>Ready Set ABC — ElevenLabs v4 sentence-context test 2 (T, G, I)</h1>
+      <div class="summary" aria-label="Test summary">
+        <span class="pill">eleven_v4 only</span>
+        <span class="pill">1 take each</span>
+        <span class="pill">Fresh generations (no reuse)</span>
+        <span class="pill">151 credits total</span>
+      </div>
+      <div class="notes">
+        <p><strong>Voice:</strong> Lucy <code>FgiNpTIapnCbaD6xiqIo</code></p>
+        <p><strong>Normalization:</strong> <code>apply_text_normalization</code> could not be set to <code>off</code> on this route (default/auto).</p>
+        <p><strong>Trimming:</strong> Trims made from Whisper word timestamps + ffmpeg silence detection. The ElevenLabs route offers no timestamps.</p>
+        <p id="stt-note"><strong>STT note:</strong> <span></span></p>
+      </div>
+      <nav class="group-nav" aria-label="Jump to letter">
+        <a href="#letter-t">T</a><a href="#letter-g">G</a><a href="#letter-i">I</a>
+      </nav>
+    </header>
+    <main id="clips" aria-label="Sentence and trimmed audio comparisons"></main>
+    <noscript><p>Enable JavaScript to display the embedded clip data and audio players.</p></noscript>
+    <footer>Listen to the full sentence for context, then compare the isolated letter or sound.</footer>
+  </div>
+  <script id="clip-data" type="application/json">
+[
+  {
+    "id": "t-name",
+    "letter": "T",
+    "intended": "name T",
+    "text": "The letter is \"T\".",
+    "model": "eleven_v4",
+    "normalization": "default (auto) — route cannot set off",
+    "credits": 18,
+    "full": "audio/t-name-full.mp3",
+    "trimmed": "audio/t-name-trim.mp3",
+    "full_duration": 1.84,
+    "stt_full": "The letter is T.",
+    "trim_window": [
+      1.223,
+      1.736
+    ],
+    "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+    "trim_duration": 0.51,
+    "stt_trim": "T",
+    "slash_spoken": false,
+    "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+  },
+  {
+    "id": "g-name",
+    "letter": "G",
+    "intended": "name G",
+    "text": "The letter is \"G\".",
+    "model": "eleven_v4",
+    "normalization": "default (auto) — route cannot set off",
+    "credits": 18,
+    "full": "audio/g-name-full.mp3",
+    "trimmed": "audio/g-name-trim.mp3",
+    "full_duration": 1.68,
+    "stt_full": "The letter is G.",
+    "trim_window": [
+      1.05,
+      1.599
+    ],
+    "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades (start hand-adjusted from energy envelope)",
+    "trim_duration": 0.55,
+    "stt_trim": "G.",
+    "slash_spoken": false,
+    "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+  },
+  {
+    "id": "i-name",
+    "letter": "I",
+    "intended": "name I",
+    "text": "The letter is \"I\".",
+    "model": "eleven_v4",
+    "normalization": "default (auto) — route cannot set off",
+    "credits": 18,
+    "full": "audio/i-name-full.mp3",
+    "trimmed": "audio/i-name-trim.mp3",
+    "full_duration": 1.68,
+    "stt_full": "The letter is I.",
+    "trim_window": [
+      1.04,
+      1.591
+    ],
+    "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+    "trim_duration": 0.55,
+    "stt_trim": "I",
+    "slash_spoken": false,
+    "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+  },
+  {
+    "id": "t-sound",
+    "letter": "T",
+    "intended": "sound /t/",
+    "text": "The sound is \"/t/\".",
+    "model": "eleven_v4",
+    "normalization": "default (auto) — route cannot set off",
+    "credits": 19,
+    "full": "audio/t-sound-full.mp3",
+    "trimmed": "audio/t-sound-trim.mp3",
+    "full_duration": 1.76,
+    "stt_full": "The sound is t.",
+    "trim_window": [
+      1.308,
+      1.522
+    ],
+    "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+    "trim_duration": 0.21,
+    "stt_trim": "(nothing)",
+    "slash_spoken": false,
+    "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+  },
+  {
+    "id": "g-hard",
+    "letter": "G",
+    "intended": "hard G /ɡ/",
+    "text": "The sound is \"/ɡ/\".",
+    "model": "eleven_v4",
+    "normalization": "default (auto) — route cannot set off",
+    "credits": 19,
+    "full": "audio/g-hard-full.mp3",
+    "trimmed": "audio/g-hard-trim.mp3",
+    "full_duration": 1.92,
+    "stt_full": "The sound is guh.",
+    "trim_window": [
+      1.351,
+      1.74
+    ],
+    "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+    "trim_duration": 0.39,
+    "stt_trim": "G.",
+    "slash_spoken": false,
+    "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+  },
+  {
+    "id": "g-soft",
+    "letter": "G",
+    "intended": "soft G /dʒ/",
+    "text": "The sound is \"/dʒ/\".",
+    "model": "eleven_v4",
+    "normalization": "default (auto) — route cannot set off",
+    "credits": 20,
+    "full": "audio/g-soft-full.mp3",
+    "trimmed": "audio/g-soft-trim.mp3",
+    "full_duration": 1.92,
+    "stt_full": "The sound is jh.",
+    "trim_window": [
+      1.361,
+      1.791
+    ],
+    "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+    "trim_duration": 0.43,
+    "stt_trim": "J.",
+    "slash_spoken": false,
+    "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+  },
+  {
+    "id": "i-short",
+    "letter": "I",
+    "intended": "short I /ɪ/",
+    "text": "The sound is \"/ɪ/\".",
+    "model": "eleven_v4",
+    "normalization": "default (auto) — route cannot set off",
+    "credits": 19,
+    "full": "audio/i-short-full.mp3",
+    "trimmed": "audio/i-short-trim.mp3",
+    "full_duration": 1.76,
+    "stt_full": "The sound is IH.",
+    "trim_window": [
+      1.245,
+      1.614
+    ],
+    "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+    "trim_duration": 0.37,
+    "stt_trim": "EH",
+    "slash_spoken": false,
+    "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+  },
+  {
+    "id": "i-long",
+    "letter": "I",
+    "intended": "long I /aɪ/",
+    "text": "The sound is \"/aɪ/\".",
+    "model": "eleven_v4",
+    "normalization": "default (auto) — route cannot set off",
+    "credits": 20,
+    "full": "audio/i-long-full.mp3",
+    "trimmed": "audio/i-long-trim.mp3",
+    "full_duration": 1.84,
+    "stt_full": "The sound is I.",
+    "trim_window": [
+      1.04,
+      1.632
+    ],
+    "trim_method": "Whisper word timestamps + ffmpeg silencedetect (-40dB); 40ms/60ms pad, 15/30ms fades",
+    "trim_duration": 0.59,
+    "stt_trim": "I",
+    "slash_spoken": false,
+    "stt_note": "Whisper base.en for full clips, small.en for trimmed (padded with 0.5s silence). STT cannot judge phoneme quality; consonant-only clips often transcribe as nothing or a letter name."
+  }
+]
+  </script>
+  <script>
+    'use strict';
+    const clips = JSON.parse(document.getElementById('clip-data').textContent);
+    const main = document.getElementById('clips');
+    document.querySelector('#stt-note span').textContent = clips[0].stt_note;
+
+    function element(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+    function metadata(label, value) {
+      const item = element('div');
+      item.append(element('dt', '', label), element('dd', '', value));
+      return item;
+    }
+    function player(clip, trimmed) {
+      const title = trimmed ? 'Trimmed' : 'Full sentence';
+      const panel = element('div', 'player');
+      const heading = element('div', 'player-title');
+      heading.append(element('h4', '', title), element('span', 'duration',
+        `${trimmed ? clip.trim_duration : clip.full_duration} s`));
+      const audio = element('audio');
+      audio.controls = true;
+      audio.preload = 'none';
+      audio.src = trimmed ? clip.trimmed : clip.full;
+      audio.setAttribute('aria-label', `${clip.letter}, ${clip.intended} — ${title}`);
+      audio.append(document.createTextNode('Your browser does not support audio playback.'));
+      panel.append(heading, audio);
+      if (trimmed) panel.append(element('p', 'window',
+        `Trim window: ${clip.trim_window[0]}–${clip.trim_window[1]} s`));
+      const transcript = element('p', 'transcript');
+      transcript.append(element('span', 'label', trimmed ? 'STT · trimmed' : 'STT · full sentence'),
+        element('span', '', trimmed ? clip.stt_trim : clip.stt_full));
+      panel.append(transcript);
+      return panel;
+    }
+    for (const letter of ['T', 'G', 'I']) {
+      // Preserve clips.json order within each letter group.
+      const items = clips.filter(clip => clip.letter === letter);
+      const group = element('section', 'group');
+      group.id = `letter-${letter.toLowerCase()}`;
+      group.setAttribute('aria-labelledby', `${group.id}-heading`);
+      const groupHeading = element('div', 'group-heading');
+      const h2 = element('h2', '', letter);
+      h2.id = `${group.id}-heading`;
+      groupHeading.append(h2, element('span', 'count', `${items.length} clips`));
+      group.append(groupHeading);
+      for (const clip of items) {
+        const card = element('article', 'card');
+        card.id = clip.id;
+        card.setAttribute('aria-labelledby', `${clip.id}-heading`);
+        const heading = element('div', 'card-heading');
+        const h3 = element('h3', '', clip.intended);
+        h3.id = `${clip.id}-heading`;
+        heading.append(element('span', 'letter', clip.letter), h3);
+        if (clip.slash_spoken) heading.append(element('span', 'badge', 'Slash spoken'));
+        const prompt = element('div', 'prompt');
+        const exactText = element('pre');
+        exactText.append(element('code', '', clip.text));
+        prompt.append(element('span', 'label', 'Exact text sent'), exactText);
+        const meta = element('dl', 'metadata');
+        meta.append(metadata('Model', clip.model), metadata('Normalization', clip.normalization),
+          metadata('Credits', clip.credits));
+        const players = element('div', 'players');
+        players.append(player(clip, false), player(clip, true));
+        const method = element('details');
+        method.append(element('summary', '', 'Trim method'), element('p', '', clip.trim_method));
+        card.append(heading, prompt, meta, players, method);
+        group.append(card);
+      }
+      main.append(group);
+    }
+    // Keep comparisons clear when switching between clips.
+    document.addEventListener('play', event => {
+      if (event.target.tagName === 'AUDIO') {
+        document.querySelectorAll('audio').forEach(audio => {
+          if (audio !== event.target) audio.pause();
+        });
+      }
+    }, true);
+  </script>
+</body>
+</html>
