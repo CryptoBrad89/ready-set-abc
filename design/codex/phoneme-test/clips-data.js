@@ -33,11 +33,29 @@ window.PHONEME_CLIPS = {
             "prompt": "aah",
             "filename": "phoneme-a-try3.mp3",
             "style": "respell"
+          },
+          {
+            "prompt": "\"/æ/\"",
+            "filename": "phoneme-a-v4q-take1.mp3",
+            "style": "ipa-quoted",
+            "stt": "Ah (0.68s)"
+          },
+          {
+            "prompt": "\"/æ/\"",
+            "filename": "phoneme-a-v4q-take2.mp3",
+            "style": "ipa-quoted",
+            "stt": "Oh (0.76s)"
+          },
+          {
+            "prompt": "\"/æ/\"",
+            "filename": "phoneme-a-v4q-take3.mp3",
+            "style": "ipa-quoted",
+            "stt": "Ah (0.68s)"
           }
         ],
-        "chosen_filename": "phoneme-a-try1.mp3",
-        "rating": "clean",
-        "stt_note": "STT empty; IPA /æ/ short clip — listen vs Starfall"
+        "chosen_filename": "phoneme-a-v4q-take3.mp3",
+        "rating": "iffy",
+        "stt_note": "ipa-quoted redo 2026-10-15: no spoken slashes/quotes, no letter name. STT Ah/Oh/Ah, 0.68-0.76s. Whisper cannot tell short /æ/ from \"ah\"; take3 picked (most voiced, STT Ah). Listen vs Starfall to confirm short-a."
       },
       "word_clip": {
         "prompt": "Apple",
@@ -63,11 +81,29 @@ window.PHONEME_CLIPS = {
             "prompt": "/b/",
             "filename": "phoneme-b-try2.mp3",
             "style": "ipa"
+          },
+          {
+            "prompt": "\"/b/\"",
+            "filename": "phoneme-b-v4q-take1.mp3",
+            "style": "ipa-quoted",
+            "stt": "Slash B Slash (1.57s)"
+          },
+          {
+            "prompt": "\"/b/\"",
+            "filename": "phoneme-b-v4q-take2.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash B slash (1.49s)"
+          },
+          {
+            "prompt": "\"/b/\"",
+            "filename": "phoneme-b-v4q-take3.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash b slash (1.49s)"
           }
         ],
-        "chosen_filename": "phoneme-b-try1.mp3",
-        "rating": "iffy",
-        "stt_note": "STT 'Bye' for buh — close but not crisp"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "ipa-quoted redo 2026-10-15 (\"/b/\" as text, eleven_v4, Emma): all 3 takes speak the slashes aloud (\"slash b slash\"). Failed; no take chosen. Earlier plain/ipa attempts kept above for reference."
       },
       "word_clip": {
         "prompt": "Ball",
@@ -393,11 +429,29 @@ window.PHONEME_CLIPS = {
             "prompt": "mmm",
             "filename": "phoneme-m-try2.mp3",
             "style": "plain"
+          },
+          {
+            "prompt": "\"/m/\"",
+            "filename": "phoneme-m-v4q-take1.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash M slash (1.96s)"
+          },
+          {
+            "prompt": "\"/m/\"",
+            "filename": "phoneme-m-v4q-take2.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash M slash (1.65s)"
+          },
+          {
+            "prompt": "\"/m/\"",
+            "filename": "phoneme-m-v4q-take3.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash m slash (1.49s)"
           }
         ],
-        "chosen_filename": "phoneme-m-try2.mp3",
-        "rating": "clean",
-        "stt_note": "IPA slash; plain mmm STT 'Hmm.'"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "ipa-quoted redo 2026-10-15 (\"/m/\" as text, eleven_v4, Emma): all 3 takes speak the slashes aloud (\"slash m slash\"). Failed; no take chosen. Earlier plain/ipa attempts kept above for reference."
       },
       "word_clip": {
         "prompt": "Moon",
@@ -573,11 +627,29 @@ window.PHONEME_CLIPS = {
             "prompt": "/s/",
             "filename": "phoneme-s-try2.mp3",
             "style": "ipa"
+          },
+          {
+            "prompt": "\"/s/\"",
+            "filename": "phoneme-s-v4q-take1.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash S (1.31s)"
+          },
+          {
+            "prompt": "\"/s/\"",
+            "filename": "phoneme-s-v4q-take2.mp3",
+            "style": "ipa-quoted",
+            "stt": "\"Slash S Slash\" (1.49s; empty on first STT pass, re-run with padding)"
+          },
+          {
+            "prompt": "\"/s/\"",
+            "filename": "phoneme-s-v4q-take3.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash s slash (1.49s)"
           }
         ],
-        "chosen_filename": "phoneme-s-try1.mp3",
-        "rating": "clean",
-        "stt_note": "STT 'SSS' — clean"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "ipa-quoted redo 2026-10-15 (\"/s/\" as text, eleven_v4, Emma): all 3 takes speak the slashes aloud (\"slash s slash\"). Failed; no take chosen. Earlier plain/ipa attempts kept above for reference."
       },
       "word_clip": {
         "prompt": "Sun",
@@ -603,11 +675,29 @@ window.PHONEME_CLIPS = {
             "prompt": "/t/",
             "filename": "phoneme-t-try2.mp3",
             "style": "ipa"
+          },
+          {
+            "prompt": "\"/t/\"",
+            "filename": "phoneme-t-v4q-take1.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash t slash (1.57s)"
+          },
+          {
+            "prompt": "\"/t/\"",
+            "filename": "phoneme-t-v4q-take2.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash t slash (1.57s)"
+          },
+          {
+            "prompt": "\"/t/\"",
+            "filename": "phoneme-t-v4q-take3.mp3",
+            "style": "ipa-quoted",
+            "stt": "slash t slash (1.57s)"
           }
         ],
-        "chosen_filename": "phoneme-t-try1.mp3",
-        "rating": "iffy",
-        "stt_note": "STT 'So' for tuh — classic T fail mode"
+        "chosen_filename": null,
+        "rating": "failed",
+        "stt_note": "ipa-quoted redo 2026-10-15 (\"/t/\" as text, eleven_v4, Emma): all 3 takes speak the slashes aloud (\"slash t slash\"). Failed; no take chosen. Earlier plain/ipa attempts kept above for reference."
       },
       "word_clip": {
         "prompt": "Tree",
@@ -793,6 +883,18 @@ window.PHONEME_CLIPS = {
         "prompt": "Zebra",
         "filename": "word-z.mp3"
       }
+    }
+  ],
+  "redo_log": [
+    {
+      "date": "2026-10-15",
+      "letters": "T S B M A",
+      "style": "ipa-quoted",
+      "model": "eleven_v4",
+      "voice": "oClOrzqamOXmtcB8iqTj",
+      "takes_per_letter": 3,
+      "credits": 75,
+      "result": "T/S/B/M failed (slashes spoken in all 12 takes); A iffy (take3)"
     }
   ]
 };

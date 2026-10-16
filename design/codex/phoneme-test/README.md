@@ -43,3 +43,7 @@ All build writes are inside `design/codex/phoneme-test/`. No commit or push is p
 Verified local links/control IDs, JavaScript syntax, manifest-copy consistency, and interaction logic using isolated audio/storage adapters: three-clip order, separate comparison playback, chosen/fallback selection, missing clips, rescan recovery, keyboard ratings, persistence, storage failures, file storage sharing, and cancellation. All 26 full sequences have their required files. All 87 v4 MP3s present at validation decoded without errors. Supplied Starfall F, G and N report frame/header warnings in FFmpeg while still decoding audio; these references were left intact.
 
 The execution sandbox blocks Chrome startup and local HTTP listeners, so live browser playback and visual checks could not be completed here. The logic checks use adapters rather than a real browser/audio output.
+
+## Redo 2026-10-15 — quoted IPA (`ipa-quoted`)
+
+T, S, B, M, A regenerated with eleven_v4 (no fallback), Emma voice, 3 takes each; text was exactly `"/t/"`, `"/s/"`, `"/b/"`, `"/m/"`, `"/æ/"` (quotes included). Result: every T/S/B/M take speaks the slashes ("slash t slash"), so those letters are marked **failed** with no chosen take. A gave short "ah"-like vowels with no spoken slashes; take3 chosen, rated iffy pending listening. Files: `audio/v4/phoneme-<l>-v4q-take1..3.mp3`. ~75 credits.
