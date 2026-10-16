@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Ready Set ABC — ElevenLabs v4 cheap baseline test (T, G, I)</title>
+  <style>
+    :root { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #243248; background: #f5f6f8; line-height: 1.5; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 1160px; margin: auto; padding: 48px 28px 64px; }
+    .eyebrow { color: #475c81; font-size: .76rem; font-weight: 750; text-transform: uppercase; letter-spacing: .13em; margin: 0 0 12px; }
+    h1 { color: #17243b; font-size: clamp(1.8rem, 4vw, 2.7rem); line-height: 1.17; letter-spacing: -.035em; margin: 0 0 24px; max-width: 900px; }
+    .summary { background: white; border: 1px solid #dce2eb; border-radius: 14px; padding: 20px 24px; }
+    .summary p { margin: 0; }
+    .summary p + p { margin-top: 12px; }
+    .facts { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+    .note { color: #536077; font-size: .9rem; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace; }
+    code { overflow-wrap: anywhere; }
+    .flags { display: grid; gap: 8px; margin-top: 16px; padding: 14px 18px; background: #fff6e1; border: 1px solid #ead7a8; border-radius: 10px; font-size: .9rem; color: #694918; }
+    .flags p { margin: 0; }
+    nav { display: flex; align-items: center; gap: 10px; margin: 26px 0 34px; }
+    nav span { color: #657187; font-size: .85rem; margin-right: 4px; }
+    nav a { background: white; border: 1px solid #dce2eb; padding: 6px 18px; border-radius: 8px; color: #284f94; font-weight: 700; text-decoration: none; }
+    nav a:hover { background: #eaf0fb; }
+    a:focus-visible, audio:focus-visible { outline: 3px solid #3675df; outline-offset: 4px; }
+    section { margin-top: 36px; scroll-margin-top: 24px; }
+    .section-heading { display: flex; align-items: baseline; gap: 14px; margin-bottom: 16px; border-bottom: 1px solid #dce2eb; padding-bottom: 12px; }
+    h2 { margin: 0; color: #17243b; font-size: 1.55rem; }
+    .count { color: #69758a; font-size: .85rem; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .clip { padding: 22px; background: #fff; border: 1px solid #dce2eb; border-radius: 12px; min-width: 0; }
+    .clip-header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+    .letter { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: #eaf0fb; color: #284f94; font-weight: 800; font-size: 1.35rem; flex-shrink: 0; }
+    h3 { margin: 0; font-size: 1rem; font-weight: 650; }
+    .badge { display: inline-block; border-radius: 5px; background: #fee5e5; color: #a51e25; border: 1px solid #f4b7bb; font-size: .74rem; font-weight: 750; padding: 3px 8px; margin-left: auto; }
+    .label, dt { color: #667287; font-size: .71rem; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
+    .label { display: block; margin-bottom: 6px; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0 0 18px; border: 1px solid #e5e9ef; background: #f7f8fa; padding: 12px 14px; border-radius: 7px; font-size: .95rem; color: #17243b; }
+    audio { display: block; width: 100%; margin-bottom: 18px; height: 40px; }
+    .transcript { padding: 12px 14px; background: #f0f5fc; border-left: 3px solid #abc1e5; border-radius: 0 6px 6px 0; margin-bottom: 16px; }
+    .transcript p { margin: 0; overflow-wrap: anywhere; }
+    dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0; }
+    dl .normalization { grid-column: 1 / -1; }
+    dd { margin: 3px 0 0; font-size: .83rem; overflow-wrap: anywhere; }
+    .clip-flag { margin: 16px 0 0; padding-top: 12px; border-top: 1px solid #eee1c5; color: #79531b; font-size: .83rem; }
+    footer { color: #69758a; font-size: .8rem; margin-top: 32px; }
+    @media (max-width: 680px) { main { padding: 28px 16px 40px; } .grid { grid-template-columns: 1fr; } .summary { padding: 18px; } .clip { padding: 18px; } }
+    @media print { body { background: white; } main { padding: 0; } nav { display: none; } .clip { break-inside: avoid; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">Ready Set ABC / Audio baseline</p>
+      <h1>Ready Set ABC — ElevenLabs v4 cheap baseline test (T, G, I)</h1>
+      <div class="summary">
+        <p class="facts"><span><strong>Voice:</strong> Lucy <code>FgiNpTIapnCbaD6xiqIo</code></span><span><code>eleven_v4</code> only</span><span><strong>1 take</strong> each</span><span><strong>181 credits</strong> total</span></p>
+        <p class="note"><code>apply_text_normalization</code> could <strong>NOT</strong> be set to <code>off</code>: the connector has no such parameter, and there is no API key on the box. All clips use <strong>default/auto</strong> normalization.</p>
+      </div>
+      <aside class="flags" aria-label="Transcript flags">
+        <p><strong>Flag · bare I:</strong> transcribed as <code>1</code> (one).</p>
+        <p><strong>Flag · bare G:</strong> transcribed as <code>Gee</code> (not “gay”).</p>
+      </aside>
+    </header>
+    <nav aria-label="Jump to letter"><span>Jump to</span><a href="#letter-t">T</a><a href="#letter-g">G</a><a href="#letter-i">I</a></nav>
+    <div id="clips"></div>
+    <noscript><p>Enable JavaScript to display the embedded clip data and audio players.</p></noscript>
+    <footer>16 clips · One take per prompt · Whisper STT transcripts shown verbatim.</footer>
+  </main>
+  <script id="clip-data" type="application/json">
+[
+  {
+    "letter": "T",
+    "file": "audio/t-alone.mp3",
+    "intended": "sound /t/",
+    "text": "\"/t/\"",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 1.68,
+    "credits": 5,
+    "stt": "slash t slash",
+    "slash_spoken": true
+  },
+  {
+    "letter": "T",
+    "file": "audio/t-sentence.mp3",
+    "intended": "sound /t/",
+    "text": "The sound is \"/t/\".",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 3.04,
+    "credits": 19,
+    "stt": "The sound is tt.",
+    "slash_spoken": false
+  },
+  {
+    "letter": "G",
+    "file": "audio/g-hard-alone.mp3",
+    "intended": "hard /ɡ/",
+    "text": "\"/ɡ/\"",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 0.72,
+    "credits": 5,
+    "stt": "Go!",
+    "slash_spoken": false
+  },
+  {
+    "letter": "G",
+    "file": "audio/g-hard-sentence.mp3",
+    "intended": "hard /ɡ/",
+    "text": "The sound is \"/ɡ/\".",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 2.0,
+    "credits": 19,
+    "stt": "The sound is g.",
+    "slash_spoken": false
+  },
+  {
+    "letter": "G",
+    "file": "audio/g-soft-alone.mp3",
+    "intended": "soft /dʒ/",
+    "text": "\"/dʒ/\"",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 0.64,
+    "credits": 6,
+    "stt": "Juh!",
+    "slash_spoken": false
+  },
+  {
+    "letter": "G",
+    "file": "audio/g-soft-sentence.mp3",
+    "intended": "soft /dʒ/",
+    "text": "The sound is \"/dʒ/\".",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 2.08,
+    "credits": 20,
+    "stt": "The sound is J.",
+    "slash_spoken": false
+  },
+  {
+    "letter": "T",
+    "file": "audio/t-name-bare.mp3",
+    "intended": "name",
+    "text": "T",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 0.56,
+    "credits": 1,
+    "stt": "tea.",
+    "slash_spoken": false
+  },
+  {
+    "letter": "T",
+    "file": "audio/t-name-sentence.mp3",
+    "intended": "name",
+    "text": "The letter is \"T\".",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 1.6,
+    "credits": 18,
+    "stt": "The letter is T.",
+    "slash_spoken": false
+  },
+  {
+    "letter": "G",
+    "file": "audio/g-name-bare.mp3",
+    "intended": "name",
+    "text": "G",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 0.56,
+    "credits": 1,
+    "stt": "Gee!",
+    "slash_spoken": false
+  },
+  {
+    "letter": "G",
+    "file": "audio/g-name-sentence.mp3",
+    "intended": "name",
+    "text": "The letter is \"G\".",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 1.68,
+    "credits": 18,
+    "stt": "The letter is G.",
+    "slash_spoken": false
+  },
+  {
+    "letter": "I",
+    "file": "audio/i-name-bare.mp3",
+    "intended": "name",
+    "text": "I",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 0.64,
+    "credits": 1,
+    "stt": "1.",
+    "slash_spoken": false
+  },
+  {
+    "letter": "I",
+    "file": "audio/i-name-sentence.mp3",
+    "intended": "name",
+    "text": "The letter is \"I\".",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 2.08,
+    "credits": 18,
+    "stt": "The letter is I.",
+    "slash_spoken": false
+  },
+  {
+    "letter": "I",
+    "file": "audio/i-short-alone.mp3",
+    "intended": "short /ɪ/",
+    "text": "\"/ɪ/\"",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 0.72,
+    "credits": 5,
+    "stt": "Ew.",
+    "slash_spoken": false
+  },
+  {
+    "letter": "I",
+    "file": "audio/i-short-sentence.mp3",
+    "intended": "short /ɪ/",
+    "text": "The sound is \"/ɪ/\".",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 1.84,
+    "credits": 19,
+    "stt": "The sound is I.",
+    "slash_spoken": false
+  },
+  {
+    "letter": "I",
+    "file": "audio/i-long-alone.mp3",
+    "intended": "long /aɪ/",
+    "text": "\"/aɪ/\"",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 0.88,
+    "credits": 6,
+    "stt": "I",
+    "slash_spoken": false
+  },
+  {
+    "letter": "I",
+    "file": "audio/i-long-sentence.mp3",
+    "intended": "long /aɪ/",
+    "text": "The sound is \"/aɪ/\".",
+    "normalization": "default (auto) — connector cannot set off",
+    "model": "eleven_v4",
+    "duration": 1.76,
+    "credits": 20,
+    "stt": "The sound is I.",
+    "slash_spoken": false
+  }
+]
+  </script>
+  <script>
+    const clips = JSON.parse(document.getElementById('clip-data').textContent);
+    const container = document.getElementById('clips');
+    function el(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+    function detail(list, label, value, className) {
+      const group = el('div', className);
+      group.append(el('dt', '', label), el('dd', '', value));
+      list.append(group);
+    }
+    for (const letter of ['T', 'G', 'I']) {
+      const group = clips.filter(clip => clip.letter === letter);
+      const section = el('section');
+      section.id = `letter-${letter.toLowerCase()}`;
+      section.setAttribute('aria-labelledby', `${section.id}-heading`);
+      const headingRow = el('div', 'section-heading');
+      const heading = el('h2', '', `Letter ${letter}`);
+      heading.id = `${section.id}-heading`;
+      headingRow.append(heading, el('span', 'count', `${group.length} clips`));
+      const grid = el('div', 'grid');
+      for (const clip of group) {
+        const card = el('article', 'clip');
+        const header = el('div', 'clip-header');
+        const letterBadge = el('span', 'letter', clip.letter);
+        letterBadge.setAttribute('aria-label', `Letter ${clip.letter}`);
+        header.append(letterBadge, el('h3', '', clip.intended));
+        if (clip.slash_spoken) header.append(el('span', 'badge', 'slash spoken'));
+        const promptLabel = el('span', 'label', 'Exact text sent');
+        const prompt = el('pre');
+        prompt.append(el('code', '', clip.text));
+        const audio = el('audio');
+        audio.controls = true;
+        audio.preload = 'none';
+        audio.setAttribute('src', clip.file);
+        audio.setAttribute('aria-label', `Listen: letter ${clip.letter}, ${clip.intended}, text ${clip.text}`);
+        audio.append(document.createTextNode('Your browser does not support audio playback. '));
+        const audioLink = el('a', '', 'Open audio file');
+        audioLink.setAttribute('href', clip.file);
+        audio.append(audioLink);
+        const transcript = el('div', 'transcript');
+        transcript.append(el('span', 'label', 'Whisper STT transcript'), el('p', '', clip.stt));
+        const metadata = el('dl');
+        detail(metadata, 'Normalization', clip.normalization, 'normalization');
+        detail(metadata, 'Model', clip.model);
+        detail(metadata, 'Duration', `${clip.duration.toFixed(2)} seconds`);
+        detail(metadata, 'Credits', String(clip.credits));
+        card.append(header, promptLabel, prompt, audio, transcript, metadata);
+        if (clip.text === 'I') card.append(el('p', 'clip-flag', 'Flag: bare “I” transcribed as “1” (one).'));
+        if (clip.text === 'G') card.append(el('p', 'clip-flag', 'Flag: bare “G” transcribed as “Gee” (not “gay”).'));
+        grid.append(card);
+      }
+      section.append(headingRow, grid);
+      container.append(section);
+    }
+    // Keep comparisons easy to hear: starting a clip pauses any other playing clip.
+    document.addEventListener('play', event => {
+      if (event.target.tagName === 'AUDIO') {
+        document.querySelectorAll('audio').forEach(player => {
+          if (player !== event.target) player.pause();
+        });
+      }
+    }, true);
+  </script>
+</body>
+</html>
