@@ -1,0 +1,119 @@
+/* A–Z shelf and silk thread. The thread is a still path. Motion stays in the earlier fun pass. */
+
+.picker-shelf {
+  max-height: min(420px, 48svh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  min-width: 0;
+  padding: 4px 8px 10px 2px;
+  scroll-padding: 8px;
+}
+.picker-shelf .letter-list { min-width: 0; }
+.letter-list button { scroll-margin: 8px; }
+
+.silk-album {
+  grid-column: 1 / -1;
+  min-width: 0;
+  margin-top: 18px;
+}
+.silk-album-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+.silk-album-head span,
+.silk-album > p {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 800;
+  margin: 8px 0 0;
+}
+.silk-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 112px;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 12px;
+  padding-bottom: 6px;
+}
+.silk-path {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  overflow: visible;
+}
+.silk-path path {
+  fill: none;
+  stroke: var(--accent-text);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.silk-slot {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 72px;
+  width: 72px;
+  min-height: 96px;
+  scroll-snap-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.silk-slot b {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1;
+}
+.silk-slot span {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  max-width: 68px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: 1.2em;
+}
+.silk-slot.collected b {
+  background: var(--accent);
+  color: var(--onaccent);
+  border-color: var(--accent);
+}
+.silk-track:focus-visible {
+  outline: 4px solid var(--focus);
+  outline-offset: 4px;
+}
+
+body.space .planets button:nth-child(2),
+body.space .planets button:nth-child(5) {
+  --rest: 0px;
+  transform: none;
+}
+
+@media (max-width: 650px) {
+  .picker-shelf { max-height: min(280px, 42svh); }
+  .silk-album-head { font-size: 15px; }
+  .silk-slot { flex-basis: 64px; width: 64px; }
+  .silk-slot b { width: 44px; height: 44px; }
+}
