@@ -23,8 +23,8 @@ Layout and animation polish only. No image generation, no new sounds or audio, n
 10. On Home, a soft glow on the next letter's tile.
 11. Right-answer morph (correct answers only): the picture card briefly turns into the real object for about half a second, then snaps back.
 12. Wrong tap: the card wiggles for about half a second while a soft light-red glow pulses around it, then both ease back to normal. No X (too defeating) and no slide-back story.
-13. Four-letter parade: each time a kid completes four letters (a running count, in any order), the last four letters they finished parade across the screen in the order they finished, with Lucy leading. Cap it at four letters to keep it snappy.
-14. Parade placeholder art: use any existing Lucy image in the project, with alt text marking it as a temporary placeholder so the stand-ins are easy to spot.
+13. (REMOVED, do not build) Four-letter parade: each time a kid completes four letters (a running count, in any order), the last four letters they finished parade across the screen in the order they finished, with Lucy leading. Cap it at four letters to keep it snappy.
+14. (REMOVED, do not build) Parade placeholder art: use any existing Lucy image in the project, with alt text marking it as a temporary placeholder so the stand-ins are easy to spot.
 
 ## Constraints
 - Vanilla HTML/CSS/JS, offline.
@@ -34,4 +34,4 @@ Layout and animation polish only. No image generation, no new sounds or audio, n
 ## Later list (parked)
 - Teacher suite: a visual cue when a kid finishes, such as a badge or count on Brandy's screen.
 - Nice-to-have, for the future only (leave the existing reduced-motion behavior exactly as it is): if the project adds a reduced-motion feature, animations respect prefers-reduced-motion and switch to a calmer version automatically. Not a current requirement.
-- (Parade is IN SCOPE for this run as inspiration; later list only tracks follow-up polish.)
+- Parade: REMOVED by Bradley 2026-10-16 after playtest. Do not add it back.

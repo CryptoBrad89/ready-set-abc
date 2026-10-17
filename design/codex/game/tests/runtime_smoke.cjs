@@ -48,7 +48,7 @@ async function smoke(game) {
   const Fun = {
     cancel() {}, voice() {}, mute() {}, home: noEffect, open: noEffect,
     press: noEffect, replay: noEffect, hint: noEffect, lucy: noEffect,
-    exit: noEffect, correct: noEffect, parade: noEffect, reward: noEffect, weather: noEffect, evidence: {reduced: false}
+    exit: noEffect, correct: noEffect, reward: noEffect, weather: noEffect, evidence: {reduced: false}
   };
   const window = {Fun, scrollTo() {}};
   const context = vm.createContext({
@@ -70,13 +70,6 @@ async function smoke(game) {
   const flush = () => new Promise(resolve => setImmediate(resolve));
   const html = () => getNode('#main').innerHTML;
   let rounds = 0;
-  const completions = [];
-  function checkParade(letter) {
-    completions.push(letter);
-    const participants = [...html().matchAll(/data-parade-letter="([A-Z])"/g)].map(match => match[1]);
-    assert.deepEqual(participants, completions.length % 4 === 0 ? completions.slice(-4) : [],
-      'Parade must show each four completions in finish order, including repeated letters');
-  }
   for (let theme = 0; theme < window.CONCEPT.themes.length; theme++) {
     app.setTheme(theme);
     assert.equal(document.body.dataset.theme, String(theme));
@@ -112,7 +105,6 @@ async function smoke(game) {
       correct.dataset.answer = letter;
       await app.answer(correct); await flush();
       assert.equal(document.body.dataset.screen, 'celebrate');
-      checkParade(letter);
       assert(html().includes('of 26 · this visit'));
       if (letter === 'X') assert(html().includes('Fox ends with x.'));
       await app.replay(true); await flush();
@@ -133,14 +125,6 @@ async function smoke(game) {
     assert.equal(played.length, 0, 'Mute must suppress all voice clips');
     mute.onclick();
   }
-  for (const letter of ['B', 'A', 'D', 'A', 'D', 'C']) {
-    await app.start(letter); await flush();
-    await app.continueMatch(makeNode()); await flush();
-    const button = getNode(`[data-answer="${letter}"]`); button.dataset.answer = letter;
-    await app.answer(button); await flush();
-    checkParade(letter);
-  }
-  console.log(`PASS ${game}: parade batches preserve completion order and repeated letters`);
   console.log(`PASS ${game}: ${rounds} rounds, all themes, listen/replay, two misses, collection, next/wrap and mute (browser APIs stubbed)`);
 }
 

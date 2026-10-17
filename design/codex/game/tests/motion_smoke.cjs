@@ -126,29 +126,6 @@ async function run() {
             await page.locator('[data-answer="B"]').click(); await screen('celebrate');
             await animations('reduced reward', false); await fits('reduced reward');
             await page.selectOption('#theme', '1'); await animations('reduced theme', false);
-            if (viewport.width === 390) {
-              await page.emulateMedia({reducedMotion: reduced ? 'reduce' : 'no-preference'});
-              for (const letter of ['D', 'A']) {
-                await page.locator('.secondary[data-action="home"]').click(); await screen('home');
-                await page.locator(`[data-letter="${letter}"]`).click(); await screen('listen'); await settled();
-                await page.locator('[data-action="match"]').click(); await screen('match');
-                await page.locator(`[data-answer="${letter}"]`).click(); await screen('celebrate');
-                if (letter === 'D') assert.equal(await page.locator('.letter-parade').count(), 0, 'No parade before fourth completion');
-              }
-              assert.deepEqual(await page.locator('[data-parade-letter]').evaluateAll(nodes => nodes.map(node => node.dataset.paradeLetter)),
-                ['B', 'B', 'D', 'A'], 'Parade follows finish order and counts repeated letters');
-              const placeholders = await page.locator('[data-parade-letter] img').evaluateAll(images => images.map(image => image.alt));
-              assert.equal(placeholders.length, 4);
-              assert(placeholders.every(alt => /temporary placeholder/i.test(alt)), 'Stand-ins must identify temporary art');
-              await page.waitForFunction(() => !document.body.dataset.effect || document.body.dataset.effect.includes('parade'));
-              await animations('four-letter parade'); await fits('parade');
-              const paradeBox = await page.locator('.letter-parade').boundingBox();
-              assert(paradeBox.y >= 0 && paradeBox.y + paradeBox.height <= viewport.height, 'Parade is visible without scrolling');
-              if (!reduced) await page.waitForFunction(() => Number(getComputedStyle(document.querySelector('.parade-train')).opacity) >= .99);
-              await page.screenshot({path: path.join(shots, `${prefix}-parade.png`), fullPage: true});
-              await page.locator('[data-action="next"]').click(); await screen('listen');
-              assert.equal(await page.locator('.letter-parade').count(), 0, 'Leaving reward cancels parade');
-            }
             assert.deepEqual(errors, [], `${prefix}: browser errors`);
             assert.deepEqual(network, [], `${prefix}: local game attempted network access`);
             cases++; console.log(`PASS ${prefix}: entrances, replay, wrong/correct choice, reward, cancellation, live reduced motion`);

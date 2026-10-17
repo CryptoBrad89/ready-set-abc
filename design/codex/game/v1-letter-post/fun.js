@@ -54,7 +54,6 @@ async function home(){
  await moment($(post?'.open-sign':'.map-mark'),post?[{transform:'rotate(-7deg)'},{transform:'rotate(-3deg)'},{transform:'rotate(-7deg)'}]:[{transform:'scale(1)'},{transform:'scale(1.16)'},{transform:'scale(1)'}],{duration:500,name:'idle-once'});
 }
 window.Fun={cancel,home,lucy,
- parade(){return moment($('.parade-train'),[{transform:'translateX(-65%)',opacity:0},{transform:'translateX(-10%)',opacity:1,offset:.2},{transform:'translateX(10%)',opacity:1,offset:.75},{transform:'translateX(65%)',opacity:0}],{duration:1500,name:'letter-parade'});},
  exit(){return moment($('.screen'),[{opacity:1,transform:'translateY(0)'},{opacity:0,transform:'translateY(-8px)'}],{duration:180,name:'screen-exit'});},
  correct(button){return moment(button,[{transform:'translateY(0) scale(1)'},{transform:'translateY(-12px) scale(1.055)',offset:.4},{transform:'translateY(2px) scale(.985)',offset:.75},{transform:'translateY(0) scale(1)'}],{duration:480,name:'correct-bounce'});},
  mute(value){muted=value;hush();},
@@ -63,7 +62,7 @@ window.Fun={cancel,home,lucy,
  open(){return post?moment($('.listen .mail-flap'),[{transform:'rotateX(0)'},{transform:'rotateX(160deg)'}],{duration:500,name:'envelope-open',cue:'open'}):moment($('.listen .signal-orbit'),[{transform:'rotate(-55deg) scale(.87)',opacity:.4},{transform:'rotate(0) scale(1)',opacity:1}],{duration:500,name:'orbit-tune',cue:'open'});},
  replay(){return moment($('.listen-letter')||$('.reward-art'),[{transform:'scale(1)'},{transform:'scale(1.055) rotate(-2deg)'},{transform:'scale(1)'}],{duration:330,name:post?'ink-ring':'signal-ring',cue:'tap'});},
  async hint(button){button.classList.add('miss-active');try{return await moment(button,[{transform:'translateX(0)'},{transform:'translateX(-5px) rotate(-1deg)',offset:.23},{transform:'translateX(4px) rotate(1deg)',offset:.48},{transform:'translateX(-2px)',offset:.72},{transform:'translateX(0)'}],{duration:480,name:'gentle-miss',cue:'tap'});}finally{button.classList.remove('miss-active');}},
- reward(){return moment($(post?'.reward-stamp':'.reward-art'),post?[{transform:'translateY(-16px) rotate(-8deg) scale(1.2)'},{transform:'translateY(0) rotate(12deg) scale(1)'}]:[{transform:'scale(.92) rotate(-7deg)',opacity:.4},{transform:'scale(1.04) rotate(3deg)',opacity:1},{transform:'scale(1) rotate(0)',opacity:1}],{duration:600,name:post?'delivery-stamp':'world-awakens',cue:'reward',particles:true,setup:()=>{const group=createParticles(Number(document.body.dataset.theme)||0);if(group)group.classList.add('reward-weather');}});},
+ reward(){return moment($(post?'.reward-stamp':'.reward-art'),post?[{transform:'translateY(-16px) rotate(-8deg) scale(1.2)'},{transform:'translateY(0) rotate(12deg) scale(1)'}]:[{transform:'scale(.92) rotate(-7deg)',opacity:.4},{transform:'scale(1.04) rotate(3deg)',opacity:1},{transform:'scale(1) rotate(0)',opacity:1}],{duration:900,name:post?'delivery-stamp':'world-awakens',cue:'reward',particles:true,setup:()=>{const group=createParticles(Number(document.body.dataset.theme)||0);if(group)group.classList.add('reward-weather');}});},
  get evidence(){return {...stats,particles:document.querySelectorAll('[data-particle]').length,active:active?1:0,sources:sources.size,muted,speaking,reduced:reduce.matches};}
 };
 // Theme particles must be created after moment clears the preceding effect.

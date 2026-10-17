@@ -85,11 +85,15 @@ bounce before the reward; wrong cards wiggle with a fading soft red glow.
 Rewards add six temporary confetti pieces, cleared when their effect ends
 or the route changes. Existing audio and approved Lucy images are unchanged.
 
-Every four completed rounds produces a short parade on the reward screen.
-Lucy leads the last four completed letters in finish order. Repeated letters
-count, and the running batch lasts for the current visit. Existing Lucy images
-stand in for parade characters; their alt text identifies temporary placeholders.
-The parade fades in and out and leaves Next and Home available. Reduced motion
-keeps the ordered strip still. The runtime helper checks recurring batches,
-finish order, and repeats; the motion helper checks the parade in both games
-with normal and reduced motion at phone size.
+Run the confetti visibility regression in Chrome:
+
+```sh
+CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/confetti_smoke.cjs
+```
+
+It checks both games in all three themes at phone and whiteboard sizes. Each
+correct-answer journey verifies painted color, visible opacity, size, viewport
+bounds, cleanup, and navigation. Screenshots are saved in `/tmp/rsabc-confetti`.
+Reduced-motion changes clear the active effect. The six reward pieces use
+explicit colors; the obsolete generic particle rule with an undefined color
+variable has been removed.

@@ -2,7 +2,7 @@
 
 ## Sub-features
 
-Animated success scene, six temporary confetti pieces, four-completion parade, approved Lucy art, collected letter, word replay, another sound, home return, and cancellation of interrupted scenes.
+Animated success scene, six temporary confetti pieces, approved Lucy art, collected letter, word replay, another sound, home return, and cancellation of interrupted scenes.
 
 ## How to get to it (user POV)
 
@@ -16,9 +16,9 @@ After a correct `[data-answer="B"]` click, await `body[data-screen="celebrate"]`
 
 Repeated success for the same letter keeps collection count at one. Finite scene movement ends naturally; inspect animations immediately after the triggering action rather than after screenshots or arbitrary waits. Reduced motion must leave the reward and navigation fully usable with no sustained animation.
 
-At phone size, the motion helper completes B twice, then D and A. On the fourth
-completion, inspect `[data-parade-letter]` for B, B, D, A and verify all four
-stand-in images identify temporary placeholders. Capture `.parade-train` while
-it moves, then tap Next to cancel it. Repeat with reduced motion to verify a
-static strip. The runtime helper also checks subsequent batches and arbitrary
-completion order, including repeated letters. Counts reset on page reload.
+Run `CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/confetti_smoke.cjs`
+to check painted confetti in both games, all themes, and phone/whiteboard sizes.
+The helper waits for visible opacity before capturing screenshots in
+`/tmp/rsabc-confetti`. It verifies color, size, viewport bounds, natural cleanup,
+live reduced-motion cleanup, and route cleanup. Counting particle nodes alone
+does not prove visibility.
