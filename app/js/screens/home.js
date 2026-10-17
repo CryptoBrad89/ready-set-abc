@@ -317,8 +317,7 @@ export function render(ctx) {
   }, 'Discover more', icon('next'));
   pressable(discoverStories, () => ctx.go('stories'));
 
-  root.append(
-    el('section', { class: 'hub-hero-panel' },
+  const heroPanel = el('section', { class: 'hub-hero-panel' },
       el('span', { class: 'hub-online' },
         el('span', { class: `dot${online ? ' is-on' : ''}` }),
         online ? 'Explorer Station Online' : 'Sound waits for PLAY',
@@ -364,15 +363,19 @@ export function render(ctx) {
           ),
         ),
       ),
-    ),
-    el('div', { class: 'hub-section-row' },
+  );
+  const phonicsHead = el('div', { class: 'hub-section-row' },
       el('h2', { class: 'hub-section' },
         el('span', { class: 'hub-section-ico hub-section-ico--gold', 'aria-hidden': 'true' }, icon('flag')),
         'Phonics & Alphabet',
       ),
       discover,
-    ),
-    el('div', { class: 'hub-row hub-row--phonics' }, playBtn, soundCard, satCard, matchCard),
+    );
+  const phonicsRow = el('div', { class: 'hub-row hub-row--phonics' }, playBtn, soundCard, satCard, matchCard);
+  const playStack = el('div', { class: 'hub-play-stack' }, phonicsHead, phonicsRow);
+  root.append(
+    playStack,
+    heroPanel,
     el('div', { class: 'hub-section-row' },
       el('h2', { class: 'hub-section' },
         el('span', { class: 'hub-section-ico hub-section-ico--red', 'aria-hidden': 'true' }, icon('book')),

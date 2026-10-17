@@ -128,11 +128,21 @@ button { border: 0; background: none; cursor: pointer; padding: 0; }
 }
 .tabs[hidden] { display: none; }
 .tab-label { display: inline; }
-@media (max-width: 780px) {
+/* Phones / narrow portrait: icon tabs. Landscape tablets (e.g. 1180) keep labels. */
+@media (max-width: 1023px) {
   .tabs { padding: 6px 8px; gap: 4px; }
-  .tab { padding: 8px 12px; min-height: 40px; }
+  .tab {
+    min-height: var(--target-min);
+    min-width: var(--target-min);
+    padding: 8px;
+    justify-content: center;
+  }
   .tab svg { display: block; }
   .tab-label { display: none; }
+}
+@media (max-width: 780px) {
+  .tabs { padding: 6px 8px; gap: 4px; }
+  .tab { padding: 8px; min-height: var(--target-min); }
 }
 
 .chrome-right { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
@@ -576,27 +586,7 @@ body[data-screen="picture"] .foot,
 body[data-screen="bonus"] .foot { display: none; }
 @media (max-height: 620px) { .foot { display: none; } }
 
-/* ------------------------------------------------------- rotate nudge */
-.rotate { display: none; }
-@media (orientation: portrait) and (max-width: 900px) {
-  .rotate {
-    position: fixed;
-    inset: 0;
-    z-index: 90;
-    display: grid;
-    place-items: center;
-    background: var(--surface);
-    text-align: center;
-    padding: var(--space-xl);
-  }
-  .rotate svg { width: 96px; height: 96px; color: var(--sunny-yellow); }
-  .rotate p {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 24px;
-    color: var(--primary);
-  }
-}
+/* Portrait landscape hint — see layout-fixes.css (dismissible, never blocks play). */
 
 /* Whiteboard chrome: taller header, bigger tabs, room to tap from the rug.
    Kid actions use --target-min (140px). Header tabs sit just under that so

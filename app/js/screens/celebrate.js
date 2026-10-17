@@ -12,7 +12,7 @@ import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
 import { store } from '../store.js';
 import { toggleWear, wornHas, wornOutfitId, nextTreat, nextTreatNudge } from '../closet.js';
-import { burstConfetti } from '../motion.js';
+import { burstConfetti, resetConfetti } from '../motion.js';
 import * as round from '../round.js';
 
 export const chrome = { tabs: true, tab: 'home', who: true };
@@ -30,6 +30,7 @@ export function teardown() {
     document.removeEventListener('keydown', keyHandler);
     keyHandler = null;
   }
+  resetConfetti();
 }
 
 export function render(ctx) {
