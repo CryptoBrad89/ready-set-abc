@@ -114,3 +114,22 @@ body[data-motion="paused"] *,body[data-motion="paused"] *::before,body[data-moti
 @media(max-width:650px) and (hover:none),(max-width:650px) and (pointer:coarse),(max-width:650px) and (prefers-reduced-motion:reduce){.planets button:nth-child(2):hover,.planets button:nth-child(5):hover{transform:translateY(-12px)}}
 
 @media(max-width:650px){.post .reward-stamp{bottom:-24px;right:-12px;width:76px;height:46px}}
+
+body[data-screen="listen"] .lucy-portrait>img,body[data-screen="match"] .lucy-portrait>img{animation:play-breathe 4200ms ease-in-out infinite;transform-origin:50% 85%}
+.choice::after{content:"";position:absolute;inset:-5px;border-radius:inherit;box-shadow:0 0 0 5px #dc777733,0 0 20px 8px #dc777722;opacity:0;pointer-events:none}
+.choice.miss-active::after{animation:play-miss-glow 480ms ease-in-out}
+@keyframes play-breathe{0%,100%{transform:translateY(0) scale(1.04)}50%{transform:translateY(-2px) scale(1.052)}}
+@keyframes play-miss-glow{0%,100%{opacity:0}45%{opacity:1}}
+@media(prefers-reduced-motion:reduce){body[data-screen="listen"] .lucy-portrait>img,body[data-screen="match"] .lucy-portrait>img{animation:none}.choice.miss-active::after{animation:none}}
+.reward-weather{animation:play-reward-rain 600ms ease-out both}
+@keyframes play-reward-rain{0%{opacity:0;transform:translateY(-24px) scale(.85)}25%{opacity:1}100%{opacity:0;transform:translateY(110px) scale(1.08)}}
+
+.letter-parade{max-width:620px;height:96px;margin:0 auto 18px;overflow:hidden;pointer-events:none}
+.parade-train{height:100%;margin:0;padding:0 12px;list-style:none;display:flex;flex-direction:row-reverse;justify-content:center;align-items:center;gap:clamp(8px,3vw,24px);opacity:0}
+.parade-train li{position:relative;flex:0 0 54px;display:grid;justify-items:center;gap:2px;color:var(--ink)}
+.parade-train img{width:48px;height:48px;object-fit:cover;border:2px solid var(--line);border-radius:50%;background:var(--surface)}
+.parade-train strong{font-size:22px;line-height:1.15}
+.parade-leader span{font-size:12px;font-weight:900}
+.parade-leader img{width:60px;height:60px;border-color:var(--focus)}
+@media(max-width:380px){.parade-train{gap:7px;padding:0}.parade-train li{flex-basis:44px}.parade-train img{width:40px;height:40px}.parade-leader img{width:49px;height:49px}}
+@media(prefers-reduced-motion:reduce){.parade-train{opacity:1}}

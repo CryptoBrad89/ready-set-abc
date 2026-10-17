@@ -62,7 +62,7 @@ entrances, expressive portrait movements, sound bars during narration, and
 stamp/star reward choreography. Design Taste's playful-color and motion skills
 informed the presentation. Approved Lucy images and all audio remain unchanged.
 Animations use transform and opacity, including individual transform properties.
-Only the sound bars repeat while narration is active. Hidden tabs pause motion;
+Lucy breathes gently on play screens, and sound bars repeat during narration. Hidden tabs pause motion;
 reduced-motion preferences disable it, including hover movement.
 
 Run the motion and reduced-motion browser journeys:
@@ -79,3 +79,17 @@ Screenshots survive browser cleanup in `/tmp/lpmb-motion-shots`.
 The scoped [verification skill](tests/verify-game/SKILL.md) documents repeatable
 home, play, and reward journeys. Local-file offline behavior is covered; these
 design prototypes do not install a service worker on a hosted origin.
+
+Screen changes fade out before the next scene enters. Correct picture cards
+bounce before the reward; wrong cards wiggle with a fading soft red glow.
+Rewards add six temporary confetti pieces, cleared when their effect ends
+or the route changes. Existing audio and approved Lucy images are unchanged.
+
+Every four completed rounds produces a short parade on the reward screen.
+Lucy leads the last four completed letters in finish order. Repeated letters
+count, and the running batch lasts for the current visit. Existing Lucy images
+stand in for parade characters; their alt text identifies temporary placeholders.
+The parade fades in and out and leaves Next and Home available. Reduced motion
+keeps the ordered strip still. The runtime helper checks recurring batches,
+finish order, and repeats; the motion helper checks the parade in both games
+with normal and reduced motion at phone size.

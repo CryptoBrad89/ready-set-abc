@@ -82,14 +82,37 @@ async function run() {
             await animations('choices entrance'); await fits('match'); await capture('match');
             if (reduced) await stillOnHover('.choice');
             await page.locator('.choice:not([data-answer="B"])').first().click();
+            if (!reduced) {
+              await page.waitForFunction(() => [...document.querySelectorAll('.choice')].some(node =>
+                node.getAnimations().some(animation => animation.playState === 'running')));
+              await animations('wrong choice');
+            }
             await page.waitForFunction(() => [...document.querySelectorAll('.choice')].every(n => !n.hasAttribute('aria-disabled')));
             assert(await page.locator('.choice.tried').count());
-            await page.locator('[data-answer="B"]').click(); await screen('celebrate');
+            await page.locator('[data-answer="B"]').click();
+            if (!reduced) {
+              await page.waitForFunction(() => document.querySelector('[data-answer="B"]')?.getAnimations()
+                .some(animation => animation.playState === 'running'));
+              assert.equal(await page.locator('.collection-heading').count(), 0, 'Correct card celebrates before leaving the choices');
+              await animations('correct card');
+            }
+            await screen('celebrate');
             await animations('reward'); await fits('reward'); await capture('reward'); await settled();
             assert((await page.locator('.collection-heading').textContent()).includes('1 of 26'));
             await page.locator('[data-action="reward-replay"]').click(); await animations('reward replay'); await settled();
             await page.locator('[data-action="next"]').click(); await screen('listen');
-            await page.keyboard.press('Escape'); await screen('home');
+            await settled();
+            await page.keyboard.press('Escape');
+            if (!reduced) {
+              await page.waitForFunction(() => document.querySelector('.screen')?.getAnimations().some(animation =>
+                animation.playState === 'running' && animation.effect.getKeyframes().at(-1).opacity === '0'));
+              await animations('screen exit');
+            }
+            await screen('home');
+            await page.locator('[data-letter="A"]').click();
+            await page.keyboard.press('Escape');
+            await screen('home'); await settled();
+            assert.equal(await page.locator('.listen-letter').count(), 0, 'Escape during a pending exit keeps the latest route');
             await page.locator('[data-letter="X"]').click(); await screen('listen');
             await page.keyboard.press('Escape'); await screen('home'); await settled();
             assert.equal(await page.locator('.listen-letter').count(), 0, 'Cancelled route must stay home');
@@ -103,6 +126,29 @@ async function run() {
             await page.locator('[data-answer="B"]').click(); await screen('celebrate');
             await animations('reduced reward', false); await fits('reduced reward');
             await page.selectOption('#theme', '1'); await animations('reduced theme', false);
+            if (viewport.width === 390) {
+              await page.emulateMedia({reducedMotion: reduced ? 'reduce' : 'no-preference'});
+              for (const letter of ['D', 'A']) {
+                await page.locator('.secondary[data-action="home"]').click(); await screen('home');
+                await page.locator(`[data-letter="${letter}"]`).click(); await screen('listen'); await settled();
+                await page.locator('[data-action="match"]').click(); await screen('match');
+                await page.locator(`[data-answer="${letter}"]`).click(); await screen('celebrate');
+                if (letter === 'D') assert.equal(await page.locator('.letter-parade').count(), 0, 'No parade before fourth completion');
+              }
+              assert.deepEqual(await page.locator('[data-parade-letter]').evaluateAll(nodes => nodes.map(node => node.dataset.paradeLetter)),
+                ['B', 'B', 'D', 'A'], 'Parade follows finish order and counts repeated letters');
+              const placeholders = await page.locator('[data-parade-letter] img').evaluateAll(images => images.map(image => image.alt));
+              assert.equal(placeholders.length, 4);
+              assert(placeholders.every(alt => /temporary placeholder/i.test(alt)), 'Stand-ins must identify temporary art');
+              await page.waitForFunction(() => !document.body.dataset.effect || document.body.dataset.effect.includes('parade'));
+              await animations('four-letter parade'); await fits('parade');
+              const paradeBox = await page.locator('.letter-parade').boundingBox();
+              assert(paradeBox.y >= 0 && paradeBox.y + paradeBox.height <= viewport.height, 'Parade is visible without scrolling');
+              if (!reduced) await page.waitForFunction(() => Number(getComputedStyle(document.querySelector('.parade-train')).opacity) >= .99);
+              await page.screenshot({path: path.join(shots, `${prefix}-parade.png`), fullPage: true});
+              await page.locator('[data-action="next"]').click(); await screen('listen');
+              assert.equal(await page.locator('.letter-parade').count(), 0, 'Leaving reward cancels parade');
+            }
             assert.deepEqual(errors, [], `${prefix}: browser errors`);
             assert.deepEqual(network, [], `${prefix}: local game attempted network access`);
             cases++; console.log(`PASS ${prefix}: entrances, replay, wrong/correct choice, reward, cancellation, live reduced motion`);

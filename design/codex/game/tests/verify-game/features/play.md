@@ -2,7 +2,7 @@
 
 ## Sub-features
 
-Letter entrance, sound replay, three picture choices, gentle wrong-answer feedback, second-miss hint, X's ending sound, and reduced-motion behavior.
+Letter entrance, sound replay, three picture choices, wrong-card wiggle and fading red glow, correct-card bounce before reward, Lucy breathing, second-miss hint, X's ending sound, and reduced-motion behavior.
 
 ## How to get to it (user POV)
 
@@ -15,3 +15,5 @@ Click `[data-letter="B"]`; await `body[data-screen="listen"]`. Click `.listen-le
 ## Gotchas
 
 Choices shuffle, so use `data-answer`, not positions. Voice clips and finite effects are awaited by the production app; await route/effect state. Clicking the real mute control accelerates the harness without replacing audio or learning logic. Separate unmuted audio coverage remains in the existing browser smoke.
+
+The motion helper also verifies an outgoing screen fades before replacement and Escape during a pending transition keeps the latest route. Wrong feedback and correct-card motion are inspected before the route changes.
