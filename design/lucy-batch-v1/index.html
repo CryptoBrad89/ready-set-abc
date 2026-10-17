@@ -1,0 +1,43 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lucy batch v1 review</title>
+<style>
+body{font-family:system-ui,sans-serif;margin:0;background:#f6f2ea;color:#222}
+header{position:sticky;top:0;background:#fff;padding:10px 14px;box-shadow:0 2px 6px #0002;display:flex;gap:10px;flex-wrap:wrap;align-items:center;z-index:2}
+header b{margin-right:6px}button,select{font-size:15px;padding:7px 12px;border-radius:8px;border:1px solid #ccc;background:#fff;cursor:pointer}
+#copy{background:#2b7;color:#fff;border:0;font-weight:700}
+main{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:14px}
+.card{background:#fff;border-radius:12px;padding:8px;border:4px solid transparent}
+.card.keep{border-color:#2b7}.card.discard{border-color:#d33;opacity:.5}
+.card img{width:100%;border-radius:8px;display:block}
+.name{font-size:13px;margin:6px 0;word-break:break-all}
+.row{display:flex;gap:6px}.row button{flex:1}
+.keep .k{background:#2b7;color:#fff}.discard .d{background:#d33;color:#fff}
+textarea{width:100%;box-sizing:border-box;margin-top:6px;min-height:44px;font-size:14px}
+#msg{color:#2b7;font-weight:700}
+</style></head><body>
+<header><b>Lucy batch v1</b><span id="counts"></span>
+<select id="f"><option value="all">All</option><option value="none">Undecided</option><option value="keep">Kept</option><option value="discard">Discarded</option></select>
+<button id="copy">Copy all</button><button id="dl">Download JSON</button><span id="msg"></span></header>
+<main id="g"></main>
+<script>
+const files=["01-letterpost-mailbox-push.jpg","02-letterpost-mailbag-trot.jpg","03-letterpost-counter-sit.jpg","04-letterpost-envelope-c.jpg","05-letterpost-porch-peek.jpg","06-moonboat-bow-sit.jpg","07-moonboat-sleep.jpg","08-moonboat-star-m.jpg","09-moonboat-yawn-closeup.jpg","10-moonboat-shore-goodnight.jpg","11-celebrate-confetti-leap.jpg","12-celebrate-spin-balloons.jpg","13-celebrate-gold-star.jpg","14-nudge-head-tilt.jpg","15-nudge-thinking-rug.jpg","16-letter-wooden-a.jpg","17-letter-peek-d.jpg","18-letter-blocks-nose.jpg","19-class-wave-hello.jpg","20-class-reading-book.jpg"];const KEY='lucy-batch-v1';
+const st=JSON.parse(localStorage.getItem(KEY)||'{}');
+const save=()=>{localStorage.setItem(KEY,JSON.stringify(st));render()};
+const g=document.getElementById('g'),f=document.getElementById('f');
+function render(){g.innerHTML='';let c={keep:0,discard:0,none:0};
+files.forEach(n=>{const s=st[n]||{};const v=s.v||'none';c[v]++;
+if(f.value!=='all'&&f.value!==v)return;
+const d=document.createElement('div');d.className='card '+(v==='none'?'':v);
+d.innerHTML='<a href="'+n+'" target="_blank"><img loading="lazy" src="'+n+'"></a><div class="name">'+n+'</div><div class="row"><button class="k">Keep</button><button class="d">Discard</button></div><textarea placeholder="Note (optional)"></textarea>';
+d.querySelector('.k').onclick=()=>{st[n]={...s,v:v==='keep'?'none':'keep'};save()};
+d.querySelector('.d').onclick=()=>{st[n]={...s,v:v==='discard'?'none':'discard'};save()};
+const t=d.querySelector('textarea');t.value=s.c||'';t.oninput=()=>{st[n]={...(st[n]||{}),c:t.value};localStorage.setItem(KEY,JSON.stringify(st))};
+g.appendChild(d)});
+document.getElementById('counts').textContent='Kept '+c.keep+' · Discarded '+c.discard+' · Undecided '+c.none}
+f.onchange=render;
+function text(){const grp={keep:[],discard:[],none:[]};files.forEach(n=>{const s=st[n]||{};grp[s.v||'none'].push(n+(s.c?' - '+s.c:''))});
+return 'Lucy batch v1 review\nKept '+grp.keep.length+', Discarded '+grp.discard.length+', Undecided '+grp.none.length+'\n\nKEEP:\n'+grp.keep.join('\n')+'\n\nDISCARD:\n'+grp.discard.join('\n')+'\n\nUNDECIDED:\n'+grp.none.join('\n')}
+document.getElementById('copy').onclick=async()=>{const t=text();try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}
+const m=document.getElementById('msg');m.textContent='Copied everything!';setTimeout(()=>m.textContent='',2500)};
+document.getElementById('dl').onclick=()=>{const b=new Blob([JSON.stringify(st,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lucy-batch-v1-picks.json';a.click()};
+render();
+</script></body></html>
