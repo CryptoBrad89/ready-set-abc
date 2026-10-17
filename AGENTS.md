@@ -4,6 +4,8 @@ Ready Set ABC: Pre-K phonics PWA, vanilla HTML/CSS/JS, offline after first load.
 
 ## How to work here: the trust pyramid
 
+Requires pstack installed: https://github.com/cursor/plugins/tree/main/pstack (skills like `/poteto-mode`, `/architect`, `/correct`, `/recall`, `/sharpen`, `/in-your-own-words`, `/create-verification-skill`). If they're missing, install pstack before you start.
+
 ![whenever you correct your agent: codebase > static analysis > prose > human review](docs/trust-pyramid.png)
 
 Whenever something goes wrong, fix it as high up this inverse pyramid as you can. Most effort goes at the top, least at the bottom.
