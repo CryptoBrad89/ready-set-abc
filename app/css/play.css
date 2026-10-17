@@ -2642,6 +2642,7 @@ html[data-chrome="hidden"] .screen {
   min-height: 320px;
   padding: 16px;
   text-align: left;
+  text-decoration: none;
   background: #fff;
   border: 4.5px solid #1a1a1a;
   border-radius: 24px;

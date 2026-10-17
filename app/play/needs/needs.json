@@ -1,0 +1,227 @@
+{
+  "voice": [
+    {
+      "id": "word-ball",
+      "file": "audio/lines/word-ball.mp3",
+      "text": "Ball!",
+      "kind": "short"
+    },
+    {
+      "id": "word-cat",
+      "file": "audio/lines/word-cat.mp3",
+      "text": "Cat!",
+      "kind": "short"
+    },
+    {
+      "id": "word-duck",
+      "file": "audio/lines/word-duck.mp3",
+      "text": "Duck!",
+      "kind": "short"
+    },
+    {
+      "id": "word-egg",
+      "file": "audio/lines/word-egg.mp3",
+      "text": "Egg!",
+      "kind": "short"
+    },
+    {
+      "id": "word-fish",
+      "file": "audio/lines/word-fish.mp3",
+      "text": "Fish!",
+      "kind": "short"
+    },
+    {
+      "id": "word-goat",
+      "file": "audio/lines/word-goat.mp3",
+      "text": "Goat!",
+      "kind": "short"
+    },
+    {
+      "id": "word-hat",
+      "file": "audio/lines/word-hat.mp3",
+      "text": "Hat!",
+      "kind": "short"
+    },
+    {
+      "id": "word-jellyfish",
+      "file": "audio/lines/word-jellyfish.mp3",
+      "text": "Jellyfish!",
+      "kind": "short"
+    },
+    {
+      "id": "word-kite",
+      "file": "audio/lines/word-kite.mp3",
+      "text": "Kite!",
+      "kind": "short"
+    },
+    {
+      "id": "word-leaf",
+      "file": "audio/lines/word-leaf.mp3",
+      "text": "Leaf!",
+      "kind": "short"
+    },
+    {
+      "id": "word-nest",
+      "file": "audio/lines/word-nest.mp3",
+      "text": "Nest!",
+      "kind": "short"
+    },
+    {
+      "id": "word-octopus",
+      "file": "audio/lines/word-octopus.mp3",
+      "text": "Octopus!",
+      "kind": "short"
+    },
+    {
+      "id": "word-quilt",
+      "file": "audio/lines/word-quilt.mp3",
+      "text": "Quilt!",
+      "kind": "short"
+    },
+    {
+      "id": "word-rabbit",
+      "file": "audio/lines/word-rabbit.mp3",
+      "text": "Rabbit!",
+      "kind": "short"
+    },
+    {
+      "id": "word-umbrella",
+      "file": "audio/lines/word-umbrella.mp3",
+      "text": "Umbrella!",
+      "kind": "short"
+    },
+    {
+      "id": "word-van",
+      "file": "audio/lines/word-van.mp3",
+      "text": "Van!",
+      "kind": "short"
+    },
+    {
+      "id": "word-web",
+      "file": "audio/lines/word-web.mp3",
+      "text": "Web!",
+      "kind": "short"
+    },
+    {
+      "id": "word-fox",
+      "file": "audio/lines/word-fox.mp3",
+      "text": "Fox!",
+      "kind": "short"
+    },
+    {
+      "id": "word-yak",
+      "file": "audio/lines/word-yak.mp3",
+      "text": "Yak!",
+      "kind": "short"
+    },
+    {
+      "id": "word-zebra",
+      "file": "audio/lines/word-zebra.mp3",
+      "text": "Zebra!",
+      "kind": "short"
+    },
+    {
+      "id": "welcome",
+      "file": "audio/lines/welcome.mp3",
+      "text": "Come play with me!",
+      "kind": "short"
+    },
+    {
+      "id": "listen",
+      "file": "audio/lines/listen.mp3",
+      "text": "Tap the big letter. Then tap the little letter.",
+      "kind": "short"
+    },
+    {
+      "id": "case-lower",
+      "file": "audio/lines/case-lower.mp3",
+      "text": "Find the matching little letter.",
+      "kind": "short"
+    },
+    {
+      "id": "case-upper",
+      "file": "audio/lines/case-upper.mp3",
+      "text": "Find the matching big letter.",
+      "kind": "short"
+    },
+    {
+      "id": "picture",
+      "file": "audio/lines/picture.mp3",
+      "text": "Listen. Which picture has this sound?",
+      "kind": "short"
+    },
+    {
+      "id": "picture-x",
+      "file": "audio/lines/picture-x.mp3",
+      "text": "Listen for this sound at the end.",
+      "kind": "short"
+    },
+    {
+      "id": "bonus-name",
+      "file": "audio/lines/bonus-name.mp3",
+      "text": "Listen. Find my letter.",
+      "kind": "short"
+    },
+    {
+      "id": "bonus-sound",
+      "file": "audio/lines/bonus-sound.mp3",
+      "text": "Listen. Find this sound.",
+      "kind": "short"
+    },
+    {
+      "id": "hint",
+      "file": "audio/lines/hint.mp3",
+      "text": "Try the glowing card.",
+      "kind": "short"
+    },
+    {
+      "id": "again",
+      "file": "audio/lines/again.mp3",
+      "text": "Let\u2019s try another one.",
+      "kind": "short"
+    },
+    {
+      "id": "celebrate",
+      "file": "audio/lines/celebrate.mp3",
+      "text": "You did it! A sticker for you!",
+      "kind": "short"
+    },
+    {
+      "id": "map",
+      "file": "audio/lines/map.mp3",
+      "text": "Pick a letter to explore.",
+      "kind": "short"
+    },
+    {
+      "id": "stickers",
+      "file": "audio/lines/stickers.mp3",
+      "text": "Look at all your stickers!",
+      "kind": "short"
+    },
+    {
+      "id": "closet",
+      "file": "audio/lines/closet.mp3",
+      "text": "Let\u2019s dress up!",
+      "kind": "short"
+    },
+    {
+      "id": "next",
+      "file": "audio/lines/next.mp3",
+      "text": "Let\u2019s play with another letter.",
+      "kind": "short"
+    },
+    {
+      "id": "profiles",
+      "file": "audio/lines/profiles.mp3",
+      "text": "Tap your picture.",
+      "kind": "short"
+    },
+    {
+      "id": "locked",
+      "file": "audio/lines/locked.mp3",
+      "text": "Ask your grown-up to open this letter.",
+      "kind": "short"
+    }
+  ],
+  "images": []
+}

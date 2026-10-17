@@ -69,3 +69,4 @@ Keep implementation details out of the map. Name only user paths, stable handles
 - [Lucy's Picnic Day](./picnic-day.md) covers Storybooks. A paged picture story for this letter. Not the four-beat round.
 - [Rhymes & Songs](./rhymes-songs.md) covers the Fun-row song. A short Lucy rhyme. Not the four-beat round and not Picnic Day.
 - [Coloring Canvas](./coloring-canvas.md) covers the Fun-row coloring play. Pick a Lucy or letter page, tap crayons, done.
+- [Play with Lucy](./codex-games.md) covers Lucy's little adventures, Letter Post, and Moonboat. A to Z. Not the four-beat round.

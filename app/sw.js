@@ -680,6 +680,8 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
   if (url.pathname.endsWith('/sw.js')) return;
   if (/\/_[^/]*$/.test(url.pathname)) return;
+  /* Letter Post, Moonboat, and the adventure shell register their own worker. */
+  if (url.pathname.includes('/play/')) return;
   /* Online, a media element's Range request must not be answered here.
      respondWith of either a 206 or a whole-file 200 leaves <video> loading
      forever. Offline only still serves the cached file below. */

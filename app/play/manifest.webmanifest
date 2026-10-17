@@ -1,0 +1,18 @@
+{
+  "id": "./",
+  "name": "Ready Set ABC · Play with Lucy",
+  "short_name": "Ready Set ABC",
+  "description": "An offline A–Z playground for little explorers.",
+  "lang": "en",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#faf1df",
+  "theme_color": "#faf1df",
+  "icons": [
+    { "src": "art/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "art/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "art/icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -512,6 +512,46 @@ if (!/Self-hosted fonts/.test(swSrc) || !/fonts\/README\.md/.test(swSrc)) {
 if (!/pathname\.endsWith\('\/sw\.js'\)/.test(swSrc)) {
   problem('sw.js must not cache-first intercept itself (Get update)');
 }
+if (!/pathname\.includes\('\/play\/'\)/.test(swSrc)) {
+  problem('sw.js must leave /play/ to the game worker');
+}
+
+/* app/play is the folder a host uploads. design/codex/game is the tree the
+   game tests lock. They have to be the same bytes, tests and tools aside. */
+function filesUnder(dir, skipTop) {
+  const out = [];
+  const walk = (folder, rel) => {
+    for (const name of readdirSync(folder, { withFileTypes: true })) {
+      if (rel === '' && skipTop.has(name.name)) continue;
+      if (name.name === '__pycache__') continue;
+      const next = rel ? `${rel}/${name.name}` : name.name;
+      const full = `${folder}/${name.name}`;
+      if (name.isDirectory()) walk(full, next);
+      else out.push(next);
+    }
+  };
+  walk(dir, '');
+  return out;
+}
+const canon = '../design/codex/game';
+if (!existsSync('play/index.html') || !existsSync(`${canon}/index.html`)) {
+  problem('Codex game is missing from app/play or design/codex/game');
+} else {
+  const shipped = new Set(filesUnder('play', new Set()));
+  const locked = new Set(filesUnder(canon, new Set(['tests', 'tools'])));
+  for (const file of shipped) {
+    if (!locked.has(file)) problem(`app/play has a file the game tree does not: ${file}`);
+  }
+  for (const file of locked) {
+    if (!shipped.has(file)) problem(`app/play is missing ${file}`);
+  }
+  for (const file of shipped) {
+    if (!locked.has(file)) continue;
+    const left = readFileSync(`play/${file}`);
+    const right = readFileSync(`${canon}/${file}`);
+    if (Buffer.compare(left, right) !== 0) problem(`app/play drifted from design/codex/game: ${file}`);
+  }
+}
 
 console.log(fail ? `${fail} problem(s)` : 'ALL-OK');
 process.exit(fail ? 1 : 0);

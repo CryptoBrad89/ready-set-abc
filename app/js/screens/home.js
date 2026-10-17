@@ -381,6 +381,28 @@ export function render(ctx) {
       discoverStories,
     ),
     laterRow,
+    el('div', { class: 'hub-section-row' },
+      el('h2', { class: 'hub-section' },
+        el('span', { class: 'hub-section-ico hub-section-ico--gold', 'aria-hidden': 'true' }, icon('flag')),
+        'Play with Lucy',
+      ),
+    ),
+    el('div', { class: 'hub-row hub-row--later' },
+      ...[
+        ['play/index.html', "Lucy's little adventures", 'Listen, match, and collect a sticker. A to Z.', 'Let’s play'],
+        ['play/v1-letter-post/index.html', "Lucy's Letter Post", 'Open sound mail and deliver the picture.', 'Open mail'],
+        ['play/v3-moonboat/index.html', "Lucy's Moonboat", 'Explore a sound and light up the sky.', 'Launch'],
+      ].map(([href, title, sub, cta]) => el('a', {
+        class: 'hub-card',
+        href,
+        'aria-label': title,
+      },
+        el('span', { class: 'hub-art hub-art--yellow' }, icon('play')),
+        el('span', { class: 'hub-title' }, title),
+        el('span', { class: 'hub-sub' }, sub),
+        el('span', { class: 'hub-cta' }, cta),
+      )),
+    ),
   );
   lucy.bubble.classList.add('hub-lucy-bubble');
   root.querySelector('.hub-lucy-card')?.prepend(lucy.bubble);
