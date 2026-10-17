@@ -43,6 +43,7 @@ function createParticles(theme){
  stats.maxParticles=Math.max(stats.maxParticles,document.querySelectorAll('[data-particle]').length);return group;
 }
 const paperShapes={
+ heart:'<path d="M32 56C-9 31 6 1 25 12l7 7 7-7C58 1 73 31 32 56z"/><path class="paper-inset" d="M12 17c-7 10 0 22 20 39C7 43 0 25 12 17z"/>',
  envelope:'<path d="M6 14h52v37H6z"/><path class="paper-fold" d="m7 15 25 21 25-21M7 50l18-19m32 19L39 31"/>',
  stamp:'<path d="M13 6h5l2 3 3-3h5l3 3 3-3h5l3 3 3-3h6v5l-3 3 3 3v5l-3 3 3 3v5l-3 3 3 3v6l-3 3 3 3v6h-6l-3-3-3 3h-5l-3-3-3 3h-5l-3-3-3 3h-5v-6l3-3-3-3v-5l3-3-3-3v-5l3-3-3-3v-5l3-3-3-3z"/><path class="paper-inset" d="M21 16h23v32H21z"/><path class="paper-mark" d="M32 25c-9-9-18 5 0 15 18-10 9-24 0-15z"/>',
  curl:'<path d="M17 5c32 0 34 18 13 27-16 7-13 17 12 19l-2 10C3 56 1 35 25 25 40 19 32 15 16 15z"/><path class="paper-inset" d="M25 25c15-6 7-10-9-10l1-10c27 0 32 13 8 20zM15 39c-7 13 6 20 25 22l2-10c-16-1-25-5-27-12z"/>',
@@ -51,25 +52,37 @@ const paperShapes={
  planet:'<path d="M52 30a20 20 0 1 1-40 0 20 20 0 0 1 40 0z"/><path class="paper-inset" d="M23 13c-11 17-4 32 13 37C8 55 1 22 23 13z"/><path class="paper-ring" d="M11 27C-10 50 9 57 40 39c29-17 30-32 7-24l3 6c10-3 4 6-14 16C17 48 6 48 15 34z"/>'
 };
 const paperFall=[
- {lane:7,phase:-24,drift:18,delay:0,size:1,turn:145},
- {lane:22,phase:18,drift:-23,delay:90,size:.83,turn:-125},
- {lane:38,phase:-12,drift:15,delay:170,size:.7,turn:165},
- {lane:66,phase:30,drift:-21,delay:35,size:.92,turn:-155},
- {lane:82,phase:-28,drift:24,delay:130,size:1,turn:135},
- {lane:94,phase:16,drift:-18,delay:210,size:.74,turn:-175},
- {lane:13,phase:35,drift:-15,delay:270,size:.78,turn:-165},
- {lane:30,phase:-20,drift:21,delay:320,size:.88,turn:145},
- {lane:47,phase:14,drift:-17,delay:240,size:.67,turn:-135},
- {lane:73,phase:-34,drift:17,delay:350,size:.8,turn:175},
- {lane:88,phase:22,drift:-24,delay:290,size:.92,turn:-145},
- {lane:56,phase:-8,drift:20,delay:390,size:.7,turn:155}
+ {lane:7,start:0,phase:-24,drift:18,delay:0,size:1.5,turn:115},
+ {lane:24,start:0,phase:18,drift:-23,delay:110,size:0.9,turn:-95},
+ {lane:43,start:0,phase:-12,drift:15,delay:220,size:0.78,turn:125},
+ {lane:68,start:0,phase:30,drift:-21,delay:330,size:1.05,turn:-115},
+ {lane:86,start:0,phase:-28,drift:24,delay:440,size:0.88,turn:105},
+ {lane:94,start:0,phase:16,drift:-18,delay:550,size:0.8,turn:-135},
+ {lane:14,start:17,phase:-24,drift:18,delay:0,size:1.48,turn:115},
+ {lane:33,start:17,phase:18,drift:-23,delay:110,size:0.92,turn:-95},
+ {lane:64,start:17,phase:-12,drift:15,delay:220,size:0.8,turn:125},
+ {lane:80,start:17,phase:30,drift:-21,delay:330,size:1.1,turn:-115},
+ {lane:93,start:17,phase:-28,drift:24,delay:440,size:0.84,turn:105},
+ {lane:5,start:17,phase:16,drift:-18,delay:550,size:0.96,turn:-135},
+ {lane:20,start:31,phase:-24,drift:18,delay:0,size:0.82,turn:115},
+ {lane:40,start:31,phase:18,drift:-23,delay:110,size:1.5,turn:-95},
+ {lane:71,start:31,phase:-12,drift:15,delay:220,size:1.02,turn:125},
+ {lane:88,start:31,phase:30,drift:-21,delay:330,size:0.9,turn:-115},
+ {lane:8,start:0,phase:-28,drift:24,delay:440,size:0.86,turn:105},
+ {lane:28,start:0,phase:16,drift:-18,delay:550,size:0.98,turn:-135},
+ {lane:57,start:0,phase:-24,drift:18,delay:0,size:0.78,turn:115},
+ {lane:78,start:0,phase:18,drift:-23,delay:110,size:1.55,turn:-95},
+ {lane:92,start:0,phase:-12,drift:15,delay:220,size:0.92,turn:125},
+ {lane:17,start:14,phase:30,drift:-21,delay:330,size:0.84,turn:-115},
+ {lane:48,start:14,phase:-28,drift:24,delay:440,size:0.8,turn:105},
+ {lane:69,start:14,phase:16,drift:-18,delay:550,size:0.96,turn:-135}
 ];
 function createPaperRain(){
  const host=$('#confetti'),group=document.createElement('div');group.className='paper-rain';
- const shapes=post?['envelope','stamp','curl']:['star','crescent','planet','curl'];
+ const shapes=post?['envelope','stamp','heart','curl']:['star','crescent','planet','curl'];
  paperFall.forEach((piece,i)=>{
   const shape=shapes[i%shapes.length],p=document.createElement('span');p.dataset.particle='';p.dataset.paper=shape;
-  p.style.cssText=`--lane:${piece.lane}%;--phase:${piece.phase}deg;--drift:${piece.drift}px;--delay:${piece.delay}ms;--size:${piece.size};--turn:${piece.turn}deg;--flutter:${i%2?-1:1};--tone:var(${['--accent','--accent2','--focus','--ink'][i%4]});--flight:${1580+(i%3)*90}ms`;
+  p.style.cssText=`--lane:${piece.lane}%;--start:${piece.start}vh;--phase:${piece.phase}deg;--drift:${piece.drift}px;--delay:${piece.delay}ms;--size:${piece.size};--turn:${piece.turn}deg;--flutter:${i%2?-1:1};--tone:var(${['--accent','--accent2','--focus','--ink'][i%4]});--flight:${3100+(i%4)*180}ms`;
   p.innerHTML=`<span class="paper-flutter"><svg class="paper-piece" viewBox="0 0 64 64" aria-hidden="true">${paperShapes[shape]}</svg></span>`;group.append(p);
  });
  host.append(group);
@@ -94,7 +107,7 @@ window.Fun={cancel,home,lucy,
  open(){return post?moment($('.listen .mail-flap'),[{transform:'rotateX(0)'},{transform:'rotateX(160deg)'}],{duration:500,name:'envelope-open',cue:'open'}):moment($('.listen .signal-orbit'),[{transform:'rotate(-55deg) scale(.87)',opacity:.4},{transform:'rotate(0) scale(1)',opacity:1}],{duration:500,name:'orbit-tune',cue:'open'});},
  replay(){return moment($('.listen-letter')||$('.reward-art'),[{transform:'scale(1)'},{transform:'scale(1.055) rotate(-2deg)'},{transform:'scale(1)'}],{duration:330,name:post?'ink-ring':'signal-ring',cue:'tap'});},
  async hint(button){button.classList.add('miss-active');try{return await moment(button,[{transform:'translateX(0)'},{transform:'translateX(-5px) rotate(-1deg)',offset:.23},{transform:'translateX(4px) rotate(1deg)',offset:.48},{transform:'translateX(-2px)',offset:.72},{transform:'translateX(0)'}],{duration:480,name:'gentle-miss',cue:'tap'});}finally{button.classList.remove('miss-active');}},
- reward(){return moment($(post?'.reward-stamp':'.reward-art'),post?[{transform:'translateY(-16px) rotate(-8deg) scale(1.2)'},{transform:'translateY(0) rotate(12deg) scale(1)',offset:.32},{transform:'translateY(0) rotate(12deg) scale(1)'}]:[{transform:'scale(.92) rotate(-7deg)',opacity:.4},{transform:'scale(1.04) rotate(3deg)',opacity:1,offset:.18},{transform:'scale(1) rotate(0)',opacity:1,offset:.36},{transform:'scale(1) rotate(0)',opacity:1}],{duration:2200,name:post?'delivery-stamp':'world-awakens',cue:'reward',particles:true,setup:createPaperRain});},
+ reward(){return moment($(post?'.reward-stamp':'.reward-art'),post?[{transform:'translateY(-16px) rotate(-8deg) scale(1.2)'},{transform:'translateY(0) rotate(12deg) scale(1)',offset:704/4400},{transform:'translateY(0) rotate(12deg) scale(1)'}]:[{transform:'scale(.92) rotate(-7deg)',opacity:.4},{transform:'scale(1.04) rotate(3deg)',opacity:1,offset:396/4400},{transform:'scale(1) rotate(0)',opacity:1,offset:792/4400},{transform:'scale(1) rotate(0)',opacity:1}],{duration:4400,name:post?'delivery-stamp':'world-awakens',cue:'reward',particles:true,setup:createPaperRain});},
  get evidence(){return {...stats,particles:document.querySelectorAll('[data-particle]').length,active:active?1:0,sources:sources.size,muted,speaking,reduced:reduce.matches};}
 };
 // Theme particles must be created after moment clears the preceding effect.

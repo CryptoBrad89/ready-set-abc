@@ -49,7 +49,7 @@ async function run() {
               return {moving, active: active.length, violations, particles: document.querySelectorAll('[data-particle]').length};
             });
             assert.deepEqual(result.violations, [], `${prefix} ${label}: expensive animated property`);
-            assert(result.particles <= 18, `${prefix} ${label}: unbounded decorative particles`);
+            assert(result.particles <= 30, `${prefix} ${label}: unbounded decorative particles`);
             if (expectMotion) assert(result.moving > 0, `${prefix} ${label}: no visible movement`);
             else assert.equal(result.active, 0, `${prefix} ${label}: motion under reduced preference`);
           }

@@ -11,7 +11,7 @@ function playwright() {
   }
 }
 (async () => {
-  const shots = '/workspace/rsabc-confetti/v2';
+  const shots = '/workspace/rsabc-confetti/v3';
   fs.mkdirSync(shots, {recursive: true});
   const browser = await playwright().chromium.launch({headless: true,
     executablePath: process.env.CHROMIUM_EXECUTABLE || '/usr/bin/google-chrome',
@@ -41,7 +41,7 @@ function playwright() {
               const rect = node.getBoundingClientRect();
               return Number(getComputedStyle(node).opacity) >= .85 && rect.width >= 14 && rect.height >= 14 &&
                 rect.x >= 0 && rect.right <= innerWidth && rect.y >= 0 && rect.bottom <= innerHeight;
-            }).length >= 8);
+            }).length >= 14);
             const sample = () => page.locator('#confetti [data-paper]').evaluateAll(nodes => nodes.map(node => {
               const rect = node.getBoundingClientRect(), svg = node.querySelector('svg');
               const painted = svg && [...svg.querySelectorAll('path,rect,circle,ellipse,polygon')].some(part => {
@@ -53,8 +53,21 @@ function playwright() {
                 width: rect.width, height: rect.height, opacity: Number(getComputedStyle(node).opacity)};
             }));
             const first = await sample();
-            assert.equal(first.length, 12, `${prefix}: bounded paper confetti pieces`);
-            assert(new Set(first.map(piece => piece.shape)).size >= 3, `${prefix}: world-themed shape variety`);
+            assert.equal(first.length, 24, `${prefix}: bounded paper confetti pieces`);
+            const expectedShapes = game === 'v1-letter-post' ? ['curl', 'envelope', 'heart', 'stamp'] : ['crescent', 'curl', 'planet', 'star'];
+            assert.deepEqual([...new Set(first.map(piece => piece.shape))].sort(), expectedShapes, `${prefix}: world-themed shape variety`);
+            assert(first.filter(piece => piece.width >= (viewport.width === 390 ? 64 : 100)).length >= 4,
+              `${prefix}: clearly large hero pieces`);
+            const motionBudget = await page.locator('#confetti [data-paper]').evaluateAll(nodes => {
+              const allowed = new Set(['offset', 'computedOffset', 'easing', 'composite', 'transform', 'opacity']);
+              return {duration: nodes.map(node => node.getAnimations()[0].effect.getTiming().duration),
+                filters: nodes.flatMap(node => [...node.querySelectorAll('svg')].map(svg => getComputedStyle(svg).filter)),
+                expensive: nodes.flatMap(node => node.getAnimations({subtree: true}).flatMap(animation =>
+                  animation.effect.getKeyframes().flatMap(frame => Object.keys(frame).filter(key => !allowed.has(key))))) };
+            });
+            assert(motionBudget.duration.every(duration => duration >= 3000 && duration <= 4000), `${prefix}: slow readable descent`);
+            assert(motionBudget.filters.every(filter => filter === 'none'), `${prefix}: no per-piece SVG filters`);
+            assert.deepEqual(motionBudget.expensive, [], `${prefix}: animate compositor properties only`);
             assert(first.every(piece => piece.painted), `${prefix}: SVG paper must have painted color`);
             await page.waitForTimeout(120);
             const second = await sample();
@@ -67,7 +80,11 @@ function playwright() {
                 return frames[0].opacity === '0' && frames.at(-1).opacity === '0' && animation.effect.getTiming().iterations === 1;
               })));
             assert(fades, `${prefix}: every piece has a finite entry and exit`);
-            await page.waitForTimeout(250);
+            await page.waitForFunction(() => {
+              const piece = document.querySelector('#confetti [data-paper]');
+              const animation = piece?.getAnimations()[0];
+              return animation && animation.currentTime >= animation.effect.getTiming().duration * .42;
+            });
             await page.screenshot({path: path.join(shots, `${prefix}-mid-fall.png`)});
             if (theme === 0) {
               await page.waitForFunction(() => !document.querySelector('#confetti [data-particle]'));

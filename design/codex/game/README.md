@@ -82,7 +82,7 @@ design prototypes do not install a service worker on a hosted origin.
 
 Screen changes fade out before the next scene enters. Correct picture cards
 bounce before the reward; wrong cards wiggle with a fading soft red glow.
-Rewards add twelve temporary paper cut-outs, cleared when their effect ends
+Rewards add twenty-four temporary paper cut-outs, cleared when their effect ends
 or the route changes. Existing audio and approved Lucy images are unchanged.
 
 Run the confetti visibility regression in Chrome:
@@ -93,15 +93,19 @@ CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/confetti
 
 It checks both games in all three themes at phone and whiteboard sizes. Each
 correct-answer journey verifies painted SVG artwork, shape variety, independent
-fall and flutter, finite entry and exit, cleanup, and navigation. Chrome screenshots
-are saved mid-fall in `/workspace/rsabc-confetti/v2/`. Existing reduced-motion
+fall and flutter, large hero pieces, slow finite entry and exit, cleanup, and
+navigation. It also rejects animated layout properties and per-piece SVG filters. Chrome screenshots
+are saved mid-fall in `/workspace/rsabc-confetti/v3/`. Existing reduced-motion
 behavior remains unchanged.
 
-Letter Post scatters envelopes, perforated stamps, and paper curls. Moonboat
-scatters stars, crescents, ringed planets, and curls. Twelve bounded descriptors
+Letter Post scatters envelopes, perforated stamps, hearts, and paper curls. Moonboat
+scatters stars, crescents, ringed planets, and curls. Twenty-four bounded descriptors
 set each piece's lane, delay, size, drift, and turn. Separate transform layers
-handle descent, flutter, and tumble; static folds and soft shadows give the
-SVG cut-outs a matte paper finish. Colors use the existing world palette.
+handle descent, flutter, and tumble; static folds and inset shapes give the
+SVG cut-outs a matte paper finish. Four larger pieces make the shapes easier to
+recognize. Individual falls last 3.1–3.64 seconds, with staggered starts and
+entry/exit fades. The count stays fixed at 24, and the effect uses no per-frame
+JavaScript or SVG filters. Colors use the existing world palette.
 
 Design references came from the local design-tool repos. Design Taste informed
 finite transform/opacity choreography. Motion Primitives' TransitionPanel
