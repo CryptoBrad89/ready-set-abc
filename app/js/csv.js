@@ -11,7 +11,7 @@ const COLUMNS = [
   'kind', 'key', 'value',
   'id', 'name', 'emoji', 'color',
   'workMode', 'assignedLetters', 'arcadeLocked',
-  'letter', 'stars', 'rounds', 'bestStars', 'lastAt', 'notes',
+  'letter', 'stars', 'rounds', 'bestStars', 'cleanRuns', 'approved', 'lastAt', 'notes',
   'stickerId', 'word', 'stickerEmoji',
 ];
 
@@ -21,8 +21,20 @@ const SETTING_KEYS = [
 
 const DEVICE = '_device';
 
+function stripCsvFormula(s) {
+  const t = String(s ?? '');
+  /* A doubled guard (''=literal) is a real apostrophe in front of a formula
+     character. Strip one quote only. A single guard ('=literal) is the
+     formula escape and becomes =literal. 'Pat stays 'Pat. */
+  if (t.length > 2 && /^''[=+\-@\t\r]/.test(t)) return t.slice(1);
+  if (t.length > 1 && t.startsWith("'") && /^'[=+\-@\t\r]/.test(t)) return t.slice(1);
+  return t;
+}
+
 export function csvCell(value) {
-  const s = String(value ?? '');
+  let s = String(value ?? '');
+  if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
+  else if (/^'[=+\-@\t\r]/.test(s)) s = `'${s}`;
   return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
@@ -97,7 +109,7 @@ function objectsFrom(rows) {
   const body = looksHeader ? rows.slice(start + 1) : rows.slice(start);
   return body.map((r) => {
     const obj = {};
-    header.forEach((h, i) => { obj[h] = r[i] ?? ''; });
+    header.forEach((h, i) => { obj[h] = stripCsvFormula(r[i] ?? ''); });
     return obj;
   });
 }
@@ -166,6 +178,7 @@ export function snapshotToCsv(snap) {
   const progress = snap.progress || {};
   const stars = snap.stars || {};
   const stickers = snap.stickers || {};
+  const mastery = snap.mastery || {};
 
   roster.forEach((kid) => {
     if (!kid || kid.id === DEVICE) return;
@@ -203,6 +216,7 @@ export function snapshotToCsv(snap) {
   [...owners].sort().forEach((owner) => {
     lettersOf(owner).forEach((letter) => {
       const entry = (progress[owner] && progress[owner].letters && progress[owner].letters[letter]) || {};
+      const m = (mastery[owner] || {})[letter] || {};
       push({
         kind: 'letter',
         id: owner,
@@ -210,6 +224,8 @@ export function snapshotToCsv(snap) {
         stars: stars[owner] && stars[owner][letter] != null ? stars[owner][letter] : '',
         rounds: entry.rounds != null ? entry.rounds : '',
         bestStars: entry.bestStars != null ? entry.bestStars : '',
+        cleanRuns: m.clean != null ? m.clean : '',
+        approved: m.approved ? 'true' : '',
         lastAt: entry.lastAt || '',
       });
     });
@@ -253,6 +269,7 @@ export function csvToSnapshot(textOrRows) {
     stars: {},
     stickers: {},
     progress: {},
+    mastery: {},
   };
 
   const putStar = (owner, letter, count) => {
@@ -327,6 +344,8 @@ export function csvToSnapshot(textOrRows) {
       const rounds = field(row, 'rounds');
       const lastAt = field(row, 'lastAt');
       const bestStars = field(row, 'bestStars');
+      const cleanRuns = field(row, 'cleanRuns');
+      const approved = field(row, 'approved');
       if (stars !== '') putStar(owner, letter, stars);
       if (rounds !== '' || lastAt || bestStars !== '') {
         putProgress(owner, letter, {
@@ -334,6 +353,14 @@ export function csvToSnapshot(textOrRows) {
           lastAt: lastAt || null,
           bestStars: bestStars !== '' ? bestStars : (stars || 0),
         });
+      }
+      if (cleanRuns !== '' || approved !== '') {
+        if (!snap.mastery[owner]) snap.mastery[owner] = {};
+        snap.mastery[owner][letter] = {
+          ...(snap.mastery[owner][letter] || {}),
+          clean: cleanRuns !== '' ? Number(cleanRuns) || 0 : 0,
+          approved: ['1', 'true', 'yes', 'on'].includes(String(approved).trim().toLowerCase()),
+        };
       }
       return;
     }

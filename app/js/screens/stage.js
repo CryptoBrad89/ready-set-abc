@@ -7,15 +7,32 @@ import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
 import { store } from '../store.js';
 import { beatsFor } from '../clouds.js';
+import { letterByChar, soundAtEnd, soundPhrase } from '../data.js';
 import { mountLottie, burstConfetti, squash, wobble, floatGlyph } from '../motion.js';
 import * as round from '../round.js';
 
 export const chrome = { tabs: true, tab: 'home', who: true };
 
+/* A success holds for SUCCESS_MS so the glyph can float, and waits for the
+   sound the child just triggered — X's /ks/ runs over a second — but never
+   longer than VOICE_CAP_MS, so a stalled clip cannot strand the board. */
+export const SUCCESS_MS = 720;
+export const VOICE_CAP_MS = 2600;
+
 let keyHandler = null;
 let lottiePlayer = null;
+let timers = [];
+let screenGen = 0;
+let activeLucy = null;
 
 export function teardown() {
+  screenGen += 1;
+  stageBeat = null;
+  audio.stopVoice();
+  timers.forEach(clearTimeout);
+  timers = [];
+  if (activeLucy && activeLucy.dispose) activeLucy.dispose();
+  activeLucy = null;
   if (keyHandler) {
     document.removeEventListener('keydown', keyHandler);
     keyHandler = null;
@@ -24,19 +41,43 @@ export function teardown() {
   lottiePlayer = null;
 }
 
+function later(fn, ms) {
+  const id = window.setTimeout(() => {
+    timers = timers.filter((t) => t !== id);
+    fn();
+  }, ms);
+  timers.push(id);
+}
+
 function goPlay(ctx) {
   ctx.go('play');
 }
 
-function afterRight(ctx, node, letter) {
+/* Advances only the trial it was scheduled for. Leaving the screen, or a new
+   round starting in the gap, turns the pending advance into a no-op. */
+export function afterRight(ctx, node, letter, voiced = null) {
   audio.sfx('right');
   floatGlyph(node, letter);
-  window.setTimeout(() => {
+  const gen = screenGen;
+  const token = round.trialToken();
+  let held = true;
+  let speaking = !!voiced;
+  let moved = false;
+  const move = () => {
+    if (moved || held || speaking) return;
+    moved = true;
+    if (gen !== screenGen || !token || round.trialToken() !== token) return;
     const next = round.advance();
     if (next === 'home') { ctx.go('home'); return; }
     if (next === 'celebrate') round.bankLetter();
     goPlay(ctx);
-  }, 720);
+  };
+  later(() => { held = false; move(); }, SUCCESS_MS);
+  if (voiced) {
+    const heard = () => { speaking = false; move(); };
+    later(heard, VOICE_CAP_MS);
+    Promise.resolve(voiced).then(heard, heard);
+  }
 }
 
 export function render(ctx) {
@@ -54,25 +95,30 @@ export function render(ctx) {
 
   const root = el('div', { class: `stage-frame stage-frame--${step}` });
   const xp = Math.min(100, (beatsFor(entry.letter) / 4) * 100);
-  const line = promptFor(step, entry);
+  const line = promptFor(step, entry, trial);
 
   const lucy = createLucy({
     state: step === 'payoff' ? 'celebrating' : 'teaching',
     variant: 'circle',
     cutout: true,
-    line,
+    line: '',
     paw: () => {
       audio.sfx('pop');
-      replayBeat(entry, step);
-      lucy.say(line, { voice: false });
+      replayBeat(entry, step, trial);
+      lucy.say(line, { syncTalk: step !== 'payoff' });
     },
   });
+  if (activeLucy && activeLucy.dispose) activeLucy.dispose();
+  activeLucy = lucy;
 
   const frame = el('div', { class: 'stage-board' });
+  let listenReplay = null;
   if (step === 'meet') frame.append(meetBoard(entry, trial, ctx, root, lucy));
   else if (step === 'choose') frame.append(chooseBoard(entry, trial, ctx, root, lucy));
-  else if (step === 'listen') frame.append(listenBoard(entry, trial, ctx, root, lucy));
-  else frame.append(payoffBoard(entry, trial, ctx, root, lucy));
+  else if (step === 'listen') {
+    listenReplay = listenReplayButton(entry);
+    frame.append(listenPictureBoard(entry, trial, ctx, root, lucy));
+  } else frame.append(payoffBoard(entry, trial, ctx, root, lucy));
 
   const spark = el('div', { class: 'stage-spark', 'aria-hidden': 'true' });
   lottiePlayer = mountLottie(spark, step === 'payoff' ? 'check' : 'sparkle', { loop: true });
@@ -86,13 +132,15 @@ export function render(ctx) {
     el('div', { class: 'xp-rail', 'aria-hidden': 'true' },
       el('span', { class: 'xp-fill', style: { width: `${xp}%` } }),
     ),
+    instructionBar(line, listenReplay),
     frame,
     el('div', { class: 'stage-lucy' }, lucy.stage, lucy.bubble),
     spark,
   );
 
-  replayBeat(entry, step);
-  window.setTimeout(() => lucy.say(line, { voice: false }), 80);
+  /* Opening payoff keeps Lucy's line on screen. The picture word waits for a plate tap. */
+  if (step !== 'payoff') replayBeat(entry, step, trial);
+  later(() => lucy.say(line, { syncTalk: step !== 'payoff' }), 80);
 
   keyHandler = (event) => {
     if (event.key === 'Escape') { round.goHome(); ctx.go('home'); }
@@ -102,18 +150,35 @@ export function render(ctx) {
   return root;
 }
 
-function promptFor(step, entry) {
+function promptFor(step, entry, trial) {
   const sound = entry.phoneme || `/${entry.lower}/`;
   if (step === 'meet') return `This is ${entry.letter}. It says ${sound}.`;
-  if (step === 'choose') return `Lucy wants ${entry.letter}! Tap the ${entry.letter}.`;
+  if (step === 'choose') {
+    return trial && trial.targets && trial.targets.length > 1
+      ? `Lucy wants ${entry.letter}! Tap every ${entry.letter}.`
+      : `Lucy wants ${entry.letter}! Tap the ${entry.letter}.`;
+  }
   if (step === 'listen') return `Find the sound ${sound}.`;
-  return `${entry.letter} says ${entry.word}!`;
+  const pic = (trial && trial.picture) || entry;
+  return `${soundPhrase(entry, pic.word)}!`;
 }
 
-function replayBeat(entry, step) {
-  if (step === 'meet') audio.sayLetterName(entry.letter);
-  else if (step === 'listen') audio.sayPhoneme(entry);
-  else if (step === 'payoff') audio.sayWord({ letter: entry.letter, word: entry.word, id: entry.pictures && entry.pictures[0] && entry.pictures[0].id });
+function instructionBar(line, trailing) {
+  return el('div', { class: 'instruction stage-instruction' },
+    el('div', { class: 'instruction-left' },
+      el('span', { class: 'megaphone', role: 'presentation' }, icon('sfx')),
+      el('p', {}, line),
+    ),
+    trailing || null,
+  );
+}
+
+let stageBeat = null;
+
+function replayBeat(entry, step, trial) {
+  if (step === 'payoff') return null;
+  stageBeat = audio.speakStageBeat(step, entry);
+  return stageBeat;
 }
 
 function meetBoard(entry, trial, ctx, root, lucy) {
@@ -133,7 +198,7 @@ function meetBoard(entry, trial, ctx, root, lucy) {
     audio.sfx('select');
     round.continueBeat();
     lucy.say(`Let's find ${entry.letter}!`, { voice: false });
-    afterRight(ctx, root, entry.letter);
+    afterRight(ctx, root, entry.letter, stageBeat);
   });
   return el('div', { class: 'stage-meet' }, card);
 }
@@ -141,7 +206,6 @@ function meetBoard(entry, trial, ctx, root, lucy) {
 function chooseBoard(entry, trial, ctx, root, lucy) {
   const row = el('div', { class: 'stage-hang-row' });
   trial.choices.forEach((choice) => {
-    const used = trial.found.filter((L) => L === choice.letter).length;
     const card = el('button', {
       class: 'pillow stage-hang',
       type: 'button',
@@ -150,59 +214,99 @@ function chooseBoard(entry, trial, ctx, root, lucy) {
       el('span', { class: 'stage-glyph' }, trial.hunt === 'lower' ? choice.lower : choice.letter),
     );
     pressable(card, () => {
-      if (trial.locked) return;
+      if (trial.locked || trial.found.includes(choice.id)) return;
       audio.unlock();
       squash(card);
-      const result = round.tapChoose(choice.letter);
+      const result = round.tapChoose(choice.id);
+      if (!result) return;
       if (result === 'wrong') {
         wobble(card);
         audio.sfx('wrong');
         const nudge = audio.nudge();
-        lucy.say(nudge, { voice: false });
+        lucy.say(nudge, { syncTalk: true });
         return;
       }
-      audio.sayPhoneme(entry);
+      const voiced = audio.sayPhoneme(entry);
       card.classList.add('is-found');
+      card.setAttribute('aria-disabled', 'true');
       if (result === 'right') {
         lucy.setState('celebrating');
         lucy.say('Yes!', { voice: false });
-        afterRight(ctx, root, entry.letter);
+        afterRight(ctx, root, entry.letter, voiced);
       }
     });
-    if (choice.target && used) card.classList.add('is-found');
+    if (trial.found.includes(choice.id)) {
+      card.classList.add('is-found');
+      card.setAttribute('aria-disabled', 'true');
+    }
+    if (round.getRound().hinted && choice.target) card.classList.add('hinted');
     row.append(card);
   });
   return row;
 }
 
+function listenSucceeded(ctx, root, entry, lucy) {
+  const voiced = audio.sayPhoneme(entry);
+  lucy.setState('celebrating');
+  lucy.say('You found it!', { voice: false });
+  afterRight(ctx, root, entry.letter, voiced);
+}
+
 function listenBoard(entry, trial, ctx, root, lucy) {
-  const row = el('div', { class: 'stage-orb-row' });
-  trial.orbs.forEach((orb) => {
+  return listenPictureBoard(entry, trial, ctx, root, lucy);
+}
+
+function listenReplayButton(entry) {
+  const sound = entry.phoneme || `/${entry.lower}/`;
+  const replay = el('button', {
+    class: 'pillow stage-listen-replay stage-listen-replay--inline',
+    type: 'button',
+    'aria-label': `Hear the sound ${sound} again`,
+  }, el('span', { class: 'stage-replay-face' }, icon('sfx', { size: 32 })));
+  pressable(replay, () => {
+    audio.unlock();
+    squash(replay);
+    audio.sayPhoneme(entry);
+  });
+  return replay;
+}
+
+function listenPictureBoard(entry, trial, ctx, root, lucy) {
+  const sound = entry.phoneme || `/${entry.lower}/`;
+  const pics = el('div', { class: 'stage-listen-pics' });
+  let targetBtn = null;
+  (trial.pictures || []).forEach((pic) => {
     const btn = el('button', {
-      class: 'pillow stage-orb',
+      class: 'pillow stage-plate stage-listen-pic',
       type: 'button',
-      'aria-label': orb.target ? 'Play this sound' : 'Not this sound',
-    }, el('span', { class: 'stage-orb-face' }, icon('sfx')));
+      'aria-label': `${pic.word}, ${soundPhrase(letterByChar(pic.letter) || entry, pic.word)}`,
+    },
+      picturePlate(pic, { size: 'card' }),
+      el('span', { class: 'stage-word' }, pic.word),
+    );
+    if (round.getRound().hinted && pic.target) btn.classList.add('hinted');
+    if (pic.target) targetBtn = btn;
     pressable(btn, () => {
       if (trial.locked) return;
       audio.unlock();
       squash(btn);
-      const result = round.tapListen(orb.id);
+      const result = round.tapListen(pic.choiceId);
       if (result === 'wrong') {
         wobble(btn);
         audio.sfx('wrong');
-        const nudge = audio.nudge();
-        lucy.say(nudge, { voice: false });
+        round.maybeHint();
+        if (round.getRound().hinted && targetBtn) targetBtn.classList.add('hinted');
+        audio.sayPhoneme(entry).then(() => {
+          const nudge = audio.nudge();
+          lucy.say(nudge, { syncTalk: true });
+        });
         return;
       }
-      audio.sayPhoneme(entry);
-      lucy.setState('celebrating');
-      lucy.say('You found it!', { voice: false });
-      afterRight(ctx, root, entry.letter);
+      if (result === 'right') listenSucceeded(ctx, root, entry, lucy);
     });
-    row.append(btn);
+    pics.append(btn);
   });
-  return row;
+  return el('div', { class: 'stage-listen-p' }, pics);
 }
 
 function payoffBoard(entry, trial, ctx, root, lucy) {
@@ -211,7 +315,7 @@ function payoffBoard(entry, trial, ctx, root, lucy) {
     const card = el('button', {
       class: 'pillow stage-plate',
       type: 'button',
-      'aria-label': `${entry.letter} is for ${pic.word}`,
+      'aria-label': soundPhrase(entry, pic.word),
     },
       picturePlate(pic, { size: 'card' }),
       el('span', { class: 'stage-word' }, pic.word),

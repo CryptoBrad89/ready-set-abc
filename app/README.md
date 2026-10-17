@@ -131,7 +131,7 @@ Turn **Offline only** on **once, on school Wi-Fi**, before that tablet goes into
 2. Open **Grown-Ups** (see PIN below).
 3. Tap **Device**.
 4. Turn **Offline only** on. That runs **Set up this device**. Watch the bar fill.
-5. When it says **Pinned** plus the shell version (Grown-Ups → Device, currently `rsabc-shell-v46-lucy-clips`), you can turn the radio off.
+5. When it says **Pinned** plus the shell version (Grown-Ups → Device, currently `rsabc-shell-v49-codex-pass3`), you can turn the radio off.
 
 Turning **Offline only** off deletes that copy and the tablet uses the network again.
 
@@ -431,7 +431,7 @@ The card the child has not reached yet never says *locked* at them. The nearest 
 
 **The celebrate card hands over to the pouch.** A treat that just opened arrives there with a **Put it on Lucy** button and *It lives in your Star Pouch now*. When a letter opened nothing, the same slot names how close the next one is (**2 more stars opens Ball cap**) — so the Star Pouch is somewhere a child is heading.
 
-That row and the two big buttons are **pinned** to the bottom of the celebration. On a 1366×768 cart Chromebook the stars and the trophy do not fit above them, so those scroll; the hand-off and **Play Letter B** never do. (The trophy card being cut off on a short screen is a Step C sizing job, not a closet one.)
+The celebration is one column on the screen: stars, Lucy, the trophy, the sticker and closet hand-off, and Next. On a short screen that column gets smaller together, so the letter is not cut off inside a frame.
 
 ### The Star Pouch when it is empty
 
@@ -460,7 +460,7 @@ That row and the two big buttons are **pinned** to the bottom of the celebration
 | Kid opened Grown-Ups | Unlikely. Close with **Return to Letter Play**. PIN is 1234 if you need it. |
 | Child stuck on the bonus | Wait a moment — **Skip to stars** appears after two misses or twenty seconds. Or turn the bonus off in Grown-Ups → Play. |
 | Celebration goes on too long | It stops itself at 8 seconds. **Skip** (top right) or a tap on the background stops it now. |
-| Trophy card looks cut off after a letter | A short screen. The stars and trophy scroll; the sticker, Lucy's treat and **Play Letter B** stay put at the bottom. |
+| Trophy card looks cut off after a letter | Reload the page. The celebration is one column that shrinks to the screen, so the letter is not inside a scrolling frame. |
 | Star Pouch says the pouch is resting | Stars are **Off**: Grown-Ups → Play → Stars. Nothing is being kept, so there is no closet to show. |
 | Portrait iPad | Turn it sideways. The rotate screen is on purpose. |
 | Certificate printed with no colour | The print dialog has **Background graphics** off. Turn it on. |
@@ -510,7 +510,7 @@ One page. Print it, or copy it onto an index card and tape it inside the cart li
 ## PIN, versions, storage (the sticky note)
 
 - PIN **`1234`**
-- Shell pin **`rsabc-shell-v46-lucy-clips`** (Grown-Ups → Device)
+- Shell pin **`rsabc-shell-v49-codex-pass3`** (Grown-Ups → Device)
 - Content pin from `data/letters.json` (all 26 awake · 15-picture GAME-FLOW pool each · 390 plates, no two sharing an emoji)
 - Saved on the tablet under `rsabc.` keys: kid, classroom, roster, settings, audio, mode, hideChrome, pinnedLetter, cursor, nextAbcIndex, stars, stickers, outfit, progress, notes, cache, offlineOnly
 - Tablet copy / backup: Grown-Ups → Class → **Export CSV** writes `ready-set-abc.csv` (format `rsabc-csv-v1`). Import replaces this tablet — it never merges.

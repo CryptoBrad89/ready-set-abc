@@ -37,8 +37,13 @@ html:not([data-skin]) .chrome {
   background: #ffe600;
   box-shadow: 0 5px 0 #000000;
   border-bottom: 4px solid #000000;
-  height: 80px;
+  height: auto;
+  min-height: calc(var(--target-min) + 32px);
+  padding-block: 12px;
   gap: 8px;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 html[data-skin="comic"] .brand-title,
 html:not([data-skin]) .brand-title { color: #1a1a1a; }
@@ -63,6 +68,11 @@ html:not([data-skin]) .tab {
   box-shadow: 2px 2px 0 #000000;
   padding: 6px 10px;
   min-height: 36px;
+}
+html[data-skin="comic"] .chrome .tab,
+html:not([data-skin]) .chrome .tab {
+  min-height: var(--target-min);
+  min-width: var(--target-min);
 }
 html[data-skin="comic"] .tab[aria-current="page"],
 html:not([data-skin]) .tab[aria-current="page"] {
@@ -132,8 +142,17 @@ html[data-skin="cosmic"] .chrome {
 html[data-skin="cosmic"] .brand-title { color: #f59e0b; }
 html[data-skin="cosmic"] .brand-sub { color: #7dd3fc; }
 html[data-skin="cosmic"] .tabs { background: #0f1738; border: 2px solid #0ea5e9; }
-html[data-skin="cosmic"] .tab { color: #7dd3fc; }
+html[data-skin="cosmic"] .tab { color: #e8f4ff; }
 html[data-skin="cosmic"] .tab[aria-current="page"] { background: #0ea5e9; color: #0f1738; }
+html[data-skin="cosmic"] .chrome .tab:not([aria-current="page"]),
+html[data-skin="cosmic"] .chrome .tab:not([aria-current="page"]) .tab-label {
+  color: #e8f4ff;
+}
+html[data-skin="cosmic"] .chrome .tab:not([aria-current="page"]):hover,
+html[data-skin="cosmic"] .chrome .tab:not([aria-current="page"]):hover .tab-label {
+  color: #e8f4ff;
+  background: rgba(14, 165, 233, 0.22);
+}
 html[data-skin="cosmic"] .foot { background: #0f1738; color: #7dd3fc; border-top: 2px solid #182258; }
 html[data-skin="cosmic"] .pillow {
   background: #182258;
@@ -162,8 +181,17 @@ html[data-skin="violet"] .chrome {
 html[data-skin="violet"] .brand-title { color: #f0abfc; }
 html[data-skin="violet"] .brand-sub { color: #e9d5ff; }
 html[data-skin="violet"] .tabs { background: #1b0b2e; border: 2px solid #c084fc; }
-html[data-skin="violet"] .tab { color: #e9d5ff; }
+html[data-skin="violet"] .tab { color: #f3e8ff; }
 html[data-skin="violet"] .tab[aria-current="page"] { background: #c084fc; color: #1b0b2e; }
+html[data-skin="violet"] .chrome .tab:not([aria-current="page"]),
+html[data-skin="violet"] .chrome .tab:not([aria-current="page"]) .tab-label {
+  color: #f3e8ff;
+}
+html[data-skin="violet"] .chrome .tab:not([aria-current="page"]):hover,
+html[data-skin="violet"] .chrome .tab:not([aria-current="page"]):hover .tab-label {
+  color: #f3e8ff;
+  background: rgba(192, 132, 252, 0.28);
+}
 html[data-skin="violet"] .foot { background: #1b0b2e; color: #e9d5ff; border-top: 2px solid #2e1065; }
 html[data-skin="violet"] .pillow {
   background: #2e1065;
@@ -172,6 +200,26 @@ html[data-skin="violet"] .pillow {
   box-shadow: 0 6px 0 #581c87;
 }
 html[data-skin="violet"] .play-btn { background: #22d3ee; color: #1b0b2e; border-color: #22d3ee; }
+
+html[data-skin="cosmic"] .face-card,
+html[data-skin="violet"] .face-card {
+  background: #fff;
+}
+html[data-skin="cosmic"] .face-card .face-name {
+  color: #0f172a;
+}
+html[data-skin="violet"] .face-card .face-name {
+  color: #1b0b2e;
+}
+html[data-skin="violet"] .cta--next .play-big,
+html[data-skin="violet"] .cta--next .play-small,
+html[data-skin="violet"] .progress-title,
+html[data-skin="violet"] .progress-sub {
+  color: #1b0b2e;
+}
+html[data-skin="violet"] .progress-wrap {
+  background: #fff;
+}
 
 html[data-skin="cosmic"] .hub-hero-panel { background: #182258; border-color: #0ea5e9; box-shadow: 8px 8px 0 #0b3a55; }
 html[data-skin="cosmic"] .hub-online { background: #f59e0b; }
@@ -260,3 +308,28 @@ html[data-skin="violet"] .lucy-hello-sound-letter {
   border-color: #c084fc;
 }
 html[data-skin="violet"] .lucy-hello-sound { background: #22d3ee; color: #1b0b2e; }
+
+/* Narrow phones: five icon tabs must fit without clipping (play.css rows). */
+@media (max-width: 420px) {
+  html[data-skin="comic"] .chrome .tab,
+  html:not([data-skin]) .chrome .tab {
+    min-width: 0;
+    min-height: 44px;
+    flex: 1 1 0;
+    width: 0;
+    padding: 3px;
+    border-width: 2.5px;
+    box-shadow: 1.5px 1.5px 0 #000000;
+  }
+  html[data-skin="comic"] .chrome .tabs,
+  html:not([data-skin]) .chrome .tabs {
+    padding: 3px;
+    gap: 2px;
+    justify-content: stretch;
+  }
+  html[data-skin="comic"] .chrome .tab svg,
+  html:not([data-skin]) .chrome .tab svg {
+    width: 18px;
+    height: 18px;
+  }
+}

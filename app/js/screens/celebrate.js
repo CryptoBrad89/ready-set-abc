@@ -12,8 +12,9 @@ import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
 import { store } from '../store.js';
 import { toggleWear, wornHas, wornOutfitId, nextTreat, nextTreatNudge } from '../closet.js';
-import { burstConfetti } from '../motion.js';
+import { burstConfetti, resetConfetti } from '../motion.js';
 import * as round from '../round.js';
+import { soundAtEnd, soundPhrase } from '../data.js';
 
 export const chrome = { tabs: true, tab: 'home', who: true };
 
@@ -22,14 +23,70 @@ const CELEBRATE_MS = 8000;   // hard cap on the party (PLAN: ≤8s, skippable)
 
 let timers = [];
 let keyHandler = null;
+let fitObserver = null;
+let fitGen = 0;
+
+/* The column is one scale, not a frame. It already fills the stage. A short
+   screen shrinks stars, Lucy, the trophy, the pouch, and Next together so
+   the letter stays between the yellow bars and is never cropped. */
+function fitColumn(root) {
+  const column = root.querySelector('.celebrate-col');
+  if (!column || !root.isConnected) return;
+  /* Phone + short landscape: reflow in CSS — do not scale the whole column. */
+  if (window.matchMedia('(max-width: 520px), (orientation: landscape) and (max-height: 440px)').matches) {
+    column.style.transform = '';
+    return;
+  }
+  const style = getComputedStyle(root);
+  const availableH = root.clientHeight
+    - parseFloat(style.paddingTop)
+    - parseFloat(style.paddingBottom);
+  const availableW = root.clientWidth
+    - parseFloat(style.paddingLeft)
+    - parseFloat(style.paddingRight);
+  const neededH = column.offsetHeight;
+  const neededW = column.offsetWidth;
+  if (!availableH || !neededH || !availableW || !neededW) return;
+  const scaleH = availableH / neededH;
+  const scaleW = availableW / neededW;
+  const fitted = Math.max(0.01, Math.min(
+    (availableW - 2) / neededW,
+    (availableH - 2) / neededH,
+  ));
+  const next = Math.min(scaleH, scaleW) < 0.995 ? `scale(${fitted.toFixed(4)})` : '';
+  if (column.style.transform !== next) column.style.transform = next;
+}
+
+function bindFit(root) {
+  const gen = ++fitGen;
+  if (fitObserver) fitObserver.disconnect();
+  const run = () => {
+    if (gen !== fitGen) return;
+    fitColumn(root);
+  };
+  if (typeof ResizeObserver === 'function') {
+    fitObserver = new ResizeObserver(run);
+    fitObserver.observe(root);
+  }
+  if (typeof requestAnimationFrame === 'function') requestAnimationFrame(run);
+  if (typeof document !== 'undefined' && document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(run);
+  }
+}
 
 export function teardown() {
+  fitGen += 1;
+  if (fitObserver) {
+    fitObserver.disconnect();
+    fitObserver = null;
+  }
   timers.forEach(clearTimeout);
   timers = [];
   if (keyHandler) {
     document.removeEventListener('keydown', keyHandler);
     keyHandler = null;
   }
+  resetConfetti();
 }
 
 export function render(ctx) {
@@ -40,8 +97,8 @@ export function render(ctx) {
   const stars = r.results[entry.letter] !== undefined ? r.results[entry.letter] : round.bankLetter();
   const isLast = r.index >= r.letters.length - 1;
   /* Mid-round this is the next letter in the set; at the end of a round it is
-     the ABC cursor (nextAbcIndex) or the pin — so the button names the letter
-     that actually opens, instead of a vague "Play again". */
+     this child's next letter (profile.nextLetter) — so the button names the
+     letter that actually opens, instead of a vague "Play again". */
   const nextEntry = round.upNextLetter();
   const pic = round.currentPicture() || { word: entry.word, emoji: entry.emoji, letter: entry.letter };
   const sticker = r.sticker || null;
@@ -122,14 +179,12 @@ export function render(ctx) {
     ` Bonus: ${bonus.label}${bonus.done ? ' ✓' : ' · skipped'}`)
     : null;
 
-  /* Everything above the buttons shares one scroller. The trophy is a fixed
-     lump of a card and on a 768px Chromebook it used to overflow its grid row
-     and sit on top of the Star Pouch hand-off underneath it. Now it pushes
-     instead of covering, and the Next button never leaves the screen. */
-  const scroll = el('div', { class: 'celebrate-scroll' });
-  root.append(scroll);
+  /* One column for the whole party. It fills the stage between the yellow
+     bars. A short screen scales this column; there is no scroll frame and
+     no box that crops the letter. */
+  const column = el('div', { class: 'celebrate-col' });
 
-  scroll.append(el('div', { class: 'celebrate-head' },
+  column.append(el('div', { class: 'celebrate-head' },
     skipBtn,
     tray,
     el('div', { class: 'celebrate-tags' }, tag, bonusChip),
@@ -173,16 +228,18 @@ export function render(ctx) {
           el('span', { class: 'up' }, entry.letter),
           el('span', { class: 'low' }, entry.lower),
         ),
-        el('p', { class: 'trophy-isfor' }, 'is for ', el('b', {}, pic.word)),
+        el('p', { class: 'trophy-isfor' }, el('b', {}, soundPhrase(entry, pic.word))),
         el('p', { class: 'trophy-sound' }, 'Phonic sound: ',
-          el('b', {}, `${entry.phoneme} ${entry.phoneme} ${pic.word}`)),
+          el('b', {}, soundAtEnd(entry)
+            ? `${pic.word} ends with ${entry.phoneme}`
+            : `${entry.phoneme} ${entry.phoneme} ${pic.word}`)),
         hearAgain,
       ),
     ),
     el('div', { class: 'trophy-confetti' }),
   );
 
-  scroll.append(el('div', { class: 'celebrate-body' },
+  column.append(el('div', { class: 'celebrate-body' },
     el('div', { class: 'celebrate-lucy' }, lucy.bubble, lucy.stage),
     trophy,
   ));
@@ -252,10 +309,9 @@ export function render(ctx) {
     }
   }
 
-  /* Pinned under the scroller, not inside it: on a 1366x768 cart Chromebook
-     the stars and the trophy already fill the box, and a hand-off a four year
-     old has to scroll to find is a hand-off that never happens. */
-  if (pouchRow.childNodes.length) root.append(pouchRow);
+  /* Same column as the trophy, so New Sticker and Lucy's Closet shrink
+     with the letter instead of sitting under a separate frame. */
+  if (pouchRow.childNodes.length) column.append(pouchRow);
 
   /* --- actions + round rail -------------------------------------------- */
   const againBtn = el('button', { class: 'pillow cta cta--quiet', type: 'button' },
@@ -298,7 +354,7 @@ export function render(ctx) {
     rail.append(badge);
   });
 
-  root.append(el('div', { class: 'celebrate-actions' },
+  column.append(el('div', { class: 'celebrate-actions' },
     el('div', { class: 'celebrate-buttons' }, againBtn, nextBtn),
     el('div', { class: 'progress-wrap' },
       el('div', { class: 'progress-copy' },
@@ -313,6 +369,9 @@ export function render(ctx) {
       rail,
     ),
   ));
+
+  root.append(column);
+  bindFit(root);
 
   wait(() => audio.cheer(), 400);
   if (treat) wait(() => lucy.say(`You opened ${treat.name} for me! Put it on?`), 2600);

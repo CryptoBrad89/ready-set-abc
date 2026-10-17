@@ -7,28 +7,18 @@
    case/picture board and the rotating bonus are not on the kid PLAY path.
    Bonus helpers stay so Grown-Ups CSV / leftover screens do not crash. */
 
-import { letterByChar, letters, awakeLetters, distractors, shuffle, pickPicture, picturesFor } from './data.js';
+import { letterByChar, distractors, shuffle, pickPicture, picturesFor, pictureMatchesTaughtSound } from './data.js';
 import { buildBonus, BONUS_MODES } from './bonus.js';
 import { newlyUnlocked } from './closet.js';
-import { playStartLetter, markBeat, firstIncomplete, isPlayable } from './clouds.js';
-import { isLetterOpen, startLetter } from './profile.js';
+import { markBeat, firstIncomplete, isPlayable } from './clouds.js';
+import { nextLetter as nextWorkLetter, roundLetters } from './profile.js';
 import { store } from './store.js';
 
 export const STEPS = ['meet', 'choose', 'listen', 'payoff', 'celebrate'];
 export const BEATS = ['meet', 'choose', 'listen', 'payoff'];
 
 let round = null;
-
-function letterSequence(startAt, size) {
-  const awake = letters().map((l) => l.letter).filter((L) => isLetterOpen(L));
-  const pool = awake.length ? awake : ['P'];
-  let i = pool.indexOf(startAt);
-  if (i < 0) i = 0;
-  const n = Math.max(1, Math.min(size, pool.length));
-  const seq = [];
-  for (let k = 0; k < n; k += 1) seq.push(pool[(i + k) % pool.length]);
-  return seq;
-}
+let serial = 0;
 
 function freezeSettings() {
   const s = store.getSettings();
@@ -46,23 +36,25 @@ const MINIS = ['case', 'picture'];
 
 export function startRound({ startAt = null, step = 'meet', mode = 'loop' } = {}) {
   const frozen = freezeSettings();
-  const asked = String(startAt || '').toUpperCase();
-  const first = asked && isLetterOpen(asked) ? asked : playStartLetter(startAt);
+  const first = nextWorkLetter(undefined, startAt);
   const wantStep = STEPS.includes(step) || MINIS.includes(step) ? step : 'meet';
+  serial += 1;
   round = {
-    letters: letterSequence(first, mode === 'once' ? 1 : frozen.roundSize),
+    id: serial,
+    letters: roundLetters(first, mode === 'once' ? 1 : frozen.roundSize),
     index: 0,
     step: wantStep,
     mode: mode === 'once' ? 'once' : 'loop',
+    fullRun: wantStep === 'meet',
     misses: 0,
     hinted: false,
     results: {},
     trial: null,
+    trialSeq: 0,
     bonus: null,
     sticker: null,
     unlockedTreat: null,
     matchedPicture: null,
-    cursorMoved: null,
     roundSize: frozen.roundSize,
     choiceCount: frozen.choiceCount,
     caseMode: frozen.caseMode,
@@ -74,14 +66,18 @@ export function startRound({ startAt = null, step = 'meet', mode = 'loop' } = {}
 }
 
 export function previewLetters() {
-  const frozen = freezeSettings();
-  const first = startLetter(playStartLetter());
-  return letterSequence(first, frozen.roundSize);
+  return roundLetters(nextWorkLetter(), freezeSettings().roundSize);
 }
 
 export function upNextLetter() {
   if (round && round.index < round.letters.length - 1) return round.letters[round.index + 1];
-  return playStartLetter();
+  return nextWorkLetter();
+}
+
+/* Which round and which trial a delayed callback was scheduled for. */
+export function trialToken() {
+  if (!round || !round.trial) return null;
+  return `${round.id}:${round.index}:${round.step}:${round.trialSeq}`;
 }
 
 export function getRound() { return round; }
@@ -100,13 +96,6 @@ export function currentPicture() {
     || pickPicture(round.letters[round.index]);
 }
 
-function advanceCursorPast(letter) {
-  if (!letter || store.getPinnedLetter()) return;
-  const awake = awakeLetters().map((l) => l.letter);
-  const at = awake.indexOf(letter);
-  if (at >= 0) store.setCursor(awake[(at + 1) % awake.length]);
-}
-
 function huntFor(mode) {
   if (mode === 'upper' || mode === 'lower') return mode;
   return Math.random() < 0.5 ? 'lower' : 'upper';
@@ -119,11 +108,11 @@ function buildChooseTrial(entry) {
   const letters = doubleUp
     ? shuffle([entry.letter, entry.letter, ...others.slice(0, count - 2).map((o) => o.letter)])
     : shuffle([entry.letter, ...others.slice(0, count - 1).map((o) => o.letter)]);
-  const targets = letters.filter((L) => L === entry.letter);
   const choices = letters.map((L, i) => {
     const item = letterByChar(L) || { letter: L, lower: String(L).toLowerCase(), word: '' };
     return { ...item, id: `${L}-${i}`, target: L === entry.letter };
   });
+  const targets = choices.filter((c) => c.target).map((c) => c.id);
   round.trial = {
     kind: 'choose',
     answer: entry.letter,
@@ -137,7 +126,52 @@ function buildChooseTrial(entry) {
   return round.trial;
 }
 
+/* Every awake letter deals three pictures whose words start with different
+   letters. Wrong taps replay that picture's starting phoneme. */
+export function usesPictureListen(letter) {
+  return !!letterByChar(letter);
+}
+
+/* Two pictures whose words do not match this letter's taught sound. */
+function listenFoils(entry, n) {
+  const foils = [];
+  const seen = new Set();
+  const bag = distractors(entry.letter, 25);
+  for (let i = 0; i < bag.length && foils.length < n; i += 1) {
+    const pic = pickPicture(bag[i].letter);
+    if (!pic || !pic.word || pictureMatchesTaughtSound(entry, pic)) continue;
+    const key = `${pic.letter}:${pic.id}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    foils.push(pic);
+  }
+  return foils;
+}
+
+/* First set: one picture that starts with the letter, two that do not.
+   choiceId is the tap id. picture.id stays the art id. */
+function buildListenPictureTrial(entry) {
+  const target = pickPicture(entry.letter);
+  const pictures = shuffle([
+    { ...target, target: true },
+    ...listenFoils(entry, 2).map((pic) => ({ ...pic, target: false })),
+  ]).map((pic, i) => ({
+    ...pic,
+    choiceId: `listen-${pic.letter}-${pic.id}-${i}`,
+  }));
+  round.trial = {
+    kind: 'listen',
+    answer: entry.letter,
+    pictures,
+    selected: null,
+    locked: false,
+    picture: target,
+  };
+  return round.trial;
+}
+
 function buildListenTrial(entry) {
+  if (usesPictureListen(entry.letter)) return buildListenPictureTrial(entry);
   const orbs = [
     { id: 'orb-a', target: false },
     { id: 'orb-b', target: false },
@@ -159,7 +193,7 @@ function buildListenTrial(entry) {
 function buildPayoffTrial(entry) {
   const pool = picturesFor(entry.letter);
   const first = pickPicture(entry.letter);
-  const second = pool.find((p) => p.id !== first.id) || pickPicture(entry.letter, { exclude: [first] });
+  const second = pool.find((p) => p.id !== first.id) || null;
   const plates = [first, second].filter(Boolean);
   round.matchedPicture = first;
   round.trial = {
@@ -196,6 +230,7 @@ export function buildTrial() {
   if (!round) return null;
   const entry = currentLetter();
   if (!entry) return null;
+  round.trialSeq += 1;
   if (round.step === 'choose') return buildChooseTrial(entry);
   if (round.step === 'listen') return buildListenTrial(entry);
   if (round.step === 'payoff') return buildPayoffTrial(entry);
@@ -217,15 +252,27 @@ export function select(letter) {
   round.trial.selected = letter;
 }
 
-export function tapChoose(letter) {
+/* One card, one find. Pass the choice id the child tapped; a letter is
+   accepted for callers that have no card, and takes the next unfound one.
+   A card that was already found is ignored, so two taps on the same A
+   cannot satisfy a "find both" board. */
+export function tapChoose(choiceOrLetter) {
   if (!round || round.step !== 'choose' || !round.trial || round.trial.locked) return null;
-  const L = String(letter || '').toUpperCase();
-  const remaining = round.trial.targets.length - round.trial.found.length;
-  if (L === round.trial.answer && remaining > 0) {
-    round.trial.found.push(L);
-    round.trial.selected = L;
-    if (round.trial.found.length >= round.trial.targets.length) {
-      round.trial.locked = true;
+  const t = round.trial;
+  const raw = String(choiceOrLetter || '');
+  let choice = t.choices.find((c) => c.id === raw);
+  if (!choice) {
+    const L = raw.toUpperCase();
+    choice = t.choices.find((c) => c.letter === L && c.target && !t.found.includes(c.id))
+      || t.choices.find((c) => c.letter === L);
+  }
+  if (!choice) return null;
+  if (t.found.includes(choice.id)) return null;
+  if (choice.target) {
+    t.found.push(choice.id);
+    t.selected = choice.id;
+    if (t.found.length >= t.targets.length) {
+      t.locked = true;
       return 'right';
     }
     return 'collect';
@@ -238,10 +285,13 @@ export function tapChoose(letter) {
 
 export function tapListen(id) {
   if (!round || round.step !== 'listen' || !round.trial || round.trial.locked) return null;
-  const orb = round.trial.orbs.find((o) => o.id === id);
-  if (!orb) return null;
+  const pictures = round.trial.pictures;
+  const choices = pictures || round.trial.orbs;
+  if (!Array.isArray(choices)) return null;
+  const choice = choices.find((item) => (pictures ? item.choiceId : item.id) === id);
+  if (!choice) return null;
   round.trial.selected = id;
-  if (orb.target) {
+  if (choice.target) {
     round.trial.locked = true;
     return 'right';
   }
@@ -417,11 +467,12 @@ export function bankLetter() {
   round.sticker = { picture, isNew: store.awardSticker(picture) };
   round.unlockedTreat = newlyUnlocked(starsBefore, store.totalStars())[0] || null;
   if (store.progressMode() !== 'none') {
-    store.recordRound(store.isClassroom() ? store.getKidId() : null, entry.letter, stars);
+    store.recordRound(store.starsOwner(), entry.letter, stars);
   }
-  if (firstBank && round.cursorMoved !== entry.letter) {
-    advanceCursorPast(entry.letter);
-    round.cursorMoved = entry.letter;
+  /* Only a run that went meet → payoff counts toward mastery, and only one
+     that needed no hint and stayed under three misses counts as independent. */
+  if (firstBank && round.fullRun && store.beatsFor(entry.letter) >= 4) {
+    store.recordCompletion(entry.letter, { independent: !round.hinted && round.misses < 3 });
   }
   return stars;
 }
@@ -437,7 +488,7 @@ export function nextLetter() {
   round.bonus = null;
   round.sticker = null;
   round.unlockedTreat = null;
-  round.cursorMoved = null;
+  round.fullRun = true;
   buildTrial();
   return true;
 }
@@ -461,6 +512,7 @@ export function replayLetter() {
   round.bonus = null;
   round.sticker = null;
   round.unlockedTreat = null;
+  round.fullRun = true;
   buildTrial();
 }
 
@@ -474,4 +526,4 @@ export function roundProgress() {
   }));
 }
 
-export { isPlayable, firstIncomplete, playStartLetter };
+export { isPlayable, firstIncomplete };

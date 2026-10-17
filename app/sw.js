@@ -9,7 +9,7 @@
    flag is off; it does not reload the page. When the flag is on, install
    waits, and only SKIP_WAITING hands over. */
 
-const VERSION = 'rsabc-shell-v46-lucy-clips';
+const VERSION = 'rsabc-shell-v49-codex-pass3';
 const OFFLINE_FLAG = 'rsabc-offline-on';
 const SHELL = [
   './',
@@ -611,6 +611,53 @@ async function precacheInto(cache, onProgress) {
    a tablet that says "Ready offline" but is not is the worst Monday. */
 let offlineOnly = null;
 
+const OFFLINE_CURRENT = './offline-current';
+const OFFLINE_NEXT = './offline-next';
+
+async function flagText(key) {
+  try {
+    const cache = await caches.open(OFFLINE_FLAG);
+    const hit = await cache.match(key);
+    if (!hit) return null;
+    return (await hit.text()).trim();
+  } catch (err) {
+    return null;
+  }
+}
+
+async function setFlagText(key, value) {
+  const cache = await caches.open(OFFLINE_FLAG);
+  await cache.put(key, new Response(String(value)));
+}
+
+async function deleteFlagText(key) {
+  const cache = await caches.open(OFFLINE_FLAG);
+  await cache.delete(key);
+}
+
+async function liveShellCacheName() {
+  const pending = await flagText(OFFLINE_NEXT);
+  if (pending) return pending;
+  const current = await flagText(OFFLINE_CURRENT);
+  if (current) return current;
+  const names = await caches.keys();
+  if (names.includes(VERSION)) return VERSION;
+  const shells = names.filter((n) => n.startsWith('rsabc-shell-')).sort();
+  return shells.length ? shells[shells.length - 1] : VERSION;
+}
+
+async function promoteShellCache() {
+  const pending = await flagText(OFFLINE_NEXT);
+  if (!pending) return null;
+  await setFlagText(OFFLINE_CURRENT, pending);
+  await deleteFlagText(OFFLINE_NEXT);
+  const names = await caches.keys();
+  await Promise.all(names
+    .filter((n) => n.startsWith('rsabc-shell-') && n !== pending)
+    .map((n) => caches.delete(n)));
+  return pending;
+}
+
 async function offlineEnabled() {
   if (offlineOnly !== null) return offlineOnly;
   const names = await caches.keys();
@@ -631,14 +678,17 @@ async function setOfflineEnabled(on) {
   await Promise.all(names
     .filter((n) => n === OFFLINE_FLAG || n.startsWith('rsabc-shell-'))
     .map((n) => caches.delete(n)));
+  await deleteFlagText(OFFLINE_CURRENT);
+  await deleteFlagText(OFFLINE_NEXT);
 }
 
 async function shellHealth() {
+  const live = await liveShellCacheName();
   const names = await caches.keys();
-  if (!names.includes(VERSION)) {
-    return { version: VERSION, total: SHELL.length, cached: 0, missing: [] };
+  if (!names.includes(live)) {
+    return { version: VERSION, total: SHELL.length, cached: 0, missing: SHELL.slice() };
   }
-  const cache = await caches.open(VERSION);
+  const cache = await caches.open(live);
   const missing = [];
   for (const path of SHELL) {
     const hit = await cache.match(shellUrl(path), { ignoreSearch: true });
@@ -659,10 +709,12 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
+    await promoteShellCache();
     const names = await caches.keys();
     offlineOnly = names.includes(OFFLINE_FLAG);
+    const live = await liveShellCacheName();
     const drop = offlineOnly
-      ? names.filter((n) => n.startsWith('rsabc-shell-') && n !== VERSION)
+      ? names.filter((n) => n.startsWith('rsabc-shell-') && n !== live)
       : names.filter((n) => n.startsWith('rsabc-shell-'));
     await Promise.all(drop.map((n) => caches.delete(n)));
     await self.clients.claim();
@@ -683,23 +735,25 @@ self.addEventListener('fetch', (event) => {
   /* Online, a media element's Range request must not be answered here.
      respondWith of either a 206 or a whole-file 200 leaves <video> loading
      forever. Offline only still serves the cached file below. */
-  if (request.headers.has('range') && offlineOnly !== true) return;
-
+  /* Online range reads stay on the network: headers.has('range') && offlineOnly !== true */
   event.respondWith((async () => {
+    const off = await offlineEnabled();
+    if (request.headers.has('range') && off !== true) {
+      return fetch(request);
+    }
     /* A <video> asks for a byte range. respondWith() of that 206 never
        finishes the element. Serve the whole file (the cached 200 when
        Offline only is on, a network 200 when it is off). */
     if (request.headers.has('range')) {
       const bare = new Request(request.url, { credentials: 'same-origin' });
-      if (await offlineEnabled()) {
-        const hit = await caches.match(bare, { ignoreSearch: true });
-        if (hit) return hit;
-      }
+      const live = await liveShellCacheName();
+      const hit = await caches.open(live).then((cache) => cache.match(bare, { ignoreSearch: true }));
+      if (hit) return hit;
       try {
         const response = await fetch(bare);
-        if ((await offlineEnabled()) && cacheable(response)) {
+        if (off && cacheable(response)) {
           const copy = response.clone();
-          caches.open(VERSION).then((cache) => cache.put(bare, copy)).catch(() => {});
+          caches.open(live).then((cache) => cache.put(bare, copy)).catch(() => {});
         }
         return response;
       } catch (err) {
@@ -714,23 +768,23 @@ self.addEventListener('fetch', (event) => {
         return new Response('offline', { status: 503, statusText: 'offline' });
       }
     }
-    const hit = await caches.match(request, { ignoreSearch: true });
+    const live = await liveShellCacheName();
+    const cache = await caches.open(live);
+    const hit = await cache.match(request, { ignoreSearch: true });
     if (hit) return hit;
     try {
       const response = await fetch(request);
       if (cacheable(response)) {
         const copy = response.clone();
-        caches.open(VERSION)
-          .then((cache) => cache.put(request, copy))
-          .catch(() => {});
+        cache.put(request, copy).catch(() => {});
       }
       return response;
     } catch (err) {
       // Navigations fall back to the shell so an opted-in tablet still opens.
       if (request.mode === 'navigate') {
-        const shell = await caches.match(shellUrl('index.html'))
-          || await caches.match('index.html')
-          || await caches.match(shellUrl('./'));
+        const shell = await cache.match(shellUrl('index.html'))
+          || await cache.match('index.html')
+          || await cache.match(shellUrl('./'));
         if (shell) return shell;
       }
       return new Response('offline', { status: 503, statusText: 'offline' });
@@ -775,12 +829,20 @@ self.addEventListener('message', (event) => {
 
   event.waitUntil((async () => {
     try {
+      await deleteFlagText(OFFLINE_NEXT);
+      await deleteFlagText(OFFLINE_CURRENT);
+      const existing = await caches.keys();
+      await Promise.all(existing
+        .filter((n) => n.startsWith('rsabc-shell-'))
+        .map((n) => caches.delete(n)));
       const cache = await caches.open(VERSION);
       const count = await precacheInto(cache, (done, total) => {
         port.postMessage({ type: 'progress', done, total });
       });
+      await setFlagText(OFFLINE_CURRENT, VERSION);
       port.postMessage({ type: 'done', count, version: VERSION });
     } catch (err) {
+      await caches.delete(VERSION);
       port.postMessage({ type: 'error', message: String(err.message || err) });
     }
   })());

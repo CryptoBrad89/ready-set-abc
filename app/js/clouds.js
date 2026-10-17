@@ -1,8 +1,14 @@
 /* SATPIN cloud path. Content lists five clouds; only unlocked clouds are
    playable. A letter is "awake" for play when it sits in an unlocked cloud.
-   Teacher pin only starts PLAY when that letter is in the open cloud. */
 
-import { store } from './store.js';
+   Completed is not mastered. A letter is completed the first time a child
+   runs all four beats in order. It is mastered after MASTERY_RUNS of those
+   runs went without a hint, or when a grown-up marks it mastered. Only
+   mastery opens the next cloud; a grown-up can still open clouds by hand. */
+
+import { store, MASTERY_RUNS } from './store.js';
+
+export { MASTERY_RUNS };
 
 const cache = { clouds: [] };
 
@@ -62,14 +68,22 @@ export function setBeats(letter, n) {
   store.setBeats(letter, n);
 }
 
+/* Beats only climb one at a time. A round opened on listen (the Home sound
+   card) does not claim that meet and choose happened. */
 export function markBeat(letter, beatIndex) {
-  const next = Math.max(store.beatsFor(letter), beatIndex);
+  const have = store.beatsFor(letter);
+  if (beatIndex > have + 1) return have;
+  const next = Math.max(have, beatIndex);
   store.setBeats(letter, next);
   return next;
 }
 
-export function letterMastered(ch) {
+export function letterCompleted(ch) {
   return store.beatsFor(ch) >= 4;
+}
+
+export function letterMastered(ch) {
+  return store.isMastered(ch);
 }
 
 export function cloudMastered(id) {
@@ -92,26 +106,8 @@ export function isPlayable(ch) {
 }
 
 export function firstIncomplete(cloud = openCloud()) {
-  if (!cloud) return 'P';
-  const hole = cloud.letters.find((L) => !letterMastered(L));
-  return hole || cloud.letters[0];
-}
-
-/* Pin is a highlight inside the open cloud. If the pin is outside it, PLAY
-   ignores it and starts at the first incomplete letter of the open cloud. */
-export function playStartLetter(want = null) {
-  const open = openCloud();
-  const asked = String(want || '').toUpperCase();
-  if (asked && isPlayable(asked)) return asked;
-  const pin = store.getPinnedLetter();
-  if (pin && open && open.letters.includes(pin)) return pin;
-  const cursor = store.getCursor();
-  if (cursor && isPlayable(cursor)) return cursor;
-  return firstIncomplete(open);
-}
-
-export function pinInOpenCloud() {
-  const pin = store.getPinnedLetter();
-  const open = openCloud();
-  return pin && open && open.letters.includes(pin) ? pin : null;
+  if (!cloud) return 'S';
+  return cloud.letters.find((L) => !letterCompleted(L))
+    || cloud.letters.find((L) => !letterMastered(L))
+    || cloud.letters[0];
 }

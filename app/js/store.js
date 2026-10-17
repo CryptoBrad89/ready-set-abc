@@ -24,8 +24,12 @@ export const KEYS = {
   offlineOnly: 'offlineOnly',   // grown-up opt-in; default off (online only)
   notes: 'notes',               // { kidId: string } roster notes, this device
   beats: 'beats',               // { kidId|_device: { P: 4, S: 2 } } 0–4 SATPIN beats
+  mastery: 'mastery',           // { kidId|_device: { S: { runs, clean, approved } } }
   skin: 'skin',                 // comic (light hub) | cosmic | violet
 };
+
+/* Full runs without a hint before a letter counts as mastered (js/clouds.js). */
+export const MASTERY_RUNS = 2;
 
 const MODES = ['center', 'small-group', 'whiteboard'];
 const SKINS = ['comic', 'cosmic', 'violet'];
@@ -363,6 +367,43 @@ export const store = {
     write(KEYS.beats, all);
   },
 
+  /* Completed ≠ mastered. `runs` counts full four-beat finishes, `clean`
+     the ones with no hint, `approved` is a grown-up's say-so. */
+  masteryFor(letter, owner = store.starsOwner()) {
+    const L = String(letter || '').toUpperCase();
+    const rec = (read(KEYS.mastery, {})[owner] || {})[L] || {};
+    return { runs: Number(rec.runs) || 0, clean: Number(rec.clean) || 0, approved: rec.approved === true };
+  },
+  isMastered(letter, owner = store.starsOwner()) {
+    const m = store.masteryFor(letter, owner);
+    return m.approved || m.clean >= MASTERY_RUNS;
+  },
+  recordCompletion(letter, { independent = false } = {}, owner = store.starsOwner()) {
+    const L = String(letter || '').toUpperCase();
+    if (!/^[A-Z]$/.test(L)) return;
+    const all = read(KEYS.mastery, {});
+    const mine = { ...(all[owner] || {}) };
+    const prev = store.masteryFor(L, owner);
+    mine[L] = { ...prev, runs: prev.runs + 1, clean: prev.clean + (independent ? 1 : 0) };
+    all[owner] = mine;
+    write(KEYS.mastery, all);
+  },
+  approvedLetters(owner = store.starsOwner()) {
+    const mine = read(KEYS.mastery, {})[owner] || {};
+    return Object.keys(mine).filter((L) => mine[L] && mine[L].approved === true).sort();
+  },
+  setApprovedLetters(owner, list) {
+    if (!owner) return;
+    const want = new Set(sanitizeLetterList(list));
+    const all = read(KEYS.mastery, {});
+    const mine = { ...(all[owner] || {}) };
+    new Set([...Object.keys(mine), ...want]).forEach((L) => {
+      mine[L] = { ...store.masteryFor(L, owner), approved: want.has(L) };
+    });
+    all[owner] = mine;
+    write(KEYS.mastery, all);
+  },
+
   /* --- roster notes (Grown-Ups Class tab, this device only, never synced) */
   getNotes() { return read(KEYS.notes, {}); },
   getNote(kidId) { return (read(KEYS.notes, {})[kidId] || ''); },
@@ -407,6 +448,7 @@ export const store = {
       stickers: clone(read(KEYS.stickers, {})),
       progress: clone(store.getProgress()),
       beats: clone(read(KEYS.beats, {})),
+      mastery: clone(read(KEYS.mastery, {})),
     };
   },
   importSnapshot(snap) {
@@ -455,6 +497,7 @@ export const store = {
     write(KEYS.stickers, sanitizeStickerMap(snap.stickers));
     write(KEYS.progress, sanitizeProgressMap(snap.progress));
     write(KEYS.beats, sanitizeBeatsMap(snap.beats));
+    write(KEYS.mastery, sanitizeMasteryMap(snap.mastery));
 
     const kidId = typeof snap.kidId === 'string' && snap.kidId ? snap.kidId : null;
     if (kidId) write(KEYS.kid, kidId);
@@ -640,6 +683,27 @@ function sanitizeProgressMap(raw = {}) {
     const lastPlayed = typeof rec.lastPlayed === 'string' ? rec.lastPlayed.slice(0, 40) : null;
     if (!lastPlayed && !Object.keys(letters).length) return;
     out[owner] = { lastPlayed, letters };
+  });
+  return out;
+}
+
+function sanitizeMasteryMap(raw = {}) {
+  const out = {};
+  if (!raw || typeof raw !== 'object') return out;
+  Object.entries(raw).forEach(([owner, letters]) => {
+    if (!letters || typeof letters !== 'object') return;
+    const mine = {};
+    Object.entries(letters).forEach(([ch, rec]) => {
+      const letter = sanitizeLetter(ch);
+      if (!letter || !rec || typeof rec !== 'object') return;
+      const runs = sanitizeInt(rec.runs, 0, 0, 9999);
+      mine[letter] = {
+        runs,
+        clean: Math.min(runs, sanitizeInt(rec.clean, 0, 0, 9999)),
+        approved: sanitizeBool(rec.approved, false),
+      };
+    });
+    if (Object.keys(mine).length) out[owner] = mine;
   });
   return out;
 }

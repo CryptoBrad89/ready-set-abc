@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Ready Set ABC</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#FFB800">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -83,10 +83,11 @@
   <div id="print-root" aria-hidden="true"></div>
 
   <!-- Rotate nudge ----------------------------------------------------- -->
-  <div class="rotate" id="rotate">
-    <div>
-      <div id="rotate-icon"></div>
-      <p>Turn the tablet sideways</p>
+  <div class="rotate" id="rotate" aria-hidden="true">
+    <div class="rotate-card">
+      <div class="rotate-icon-wrap" id="rotate-icon"></div>
+      <p>Turn the tablet sideways for the biggest buttons.</p>
+      <button type="button" class="rotate-dismiss" id="rotate-dismiss">Play anyway</button>
     </div>
   </div>
 

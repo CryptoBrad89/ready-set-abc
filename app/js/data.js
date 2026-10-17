@@ -104,6 +104,29 @@ export function picturesFor(letter) {
   }];
 }
 
+/* X is taught as /ks/, which a picture word ends with rather than starts with. */
+export function soundAtEnd(entry) {
+  return !!(entry && entry.soundAt === 'end');
+}
+
+export function soundPhrase(entry, word) {
+  if (soundAtEnd(entry)) return `${word} ends with ${entry.phoneme || '/ks/'}`;
+  const sound = entry.phoneme || `/${entry.lower}/`;
+  return `${word} starts with ${sound}`;
+}
+
+export function pictureMatchesTaughtSound(entry, pic) {
+  if (!entry || !pic || !pic.word) return false;
+  const L = String(entry.letter || '').toUpperCase();
+  const w = String(pic.word).toLowerCase();
+  if (soundAtEnd(entry)) return /x$/.test(w);
+  if (w.charAt(0) !== L.toLowerCase()) return false;
+  if (L === 'S' && /^sh/.test(w)) return false;
+  if (L === 'K' && /^kn/.test(w)) return false;
+  if (L === 'C' && /^c[eiy]/.test(w)) return false;
+  return true;
+}
+
 export function pickPicture(letter, { exclude = [] } = {}) {
   const pool = picturesFor(letter);
   if (!pool.length) return null;

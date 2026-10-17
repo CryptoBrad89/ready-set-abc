@@ -248,7 +248,7 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
   }
   const stage = el('div', { class: `lucy-stage lucy-stage--${variant === 'card' ? 'card' : 'circle'}` }, well, sparkle, slot);
   stage.dataset.idle = 'idle';
-  mountLottie(sparkle, 'sparkle', { loop: true });
+  const sparklePlayer = mountLottie(sparkle, 'sparkle', { loop: true });
   const svg = well;
   svg.dataset.talking = 'false';
 
@@ -259,6 +259,38 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
     stage.append(btn);
   }
 
+  function startTalkAnim() {
+    svg.dataset.talking = 'true';
+    svg.dataset.pose = resting;
+    const photo = well.querySelector('img.lucy-photo');
+    if (photo) photo.classList.add('is-talking');
+    if (talkLoop && talkLoop.isConnected && resting !== 'celebrating') {
+      const playTalk = () => talkLoop.play().catch(() => {});
+      if (talkLoop.readyState >= 1 && talkLoop.currentTime > 0.05) {
+        talkLoop.addEventListener('seeked', playTalk, { once: true });
+        talkLoop.currentTime = 0;
+      } else {
+        playTalk();
+      }
+    }
+  }
+  function stopTalkAnim() {
+    svg.dataset.talking = 'false';
+    const photo = well.querySelector('img.lucy-photo');
+    if (photo) photo.classList.remove('is-talking');
+    if (talkLoop && talkLoop.isConnected) talkLoop.pause();
+  }
+  let followVoice = false;
+  const offVoice = audio.onVoiceActive((active) => {
+    if (!followVoice) return;
+    if (active) startTalkAnim();
+    else {
+      clearTimeout(timer);
+      stopTalkAnim();
+      followVoice = false;
+    }
+  });
+
   const api = {
     bubble,
     stage,
@@ -267,10 +299,8 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
       resting = next;
       paintLook(well, lucyLook({ outfit, cutout, pose: next }), next);
       clearTimeout(timer);
-      svg.dataset.talking = 'false';
-      const photo = well.querySelector('img.lucy-photo');
-      if (photo) photo.classList.remove('is-talking');
-      if (talkLoop && talkLoop.isConnected) talkLoop.pause();
+      followVoice = false;
+      stopTalkAnim();
       const live = next !== 'celebrating' && idleLoop && idleLoop.isConnected;
       well.classList.toggle('has-loop', !!live);
       if (live) idleLoop.play().catch(() => {});
@@ -280,33 +310,38 @@ export function createLucy({ state = 'idle', line = '', paw = null, variant = 'c
       paintLook(well, lucyLook({ cutout, pose: resting }), resting);
     },
     getOutfit() { return svg.dataset.wear || ''; },
-    say(text, { voice = false, hold = 2200 } = {}) {
+    say(text, { voice = false, hold = 2200, syncTalk = false } = {}) {
       const lineEl = bubble.querySelector('[data-line]') || bubble.querySelector('p');
       if (lineEl) lineEl.textContent = text;
       bubble.classList.remove('pulse');
       void bubble.offsetWidth;
       bubble.classList.add('pulse');
-      svg.dataset.talking = 'true';
-      svg.dataset.pose = resting;
-      const photo = well.querySelector('img.lucy-photo');
-      if (photo) photo.classList.add('is-talking');
-      if (talkLoop && talkLoop.isConnected && resting !== 'celebrating') {
-        const playTalk = () => talkLoop.play().catch(() => {});
-        if (talkLoop.readyState >= 1 && talkLoop.currentTime > 0.05) {
-          talkLoop.addEventListener('seeked', playTalk, { once: true });
-          talkLoop.currentTime = 0;
-        } else {
-          playTalk();
-        }
-      }
       clearTimeout(timer);
-      timer = setTimeout(() => {
-        svg.dataset.talking = 'false';
-        if (photo) photo.classList.remove('is-talking');
-        if (talkLoop && talkLoop.isConnected) talkLoop.pause();
-      }, hold);
+      followVoice = syncTalk || voice;
+      if (followVoice && audio.isVoiceActive()) startTalkAnim();
+      else if (!followVoice) {
+        startTalkAnim();
+        timer = setTimeout(() => stopTalkAnim(), hold);
+      } else {
+        timer = setTimeout(() => {
+          if (!audio.isVoiceActive()) {
+            stopTalkAnim();
+            followVoice = false;
+          }
+        }, hold);
+      }
       if (voice) audio.speak(text);
       api.lastLine = text;
+    },
+    dispose() {
+      offVoice();
+      clearTimeout(timer);
+      if (sparklePlayer && sparklePlayer.destroy) sparklePlayer.destroy();
+      [idleLoop, talkLoop].forEach((node) => {
+        if (!node) return;
+        try { node.pause(); } catch (err) { /* already stopped */ }
+        try { node.removeAttribute('src'); node.load(); } catch (err) { /* ignore */ }
+      });
     },
     replay() { if (api.lastLine) api.say(api.lastLine); },
     lastLine: line,

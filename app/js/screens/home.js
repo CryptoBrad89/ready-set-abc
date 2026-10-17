@@ -2,11 +2,11 @@ import { el, icon, pressable, picturePlate } from '../ui.js';
 import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
 import { store } from '../store.js';
-import { letterByChar, picturesFor, activeKid } from '../data.js';
-import { openCloud, beatsFor, pinInOpenCloud } from '../clouds.js';
+import { letterByChar, picturesFor, activeKid, soundAtEnd } from '../data.js';
+import { openCloud, beatsFor } from '../clouds.js';
 import { nextTreat, starsToNext, TREATS } from '../closet.js';
 import { startRound } from '../round.js';
-import { isArcadeLocked, startLetter, workLetters, workModeOf } from '../profile.js';
+import { isArcadeLocked, nextLetter, pinFor, roundLetters, workLetters, workModeOf } from '../profile.js';
 import { wobble } from '../motion.js';
 
 export const chrome = { tabs: true, tab: 'home', who: true };
@@ -45,7 +45,7 @@ function helloPeeks(entry) {
 function beginPlay(ctx, { startAt = null, step = 'meet', mode = 'loop' } = {}) {
   audio.unlock();
   audio.sfx('select');
-  startRound({ startAt: startAt || startLetter(), step, mode });
+  startRound({ startAt: startAt || nextLetter(), step, mode });
   ctx.go('play');
 }
 
@@ -58,17 +58,20 @@ function refuseArcade(node) {
 export function render(ctx) {
   const root = el('div', { class: 'hub' });
   const name = ctx.kid ? ctx.kid.name : 'friend';
-  const pick = startLetter('P');
+  const pick = nextLetter(ctx.kid);
   const pathLetters = workLetters(ctx.kid);
+  const after = roundLetters(pick, 2, ctx.kid)[1];
   const arcadeOff = isArcadeLocked(ctx.kid);
   const assigned = workModeOf(ctx.kid) === 'assigned';
   const pickEntry = letterByChar(pick) || { letter: pick, word: '', phoneme: '' };
   const cloud = openCloud();
-  const pin = pinInOpenCloud();
+  const pin = pinFor(ctx.kid);
   const stars = store.totalStars();
   const today = store.starsToday();
 
-  const helloLine = `Hi ${name}! Let's find words that start with ${pick}!`;
+  const helloLine = soundAtEnd(pickEntry)
+    ? `Hi ${name}! Let's find words that end with ${pickEntry.phoneme || '/ks/'}!`
+    : `Hi ${name}! Let's find words that start with ${pick}!`;
   const peeks = helloPeeks(pickEntry);
 
   const lucy = createLucy({
@@ -198,7 +201,7 @@ export function render(ctx) {
     'aria-label': `Play letter ${pick}. Tap to start sound.`,
   },
     el('span', { class: 'hub-badge' }, "Today's Star Mission"),
-    el('span', { class: 'hub-title' }, `Letters ${pick} & ${pathLetters[1] || 'A'} Workshop`),
+    el('span', { class: 'hub-title' }, after ? `Letters ${pick} & ${after} Workshop` : `Letter ${pick} Workshop`),
     el('span', { class: 'hub-sub' }, 'Meet Lucy, choose the letter, listen, then pictures.'),
     el('span', { class: 'hub-card-foot' },
       el('span', { class: 'hub-play-disc', 'aria-hidden': 'true' }, icon('play')),
@@ -317,8 +320,7 @@ export function render(ctx) {
   }, 'Discover more', icon('next'));
   pressable(discoverStories, () => ctx.go('stories'));
 
-  root.append(
-    el('section', { class: 'hub-hero-panel' },
+  const heroPanel = el('section', { class: 'hub-hero-panel' },
       el('span', { class: 'hub-online' },
         el('span', { class: `dot${online ? ' is-on' : ''}` }),
         online ? 'Explorer Station Online' : 'Sound waits for PLAY',
@@ -364,24 +366,24 @@ export function render(ctx) {
           ),
         ),
       ),
-    ),
-    el('div', { class: 'hub-section-row' },
+  );
+  const phonicsHead = el('div', { class: 'hub-section-row' },
       el('h2', { class: 'hub-section' },
         el('span', { class: 'hub-section-ico hub-section-ico--gold', 'aria-hidden': 'true' }, icon('flag')),
         'Phonics & Alphabet',
       ),
       discover,
+    );
+  const phonicsRow = el('div', { class: 'hub-row hub-row--phonics' }, playBtn, soundCard, satCard, matchCard);
+  const funHead = el('div', { class: 'hub-section-row hub-section-row--fun' },
+    el('h2', { class: 'hub-section' },
+      el('span', { class: 'hub-section-ico hub-section-ico--red', 'aria-hidden': 'true' }, icon('book')),
+      'Storybooks & Fun Games',
     ),
-    el('div', { class: 'hub-row hub-row--phonics' }, playBtn, soundCard, satCard, matchCard),
-    el('div', { class: 'hub-section-row' },
-      el('h2', { class: 'hub-section' },
-        el('span', { class: 'hub-section-ico hub-section-ico--red', 'aria-hidden': 'true' }, icon('book')),
-        'Storybooks & Fun Games',
-      ),
-      discoverStories,
-    ),
-    laterRow,
+    discoverStories,
   );
+  const playStack = el('div', { class: 'hub-play-stack' }, phonicsHead, phonicsRow, funHead, laterRow);
+  root.append(playStack, heroPanel);
   lucy.bubble.classList.add('hub-lucy-bubble');
   root.querySelector('.hub-lucy-card')?.prepend(lucy.bubble);
 

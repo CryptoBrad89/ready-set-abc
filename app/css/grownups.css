@@ -94,6 +94,7 @@
   overflow: hidden;
 }
 .gu-head {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: var(--space-sm);
@@ -122,11 +123,14 @@
 .gu-close:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--sunny-yellow-press); }
 
 .gu-tabs {
+  flex: 0 0 auto;
   display: flex;
   gap: 6px;
   padding: var(--space-xs) var(--space-lg) 0;
   background: var(--surface-container-lowest);
   overflow-x: auto;
+  flex-wrap: nowrap;
+  scrollbar-width: thin;
 }
 .gu-tab {
   min-height: 42px;
@@ -139,7 +143,64 @@
 }
 .gu-tab[aria-selected="true"] { background: var(--surface-container-low); color: var(--primary); }
 
+@media (max-width: 520px) {
+  .gu { width: min(100%, calc(100vw - 16px)); }
+  .gu-tabs {
+    flex-wrap: wrap;
+    overflow-x: hidden;
+    padding-inline: 8px;
+  }
+  .gu-tab {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0 8px;
+    text-align: center;
+  }
+}
+
 .gu-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: var(--space-lg); }
+
+@media (max-height: 520px), (orientation: landscape) and (max-height: 440px) {
+  .gu {
+    height: min(96vh, calc(100dvh - 12px));
+    max-height: calc(100dvh - 12px);
+  }
+  .gu-head { padding: var(--space-xs) var(--space-md); }
+  .gu-head h2 { font-size: 18px; }
+  .gu-tabs {
+    padding: 4px var(--space-md) 0;
+    gap: 4px;
+    flex-wrap: wrap;
+    row-gap: 2px;
+  }
+  .gu-tab {
+    min-height: 36px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+  .gu-body { padding: var(--space-sm) var(--space-md); }
+  .gu-card { padding: var(--space-sm); }
+  .gu-card h3 { font-size: 15px; margin-bottom: 2px; }
+  .gu-card p.note { font-size: 11px; margin-bottom: 6px; line-height: 1.25; }
+  .gu-row { padding: 6px 0; }
+  .gu-row .gu-label { font-size: 13px; }
+  .gu-row .gu-desc { font-size: 11px; }
+  .seg {
+    gap: 3px;
+    padding: 3px;
+    flex-wrap: nowrap;
+    max-width: 100%;
+  }
+  .seg button {
+    min-height: 34px;
+    padding: 0 8px;
+    font-size: 11px;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  /* Drop Hide chrome on short viewports so Kid look (Comic/Cosmic/Violet) stays in frame. */
+  .gu-panel .gu-card:first-child .gu-row:last-child { display: none; }
+}
 .gu-panel { display: flex; flex-direction: column; gap: var(--space-md); }
 .gu-card {
   background: var(--surface-container-lowest);

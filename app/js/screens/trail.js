@@ -3,11 +3,11 @@ import { letterByChar, activeKid } from '../data.js';
 import { createLucy } from '../lucy.js';
 import { store } from '../store.js';
 import { audio } from '../audio.js';
-import { startRound, playStartLetter } from '../round.js';
-import { isLetterOpen, startLetter, workLetters, workModeOf } from '../profile.js';
+import { startRound } from '../round.js';
+import { isLetterOpen, nextLetter, pinFor, workLetters, workModeOf } from '../profile.js';
 import { wobble } from '../motion.js';
 import {
-  allClouds, openCloud, isCloudUnlocked, beatsFor, letterMastered, pinInOpenCloud,
+  allClouds, openCloud, isCloudUnlocked, beatsFor, letterMastered,
 } from '../clouds.js';
 
 export const chrome = { tabs: true, tab: 'trail', who: true };
@@ -15,11 +15,11 @@ export const chrome = { tabs: true, tab: 'trail', who: true };
 export function render(ctx) {
   const root = el('div', { class: 'clouds' });
   const open = openCloud();
-  const current = startLetter(playStartLetter());
-  const pinnedLetter = store.getPinnedLetter();
-  const pinned = pinInOpenCloud();
+  const current = nextLetter(ctx.kid);
+  const pinned = pinFor(ctx.kid);
   const clouds = allClouds();
-  const assigned = workModeOf(ctx.kid) === 'assigned';
+  const mode = workModeOf(ctx.kid);
+  const ownList = mode !== 'satpin';
 
   const lucy = createLucy({
     state: 'teaching',
@@ -27,7 +27,7 @@ export function render(ctx) {
     cutout: true,
     line: pinned
       ? `Letter ${pinned} is our letter today. Tap it to start!`
-      : assigned
+      : ownList
         ? `Tap letter ${current} to start.`
         : `Tap letter ${current} to start. ${open ? open.name : 'Cloud 1'} is open!`,
   });
@@ -43,7 +43,7 @@ export function render(ctx) {
   ));
   root.append(el('div', { class: 'trail-say' }, lucy.stage, lucy.bubble));
 
-  if (!assigned) {
+  if (!ownList) {
     const path = el('div', { class: 'cloud-path' });
     clouds.forEach((cloud, i) => {
       const unlocked = isCloudUnlocked(cloud.id);
@@ -63,10 +63,14 @@ export function render(ctx) {
     root.append(path);
   }
 
-  const letters = assigned
+  const letters = ownList
     ? workLetters(ctx.kid)
     : ((open && open.letters) || []);
   const board = el('div', { class: 'trail-board cloud-letters' });
+  const n = Math.max(letters.length, 1);
+  /* Two rows of 13 keeps A–Z inside the viewport; one row of 26 overflows at 88px mins. */
+  const cols = n > 13 ? 13 : n;
+  board.style.setProperty('--trail-cols', String(cols));
   letters.forEach((L) => {
     const entry = letterByChar(L) || { letter: L, lower: String(L).toLowerCase(), word: '', emoji: '' };
     const isCurrent = L === current;
@@ -97,7 +101,6 @@ export function render(ctx) {
         return;
       }
       audio.unlock();
-      audio.sayLetterName(entry.letter);
       startRound({ startAt: entry.letter });
       const next = 'play';
       setTimeout(() => ctx.go(next), 260);
@@ -117,6 +120,7 @@ export function render(ctx) {
 }
 
 export function footLeft() {
-  const assigned = workModeOf(activeKid()) === 'assigned';
-  return el('span', {}, icon('trail'), assigned ? ' Tap one of your letters' : ' Tap a letter in the open cloud');
+  const mode = workModeOf(activeKid());
+  const copy = mode === 'free' ? ' Tap any letter' : mode === 'assigned' ? ' Tap one of your letters' : ' Tap a letter in the open cloud';
+  return el('span', {}, icon('trail'), copy);
 }
