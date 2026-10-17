@@ -55,11 +55,56 @@ file URLs; it needs no server or internet. It checks B/J/X/Z at 390×844,
 768×1024 and 1440×1000 in all themes, including touch targets and horizontal
 overflow, and saves screenshots to `/tmp/lpmb-shots`. Set `PLAYWRIGHT_MODULE`
 and/or `CHROMIUM_EXECUTABLE` to existing local installations if needed.
-Browser startup is blocked in this sandbox (`Operation not permitted`);
-no screenshots or phone/tablet visual verification could be completed here.
+Use `CHROMIUM_EXECUTABLE=/usr/bin/google-chrome` when the bundled Playwright browser is unavailable. Set `BROWSER_SMOKE_SHARD` to 0–5 to run one game/viewport pair, with all three themes. Omit it for the full 18-case suite.
 
-Review guidance: Design Taste's hierarchy, spacing, consistency, focus and
-touch-target checks were applied to the A–Z additions while preserving the
-existing design. Screenshot review remains pending because of the browser
-restriction. The local Better Design skill was read; its MCP is unavailable,
-so no MCP principles or review results were retrieved.
+The child UI uses a storybook stage with chunky letter cards, finite staggered
+entrances, expressive portrait movements, sound bars during narration, and
+stamp/star reward choreography. Design Taste's playful-color and motion skills
+informed the presentation. Approved Lucy images and all audio remain unchanged.
+Animations use transform and opacity, including individual transform properties.
+Lucy breathes gently on play screens, and sound bars repeat during narration. Hidden tabs pause motion;
+reduced-motion preferences disable it, including hover movement.
+
+Run the motion and reduced-motion browser journeys:
+
+```sh
+CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/motion_smoke.cjs
+```
+
+This exercises both worlds at phone, tablet, and whiteboard sizes with actual
+user interactions, no audio or learning stubs, and no network requests.
+It checks entrances, replay, wrong/correct choices, collection, rapid exits,
+live reduced-motion changes, and compositor-friendly animation properties.
+Screenshots survive browser cleanup in `/tmp/lpmb-motion-shots`.
+The scoped [verification skill](tests/verify-game/SKILL.md) documents repeatable
+home, play, and reward journeys. Local-file offline behavior is covered; these
+design prototypes do not install a service worker on a hosted origin.
+
+Screen changes fade out before the next scene enters. Correct picture cards
+bounce before the reward; wrong cards wiggle with a fading soft red glow.
+Rewards add twelve temporary paper cut-outs, cleared when their effect ends
+or the route changes. Existing audio and approved Lucy images are unchanged.
+
+Run the confetti visibility regression in Chrome:
+
+```sh
+CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/confetti_smoke.cjs
+```
+
+It checks both games in all three themes at phone and whiteboard sizes. Each
+correct-answer journey verifies painted SVG artwork, shape variety, independent
+fall and flutter, finite entry and exit, cleanup, and navigation. Chrome screenshots
+are saved mid-fall in `/workspace/rsabc-confetti/v2/`. Existing reduced-motion
+behavior remains unchanged.
+
+Letter Post scatters envelopes, perforated stamps, and paper curls. Moonboat
+scatters stars, crescents, ringed planets, and curls. Twelve bounded descriptors
+set each piece's lane, delay, size, drift, and turn. Separate transform layers
+handle descent, flutter, and tumble; static folds and soft shadows give the
+SVG cut-outs a matte paper finish. Colors use the existing world palette.
+
+Design references came from the local design-tool repos. Design Taste informed
+finite transform/opacity choreography. Motion Primitives' TransitionPanel
+informed entry, visible, and exit phases. Canvas UI's Shatter informed independent
+piece tilt and scatter. UI Layouts' 3D marquee informed nested perspective and
+orientation. These ideas are implemented in vanilla CSS/JS without dependencies.

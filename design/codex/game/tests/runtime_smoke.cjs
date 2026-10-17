@@ -48,7 +48,7 @@ async function smoke(game) {
   const Fun = {
     cancel() {}, voice() {}, mute() {}, home: noEffect, open: noEffect,
     press: noEffect, replay: noEffect, hint: noEffect, lucy: noEffect,
-    reward: noEffect, weather: noEffect, evidence: {reduced: false}
+    exit: noEffect, correct: noEffect, reward: noEffect, weather: noEffect, evidence: {reduced: false}
   };
   const window = {Fun, scrollTo() {}};
   const context = vm.createContext({
@@ -73,7 +73,7 @@ async function smoke(game) {
   for (let theme = 0; theme < window.CONCEPT.themes.length; theme++) {
     app.setTheme(theme);
     assert.equal(document.body.dataset.theme, String(theme));
-    app.go('home');
+    await app.go('home');
     assert.deepEqual([...html().matchAll(/data-letter="([A-Z])"/g)].map(m => m[1]), alphabet);
     assert(!html().includes('undefined'), 'Invalid card tilt or markup');
     for (const letter of alphabet) {
@@ -115,7 +115,7 @@ async function smoke(game) {
       assert.equal(document.body.dataset.screen, 'listen');
       rounds++;
     }
-    app.go('home');
+    await app.go('home');
     assert(html().includes('26 of 26 · this visit'));
     assert.equal((html().match(/aria-label="played this visit"/g) || []).length, 26);
     const mute = getNode('#mute');
