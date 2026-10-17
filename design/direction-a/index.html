@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Midnight Marquee — Ready Set ABC</title>
+  <link rel="stylesheet" href="stage.css" />
+</head>
+<body data-confetti="theatre">
+  <div id="shader" class="shader"></div>
+  <div class="spot" aria-hidden="true"></div>
+  <div class="curtain curtain-l" aria-hidden="true"></div>
+  <div class="curtain curtain-r" aria-hidden="true"></div>
+  <canvas id="confetti"></canvas>
+  <div class="shell">
+    <header class="top">
+      <div class="brand">Ready Set <em>ABC</em></div>
+      <div class="chase" aria-hidden="true"></div>
+      <div class="audio">
+        <button type="button">Music</button>
+        <button type="button">SFX</button>
+        <button type="button">Voice</button>
+      </div>
+      <button class="gu" type="button" data-go="grown-ups">Grown-Ups</button>
+    </header>
+    <main>
+      <section class="screen home" data-screen="home">
+        <div class="puppet">
+          <svg class="strings" viewBox="0 0 200 40" aria-hidden="true">
+            <line x1="70" y1="0" x2="78" y2="40" />
+            <line x1="100" y1="0" x2="100" y2="40" />
+            <line x1="130" y1="0" x2="122" y2="40" />
+          </svg>
+          <img src="../assets/lucy-default.jpg" alt="Lucy the golden retriever" />
+        </div>
+        <div>
+          <p class="kicker pop">Tonight’s letter</p>
+          <h1 class="mega"><span class="pop" style="--d:.05s">S</span></h1>
+          <p class="bubble pop" style="--d:.12s">Woof! I’m Lucy. Tap play and we’ll learn the sound together.</p>
+          <div class="satpin" aria-label="SATPIN">
+            <b class="now pop" style="--d:.05s">S</b>
+            <b class="pop" style="--d:.1s">A</b>
+            <b class="pop" style="--d:.15s">T</b>
+            <b class="pop" style="--d:.2s">P</b>
+            <b class="pop" style="--d:.25s">I</b>
+            <b class="pop" style="--d:.3s">N</b>
+          </div>
+          <button class="play" type="button" data-go="trail">Play</button>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="trail">
+        <p class="prompt pop">Follow the lights. S is done. A is next.</p>
+        <div class="floor">
+          <svg class="wide" viewBox="0 0 1000 420" aria-label="SATPIN trail">
+            <path d="M70,300 C190,70 300,360 470,170 S760,40 950,230" fill="none" stroke="#ffc857" stroke-width="8" stroke-linecap="round" opacity="0.9"/>
+            <circle r="18" fill="#fff4d2" stroke="#24160f" stroke-width="4">
+              <animateMotion dur="3.6s" repeatCount="indefinite" path="M70,300 C190,70 300,360 470,170 S760,40 950,230" />
+            </circle>
+          </svg>
+          <svg class="tall" viewBox="0 0 360 620" aria-hidden="true">
+            <path d="M180,30 C40,140 320,230 180,320 S40,500 180,600" fill="none" stroke="#ffc857" stroke-width="8" stroke-linecap="round"/>
+            <circle r="16" fill="#fff4d2" stroke="#24160f" stroke-width="4">
+              <animateMotion dur="3.6s" repeatCount="indefinite" path="M180,30 C40,140 320,230 180,320 S40,500 180,600" />
+            </circle>
+          </svg>
+          <button class="node done pop" style="left:8%;top:68%" type="button">S</button>
+          <button class="node now pop" style="left:24%;top:22%;--d:.08s" type="button" data-go="listen">A</button>
+          <button class="node pop" style="left:46%;top:48%;--d:.12s" type="button">T</button>
+          <button class="node pop" style="left:62%;top:16%;--d:.16s" type="button">P</button>
+          <button class="node pop" style="left:76%;top:28%;--d:.2s" type="button">I</button>
+          <button class="node pop" style="left:92%;top:52%;--d:.24s" type="button">N</button>
+        </div>
+      </section>
+
+      <section class="screen listen" data-screen="listen">
+        <p class="prompt pop">What starts with the /s/ sound?</p>
+        <div class="choices">
+          <button class="choice is-picked pop" type="button" style="--d:.04s">
+            <div class="art"><div class="sun"></div></div>
+            <span class="word"><i>S</i>un</span>
+          </button>
+          <button class="choice pop" type="button" style="--d:.12s">
+            <div class="art"><div class="apple"></div></div>
+            <span class="word">Apple</span>
+          </button>
+          <button class="choice pop" type="button" style="--d:.2s">
+            <div class="art"><div class="sock"></div></div>
+            <span class="word"><i>S</i>ock</span>
+          </button>
+        </div>
+        <button class="play" type="button" data-go="celebration" style="margin-top:0">Check</button>
+      </section>
+
+      <section class="screen celebration" data-screen="celebration">
+        <div>
+          <p class="stars" aria-label="3 stars"><span>★</span><span>★</span><span>★</span></p>
+          <h2 class="pop">S is for Star</h2>
+          <p class="bubble">Perfect match. Three of three. Take a bow, Lucy.</p>
+          <button class="next" type="button" data-go="home">Next letter</button>
+        </div>
+        <div class="trophy-wrap">
+          <svg class="trophy" viewBox="0 0 64 72" aria-hidden="true">
+            <path fill="currentColor" d="M16 8h32v10c0 10-7 18-16 18S16 28 16 18V8z"/>
+            <path fill="none" stroke="currentColor" stroke-width="4" d="M16 14H8c0 8 4 14 10 16M48 14h8c0 8-4 14-10 16"/>
+            <path fill="currentColor" d="M30 38h4v12h-4zM20 52h24v7H20z"/>
+          </svg>
+          <div class="puppet">
+            <img src="../assets/lucy-bows.jpg" alt="Lucy celebrating" />
+          </div>
+        </div>
+      </section>
+
+      <section class="screen grown" data-screen="grown-ups">
+        <div class="sheet pop">
+          <h2>Backstage</h2>
+          <div class="pin" aria-label="PIN 1234"><i>1</i><i>2</i><i>3</i><i>4</i></div>
+          <div class="row"><span>Today’s letter</span><strong>S · SATPIN</strong></div>
+          <div class="row"><span>Round size</span><strong>3 letters</strong></div>
+          <div class="row"><span>Offline copy</span><strong>Off</strong></div>
+          <div class="row"><span>Class roster</span><strong>24 faces</strong></div>
+          <button class="play back" type="button" data-go="home">Back to play</button>
+        </div>
+        <div class="keys" aria-label="PIN keys">
+          <button type="button">1</button><button type="button">2</button><button type="button">3</button>
+          <button type="button">4</button><button type="button">5</button><button type="button">6</button>
+          <button type="button">7</button><button type="button">8</button><button type="button">9</button>
+        </div>
+      </section>
+    </main>
+  </div>
+  <nav class="proto" aria-label="Prototype screens">
+    <button type="button" data-go="home">Home</button>
+    <button type="button" data-go="trail">Trail</button>
+    <button type="button" data-go="listen">Listen</button>
+    <button type="button" data-go="celebration">Celebrate</button>
+    <button type="button" data-go="grown-ups">Grown-Ups</button>
+  </nav>
+  <script type="module">
+    import { boot } from "../shared/engine.js";
+    import { mountNeuro, prefersReduced } from "../shared/paper-mount.js";
+    const host = document.querySelector(".chase");
+    for (let i = 0; i < 18; i++) {
+      const bulb = document.createElement("i");
+      bulb.style.animationDelay = (i * 0.07) + "s";
+      host.appendChild(bulb);
+    }
+    boot();
+    const shader = mountNeuro(document.getElementById("shader"), {
+      front: "#ffe7a8",
+      mid: "#9a3058",
+      back: "#07060c",
+      brightness: 0.5,
+      contrast: 0.42,
+      speed: 0.55,
+    });
+    document.addEventListener("phase2:screen", (event) => {
+      if (prefersReduced()) return;
+      shader.setSpeed(event.detail === "celebration" ? 1.25 : 0.55);
+    });
+  </script>
+</body>
+</html>
