@@ -1,373 +1,2130 @@
 [
-  {
-    "file": "audio/a-name-trim.mp3",
-    "text": "The letter is \"A\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "df9c5e629ac52ab7708fc32891cb3a5ae8010dfb952b025f0022360b41c052a5"
-  },
-  {
-    "file": "audio/a-sound-trim.mp3",
-    "text": "The sound is \"/\u00e6/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "3e1f18ddf98125a78afb524ad9ad3329484f1e1ac1d504e79226167a1164b6e2"
-  },
-  {
-    "file": "audio/b-name-trim.mp3",
-    "text": "The letter is \"B\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "f3c2b1f8f5cf3ecfbff7c8aab6cd246c7d2394e6f182aa8410549205665c9b97"
-  },
-  {
-    "file": "audio/b-sound-trim.mp3",
-    "text": "The sound is \"/b/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "c67b3409df80ca89e0e8508825a495a40e5a67c927b56a226be0ff051f6951fe"
-  },
-  {
-    "file": "audio/c-name-trim.mp3",
-    "text": "The letter is \"C\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "17b88bf854ee3a2b7d0d7419b74c58f0237586a3fbc9063f21e3cade21f0ff0f"
-  },
-  {
-    "file": "audio/c-sound-trim.mp3",
-    "text": "The sound is \"/k/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "3dfd1f17b1d5d8121f9340a36ee7817c41cd4ea1c795e07c4c5889cbfe7c0055"
-  },
-  {
-    "file": "audio/d-name-trim.mp3",
-    "text": "The letter is \"D\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "ede2c8cf0470685a7b65e0f12ba1d574907c2c27ec1108687c11e74e8dbc35ac"
-  },
-  {
-    "file": "audio/d-sound-trim.mp3",
-    "text": "The sound is \"/d/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "e47b113cea7a1387ce8e04797ceae2b7a4797db599c9779b66c36687ecf8d89c"
-  },
-  {
-    "file": "audio/e-name-trim.mp3",
-    "text": "The letter is \"E\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "fb069846546401b9d74a670d0b0a7438af72093730f92047af98da95be729bb2"
-  },
-  {
-    "file": "audio/e-sound-trim.mp3",
-    "text": "The sound is \"/\u025b/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "851048483290c522e34905df5cb01495d2b7c7b289638cb86fd90c3826885d30"
-  },
-  {
-    "file": "audio/f-name-trim.mp3",
-    "text": "The letter is \"F\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "e019823799522e72b99457f995010151acb2fc2cd161ecf18a51a3d7b5149175"
-  },
-  {
-    "file": "audio/f-sound-trim.mp3",
-    "text": "The sound is \"/f/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "38f52f4584795d3149b2afababc42fa5388997fba4435460bc2e848094c87712"
-  },
-  {
-    "file": "audio/g-name-trim.mp3",
-    "text": "The letter is \"G\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "e9ad4acf57c648135e6094d457a42398f4f3973619dd5e5d4d3a974a3c8f263d"
-  },
-  {
-    "file": "audio/g-sound-trim.mp3",
-    "text": "The sound is \"/\u0261/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "9b9ba3f7ee4e26ff522e063b4b7c74d07f5f13d510d98605dabed2310f0a5ab4"
-  },
-  {
-    "file": "audio/h-name-trim.mp3",
-    "text": "The letter is \"H\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "bd22496bd6066aba4be53bbe7d8e31dbafaee45776266dd1ce126582074ea47c"
-  },
-  {
-    "file": "audio/h-sound-trim.mp3",
-    "text": "The sound is \"/h/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "4052ee0ba3e3f43d4a8f1e5864a3b3f0c2fb5239c8c565258dadc4bfae09250f"
-  },
-  {
-    "file": "audio/i-long-extra-trim.mp3",
-    "text": "The sound is \"/a\u026a/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "c3ce6a5b2ca9976f32292084eb2b76e994a91833e56d6c4c9ea9fdaa3d4daf8b"
-  },
-  {
-    "file": "audio/i-name-trim.mp3",
-    "text": "The letter is \"I\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "7547c1c2b1399a333ae91ba919e3c0ce7ad2f5ecbf4f4613de73d573062c7818"
-  },
-  {
-    "file": "audio/i-sound-trim.mp3",
-    "text": "The sound is \"/\u026a/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "3bf693cfa956c96ce252631ceba3b8619696afdca5517de207af8d0e61baaa6d"
-  },
-  {
-    "file": "audio/j-name-trim.mp3",
-    "text": "The letter is \"J\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "874b9b59b3d5ce57829919a11f265262ed83efdcaeab521b10250b72b6482cf8"
-  },
-  {
-    "file": "audio/j-sound-trim.mp3",
-    "text": "The sound is \"/d\u0292/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "95b0e224e3c8e8400dc7bf2a5c6decc86a836535eca2374852684a61f9a74398"
-  },
-  {
-    "file": "audio/k-name-trim.mp3",
-    "text": "The letter is \"K\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "a55d57f9ab5e28db088da5b7553f3474f65534228cd3bcbbdc19d58dad7fd8f1"
-  },
-  {
-    "file": "audio/k-sound-trim.mp3",
-    "text": "The sound is \"/k/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "af70f9a6050b68c4b03433b13cbcd9d9d7a65d872d25c71806a975a76add59a6"
-  },
-  {
-    "file": "audio/l-name-trim.mp3",
-    "text": "The letter is \"L\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "fe27863d593074dff40df7a8f2e66aa8055a44240611270be1af06f4d2d216a8"
-  },
-  {
-    "file": "audio/l-sound-trim.mp3",
-    "text": "The sound is \"/l/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "8ded6b28ba2401530ff2db4ce0ce4c0a8a1fd5c13bc601875d6c5674f0fe6b79"
-  },
-  {
-    "file": "audio/m-name-trim.mp3",
-    "text": "The letter is \"M\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "49a22e5950aec4cfc00fd576bbf54bc1c81999c8113ea4fc80e8fb2725fd2db5"
-  },
-  {
-    "file": "audio/m-sound-trim.mp3",
-    "text": "The sound is \"/m/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "ad0c7046c312da4eb4eef6ca74a8fbf9aec160c6dd13b72ce55a7b296734822f"
-  },
-  {
-    "file": "audio/n-name-trim.mp3",
-    "text": "The letter is \"N\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "9067099cecb7dc4158fd2390ef86c0097726514533bfca3499b3b47a40c2dd54"
-  },
-  {
-    "file": "audio/n-sound-trim.mp3",
-    "text": "The sound is \"/n/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "c609c9843e1513943cf21fceb960d3b837e5132f6a36d7002504f1f63aee515b"
-  },
-  {
-    "file": "audio/o-name-trim.mp3",
-    "text": "The letter is \"O\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "e2f43830ca6b26518d412b785f513a442c7a6887fc82d2f42b238423ae15e4b3"
-  },
-  {
-    "file": "audio/o-sound-trim.mp3",
-    "text": "The sound is \"/\u0251/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "faaff863facb8b44b9d347d528a5884ef9cd3e743f56ed1d3687aaa1cbb7b4f0"
-  },
-  {
-    "file": "audio/p-name-trim.mp3",
-    "text": "The letter is \"P\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "ddb80f79452aaa5b20eade5f23cec17037400597428609b410ee5ebd34990c2c"
-  },
-  {
-    "file": "audio/p-sound-trim.mp3",
-    "text": "The sound is \"/p/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "55607d73754072297f755d8d0f34770e09d9ea5b8d67326d52f3001b1f919a95"
-  },
-  {
-    "file": "audio/q-name-trim.mp3",
-    "text": "The letter is \"Q\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "f47c615d14e12ae1e3872b73bfa700d3dcde0aaa28201e2f5ca1ddcc4c9de2b2"
-  },
-  {
-    "file": "audio/q-sound-trim.mp3",
-    "text": "The sound is \"/kw/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "12cfb7e68250d012bbe8f26216c31415db214e606f520cc435247ebba7f02d7a"
-  },
-  {
-    "file": "audio/r-name-trim.mp3",
-    "text": "The letter is \"R\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "832672ccced8219ec04a88ec0c8d06311cd02970411ed9eb31a18ee07e444d07"
-  },
-  {
-    "file": "audio/r-sound-trim.mp3",
-    "text": "The sound is \"/\u0279/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "3115bad2e07e2498c053ad36f625e8f2a5eb1ac9957402946a291223508e3226"
-  },
-  {
-    "file": "audio/s-name-trim.mp3",
-    "text": "The letter is \"S\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "705a35bcf486103bb3cb2106633ac60d9546dd9a795c7f7a109c418d5e02bd6d"
-  },
-  {
-    "file": "audio/s-sound-trim.mp3",
-    "text": "The sound is \"/s/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "2709dace6b12564680bb05187c66db14e67f39c7289e539bb0a026ef87f50ed7"
-  },
-  {
-    "file": "audio/t-name-trim.mp3",
-    "text": "The letter is \"T\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "c2434a5ffb72cea61d82e18e5b2465b57e7ed7d2e9a9cfeb1027b27c2eda9471"
-  },
-  {
-    "file": "audio/t-sound-trim.mp3",
-    "text": "The sound is \"/t/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "1db14e79c50f427c618e0a6d30a8ea02a4056fd2e1e5e88aa9f8c6cc52800956"
-  },
-  {
-    "file": "audio/u-name-trim.mp3",
-    "text": "The letter is \"U\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "efa6d5c8f531656dcea4eb11951619604dfe2461519dc6fc4e474f2ca8446943"
-  },
-  {
-    "file": "audio/u-sound-trim.mp3",
-    "text": "The sound is \"/\u028c/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "419ae67e4bd177dd1ea190ee2e8b20e0afea18ccac9c6413aa77c6be44982ffa"
-  },
-  {
-    "file": "audio/v-name-trim.mp3",
-    "text": "The letter is \"V\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "e8ed38685d43620cc8772e49001f2c0b80e94f95c29c5f8321db20702563340d"
-  },
-  {
-    "file": "audio/v-sound-trim.mp3",
-    "text": "The sound is \"/v/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "8579b3899ddcdb5b79d5e3968c4c83f327f6eca8640b02ca0f28a0d12c955697"
-  },
-  {
-    "file": "audio/w-name-trim.mp3",
-    "text": "The letter is \"W\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "60b93580bc345cd06e307dc803fbf5c117145b42e277fa43e55fa9ac4bacbf1a"
-  },
-  {
-    "file": "audio/w-sound-trim.mp3",
-    "text": "The sound is \"/w/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "135674d4c047a6614d9e8d164585a782898896285d7312a82151d2828a5d037a"
-  },
-  {
-    "file": "audio/x-name-trim.mp3",
-    "text": "The letter is \"X\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "955afef1850500d657cd5169177490c011b8a5beed8f656301412bca73142c21"
-  },
-  {
-    "file": "audio/x-sound-trim.mp3",
-    "text": "The sound is \"/ks/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "a699f2de95a96af99f81c2e1fecdc651f7211d582a365b9b0759e54dba35ce86"
-  },
-  {
-    "file": "audio/y-name-trim.mp3",
-    "text": "The letter is \"Y\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "ed385b64eb2ea0cb44f808ab6eb4e90431b8ae9284c3eb5e15897a45ceaa3390"
-  },
-  {
-    "file": "audio/y-sound-trim.mp3",
-    "text": "The sound is \"/j/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "ed29baa9a85006438a70adbdf6ee27ea806fc9539ea0f9042613025b3948e63f"
-  },
-  {
-    "file": "audio/z-name-trim.mp3",
-    "text": "The letter is \"Z\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "e08fa15396a698a3ddfce6e55e46cd88ead3161824e2e3ad16450c56ee4c13d3"
-  },
-  {
-    "file": "audio/z-sound-trim.mp3",
-    "text": "The sound is \"/z/\".",
-    "voice_id": "FgiNpTIapnCbaD6xiqIo",
-    "model": "eleven_v4",
-    "sha256": "220b469f86bfb31f159ff1906ee007cdf64458fcbcd353f0236eacbd96247822"
+ {
+  "file": "audio/feedback/lucy-cheer-1.mp3",
+  "text": "Yes!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "998e54c58e8da2ac528883f604605877a261a0abeed1f7cf464533049a346609",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/v1-letter-post/assets/lucy-cheer-1.mp3",
+   "role": "cheer"
   }
+ },
+ {
+  "file": "audio/feedback/lucy-cheer-2.mp3",
+  "text": "You got it!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "c5c74df750189038c29ada0af1bdc382b4b9ec90082867eb16127fa3fbdc9aa9",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/v1-letter-post/assets/lucy-cheer-2.mp3",
+   "role": "cheer"
+  }
+ },
+ {
+  "file": "audio/feedback/lucy-nudge-1.mp3",
+  "text": "Not quite!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "75e26b5e04c19ba72430dc67821749c951f870a110aeb19376d560c15fdd9ea4",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/v1-letter-post/assets/lucy-nudge-1.mp3",
+   "role": "nudge"
+  }
+ },
+ {
+  "file": "audio/letters/a-name-trim.mp3",
+  "text": "A",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "df9c5e629ac52ab7708fc32891cb3a5ae8010dfb952b025f0022360b41c052a5",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/a-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/a-sound-trim.mp3",
+  "text": "/\u00e6/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "3e1f18ddf98125a78afb524ad9ad3329484f1e1ac1d504e79226167a1164b6e2",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/a-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/b-name-trim.mp3",
+  "text": "B",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "f3c2b1f8f5cf3ecfbff7c8aab6cd246c7d2394e6f182aa8410549205665c9b97",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/b-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/b-sound-trim.mp3",
+  "text": "/b/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "c67b3409df80ca89e0e8508825a495a40e5a67c927b56a226be0ff051f6951fe",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/b-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/c-name-trim.mp3",
+  "text": "C",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "17b88bf854ee3a2b7d0d7419b74c58f0237586a3fbc9063f21e3cade21f0ff0f",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/c-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/c-sound-trim.mp3",
+  "text": "/k/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "3dfd1f17b1d5d8121f9340a36ee7817c41cd4ea1c795e07c4c5889cbfe7c0055",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/c-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/d-name-trim.mp3",
+  "text": "D",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "ede2c8cf0470685a7b65e0f12ba1d574907c2c27ec1108687c11e74e8dbc35ac",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/d-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/d-sound-trim.mp3",
+  "text": "/d/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "e47b113cea7a1387ce8e04797ceae2b7a4797db599c9779b66c36687ecf8d89c",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/d-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/e-name-trim.mp3",
+  "text": "E",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "fb069846546401b9d74a670d0b0a7438af72093730f92047af98da95be729bb2",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/e-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/e-sound-trim.mp3",
+  "text": "/\u025b/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "851048483290c522e34905df5cb01495d2b7c7b289638cb86fd90c3826885d30",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/e-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/f-name-trim.mp3",
+  "text": "F",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "e019823799522e72b99457f995010151acb2fc2cd161ecf18a51a3d7b5149175",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/f-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/f-sound-trim.mp3",
+  "text": "/f/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "38f52f4584795d3149b2afababc42fa5388997fba4435460bc2e848094c87712",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/f-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/g-name-trim.mp3",
+  "text": "G",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "e9ad4acf57c648135e6094d457a42398f4f3973619dd5e5d4d3a974a3c8f263d",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/g-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/g-sound-trim.mp3",
+  "text": "/\u0261/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "9b9ba3f7ee4e26ff522e063b4b7c74d07f5f13d510d98605dabed2310f0a5ab4",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/g-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/h-name-trim.mp3",
+  "text": "H",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "bd22496bd6066aba4be53bbe7d8e31dbafaee45776266dd1ce126582074ea47c",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/h-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/h-sound-trim.mp3",
+  "text": "/h/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "4052ee0ba3e3f43d4a8f1e5864a3b3f0c2fb5239c8c565258dadc4bfae09250f",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/h-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/i-long-extra-trim.mp3",
+  "text": "long I /a\u026a/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "c3ce6a5b2ca9976f32292084eb2b76e994a91833e56d6c4c9ea9fdaa3d4daf8b",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/i-long-extra-trim.mp3",
+   "role": "letter-long-i"
+  }
+ },
+ {
+  "file": "audio/letters/i-name-trim.mp3",
+  "text": "I",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "7547c1c2b1399a333ae91ba919e3c0ce7ad2f5ecbf4f4613de73d573062c7818",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/i-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/i-sound-trim.mp3",
+  "text": "/\u026a/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "3bf693cfa956c96ce252631ceba3b8619696afdca5517de207af8d0e61baaa6d",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/i-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/j-name-trim.mp3",
+  "text": "J",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "874b9b59b3d5ce57829919a11f265262ed83efdcaeab521b10250b72b6482cf8",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/j-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/j-sound-trim.mp3",
+  "text": "/d\u0292/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "95b0e224e3c8e8400dc7bf2a5c6decc86a836535eca2374852684a61f9a74398",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/j-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/k-name-trim.mp3",
+  "text": "K",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "a55d57f9ab5e28db088da5b7553f3474f65534228cd3bcbbdc19d58dad7fd8f1",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/k-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/k-sound-trim.mp3",
+  "text": "/k/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "af70f9a6050b68c4b03433b13cbcd9d9d7a65d872d25c71806a975a76add59a6",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/k-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/l-name-trim.mp3",
+  "text": "L",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "fe27863d593074dff40df7a8f2e66aa8055a44240611270be1af06f4d2d216a8",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/l-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/l-sound-trim.mp3",
+  "text": "/l/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "8ded6b28ba2401530ff2db4ce0ce4c0a8a1fd5c13bc601875d6c5674f0fe6b79",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/l-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/m-name-trim.mp3",
+  "text": "M",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "49a22e5950aec4cfc00fd576bbf54bc1c81999c8113ea4fc80e8fb2725fd2db5",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/m-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/m-sound-trim.mp3",
+  "text": "/m/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "ad0c7046c312da4eb4eef6ca74a8fbf9aec160c6dd13b72ce55a7b296734822f",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/m-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/n-name-trim.mp3",
+  "text": "N",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "9067099cecb7dc4158fd2390ef86c0097726514533bfca3499b3b47a40c2dd54",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/n-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/n-sound-trim.mp3",
+  "text": "/n/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "c609c9843e1513943cf21fceb960d3b837e5132f6a36d7002504f1f63aee515b",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/n-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/o-name-trim.mp3",
+  "text": "O",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "e2f43830ca6b26518d412b785f513a442c7a6887fc82d2f42b238423ae15e4b3",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/o-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/o-sound-trim.mp3",
+  "text": "/\u0251/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "faaff863facb8b44b9d347d528a5884ef9cd3e743f56ed1d3687aaa1cbb7b4f0",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/o-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/p-name-trim.mp3",
+  "text": "P",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "ddb80f79452aaa5b20eade5f23cec17037400597428609b410ee5ebd34990c2c",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/p-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/p-sound-trim.mp3",
+  "text": "/p/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "55607d73754072297f755d8d0f34770e09d9ea5b8d67326d52f3001b1f919a95",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/p-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/q-name-trim.mp3",
+  "text": "Q",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "f47c615d14e12ae1e3872b73bfa700d3dcde0aaa28201e2f5ca1ddcc4c9de2b2",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/q-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/q-sound-trim.mp3",
+  "text": "/kw/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "12cfb7e68250d012bbe8f26216c31415db214e606f520cc435247ebba7f02d7a",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/q-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/r-name-trim.mp3",
+  "text": "R",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "832672ccced8219ec04a88ec0c8d06311cd02970411ed9eb31a18ee07e444d07",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/r-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/r-sound-trim.mp3",
+  "text": "/\u0279/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "3115bad2e07e2498c053ad36f625e8f2a5eb1ac9957402946a291223508e3226",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/r-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/s-name-trim.mp3",
+  "text": "S",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "705a35bcf486103bb3cb2106633ac60d9546dd9a795c7f7a109c418d5e02bd6d",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/s-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/s-sound-trim.mp3",
+  "text": "/s/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "2709dace6b12564680bb05187c66db14e67f39c7289e539bb0a026ef87f50ed7",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/s-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/t-name-trim.mp3",
+  "text": "T",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "c2434a5ffb72cea61d82e18e5b2465b57e7ed7d2e9a9cfeb1027b27c2eda9471",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/t-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/t-sound-trim.mp3",
+  "text": "/t/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "1db14e79c50f427c618e0a6d30a8ea02a4056fd2e1e5e88aa9f8c6cc52800956",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/t-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/u-name-trim.mp3",
+  "text": "U",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "efa6d5c8f531656dcea4eb11951619604dfe2461519dc6fc4e474f2ca8446943",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/u-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/u-sound-trim.mp3",
+  "text": "/\u028c/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "419ae67e4bd177dd1ea190ee2e8b20e0afea18ccac9c6413aa77c6be44982ffa",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/u-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/v-name-trim.mp3",
+  "text": "V",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "e8ed38685d43620cc8772e49001f2c0b80e94f95c29c5f8321db20702563340d",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/v-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/v-sound-trim.mp3",
+  "text": "/v/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "8579b3899ddcdb5b79d5e3968c4c83f327f6eca8640b02ca0f28a0d12c955697",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/v-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/w-name-trim.mp3",
+  "text": "W",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "60b93580bc345cd06e307dc803fbf5c117145b42e277fa43e55fa9ac4bacbf1a",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/w-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/w-sound-trim.mp3",
+  "text": "/w/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "135674d4c047a6614d9e8d164585a782898896285d7312a82151d2828a5d037a",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/w-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/x-name-trim.mp3",
+  "text": "X",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "955afef1850500d657cd5169177490c011b8a5beed8f656301412bca73142c21",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/x-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/x-sound-trim.mp3",
+  "text": "/ks/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "a699f2de95a96af99f81c2e1fecdc651f7211d582a365b9b0759e54dba35ce86",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/x-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/y-name-trim.mp3",
+  "text": "Y",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "ed385b64eb2ea0cb44f808ab6eb4e90431b8ae9284c3eb5e15897a45ceaa3390",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/y-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/y-sound-trim.mp3",
+  "text": "/j/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "ed29baa9a85006438a70adbdf6ee27ea806fc9539ea0f9042613025b3948e63f",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/y-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/letters/z-name-trim.mp3",
+  "text": "Z",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "e08fa15396a698a3ddfce6e55e46cd88ead3161824e2e3ad16450c56ee4c13d3",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/z-name-trim.mp3",
+   "role": "letter-name"
+  }
+ },
+ {
+  "file": "audio/letters/z-sound-trim.mp3",
+  "text": "/z/",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "220b469f86bfb31f159ff1906ee007cdf64458fcbcd353f0236eacbd96247822",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/z-sound-trim.mp3",
+   "role": "letter-sound"
+  }
+ },
+ {
+  "file": "audio/lines/again.mp3",
+  "text": "Let\u2019s try another one.",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "c03597229cf400f67f6b872b36cb005433a44467132b9dcd2437ba253cbc0518",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/again.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/bonus-name.mp3",
+  "text": "Listen. Find my letter.",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "5fd77d1515abf540801ea4f6868be31dbca9ed2cbd458f8a2b356c5e9f07d400",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/bonus-name.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/bonus-sound.mp3",
+  "text": "Listen. Find this sound.",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "d42ad1a2575571841a0eb96548529e4057bbc03fa8c53f5973ace4e76873e8fe",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/bonus-sound.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/case-lower.mp3",
+  "text": "Find the matching little letter.",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "31218d4e8b17e57914a60b735b7aea82eb9be6b2fcd8e0727dea61e85a4c8d15",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/case-lower.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/case-upper.mp3",
+  "text": "Find the matching big letter.",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "d96748db393904fae8b137b6c6c6f524bcaa04b5d72e051f735f9f04012b2d10",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/case-upper.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/celebrate.mp3",
+  "text": "You did it! A sticker for you!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "7132c749c4081bc2a0a434fc573e9f5ae7df7e2163a34ebfb13df060053419dd",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/celebrate.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/closet.mp3",
+  "text": "Let\u2019s dress up!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "e61181eb1ca0073fe2070d396ca12eaff36d295f6bc2af80c804b85641727af9",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/closet.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/hint.mp3",
+  "text": "Try the glowing card.",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "b36986d7f225a125aa0d60cf6c953a94d68b6300c806ab94deb0e45d282b3063",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/hint.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/listen.mp3",
+  "text": "Tap the big letter. Then tap the little letter.",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "17bf3602c8cf329ff21d819a7aa2d025d702eb253a76d9a1b81edd08fe0cb832",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/listen.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/locked.mp3",
+  "text": "Ask your grown-up to open this letter.",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "f5f9d01076535f25efe0766142dd4db43e0bb33450b773ca6c5806e3dbf546d1",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/locked.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/map.mp3",
+  "text": "Pick a letter to explore.",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "7c4e1caeb616e92a20eac58d1f57c5b08d16cac1bf8f34e80fe13fde4a3ca013",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/map.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/next.mp3",
+  "text": "Let\u2019s play with another letter.",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "8339c6733c6a500bb2845a242079a705c9387d53b0de14b4987626255ee90adf",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/next.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/picture-x.mp3",
+  "text": "Listen for this sound at the end.",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "a60c36cf0d757847e58b17a685394c7f1a444e8a741fbd9476bdad3aac1eab96",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/picture-x.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/picture.mp3",
+  "text": "Listen. Which picture has this sound?",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "ec4a59ca6ebce2f294bb8192a42663f6a561ebb45dfec472b149b8d51ac854c1",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/picture.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/profiles.mp3",
+  "text": "Tap your picture.",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "a4745567a6b4c692f825090c460f2ff036852436299d25497578f0620f0b7b44",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/profiles.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/stickers.mp3",
+  "text": "Look at all your stickers!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "800d8b66b5006cd6957d324c36f4a76933c8c24ec27b0bbccfe6c90a9d6def9c",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/stickers.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/lines/welcome.mp3",
+  "text": "Come play with me!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "7817272538857740f266543e62538191b74ecd678f86334781929f24c2427adb",
+  "provenance": {
+   "branch": "codex/game-build",
+   "commit": "e69e966",
+   "source": "design/codex/game/audio/lines/welcome.mp3",
+   "role": "line"
+  }
+ },
+ {
+  "file": "audio/sentences/a-name-full.mp3",
+  "text": "The letter is \"A\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "3b57dd112823ad1e9769fe21563ff720fd4ae68810b3b37fb5f412196fe581f8",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/a-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/a-sound-full.mp3",
+  "text": "The sound is \"/\u00e6/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "b8d9c6594d2826f501144138f42aa5700ef75f132c53859fe10d8d6ac28cc97b",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/a-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/b-name-full.mp3",
+  "text": "The letter is \"B\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "ce0ed452ff9f4efc784c5f32958be660e250d5979013155fa4194018f5844503",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/b-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/b-sound-full.mp3",
+  "text": "The sound is \"/b/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "e199f7c8a808b7657f7f169df4f30ca1492cc1a3dab9b5204f3af9111d7e145a",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/b-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/c-name-full.mp3",
+  "text": "The letter is \"C\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "190a27c849667766f06251e78b07bb217d085c8660387abc679d6fd157ecd09e",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/c-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/c-sound-full.mp3",
+  "text": "The sound is \"/k/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "76d1588decd734dd04827d679aaa9079f56329a39e8740252af01fb3ce3c7d19",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/c-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/d-name-full.mp3",
+  "text": "The letter is \"D\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "5dfcc8207516429c9ae471685e54c560e275656c724901d1a54b3a7906770705",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/d-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/d-sound-full.mp3",
+  "text": "The sound is \"/d/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "37897932365139e1bd5744efa5c74d9a399f3886c5205d83118b8e7be4440e82",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/d-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/e-name-full.mp3",
+  "text": "The letter is \"E\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "e8bc3d482b430706cc3b60c8e660304c4c9616decdf4f77d2a73303668ebd273",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/e-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/e-sound-full.mp3",
+  "text": "The sound is \"/\u025b/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "ab9611ebec14c7de21f8c5605ba955eef6360830531356833b2f3b9513a03680",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/e-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/f-name-full.mp3",
+  "text": "The letter is \"F\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "06b176cfb02ff38691ac97d55fe1f6b655f31230079d7f12475bdf1b570c5215",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/f-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/f-sound-full.mp3",
+  "text": "The sound is \"/f/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "a06efb3b16d8d84a585bfad5e8635702ce70c6364d05ff9c974287789a6be488",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/f-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/g-name-full.mp3",
+  "text": "The letter is \"G\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "12685a49eea315555cc7cdaf6c6557893bc0103c85c3143de28894ab70e0d53e",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/g-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/g-sound-full.mp3",
+  "text": "The sound is \"/\u0261/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "59fc263b69f874982b0c3cdd9618094bc9f7478b16c369d9ffddd1e4bdbcbba0",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/g-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/h-name-full.mp3",
+  "text": "The letter is \"H\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "bfd49adb8b9678c475b9394530a05b00a62a072a178799f3422cb5308cd8d631",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/h-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/h-sound-full.mp3",
+  "text": "The sound is \"/h/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "4c9100242bb3fa61b3506afe8f38dd3647e7075da548232902e4b7b5595447ad",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/h-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/i-long-extra-full.mp3",
+  "text": "The sound is \"/a\u026a/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "771890fa70a1c8ef534af12c9b104d96a58d9a3254e99e0f1457256a2921a462",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/i-long-extra-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/i-name-full.mp3",
+  "text": "The letter is \"I\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "639ad188e3b335908f82f384d5a733e70a4ea4275763451d877df342e6f6ba1a",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/i-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/i-sound-full.mp3",
+  "text": "The sound is \"/\u026a/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "afb7236023f287afc7699e58bc54cec2ef49ce7fc519c56d9b9717ae14803277",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/i-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/j-name-full.mp3",
+  "text": "The letter is \"J\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "7a75afb42fbc2b17de9c223ac42e86e53e2886bd3d342bf6c1cac96982998c1b",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/j-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/j-sound-full.mp3",
+  "text": "The sound is \"/d\u0292/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "50ffe6318b8e74b20d2a70e68fffd9dcbe8825e464a02302939214f2d866f626",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/j-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/k-name-full.mp3",
+  "text": "The letter is \"K\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "54aa074a91229d5abcaca5f0dbf1cc5d512ae8fd6b88588ebd7e9d160309bd09",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/k-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/k-sound-full.mp3",
+  "text": "The sound is \"/k/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "0d8c9005b0585ffa67a52664ebc7a0b7a6a2658b739f85ebd4eb5d138cc5bd75",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/k-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/l-name-full.mp3",
+  "text": "The letter is \"L\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "69b59cbe546fbaae37311c69edbfa8449ed01a36d9e5249a3f6f6bf702af2591",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/l-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/l-sound-full.mp3",
+  "text": "The sound is \"/l/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "460845588a6e003a8f29d7e9631262dd4d8fbfdb91f01da85c7edf819b246bfd",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/l-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/m-name-full.mp3",
+  "text": "The letter is \"M\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "726f7f3721f0078d8bc34c64a6cf2eab91f2d3d1a5ad9a4b5be09049bbe61811",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/m-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/m-sound-full.mp3",
+  "text": "The sound is \"/m/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "4684e27c255fd3fc15580fff9f32c566b19bc7e2e29f3e04462a423ac7f9eb66",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/m-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/n-name-full.mp3",
+  "text": "The letter is \"N\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "8810f3837b298fbaa58aba569863c08e35c7fd430d98b23be441185c3b36af01",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/n-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/n-sound-full.mp3",
+  "text": "The sound is \"/n/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "221cc3215fb79108783d4e3aec9b1e1115f3351d041bea1d9a28e56fd683c47d",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/n-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/o-name-full.mp3",
+  "text": "The letter is \"O\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "a7fef230184af6e204f7dfe28fb92ce074c0b336c0dbfcc219e9ebb4da91f94e",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/o-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/o-sound-full.mp3",
+  "text": "The sound is \"/\u0251/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "e4f89a96f40972eaabb983e2c7834d3a7713be6f24732d020a77af14b4d626f8",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/o-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/p-name-full.mp3",
+  "text": "The letter is \"P\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "a54d2e0bbfe76251463ded27a6a6fd3476b61dda85e40a6299b191fda686890d",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/p-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/p-sound-full.mp3",
+  "text": "The sound is \"/p/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "11525918f5ed178536cfc71a29e18714c829a00d18c8c760b559ed6869e45451",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/p-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/q-name-full.mp3",
+  "text": "The letter is \"Q\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "4b4e910acc76a3de9bb0f5649fa92f410f600ddf51d528e885cac55a39f67ac6",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/q-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/q-sound-full.mp3",
+  "text": "The sound is \"/kw/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "ca17b27ba83d53d7c5c52636cec957db9b30f8defc48e0fedad6d22455d56a2b",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/q-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/r-name-full.mp3",
+  "text": "The letter is \"R\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "60dbc1f978a1810e4bead33111f6ec40d7d5ec345df9e9016047c0b358cbc49e",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/r-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/r-sound-full.mp3",
+  "text": "The sound is \"/\u0279/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "c1874cdb19ce9e7524dc467810fffb9e2665d73ef7f4a3e4dd01abe2027838b2",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/r-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/s-name-full.mp3",
+  "text": "The letter is \"S\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "3635165e1ba14ef512e0714c731e13ff5558787f74604b42c72b62b0fd0024b5",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/s-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/s-sound-full.mp3",
+  "text": "The sound is \"/s/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "efb81e18cdcedecab6e003f8cd1ee55cfd0bae0a1501f868ffa612a0d358b99e",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/s-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/t-name-full.mp3",
+  "text": "The letter is \"T\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "17288e2455212e6f2594aec8ba105d3ac133c0afbde5674d869097b6f0ac57de",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/t-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/t-sound-full.mp3",
+  "text": "The sound is \"/t/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "d2eb34f57c7279698f31f4548309a97aaa534aa59d4a2add743885c57d5d393d",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/t-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/u-name-full.mp3",
+  "text": "The letter is \"U\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "a644cb748fc7d4a727efd0e5358b06becbbdbc766c2452fb97091e1d51fa2f39",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/u-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/u-sound-full.mp3",
+  "text": "The sound is \"/\u028c/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "652120d0b312b8428126dd13925f350c857eeaf8f67a38714b454122efb33027",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/u-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/v-name-full.mp3",
+  "text": "The letter is \"V\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "d9c7db15b7988fdfae3df9917962cd3c0866b8ef5cdc68a112fdcab040279ee3",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/v-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/v-sound-full.mp3",
+  "text": "The sound is \"/v/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "442ff4c037258681800bc5710816a2d867b461687959cc44e6ba36a0b421b775",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/v-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/w-name-full.mp3",
+  "text": "The letter is \"W\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "b730f23071886d0d687b107b6677113317907a8fa3475ea95254a09e9d3f2c23",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/w-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/w-sound-full.mp3",
+  "text": "The sound is \"/w/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "fe3ac8320dd9e812a432616e5fab2c482388709f474ca53c404744a6502b555f",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/w-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/x-name-full.mp3",
+  "text": "The letter is \"X\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "4543923cf210d817e79e7484781a4d40f296bb63d749b528eeed43e5888b9583",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/x-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/x-sound-full.mp3",
+  "text": "The sound is \"/ks/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "bc3d5247e350154d484c481c1577fe650f5c58ad032db22510d8265a8a88ca78",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/x-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/y-name-full.mp3",
+  "text": "The letter is \"Y\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "f8b87e8245ab728ed296cc4bcfe0ad6e7056124cb4614a7ec403c3de0e4666ce",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/y-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/y-sound-full.mp3",
+  "text": "The sound is \"/j/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "a686dca6a10f944569aa155e74e082b244e81537dd92d24f99b54560e05d4155",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/y-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/z-name-full.mp3",
+  "text": "The letter is \"Z\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "cafbf4207c2537c867e384b98491a0f0cbe3deb6d68d1c378e8dfa1c782dc8b9",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/z-name-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/sentences/z-sound-full.mp3",
+  "text": "The sound is \"/z/\".",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "5703c9df49e4e375be59d12065d6199afc7f1b399bb432c154596e824f408a96",
+  "provenance": {
+   "branch": "codex/phoneme-test",
+   "commit": "77c462afcaca3eb4cbe2a25c147c8625111e7137",
+   "source": "design/codex/phoneme-test/full-sentence-trim/audio/z-sound-full.mp3",
+   "role": "sentence-full"
+  }
+ },
+ {
+  "file": "audio/words/lucy-word-a-apple.mp3",
+  "text": "Apple!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "5baf9d849879143157a86221f196e6c10fd319fb28931f846e6cffd355076245",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/v1-letter-post/assets/lucy-word-a-apple.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/lucy-word-i-insect.mp3",
+  "text": "Insect!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "badd4d98b3b765b692aea382b2ffcf00f8df1fb3f59cb25f8fe4daee10f9b5b4",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/v1-letter-post/assets/lucy-word-i-insect.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/lucy-word-m-moon.mp3",
+  "text": "Moon!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "62bc4ea98b4afd75ffd4a5cc7ec4bd48cd8e5dbe546d0b4778dedf78150a0c02",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/v1-letter-post/assets/lucy-word-m-moon.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/lucy-word-p-pig.mp3",
+  "text": "Pig!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "ff2401a32aaf34590870ebca662348a63b6e714cbf4ca9691358f16dbb254e29",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/v1-letter-post/assets/lucy-word-p-pig.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/lucy-word-s-sun.mp3",
+  "text": "Sun!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "b309a0807d87add2f420a7e0cd4fe8214a98f8953bffe6be9025f548d6047f8a",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/v1-letter-post/assets/lucy-word-s-sun.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/lucy-word-t-tiger.mp3",
+  "text": "Tiger!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "2fdf6496646d574dd0cdaf2e69d3bb0f8112a6828edb84a92cf196772ad70b34",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/v1-letter-post/assets/lucy-word-t-tiger.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-ball.mp3",
+  "text": "Ball!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "8744b3857df0fbdead5fa1ddb5ac254568895971b323f7a6cc415ce513be1d84",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-ball.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-cat.mp3",
+  "text": "Cat!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "41a8adf8e594248e918d1fc384df663da96e541424d30fb44ff25a3f5c35cc99",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-cat.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-duck.mp3",
+  "text": "Duck!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "f8740a51e6762922f0d245bd6172b42f6b192b5cc3e9620d574c301598bfe903",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-duck.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-egg.mp3",
+  "text": "Egg!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "97950924d3e9595644642b294e593afc0757374f02d73d8c7bec4494aac4ed78",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-egg.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-fish.mp3",
+  "text": "Fish!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "9de6bece2e883a46e9eb8209b1fba6036724d273d4d2836f071414e8d4eb463e",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-fish.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-fox.mp3",
+  "text": "Fox!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "3049ae7cf30d73bef3c567b2e857dcf07460dbd0ad0e8e11ac1410ca4a85a97d",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-fox.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-goat.mp3",
+  "text": "Goat!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "4a4709c121e80f3597af181884fd62c65f601381566e95c25c6f3246ac2b440e",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-goat.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-hat.mp3",
+  "text": "Hat!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "ab5deac6757b61f07163e4847ca818307420f1ddd54beaa453b338c53ec725bd",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-hat.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-jellyfish.mp3",
+  "text": "Jellyfish!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "2fd233b33f4c36a868f6f1ddbb5c654a64d6986c2506e52702423cc1e036a02b",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-jellyfish.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-kite.mp3",
+  "text": "Kite!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "23b8932dcd7f2c80fa0a2d792ac6715dd41788c4b89936c70b41eeb324c482d9",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-kite.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-leaf.mp3",
+  "text": "Leaf!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "57e0ec14b77a2efe802f5b5ecea6f02302b498b8a9339e5742cc24fb98949d95",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-leaf.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-nest.mp3",
+  "text": "Nest!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "d5ec08a5014730d0d6016605b96370714f69a87460c867836a0ccce72b566546",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-nest.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-octopus.mp3",
+  "text": "Octopus!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "9363de5a7139d11f1af4f179902520cef07f6e3bd39efc6a5a554c148de23c23",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-octopus.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-quilt.mp3",
+  "text": "Quilt!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "0e9189a3f9375993e036b2c301039b01737c3e21e54f48e2c27e8fd9ec146720",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-quilt.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-rabbit.mp3",
+  "text": "Rabbit!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "ba6a546a009b031c1698a871a5db23002920198c478acef1d1dabb74880070f1",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-rabbit.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-umbrella.mp3",
+  "text": "Umbrella!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "56bc3a8274fd691b5fea64e57fc97cf69aa6729cf7539408cc615d90391365d4",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-umbrella.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-van.mp3",
+  "text": "Van!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "ed77a135fb1b6663b2f198fd18cf5219a4a7c40b60330529b798b839b0933318",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-van.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-web.mp3",
+  "text": "Web!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "419eaeb2616dcc2ad703fe413f8a93b54be0246fc1b481c8665061e53b3cbb5b",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-web.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-yak.mp3",
+  "text": "Yak!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "dc822d1465a817a7d4c6f89044687e1ff8cf6fc5176eb5d4e448025cd96e0324",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-yak.mp3",
+   "role": "word"
+  }
+ },
+ {
+  "file": "audio/words/word-zebra.mp3",
+  "text": "Zebra!",
+  "voice_id": "FgiNpTIapnCbaD6xiqIo",
+  "voice_name": "Lucy",
+  "model": "eleven_v4",
+  "sha256": "6d963659455815fec0b92b749971711440125a2cf2095e10aa5fca632f2f827b",
+  "provenance": {
+   "branch": "codex/lp-mb-az",
+   "commit": "0ad5d56",
+   "source": "design/codex/game/audio/words/word-zebra.mp3",
+   "role": "word"
+  }
+ }
 ]
