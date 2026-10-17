@@ -82,7 +82,7 @@ design prototypes do not install a service worker on a hosted origin.
 
 Screen changes fade out before the next scene enters. Correct picture cards
 bounce before the reward; wrong cards wiggle with a fading soft red glow.
-Rewards add six temporary confetti pieces, cleared when their effect ends
+Rewards add twelve temporary paper cut-outs, cleared when their effect ends
 or the route changes. Existing audio and approved Lucy images are unchanged.
 
 Run the confetti visibility regression in Chrome:
@@ -92,8 +92,19 @@ CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/confetti
 ```
 
 It checks both games in all three themes at phone and whiteboard sizes. Each
-correct-answer journey verifies painted color, visible opacity, size, viewport
-bounds, cleanup, and navigation. Screenshots are saved in `/tmp/rsabc-confetti`.
-Reduced-motion changes clear the active effect. The six reward pieces use
-explicit colors; the obsolete generic particle rule with an undefined color
-variable has been removed.
+correct-answer journey verifies painted SVG artwork, shape variety, independent
+fall and flutter, finite entry and exit, cleanup, and navigation. Chrome screenshots
+are saved mid-fall in `/workspace/rsabc-confetti/v2/`. Existing reduced-motion
+behavior remains unchanged.
+
+Letter Post scatters envelopes, perforated stamps, and paper curls. Moonboat
+scatters stars, crescents, ringed planets, and curls. Twelve bounded descriptors
+set each piece's lane, delay, size, drift, and turn. Separate transform layers
+handle descent, flutter, and tumble; static folds and soft shadows give the
+SVG cut-outs a matte paper finish. Colors use the existing world palette.
+
+Design references came from the local design-tool repos. Design Taste informed
+finite transform/opacity choreography. Motion Primitives' TransitionPanel
+informed entry, visible, and exit phases. Canvas UI's Shatter informed independent
+piece tilt and scatter. UI Layouts' 3D marquee informed nested perspective and
+orientation. These ideas are implemented in vanilla CSS/JS without dependencies.

@@ -11,7 +11,7 @@ function playwright() {
   }
 }
 (async () => {
-  const shots = '/tmp/rsabc-confetti';
+  const shots = '/workspace/rsabc-confetti/v2';
   fs.mkdirSync(shots, {recursive: true});
   const browser = await playwright().chromium.launch({headless: true,
     executablePath: process.env.CHROMIUM_EXECUTABLE || '/usr/bin/google-chrome',
@@ -37,41 +37,52 @@ function playwright() {
             await page.locator('[data-letter="B"]').click(); await screen('listen'); await settled();
             await page.locator('[data-action="match"]').click(); await screen('match');
             await page.locator('[data-answer="B"]').click(); await screen('celebrate');
-            await page.waitForFunction(() => {
-              const group = document.querySelector('#confetti>div');
-              return group && Number(getComputedStyle(group).opacity) >= .95;
-            });
-            const pieces = await page.locator('#confetti i').evaluateAll(nodes => nodes.map(node => {
-              const style = getComputedStyle(node), rect = node.getBoundingClientRect();
-              let opacity = 1;
-              for (let parent = node; parent; parent = parent.parentElement) opacity *= Number(getComputedStyle(parent).opacity);
-              return {background: style.backgroundColor, image: style.backgroundImage, opacity,
-                painted: style.display !== 'none' && style.visibility === 'visible',
-                x: rect.x, y: rect.y, width: rect.width, height: rect.height};
+            await page.waitForFunction(() => [...document.querySelectorAll('#confetti [data-paper]')].filter(node => {
+              const rect = node.getBoundingClientRect();
+              return Number(getComputedStyle(node).opacity) >= .85 && rect.width >= 14 && rect.height >= 14 &&
+                rect.x >= 0 && rect.right <= innerWidth && rect.y >= 0 && rect.bottom <= innerHeight;
+            }).length >= 8);
+            const sample = () => page.locator('#confetti [data-paper]').evaluateAll(nodes => nodes.map(node => {
+              const rect = node.getBoundingClientRect(), svg = node.querySelector('svg');
+              const painted = svg && [...svg.querySelectorAll('path,rect,circle,ellipse,polygon')].some(part => {
+                const style = getComputedStyle(part);
+                return (style.fill !== 'none' && style.fill !== 'rgba(0, 0, 0, 0)') ||
+                  (style.stroke !== 'none' && style.stroke !== 'rgba(0, 0, 0, 0)');
+              });
+              return {shape: node.dataset.paper, painted: Boolean(painted), x: rect.x, y: rect.y,
+                width: rect.width, height: rect.height, opacity: Number(getComputedStyle(node).opacity)};
             }));
-            assert.equal(pieces.length, 6, `${prefix}: six reward confetti pieces`);
-            for (const piece of pieces) {
-              assert(piece.background !== 'rgba(0, 0, 0, 0)' || piece.image !== 'none', `${prefix}: confetti must have painted color`);
-              assert(piece.painted && piece.opacity >= .9, `${prefix}: confetti must be visible`);
-              assert(piece.width >= 18 && piece.height >= 18, `${prefix}: confetti must be large enough to notice`);
-              assert(piece.x >= 0 && piece.x + piece.width <= viewport.width && piece.y >= 0 && piece.y + piece.height <= viewport.height,
-                `${prefix}: confetti must be inside the viewport`);
-            }
-            await page.screenshot({path: path.join(shots, `${prefix}-visible.png`)});
+            const first = await sample();
+            assert.equal(first.length, 12, `${prefix}: bounded paper confetti pieces`);
+            assert(new Set(first.map(piece => piece.shape)).size >= 3, `${prefix}: world-themed shape variety`);
+            assert(first.every(piece => piece.painted), `${prefix}: SVG paper must have painted color`);
+            await page.waitForTimeout(120);
+            const second = await sample();
+            const falling = second.map((piece, index) => ({dx: piece.x - first[index].x, dy: piece.y - first[index].y}));
+            assert(falling.filter(delta => delta.dy > 1).length >= 8, `${prefix}: paper falls visibly`);
+            assert(new Set(falling.map(delta => Math.round(delta.dx))).size >= 4, `${prefix}: pieces flutter independently`);
+            const fades = await page.locator('#confetti [data-paper]').evaluateAll(nodes => nodes.every(node =>
+              node.getAnimations().some(animation => {
+                const frames = animation.effect.getKeyframes();
+                return frames[0].opacity === '0' && frames.at(-1).opacity === '0' && animation.effect.getTiming().iterations === 1;
+              })));
+            assert(fades, `${prefix}: every piece has a finite entry and exit`);
+            await page.waitForTimeout(250);
+            await page.screenshot({path: path.join(shots, `${prefix}-mid-fall.png`)});
             if (theme === 0) {
-              await page.waitForFunction(() => !document.querySelector('#confetti i'));
-              assert.equal(await page.locator('#confetti i').count(), 0, 'Finished confetti is removed');
-            } else {
+              await page.waitForFunction(() => !document.querySelector('#confetti [data-particle]'));
+              assert.equal(await page.locator('#confetti [data-particle]').count(), 0, 'Finished confetti is removed');
+            } else if (theme === 1) {
               await page.emulateMedia({reducedMotion: 'reduce'});
-              await page.waitForFunction(() => !document.querySelector('#confetti i'));
-              assert.equal(await page.locator('#confetti i').count(), 0, 'Reduced motion clears confetti');
+              await page.waitForFunction(() => !document.querySelector('#confetti [data-particle]'));
+              assert.equal(await page.locator('#confetti [data-particle]').count(), 0, 'Reduced motion clears confetti');
             }
             await page.locator('[data-action="next"]').click(); await screen('listen');
-            assert.equal(await page.locator('#confetti i').count(), 0, 'Confetti never leaks to the next route');
+            assert.equal(await page.locator('#confetti [data-particle]').count(), 0, 'Confetti never leaks to the next route');
             assert.deepEqual(errors, [], `${prefix}: browser errors`);
             assert.deepEqual(network, [], `${prefix}: unexpected network requests`);
             cases++;
-            console.log(`PASS ${prefix}: painted on-screen confetti, screenshot, cleanup and navigation`);
+            console.log(`PASS ${prefix}: themed paper, independent fall/flutter, entry/exit, screenshot and cleanup`);
           } finally {await context.close();}
         }
       }

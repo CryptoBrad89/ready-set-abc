@@ -121,8 +121,15 @@ body[data-screen="listen"] .lucy-portrait>img,body[data-screen="match"] .lucy-po
 @keyframes play-breathe{0%,100%{transform:translateY(0) scale(1.04)}50%{transform:translateY(-2px) scale(1.052)}}
 @keyframes play-miss-glow{0%,100%{opacity:0}45%{opacity:1}}
 @media(prefers-reduced-motion:reduce){body[data-screen="listen"] .lucy-portrait>img,body[data-screen="match"] .lucy-portrait>img{animation:none}.choice.miss-active::after{animation:none}}
-.reward-weather{animation:play-reward-rain 900ms ease-out both}
-.theme-weather.reward-weather i{width:22px;height:32px;border:1px solid #ffffffb3;border-radius:3px;clip-path:none;background:#e45141;box-shadow:none}
-.theme-weather.reward-weather i:nth-child(3n+2){background:#f5c348}
-.theme-weather.reward-weather i:nth-child(3n){background:#319ca8}
-@keyframes play-reward-rain{0%{opacity:0;transform:translateY(-24px) scale(.85)}20%,65%{opacity:1}100%{opacity:0;transform:translateY(240px) scale(1.08)}}
+.paper-rain{position:fixed;inset:90px 4% 8%;pointer-events:none;perspective:800px}
+.paper-rain [data-paper]{position:absolute;left:var(--lane);top:-35px;width:calc(clamp(36px,4.5vw,60px)*var(--size));aspect-ratio:1;opacity:0;animation:paper-fall var(--flight) var(--delay) cubic-bezier(.36,.1,.66,.95) both;pointer-events:none}
+.paper-flutter{display:block;width:100%;height:100%;animation:paper-flutter var(--flight) var(--delay) ease-in-out both;transform-style:preserve-3d}
+.paper-piece{display:block;width:100%;height:100%;overflow:visible;fill:var(--tone);stroke:var(--line);stroke-width:.65;stroke-linejoin:round;filter:drop-shadow(1px 2px 1px color-mix(in srgb,var(--shadow) 24%,transparent));animation:paper-tumble var(--flight) var(--delay) ease-in-out both;transform-origin:45% 40%}
+.paper-fold{fill:none;stroke:var(--onaccent);stroke-width:1.7;opacity:.7}
+.paper-inset{fill:var(--surface);stroke:none;opacity:.33}
+.paper-mark{fill:var(--tone);stroke:none}
+.paper-ring{fill:var(--accent2);stroke:var(--line);stroke-width:.75}
+@keyframes paper-fall{0%{opacity:0;transform:translate3d(0,-28px,0)}10%{opacity:1}38%{transform:translate3d(var(--drift),18vh,0)}72%{opacity:1;transform:translate3d(calc(var(--drift)*-.55),39vh,0)}100%{opacity:0;transform:translate3d(calc(var(--drift)*.8),61vh,0)}}
+@keyframes paper-flutter{0%{transform:translateX(0) rotateY(-18deg)}24%{transform:translateX(calc(var(--flutter)*12px)) rotateY(38deg)}51%{transform:translateX(calc(var(--flutter)*-13px)) rotateY(-42deg)}77%{transform:translateX(calc(var(--flutter)*10px)) rotateY(24deg)}100%{transform:translateX(0) rotateY(-12deg)}}
+@keyframes paper-tumble{0%{transform:rotate(var(--phase)) rotateX(-18deg)}32%{transform:rotate(calc(var(--phase) + var(--turn)*.32)) rotateX(28deg)}68%{transform:rotate(calc(var(--phase) + var(--turn)*.7)) rotateX(-38deg)}100%{transform:rotate(calc(var(--phase) + var(--turn))) rotateX(18deg)}}
+@media(max-width:700px){.paper-rain{inset:85px 3% 8%}.paper-rain [data-paper]{width:calc(39px*var(--size))}}
