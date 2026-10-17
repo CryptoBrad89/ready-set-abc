@@ -1,6 +1,6 @@
 {
-  "contentVersion": "2026.09.08-p5-alphabet-awake",
-  "note": "phoneme = grown-up chip; say = voice sound (never the letter name on a choice tap). pictures[] is the GAME-FLOW pool; pick one at random per picture-match trial. Every plate carries its own emoji — no two pictures in this file share one, so a picture-match trial can never deal the same plate for two letters. word/emoji are the letter's stand-in on the trail, the home strip, the certificate and the family note: it is always the first plate in the letter's own pool, and always an emoji an older cart tablet can actually draw (_check.mjs holds both rules). Newer glyphs are fine deeper in a pool — one plate in fifteen is a shrug, a letter whose whole face is an empty box is not.",
+  "contentVersion": "2026.10.14-phonics-pools",
+  "note": "phoneme = grown-up chip; say = voice sound (never the letter name on a choice tap). pictures[] is the GAME-FLOW pool; pick one at random per picture-match trial. Every plate carries its own emoji — no two pictures in this file share one, so a picture-match trial can never deal the same plate for two letters. word/emoji are the letter's stand-in on the trail, the home strip, the certificate and the family note: it is always the first plate in the letter's own pool, and always an emoji an older cart tablet can actually draw (_check.mjs holds both rules). Newer glyphs are fine deeper in a pool — one plate in fifteen is a shrug, a letter whose whole face is an empty box is not. pictures is the phonics pool: every plate begins with the letter's taught sound (X: ends in /ks/). alphabetWords start with the letter in print but not with that sound (Shoe, Knee, Owl, Xylophone); they keep their art and audio for a later alphabet activity and never deal into a phonics board.",
   "letters": [
     {
       "letter": "A",
@@ -32,24 +32,9 @@
           "emoji": "🐜"
         },
         {
-          "id": "airplane",
-          "word": "Airplane",
-          "emoji": "✈️"
-        },
-        {
-          "id": "acorn",
-          "word": "Acorn",
-          "emoji": "🌰"
-        },
-        {
           "id": "ambulance",
           "word": "Ambulance",
           "emoji": "🚑"
-        },
-        {
-          "id": "avocado",
-          "word": "Avocado",
-          "emoji": "🥑"
         },
         {
           "id": "anchor",
@@ -62,14 +47,36 @@
           "emoji": "🦙"
         },
         {
-          "id": "apron",
-          "word": "Apron",
-          "emoji": "🎽"
-        },
-        {
           "id": "asteroid",
           "word": "Asteroid",
           "emoji": "☄️"
+        },
+        {
+          "id": "axolotl",
+          "word": "Axolotl",
+          "emoji": "🐡"
+        }
+      ],
+      "alphabetWords": [
+        {
+          "id": "airplane",
+          "word": "Airplane",
+          "emoji": "✈️"
+        },
+        {
+          "id": "acorn",
+          "word": "Acorn",
+          "emoji": "🌰"
+        },
+        {
+          "id": "avocado",
+          "word": "Avocado",
+          "emoji": "🥑"
+        },
+        {
+          "id": "apron",
+          "word": "Apron",
+          "emoji": "🎽"
         },
         {
           "id": "alarm",
@@ -80,11 +87,6 @@
           "id": "artichoke",
           "word": "Artichoke",
           "emoji": "🥬"
-        },
-        {
-          "id": "axolotl",
-          "word": "Axolotl",
-          "emoji": "🐡"
         }
       ]
     },
@@ -366,16 +368,6 @@
           "emoji": "🐘"
         },
         {
-          "id": "eagle",
-          "word": "Eagle",
-          "emoji": "🦅"
-        },
-        {
-          "id": "ear",
-          "word": "Ear",
-          "emoji": "👂"
-        },
-        {
           "id": "envelope",
           "word": "Envelope",
           "emoji": "✉️"
@@ -391,14 +383,36 @@
           "emoji": "🧝"
         },
         {
-          "id": "earth",
-          "word": "Earth",
-          "emoji": "🌍"
-        },
-        {
           "id": "elbow",
           "word": "Elbow",
           "emoji": "💪"
+        },
+        {
+          "id": "elevator",
+          "word": "Elevator",
+          "emoji": "🛗"
+        },
+        {
+          "id": "evergreen",
+          "word": "Evergreen",
+          "emoji": "🌲"
+        }
+      ],
+      "alphabetWords": [
+        {
+          "id": "eagle",
+          "word": "Eagle",
+          "emoji": "🦅"
+        },
+        {
+          "id": "ear",
+          "word": "Ear",
+          "emoji": "👂"
+        },
+        {
+          "id": "earth",
+          "word": "Earth",
+          "emoji": "🌍"
         },
         {
           "id": "eraser",
@@ -416,19 +430,9 @@
           "emoji": "8️⃣"
         },
         {
-          "id": "elevator",
-          "word": "Elevator",
-          "emoji": "🛗"
-        },
-        {
           "id": "eleven",
           "word": "Eleven",
           "emoji": "🕚"
-        },
-        {
-          "id": "evergreen",
-          "word": "Evergreen",
-          "emoji": "🌲"
         }
       ]
     },
@@ -455,11 +459,6 @@
           "id": "flower",
           "word": "Flower",
           "emoji": "🌸"
-        },
-        {
-          "id": "fox",
-          "word": "Fox",
-          "emoji": "🦊"
         },
         {
           "id": "fireworks",
@@ -705,16 +704,6 @@
           "emoji": "🧊"
         },
         {
-          "id": "ice-cream",
-          "word": "Ice cream",
-          "emoji": "🍦"
-        },
-        {
-          "id": "island",
-          "word": "Island",
-          "emoji": "🏝️"
-        },
-        {
           "id": "ink",
           "word": "Ink",
           "emoji": "🖋️"
@@ -740,6 +729,28 @@
           "emoji": "🎺"
         },
         {
+          "id": "infant",
+          "word": "Infant",
+          "emoji": "👶"
+        },
+        {
+          "id": "inn",
+          "word": "Inn",
+          "emoji": "🏨"
+        }
+      ],
+      "alphabetWords": [
+        {
+          "id": "ice-cream",
+          "word": "Ice cream",
+          "emoji": "🍦"
+        },
+        {
+          "id": "island",
+          "word": "Island",
+          "emoji": "🏝️"
+        },
+        {
           "id": "ice-skate",
           "word": "Ice skate",
           "emoji": "⛸️"
@@ -760,19 +771,9 @@
           "emoji": "🏒"
         },
         {
-          "id": "infant",
-          "word": "Infant",
-          "emoji": "👶"
-        },
-        {
           "id": "ice-pop",
           "word": "Ice pop",
           "emoji": "🍧"
-        },
-        {
-          "id": "inn",
-          "word": "Inn",
-          "emoji": "🏨"
         }
       ]
     },
@@ -927,11 +928,6 @@
           "emoji": "😘"
         },
         {
-          "id": "knee",
-          "word": "Knee",
-          "emoji": "🦵"
-        },
-        {
           "id": "kick",
           "word": "Kick",
           "emoji": "👟"
@@ -945,6 +941,13 @@
           "id": "keyboard",
           "word": "Keyboard",
           "emoji": "⌨️"
+        }
+      ],
+      "alphabetWords": [
+        {
+          "id": "knee",
+          "word": "Knee",
+          "emoji": "🦵"
         }
       ]
     },
@@ -1210,11 +1213,38 @@
       "letter": "O",
       "lower": "o",
       "awake": true,
-      "word": "Owl",
-      "emoji": "🦉",
+      "word": "Octopus",
+      "emoji": "🐙",
       "phoneme": "/ɒ/",
       "say": "aw",
       "pictures": [
+        {
+          "id": "octopus",
+          "word": "Octopus",
+          "emoji": "🐙"
+        },
+        {
+          "id": "otter",
+          "word": "Otter",
+          "emoji": "🦦"
+        },
+        {
+          "id": "olive",
+          "word": "Olive",
+          "emoji": "🫒"
+        },
+        {
+          "id": "office",
+          "word": "Office",
+          "emoji": "🏢"
+        },
+        {
+          "id": "omelet",
+          "word": "Omelet",
+          "emoji": "🍳"
+        }
+      ],
+      "alphabetWords": [
         {
           "id": "owl",
           "word": "Owl",
@@ -1226,11 +1256,6 @@
           "emoji": "🍊"
         },
         {
-          "id": "octopus",
-          "word": "Octopus",
-          "emoji": "🐙"
-        },
-        {
           "id": "ocean",
           "word": "Ocean",
           "emoji": "🌊"
@@ -1239,16 +1264,6 @@
           "id": "onion",
           "word": "Onion",
           "emoji": "🧅"
-        },
-        {
-          "id": "otter",
-          "word": "Otter",
-          "emoji": "🦦"
-        },
-        {
-          "id": "olive",
-          "word": "Olive",
-          "emoji": "🫒"
         },
         {
           "id": "overalls",
@@ -1266,11 +1281,6 @@
           "emoji": "🪐"
         },
         {
-          "id": "ox",
-          "word": "Ox",
-          "emoji": "🐂"
-        },
-        {
           "id": "orangutan",
           "word": "Orangutan",
           "emoji": "🦧"
@@ -1279,16 +1289,6 @@
           "id": "oyster",
           "word": "Oyster",
           "emoji": "🦪"
-        },
-        {
-          "id": "office",
-          "word": "Office",
-          "emoji": "🏢"
-        },
-        {
-          "id": "omelet",
-          "word": "Omelet",
-          "emoji": "🍳"
         }
       ]
     },
@@ -1418,11 +1418,6 @@
           "emoji": "🖊️"
         },
         {
-          "id": "quesadilla",
-          "word": "Quesadilla",
-          "emoji": "🧀"
-        },
-        {
           "id": "quiet",
           "word": "Quiet",
           "emoji": "🤫"
@@ -1448,11 +1443,6 @@
           "emoji": "🔮"
         },
         {
-          "id": "quiche",
-          "word": "Quiche",
-          "emoji": "🥧"
-        },
-        {
           "id": "quick",
           "word": "Quick",
           "emoji": "🏃"
@@ -1461,6 +1451,18 @@
           "id": "quilt-square",
           "word": "Quilt square",
           "emoji": "🟪"
+        }
+      ],
+      "alphabetWords": [
+        {
+          "id": "quesadilla",
+          "word": "Quesadilla",
+          "emoji": "🧀"
+        },
+        {
+          "id": "quiche",
+          "word": "Quiche",
+          "emoji": "🥧"
         }
       ]
     },
@@ -1605,19 +1607,9 @@
           "emoji": "🍓"
         },
         {
-          "id": "ship",
-          "word": "Ship",
-          "emoji": "🚢"
-        },
-        {
           "id": "spider",
           "word": "Spider",
           "emoji": "🕷️"
-        },
-        {
-          "id": "shoe",
-          "word": "Shoe",
-          "emoji": "👞"
         },
         {
           "id": "soap",
@@ -1633,6 +1625,18 @@
           "id": "scissors",
           "word": "Scissors",
           "emoji": "✂️"
+        }
+      ],
+      "alphabetWords": [
+        {
+          "id": "ship",
+          "word": "Ship",
+          "emoji": "🚢"
+        },
+        {
+          "id": "shoe",
+          "word": "Shoe",
+          "emoji": "👞"
         }
       ]
     },
@@ -1737,11 +1741,6 @@
           "emoji": "☂️"
         },
         {
-          "id": "unicorn",
-          "word": "Unicorn",
-          "emoji": "🦄"
-        },
-        {
           "id": "up",
           "word": "Up",
           "emoji": "⬆️"
@@ -1752,29 +1751,14 @@
           "emoji": "⬇️"
         },
         {
-          "id": "ukulele",
-          "word": "Ukulele",
-          "emoji": "🪕"
-        },
-        {
           "id": "uncle",
           "word": "Uncle",
           "emoji": "👨"
         },
         {
-          "id": "ufo",
-          "word": "UFO",
-          "emoji": "🛸"
-        },
-        {
           "id": "underground",
           "word": "Underground",
           "emoji": "🚇"
-        },
-        {
-          "id": "universe",
-          "word": "Universe",
-          "emoji": "🌌"
         },
         {
           "id": "unlock",
@@ -1792,14 +1776,36 @@
           "emoji": "🙃"
         },
         {
-          "id": "utensils",
-          "word": "Utensils",
-          "emoji": "🥢"
-        },
-        {
           "id": "underwater",
           "word": "Underwater",
           "emoji": "🤿"
+        }
+      ],
+      "alphabetWords": [
+        {
+          "id": "unicorn",
+          "word": "Unicorn",
+          "emoji": "🦄"
+        },
+        {
+          "id": "ukulele",
+          "word": "Ukulele",
+          "emoji": "🪕"
+        },
+        {
+          "id": "ufo",
+          "word": "UFO",
+          "emoji": "🛸"
+        },
+        {
+          "id": "universe",
+          "word": "Universe",
+          "emoji": "🌌"
+        },
+        {
+          "id": "utensils",
+          "word": "Utensils",
+          "emoji": "🥢"
         },
         {
           "id": "uniform",
@@ -1984,11 +1990,24 @@
       "letter": "X",
       "lower": "x",
       "awake": true,
-      "word": "Xylophone",
-      "emoji": "🎼",
+      "word": "Fox",
+      "emoji": "🦊",
       "phoneme": "/ks/",
       "say": "ks",
+      "soundAt": "end",
       "pictures": [
+        {
+          "id": "fox",
+          "word": "Fox",
+          "emoji": "🦊"
+        },
+        {
+          "id": "ox",
+          "word": "Ox",
+          "emoji": "🐂"
+        }
+      ],
+      "alphabetWords": [
         {
           "id": "xylophone",
           "word": "Xylophone",

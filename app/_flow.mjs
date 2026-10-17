@@ -121,8 +121,10 @@ globalThis.fetch = async (path) => {
 const { store } = await import('./js/store.js');
 const { loadData, kids, kidById, activeKid, isAwake, letterByChar, picturesFor, pickPicture, awakeLetters, className } = await import('./js/data.js');
 const round = await import('./js/round.js');
-const { setTeacherUnlock, isCloudUnlocked, openCloud } = await import('./js/clouds.js');
-const { startLetter } = await import('./js/profile.js');
+const { setTeacherUnlock, isCloudUnlocked, openCloud, letterCompleted } = await import('./js/clouds.js');
+const profileMod = await import('./js/profile.js');
+const { startLetter, cloudOrder, nextLetter: profileNextLetter } = profileMod;
+const workRoundLetters = profileMod.roundLetters;
 const origReset = store.reset.bind(store);
 store.reset = () => { origReset(); setTeacherUnlock(5); };
 const bonusMod = await import('./js/bonus.js');
@@ -131,38 +133,24 @@ const { audio, CHEERS, NUDGES, phonemeText, looksLikeLetterName, PHONEME_VOICE, 
 const { hasPictureArt } = await import('./js/art.js');
 const csv = await import('./js/csv.js');
 
-/* All 26 pools are pinned word-for-word now: every picture has a drawn SVG
-   plate keyed by picture id (js/art.js), so a renamed word silently loses
-   its art. Rename a word here and in data/letters.json together, and draw
-   the plate under the new id. */
-const GAME_FLOW_WORDS = {
-  A: ['Apple', 'Alligator', 'Astronaut', 'Ant', 'Airplane', 'Acorn', 'Ambulance', 'Avocado', 'Anchor', 'Alpaca', 'Apron', 'Asteroid', 'Alarm', 'Artichoke', 'Axolotl'],
-  B: ['Ball', 'Bear', 'Banana', 'Butterfly', 'Bus', 'Bird', 'Boat', 'Book', 'Balloon', 'Bee', 'Bread', 'Bike', 'Bucket', 'Bunny', 'Broccoli'],
-  C: ['Cat', 'Car', 'Cake', 'Cow', 'Cup', 'Castle', 'Carrot', 'Cloud', 'Crab', 'Crown', 'Cookie', 'Camera', 'Candle', 'Caterpillar', 'Corn'],
-  D: ['Dog', 'Duck', 'Drum', 'Door', 'Donut', 'Dinosaur', 'Dragon', 'Dolphin', 'Desk', 'Daisy', 'Donkey', 'Dice', 'Doll', 'Diamond', 'Deer'],
-  E: ['Egg', 'Elephant', 'Eagle', 'Ear', 'Envelope', 'Engine', 'Elf', 'Earth', 'Elbow', 'Eraser', 'Eye', 'Eight', 'Elevator', 'Eleven', 'Evergreen'],
-  F: ['Fish', 'Frog', 'Flower', 'Fox', 'Fireworks', 'Fire', 'Fork', 'Feather', 'Flag', 'Foot', 'Fire truck', 'Fairy', 'Fries', 'Flamingo', 'Football'],
-  G: ['Goat', 'Grapes', 'Guitar', 'Gift', 'Ghost', 'Girl', 'Glasses', 'Grass', 'Globe', 'Gum', 'Garden', 'Glue', 'Gorilla', 'Grasshopper', 'Game'],
-  H: ['Hat', 'House', 'Horse', 'Heart', 'Hand', 'Hammer', 'Helicopter', 'Honey', 'Hippo', 'Hook', 'Hot dog', 'Hen', 'Hug', 'Hamburger', 'Hedgehog'],
-  I: ['Igloo', 'Ice cream', 'Island', 'Ink', 'Insect', 'Iguana', 'Invitation', 'Instrument', 'Ice skate', 'Ivy', 'Iceberg', 'Ice hockey', 'Infant', 'Ice pop', 'Inn'],
-  J: ['Juice', 'Jar', 'Jacket', 'Jeep', 'Jet', 'Jewel', 'Jungle', 'Jump rope', 'Jingle bell', 'Juggler', 'Jaguar', 'Jug', 'Jelly', 'Jigsaw', 'Jump'],
-  K: ['Key', 'Kite', 'King', 'Kitten', 'Kangaroo', 'Kettle', 'Kiwi', 'Koala', 'Kayak', 'Kid', 'Kiss', 'Knee', 'Kick', 'Karate', 'Keyboard'],
-  L: ['Leaf', 'Lion', 'Lamp', 'Lemon', 'Ladder', 'Ladybug', 'Lock', 'Lollipop', 'Lamb', 'Log', 'Lunch', 'Lake', 'Lobster', 'Lips', 'Lantern'],
-  M: ['Moon', 'Mouse', 'Milk', 'Map', 'Monkey', 'Mitten', 'Mountain', 'Mushroom', 'Magnet', 'Motorcycle', 'Mango', 'Mask', 'Muffin', 'Music', 'Mug'],
-  N: ['Nose', 'Nest', 'Nut', 'Net', 'Notebook', 'Nurse', 'Noodle', 'Necklace', 'Night', 'Newspaper', 'Nine', 'Necktie', 'Needle', 'Numbers', 'Notes'],
-  O: ['Owl', 'Orange', 'Octopus', 'Ocean', 'Onion', 'Otter', 'Olive', 'Overalls', 'Oatmeal', 'Orbit', 'Ox', 'Orangutan', 'Oyster', 'Office', 'Omelet'],
-  P: ['Pig', 'Pizza', 'Pencil', 'Pear', 'Penguin', 'Pumpkin', 'Piano', 'Plane', 'Popcorn', 'Panda', 'Pot', 'Peach', 'Puppy', 'Pineapple', 'Parrot'],
-  Q: ['Quilt', 'Queen', 'Question', 'Quail', 'Quarter', 'Quill', 'Quesadilla', 'Quiet', 'Quicksand', 'Quiz', 'Quote', 'Quartz', 'Quiche', 'Quick', 'Quilt square'],
-  R: ['Rain', 'Rainbow', 'Robot', 'Rocket', 'Rose', 'Rabbit', 'Ring', 'Raccoon', 'Radio', 'Ruler', 'Rhino', 'Rooster', 'Ribbon', 'Rice', 'Rat'],
-  S: ['Sun', 'Snake', 'Star', 'Sock', 'Spoon', 'Seal', 'Sandwich', 'Squirrel', 'Strawberry', 'Ship', 'Spider', 'Shoe', 'Soap', 'Snail', 'Scissors'],
-  T: ['Tree', 'Tiger', 'Train', 'Turtle', 'Truck', 'Tomato', 'Tent', 'Tooth', 'Tractor', 'Triangle', 'Turkey', 'Telescope', 'Tulip', 'Trophy', 'Taxi'],
-  U: ['Umbrella', 'Unicorn', 'Up', 'Under', 'Ukulele', 'Uncle', 'UFO', 'Underground', 'Universe', 'Unlock', 'Umpire', 'Upside down', 'Utensils', 'Underwater', 'Uniform'],
-  V: ['Van', 'Violin', 'Volcano', 'Village', 'Volleyball', 'Violet', 'Vet', 'Vampire', 'Video', 'Vegetables', 'Valentine', 'Vine', 'Vanilla', 'Voice', 'Vault'],
-  W: ['Watermelon', 'Wagon', 'Whale', 'Worm', 'Window', 'Wolf', 'Watch', 'Water', 'Wand', 'Waffle', 'Web', 'Wheel', 'Witch', 'Wheat', 'Winter'],
-  X: ['Xylophone', 'X-ray', 'X mark', 'Xmas tree', 'Xmas star', 'X-ray fish', 'X-ray glasses', 'X-ray hand', 'X-ray bone', 'X-ray heart', 'Xmas ball', 'Xmas snow', 'Xmas chime', 'Xmas sled', 'Xmas angel'],
-  Y: ['Yarn', 'Yo-yo', 'Yak', 'Yellow', 'Yacht', 'Yard', 'Yam', 'Yawn', 'Yoga', 'Yellow bird', 'Yell', 'Yodel', 'Yummy', 'Yolk', 'Yes'],
-  Z: ['Zebra', 'Zoo', 'Zipper', 'Zero', 'Zucchini', 'Zigzag', 'Zinnia', 'Zap', 'Zoom', 'Zombie', 'Zzz', 'Zebra crossing', 'Zipper bag', 'Zoo train', 'Zither'],
-};
+/* Phonics pools and spelling-only plates are pinned in data/letters.json and
+   _check.mjs. Flow reads the file so content edits do not need a second list. */
+function letterEntry(L) {
+  return lettersJson.letters.find((e) => e.letter === L) || null;
+}
+function phonicsPool(L) {
+  const entry = letterEntry(L);
+  return entry && Array.isArray(entry.pictures) ? entry.pictures : [];
+}
+function phonicsWordOk(L, word, entry) {
+  if (!word) return false;
+  if (entry && entry.soundAt === 'end') return /x$/i.test(word);
+  const w = String(word).toLowerCase();
+  if (L === 'S' && /^sh/.test(w)) return false;
+  if (L === 'K' && /^kn/.test(w)) return false;
+  if (L === 'C' && /^c[eiy]/.test(w)) return false;
+  return word.charAt(0).toUpperCase() === L;
+}
 
 let fail = 0;
 function assert(cond, msg) {
@@ -205,8 +193,11 @@ function twoTap(letter, { miss = false, hint = false } = {}) {
   }
   if (hint) round.useHint();
   let guard = 0;
-  while (r.step === 'choose' && !r.trial.locked && guard < 6) {
-    const result = round.tapChoose(letter);
+  while (r.step === 'choose' && !r.trial.locked && guard < 12) {
+    const t = round.getRound().trial;
+    const nextId = t.targets.find((id) => !t.found.includes(id));
+    const pick = nextId || letter;
+    const result = round.tapChoose(pick);
     assert(result === 'collect' || result === 'right', `${letter} choose tap (${result})`);
     guard += 1;
   }
@@ -220,38 +211,36 @@ function twoTap(letter, { miss = false, hint = false } = {}) {
 }
 
 await loadData();
+const lettersJson = JSON.parse(readFileSync(join(root, 'data/letters.json'), 'utf8'));
 assert(letterByChar('A') && letterByChar('A').word === 'Apple', 'letter A loaded');
 assert(kids().length >= 20, `roster has ${kids().length} kids`);
 
 const ALPHABET_STR = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const seenEmoji = new Map();
+let plateCount = 0;
 for (const L of ALPHABET_STR) {
-  const pool = picturesFor(L);
-  assert(pool.length === 15, `${L} picture pool has ${pool.length} pictures (want 15)`);
-  assert(pool.every((p) => p.word && p.emoji && p.letter === L && p.id), `${L} pictures are well-formed`);
+  const entry = letterEntry(L);
+  const pool = phonicsPool(L);
+  const spelling = (entry && entry.alphabetWords) || [];
+  plateCount += pool.length + spelling.length;
+  assert(pool.length >= 2, `${L} phonics pool has ${pool.length} pictures (want at least 2)`);
+  assert(pool.every((p) => p.word && p.emoji && p.id), `${L} phonics plates are well-formed`);
   const words = pool.map((p) => p.word);
-  assert(new Set(words.map((w) => w.toLowerCase())).size === 15, `${L} picture words are unique`);
-  /* Sound Sort asks "does it start with /f/?" and marks a pool picture yes.
-     A word that does not start with its own letter makes that answer a lie. */
-  assert(words.every((w) => w.charAt(0).toUpperCase() === L), `every ${L} word starts with ${L}`);
-  /* Picture match deals one plate per choice letter. Two letters sharing an
-     emoji is a board where the child cannot be right. */
-  pool.forEach((p) => {
+  assert(new Set(words.map((w) => w.toLowerCase())).size === words.length, `${L} phonics words are unique`);
+  assert(words.every((w) => phonicsWordOk(L, w, entry)),
+    `every ${L} phonics word matches its taught sound`);
+  [...pool, ...spelling].forEach((p) => {
     if (seenEmoji.has(p.emoji)) {
       assert(false, `${p.emoji} is on two plates: ${seenEmoji.get(p.emoji)} and ${L}/${p.word}`);
     }
     seenEmoji.set(p.emoji, `${L}/${p.word}`);
   });
-  const want = GAME_FLOW_WORDS[L];
-  const missing = want.filter((w) => !words.includes(w));
-  assert(missing.length === 0, `${L} matches GAME-FLOW words${missing.length ? ` (missing ${missing.join(', ')})` : ''}`);
   pool.forEach((p) => assert(hasPictureArt(p.id), `${L}/${p.id} has SVG art`));
-  /* ui.js falls through to the plate's own emoji whenever art.js has no id.
-     Nothing rides on that fallback today, but a picture added without a
-     drawing has to land on its emoji, not on a blank card. */
   assert(pool.every((p) => p.emoji.trim().length > 0), `${L} plates all carry a fallback emoji`);
+  assert(pool[0] && pool[0].word === entry.word, `${L} anchor is the first phonics plate`);
 }
-assert(seenEmoji.size === 26 * 15, `all ${seenEmoji.size} plates carry their own emoji`);
+assert(plateCount === 390, `letters.json carries ${plateCount} plates across both lists (want 390)`);
+assert(seenEmoji.size === plateCount, `all ${seenEmoji.size} plates carry their own emoji`);
 assert(awakeLetters().map((l) => l.letter).join('') === 'AINPST', 'Cloud 1 SATPIN is the default open path');
 setTeacherUnlock(5);
 assert(awakeLetters().map((l) => l.letter).join('') === ALPHABET_STR, 'teacher unlock 5 wakes the alphabet');
@@ -281,6 +270,7 @@ store.setClassroom(true);
 store.clearKid();
 store.setCursor('A');
 store.setPinnedLetter(null);
+setTeacherUnlock(1);
 
 const s = store.getSettings();
 assert(s.roundSize === 3 && s.choiceCount === 3 && s.hintAfter === 2, 'play settings persist');
@@ -305,9 +295,9 @@ assert(document.documentElement.dataset.mode === 'whiteboard', 'html data-mode=w
 store.setMode('center');
 assert(document.documentElement.dataset.mode === 'center', 'mode back to center');
 
-round.startRound({ startAt: 'A' });
-assert(round.isActive(), 'round started at A');
-assert(round.getRound().letters.join('') === 'ABC', `default 3-letter round is ABC (got ${round.getRound().letters.join('')})`);
+round.startRound({ startAt: 'S' });
+assert(round.isActive(), 'round started at S');
+assert(round.getRound().letters.join('') === 'SAT', `SATPIN 3-letter round is SAT (got ${round.getRound().letters.join('')})`);
 assert(round.getRound().step === 'meet', 'step one is meet');
 assert(store.isClassroom() && !store.getKidId(), 'still needs a face');
 
@@ -322,59 +312,55 @@ assert(round.getRound().misses === 0, 'empty meet is not a miss');
 const trial = round.getRound().trial;
 assert(trial.hunt === 'lower', 'caseMode lower hunts little letters');
 assert(trial.choices.length === 3, 'choose uses the frozen choice count');
-assert(trial.choices.some((c) => c.letter === 'A'), 'correct card is in the mix');
+assert(trial.choices.some((c) => c.letter === 'S'), 'correct card is in the mix');
 
-const starsA = twoTap('A', { miss: true });
-assert(starsA === 2, `banked ${starsA} stars for A (1 miss, no hint)`);
-assert(store.starsFor('A') === 2, 'stars persisted for this kid');
-assert(store.getCursor() === 'B', `cursor advanced to B after A (got ${store.getCursor()})`);
-assert(store.getNextAbcIndex() === 1, `nextAbcIndex is 1 after A (got ${store.getNextAbcIndex()})`);
-assert(JSON.parse(mem.get('rsabc.nextAbcIndex')) === 1, 'nextAbcIndex wrote rsabc.nextAbcIndex');
-assert(store.stickers().some((s) => s.letter === 'A' && s.word), 'Star Pouch has an A sticker');
+const starsS = twoTap('S', { miss: true });
+assert(starsS === 2, `banked ${starsS} stars for S (1 miss, no hint)`);
+assert(store.starsFor('S') === 2, 'stars persisted for this kid');
+assert(store.stickers().some((s) => s.letter === 'S' && s.word), 'Star Pouch has an S sticker');
 
-assert(round.nextLetter() === true, 'round continues to B');
-assert(round.currentLetter().letter === 'B', 'now on letter B');
-assert(round.getRound().step === 'meet', 'B starts at meet');
+assert(round.nextLetter() === true, 'round continues to A');
+assert(round.currentLetter().letter === 'A', 'now on letter A');
+assert(round.getRound().step === 'meet', 'A starts at meet');
 assert(round.getRound().misses === 0, 'misses reset per letter');
 
-const starsB = twoTap('B');
-assert(starsB === 3, 'clean B → 3 stars');
-assert(store.starsFor('B') === 3, 'B stars saved');
-assert(store.getCursor() === 'C', 'cursor at C after B');
+const starsA = twoTap('A');
+assert(starsA === 3, 'clean A → 3 stars');
+assert(store.starsFor('A') === 3, 'A stars saved');
 
-assert(round.nextLetter() === true, 'round continues to C');
-const starsC = twoTap('C', { hint: true });
-assert(starsC === 1, 'hint on C → 1 star');
-assert(store.starsFor('C') === 1, 'C stars saved');
-assert(store.getCursor() === 'D', 'cursor at D after C');
-assert(round.nextLetter() === false, 'round of 3 is over after C');
+assert(round.nextLetter() === true, 'round continues to T');
+const starsT = twoTap('T', { hint: true });
+assert(starsT === 1, 'hint on T → 1 star');
+assert(store.starsFor('T') === 1, 'T stars saved');
+assert(round.nextLetter() === false, 'round of 3 is over after T');
 
 const saved = JSON.parse(mem.get('rsabc.stars') || '{}');
-assert(saved[kid.id] && saved[kid.id].A === 2 && saved[kid.id].B === 3 && saved[kid.id].C === 1,
+assert(saved[kid.id] && saved[kid.id].S === 2 && saved[kid.id].A === 3 && saved[kid.id].T === 1,
   'stars-save wrote rsabc.stars in localStorage');
 
 round.playAgain();
 assert(round.isActive(), 'Play again started a new round');
-assert(round.getRound().letters[0] === 'D', `Play again advances to D (got ${round.getRound().letters.join('')})`);
-assert(round.getRound().letters.join('') === 'DEF', `the round carries on into the woken letters (got ${round.getRound().letters.join('')})`);
+assert(round.getRound().letters[0] === 'P', `Play again opens next SATPIN letter P (got ${round.getRound().letters.join('')})`);
+assert(round.getRound().letters.join('') === 'PIN', `the round carries on in cloud order (got ${round.getRound().letters.join('')})`);
 assert(round.getRound().step === 'meet', 'new round starts on meet');
 
-const starsD = twoTap('D');
-assert(starsD === 3, 'clean D → 3 stars');
-assert(store.starsFor('D') === 3, 'D stars saved');
-assert(store.getCursor() === 'E', 'cursor walks on to E after D — nothing is asleep to skip');
-assert(store.getNextAbcIndex() === 4, 'nextAbcIndex is 4 (E) after D');
+const starsP = twoTap('P');
+assert(starsP === 3, 'clean P → 3 stars');
+assert(store.starsFor('P') === 3, 'P stars saved');
 
-/* The wrap is at the end of the real alphabet now, not at the end of A–D. */
+setTeacherUnlock(5);
 round.goHome();
-store.setCursor('Z');
-round.startRound();
-assert(round.getRound().letters.join('') === 'ZAB', `a round started at Z wraps into A (got ${round.getRound().letters.join('')})`);
+store.setCursor('W');
+round.startRound({ startAt: 'W' });
+const wantWrap = workRoundLetters('W', 3).join('');
+assert(round.getRound().letters.join('') === wantWrap,
+  `a round started at W wraps in cloud order (got ${round.getRound().letters.join('')}, want ${wantWrap})`);
 round.goHome();
 store.setCursor('A');
+setTeacherUnlock(1);
 
 assert(store.totalStars() === 2 + 3 + 1 + 3, `Star Pouch total is ${store.totalStars()}`);
-assert(store.starsFor('E') === 0, 'sleeping E has no stars');
+assert(store.starsFor('I') === 0, 'letters not played yet have no stars');
 assert(store.stickers().length === 4, `Star Pouch lists ${store.stickers().length} earned stickers (want 4)`);
 const savedStickers = JSON.parse(mem.get('rsabc.stickers') || '{}');
 assert(savedStickers[kid.id] && savedStickers[kid.id].length === 4, 'stickers-save wrote rsabc.stickers');
@@ -486,10 +472,10 @@ const missingPhoneme = ALPHABET.filter((L) => !(clipId.phoneme(L) in ph.phoneme.
 assert(missingPhoneme.length === 0, `phoneme placeholders cover A–Z (missing ${missingPhoneme.join('') || 'none'})`);
 const awakeWordIds = lettersFile.letters
   .filter((e) => e.awake)
-  .flatMap((e) => (e.pictures || []).map((p) => clipId.word(e.letter, p.id)));
+  .flatMap((e) => [...(e.pictures || []), ...(e.alphabetWords || [])].map((p) => clipId.word(e.letter, p.id)));
 const missingWord = awakeWordIds.filter((id) => !(id in ph.word.ids));
 assert(awakeWordIds.length === 390 && missingWord.length === 0,
-  `word placeholders cover all ${awakeWordIds.length} awake pictures (missing ${missingWord.slice(0, 4).join(', ') || 'none'})`);
+  `word placeholders cover all ${awakeWordIds.length} plates (missing ${missingWord.slice(0, 4).join(', ') || 'none'})`);
 const missingWordFallback = ALPHABET.filter((L) => !(clipId.word(L) in ph.word.ids));
 assert(missingWordFallback.length === 0,
   `and every letter has a word-<L> fallback for a plate with no clip of its own (missing ${missingWordFallback.join('') || 'none'})`);
@@ -542,14 +528,13 @@ assert(noteA.trim() === noteA && !/\n{3}/.test(noteA), 'no leading, trailing or 
 assert(noteA.endsWith('Ready Set ABC \u00b7 Pre-K Phonics with Lucy'), 'and it signs off as the app');
 
 store.setPinnedLetter('B');
-assert(/B is for Ball\./.test(gu.familyNoteText()), 'the note follows the pinned letter');
+assert(/B is for Ball\./.test(gu.familyNoteText('B')), 'the note can be written for a pinned letter');
 
-/* Every letter runs now, so a pin anywhere in the alphabet is the letter the
-   note is about — including the far end, which used to be asleep. */
+/* Every letter runs now, so a note for any letter names its anchor word. */
 store.setPinnedLetter('E');
-assert(/E is for Egg\./.test(gu.familyNoteText()), 'a woken pin is the letter the family note talks about');
+assert(/E is for Egg\./.test(gu.familyNoteText('E')), 'a woken letter can be the family-note subject');
 store.setPinnedLetter('Z');
-const noteZ = gu.familyNoteText();
+const noteZ = gu.familyNoteText('Z');
 assert(/Z is for Zebra\./.test(noteZ), 'and so is the last letter on the trail');
 assert(!/nap|sleep|not yet|coming soon/i.test(noteZ), 'no letter is written up as one that will not open');
 assert(gu.familyNoteText('C').includes('C is for Cat.'), 'and a letter can be asked for by name');
@@ -659,10 +644,10 @@ assert(mf.start_url === './' && mf.orientation === 'landscape', 'manifest start_
 
 /* Grown-Ups round size / choice count actually drive the next round, not mid-letter. */
 round.goHome();
+setTeacherUnlock(5);
 store.setSetting('roundSize', 1);
 store.setSetting('choiceCount', 6);
-store.setCursor('B');
-round.startRound();
+round.startRound({ startAt: 'B' });
 assert(round.getRound().letters.join('') === 'B', `roundSize 1 starts a 1-letter round (got ${round.getRound().letters.join('')})`);
 round.continueBeat();
 round.advance();
@@ -677,19 +662,20 @@ assert(round.getRound().trial.choices.length === 6, 'rebuild still uses frozen c
 round.goHome();
 store.setSetting('roundSize', 5);
 store.setSetting('choiceCount', 2);
-store.setCursor('A');
-round.startRound();
-assert(round.getRound().letters.join('') === 'ABCDE', `roundSize 5 deals five letters off the woken alphabet (got ${round.getRound().letters.join('')})`);
+round.startRound({ startAt: 'S' });
+const wantFive = workRoundLetters('S', 5).join('');
+assert(round.getRound().letters.join('') === wantFive,
+  `roundSize 5 deals five letters off the work list (got ${round.getRound().letters.join('')}, want ${wantFive})`);
 round.continueBeat();
 round.advance();
 assert(round.getRound().trial.choices.length === 2, 'choiceCount 2 deals 2 cards');
 /* The clamp is the size of the awake pool, wherever that lands. */
 round.goHome();
 store.setSetting('roundSize', 8);
-store.setCursor('W');
-round.startRound();
-assert(round.getRound().letters.join('') === 'WXYZABCD',
-  `a round that runs off the end wraps rather than repeating a letter (got ${round.getRound().letters.join('')})`);
+round.startRound({ startAt: 'W' });
+const wantEight = workRoundLetters('W', 8).join('');
+assert(round.getRound().letters.join('') === wantEight,
+  `a round that runs off the end wraps rather than repeating a letter (got ${round.getRound().letters.join('')}, want ${wantEight})`);
 assert(new Set(round.getRound().letters).size === round.getRound().letters.length,
   'and no letter is dealt twice in one round');
 round.goHome();
@@ -741,7 +727,7 @@ assert(/say\(`Listen:[\s\S]*\{ voice: false \}/.test(match), 'hint caption does 
 assert(!/else audio\.sayLetterName/.test(match), 'choice tap is not the letter name');
 
 const home = readFileSync(join(root, 'js/screens/home.js'), 'utf8');
-assert(/const pick = startLetter\('P'\)/.test(home), 'Home PLAY pick is startLetter P');
+assert(/const pick = nextLetter\(ctx\.kid\)/.test(home), 'Home PLAY pick is profile nextLetter');
 assert(!/\bpreviewLetters\b/.test(home), 'Home does not bind unused previewLetters');
 assert(/pressable\(playBtn[\s\S]{0,200}audio\.unlock\(\)/.test(home), 'PLAY unlocks audio');
 assert(!/audio\.speak\('Lucy!'\)/.test(home), 'Say Lucy does not speak an unmapped Lucy!');
@@ -857,6 +843,10 @@ assert(sw.includes('js/csv.js'), 'SW precaches csv.js');
 
 assert(JSON.stringify(csv.parseCsv('a,"b,c","d""e"')) === JSON.stringify([['a', 'b,c', 'd"e']]),
   'CSV parser keeps commas and quotes inside fields');
+assert(/'=SUM\(1,2\)/.test(csv.serializeCsv([['kind', 'key', 'value'], ['setting', 'className', '=SUM(1,2)']])),
+  'CSV neutralizes formula cells');
+const formulaSnap = csv.csvToSnapshot('kind,key,value\nmeta,format,rsabc-csv-v1\nsetting,roundSize,\'=3\n');
+assert(formulaSnap.settings.roundSize === '=3', 'CSV import strips the formula guard quote');
 assert(JSON.stringify(csv.parseCsv(csv.serializeCsv([['kind', 'notes'], ['kid', 'loves B, "really"']])))
   === JSON.stringify([['kind', 'notes'], ['kid', 'loves B, "really"']]),
   'CSV serialize → parse round-trips quoted notes');
@@ -1091,8 +1081,9 @@ assert(/“ah”/.test(groupText), 'small-group script gives the adult the sound
 assert(/say the letter name/.test(groupText), 'small-group script separates the name from the sound');
 assert(/PIN 1234/.test(groupText), 'small-group sheet reminds the adult of the gate PIN');
 const bankWords = byClass(group, 'wordbank')[0].childNodes.map((li) => li.textContent);
-assert(bankWords.length === 15, `word bank prints all ${bankWords.length} pool words (want 15)`);
-GAME_FLOW_WORDS.A.forEach((word) => assert(bankWords.includes(word), `word bank has ${word}`));
+const aPhonics = phonicsPool('A').map((p) => p.word);
+assert(bankWords.length === aPhonics.length, `word bank prints all ${bankWords.length} phonics words (want ${aPhonics.length})`);
+aPhonics.forEach((word) => assert(bankWords.includes(word), `word bank has ${word}`));
 const groupRows = byTag(byTag(group, 'tbody')[0], 'TR');
 assert(groupRows.length === 3, `turn-taking grid fills 3 roster rows (got ${groupRows.length})`);
 assert(byClass(group, 'who').map((td) => td.textContent).join() === 'Ava,Marcus,Sofia',
@@ -1248,48 +1239,49 @@ const guSrc2 = readFileSync(join(root, 'js/screens/grownups.js'), 'utf8');
 assert(/getKidId\(\) === kid\.id\) store\.clearKid\(\)/.test(guSrc2),
   'removing the child who is playing clears rsabc.kid on the spot');
 
-/* Celebrate's next CTA follows nextAbcIndex (or the pin), never a guess. */
+/* Celebrate's next CTA follows the child's work order (or the pin), never a guess. */
 store.reset();
+store.setClassroom(true);
+store.setKidId(kids()[0].id);
+setTeacherUnlock(1);
 store.setPinnedLetter(null);
 store.setSetting('roundSize', 3);
 round.goHome();
-store.setCursor('A');
-round.startRound({ startAt: 'A' });
-assert(round.getRound().letters.join('') === 'ABC', 'C2 round is ABC');
-assert(round.upNextLetter() === 'B', 'mid-round the next CTA is the next letter in the set');
+round.startRound({ startAt: 'S' });
+assert(round.getRound().letters.join('') === 'SAT', 'SATPIN round is SAT');
+assert(round.upNextLetter() === 'A', 'mid-round the next CTA is the next letter in the set');
+twoTap('S');
+round.nextLetter();
+assert(round.upNextLetter() === 'T', 'and it moves with the set');
 twoTap('A');
 round.nextLetter();
-assert(round.upNextLetter() === 'C', 'and it moves with the set');
-twoTap('B');
-round.nextLetter();
-twoTap('C');
+twoTap('T');
 assert(round.getRound().index === 2, 'sitting on the last letter of the round');
-assert(store.getNextAbcIndex() === 3, `nextAbcIndex is 3 (D) after A, B, C (got ${store.getNextAbcIndex()})`);
-assert(round.upNextLetter() === 'D', 'round-end CTA reads the letter off nextAbcIndex');
+assert(round.upNextLetter() === 'P', 'round-end CTA reads the next letter in cloud order');
 round.playAgain();
-assert(round.getRound().letters[0] === 'D', 'and Play again really opens that letter');
+assert(round.getRound().letters[0] === 'P', 'and Play again really opens that letter');
 
-/* A pin freezes it, anywhere in the alphabet — there is no letter left that
-   the pin could name and PLAY would then refuse to open. */
+/* A pin only counts when it is part of this child's work. */
 round.goHome();
 store.setPinnedLetter('P');
-store.setNextAbcIndex(3);
-assert(round.upNextLetter() === 'P', 'a pinned letter in the open cloud wins over the cursor');
+assert(round.upNextLetter() === 'P', 'a pinned SATPIN letter wins over the next-up letter');
 store.setPinnedLetter('E');
-assert(isAwake('E') === true, 'E is awake');
-assert(round.upNextLetter() !== 'E', 'a pin outside the open cloud does not hijack PLAY');
+assert(isAwake('E') === false, 'E is not in Cloud 1 yet');
+assert(round.upNextLetter() !== 'E', 'a pin outside Cloud 1 does not hijack PLAY');
 assert(round.previewLetters()[0] !== 'E', 'and the home strip agrees');
 store.setPinnedLetter('S');
 assert(round.upNextLetter() === 'S' && round.previewLetters()[0] === 'S',
   'a letter in the open cloud can be the letter of the day');
 store.setPinnedLetter(null);
-store.setNextAbcIndex(25);
-assert(round.upNextLetter() === 'Z', 'and a cursor parked on Z names Z, not a fallback');
+setTeacherUnlock(5);
+const wantNext = cloudOrder().find((L) => !letterCompleted(L)) || cloudOrder()[0];
+assert(profileNextLetter() === wantNext,
+  'with every cloud open, PLAY names the first incomplete letter in cloud order');
 assert(ALPHABET.every((L) => isAwake(L)), 'every letter A–Z is awake');
 
 /* The ABC Trail marks both facts, and every tile opens a round. */
 const trailSrc = readFileSync(join(root, 'js/screens/trail.js'), 'utf8');
-assert(/getPinnedLetter\(\)/.test(trailSrc), 'trail reads the pinned letter of the day');
+assert(/pinFor\(ctx\.kid\)/.test(trailSrc), 'trail reads the pinned letter of the day');
 assert(/isCurrent \? ' current' : ''/.test(trailSrc) && /isPinned \? ' pinned' : ''/.test(trailSrc),
   'current and pinned are separate tile classes');
 assert(/'aria-current': isCurrent/.test(trailSrc), 'the current tile is aria-current for screen readers');
@@ -1298,11 +1290,11 @@ assert(!/nap|asleep|sleeping/i.test(trailSrc), 'no napping branch is left on the
 assert(/startRound\(\{ startAt: entry\.letter \}\)/.test(trailSrc), 'open tiles start that letter');
 assert(/isLetterOpen\(L, ctx\.kid\)/.test(trailSrc) && /sfx\('wrong'\)/.test(trailSrc) && /wobble\(tile\)/.test(trailSrc),
   'closed tiles refuse');
-assert(/startLetter\(playStartLetter\(\)\)/.test(trailSrc),
-  'trail next letter runs playStartLetter through startLetter');
+assert(/nextLetter\(ctx\.kid\)/.test(trailSrc),
+  'trail current letter comes from profile nextLetter');
 const arcadeSrc = readFileSync(join(root, 'js/screens/arcade.js'), 'utf8');
-assert(/startLetter\(playStartLetter\(\)\)/.test(arcadeSrc),
-  'arcade start letter runs playStartLetter through startLetter');
+assert(/nextLetter\(ctx\.kid\)/.test(arcadeSrc),
+  'arcade start letter comes from profile nextLetter');
 assert(/Letters & Phonics/.test(trailSrc), 'the path is Letters & Phonics');
 assert(!/napping/.test(appSrc), '#/letter still opens a round instead of being turned away');
 const playResolve = appSrc.slice(appSrc.indexOf("if (name === 'play')"), appSrc.indexOf("if (name === 'coming')"));
@@ -1325,10 +1317,10 @@ assert(/\.trail-say \{/.test(trailCss), 'Lucy has a place to speak on the trail'
 /* Grown-Ups tells the truth about the pin: it names the word, and with no pin
    it names the letter the cursor is really sitting on. */
 assert(!/isAwake/.test(guSrc2), 'Grown-Ups has no sleeping-letter branch left to get wrong');
-assert(/previewLetters\(\)\[0\]/.test(guSrc2), 'and the family note still follows what PLAY opens');
+assert(/nextLetter\(/.test(guSrc2), 'Grown-Ups preview follows profile nextLetter');
 const roundSrc2 = readFileSync(join(root, 'js/round.js'), 'utf8');
-assert(/const first = startLetter\(playStartLetter\(\)\)/.test(roundSrc2),
-  'previewLetters runs playStartLetter through startLetter so Grown-Ups names what PLAY opens');
+assert(/nextWorkLetter/.test(roundSrc2),
+  'round preview uses profile nextLetter so Grown-Ups names what PLAY opens');
 assert(/is for \$\{pinLetter\.word\}/.test(guSrc2), 'a pinned letter is shown with its word');
 assert(/open cloud/.test(guSrc2),
   'and the unpinned note names the open cloud rather than A–D');
@@ -1583,8 +1575,9 @@ assert(/\.celebrate\.is-settled \.confetti/.test(playC4), 'settling really stops
 assert(/\.treat--worn \{/.test(playC4), 'the worn treat is marked in the pouch');
 
 const guC4 = readFileSync(join(root, 'js/screens/grownups.js'), 'utf8');
-assert(/Bonus round/.test(guC4) && /bonusMode/.test(guC4), 'Grown-Ups → Play sets the bonus');
-assert(/case match → picture match → bonus → celebrate/.test(guC4), 'and says what a letter runs');
+assert(!/Bonus round/.test(guC4), 'Grown-Ups Play panel has no bonus row');
+assert(/meet → choose → listen → payoff → celebrate/.test(guC4), 'and says what a letter runs');
+assert(/bonusMode/.test(readFileSync(join(root, 'js/csv.js'), 'utf8')), 'bonus setting still round-trips in CSV');
 
 const smokeC4 = readFileSync(join(root, '_smoke.html'), 'utf8');
 assert(/bonusMode/.test(smokeC4) && /outfit/.test(smokeC4), '_smoke.html can pin a bonus game and dress Lucy');
@@ -2397,8 +2390,11 @@ assert(store.totalStars() === 78, `26 clean letters is ${store.totalStars()} sta
 assert(store.stickers().length === 26, `one sticker per letter in the pouch (${store.stickers().length})`);
 assert(new Set(store.stickers().map((st) => st.letter)).size === 26,
   'and no letter is missing from the Star Pouch');
-assert(ALPHABET.every((L) => (e2Words.get(L) || '').charAt(0).toUpperCase() === L),
-  'every picture a child matched really starts with its letter');
+assert(ALPHABET.every((L) => {
+  const w = e2Words.get(L) || '';
+  const entry = letterEntry(L);
+  return phonicsWordOk(L, w, entry);
+}), 'every picture a child matched really carries its taught sound');
 assert(closet.unlockedTreats().length === closet.TREATS.length,
   'a clean run of the alphabet opens every treat in Lucy’s closet');
 
@@ -2448,9 +2444,9 @@ for (const L of ['A', 'M', 'Z']) {
 const e2Check = readFileSync(join(root, '_check.mjs'), 'utf8');
 [
   [/is not awake — every letter ships awake/, 'every letter ships awake'],
-  [/does not start with \$\{L\}/, 'a pool word starts with its own letter'],
+  [/phonics pool has/, 'phonics pools are gated in _check.mjs'],
   [/is on two plates/, 'no two plates share an emoji'],
-  [/is not in its own pool/, "a letter's stand-in is a plate in its own pool"],
+  [/is not the first plate of its phonics pool/, "a letter's stand-in is the first phonics plate"],
   [/is a recent emoji/, 'a stand-in is a glyph an older tablet can draw'],
   [/has no placeholder for word-/, 'every plate is on Lucy’s recording list'],
 ].forEach(([re, what]) => assert(re.test(e2Check), `_check.mjs holds the content rule: ${what}`));
@@ -2525,8 +2521,10 @@ assert(/A tiny picture story for this letter/.test(textOf(e2HomeNode)),
   'Home picnic card is a picture story, not tap-a-word leftover');
 
 const e2Stories = await import('./js/screens/stories.js');
+setTeacherUnlock(1);
+store.setPinnedLetter('P');
 assert(startLetter('P') === 'P', 'SATPIN picnic letter matches Home PLAY');
-const e2Picnic = e2Stories.picnicStory(startLetter('P'));
+const e2Picnic = e2Stories.picnicStory('P');
 assert(e2Picnic.letter === 'P', 'SATPIN picnic story is for P');
 assert(e2Picnic.pages[0].kind === 'cover' && e2Picnic.pages[0].title === "Lucy's Picnic Day",
   'picnic opens on Lucy’s Picnic Day');
@@ -2742,15 +2740,16 @@ store.setRosterOverride([{ id: 'k01', name: 'Ava', emoji: '🦊', color: '#ff8a5
 store.setKidId('k01');
 store.setPinnedLetter(null);
 store.setCursor('A');
-assert(round.previewLetters()[0] === 'A',
-  'SATPIN unpinned Grown-Ups still names the open-cloud letter');
+setTeacherUnlock(1);
+assert(round.previewLetters()[0] === profileNextLetter(),
+  'SATPIN unpinned Grown-Ups still names the next PLAY letter');
 assert(/open cloud/i.test(gu.letterOfDayNote()),
   'SATPIN Grown-Ups Play still names the open cloud');
 assert(/Open clouds/.test(textOf(gu.playPanel())),
   'SATPIN Grown-Ups Play still shows Open clouds');
 const satArcade = e2Arcade.render({ go: () => {}, kid: activeKid(), foot: () => {} });
 const satPlay = byClass(satArcade, 'play-btn')[0];
-assert(satPlay && /Start match for A/.test(satPlay.getAttribute('aria-label')),
+assert(satPlay && /Start match for S/.test(satPlay.getAttribute('aria-label')),
   'SATPIN Arcade still names the open-cloud letter');
 store.awardStars('Z', 3);
 const e2Card = printables.rosterCardSheets({ stars: true })[0];
@@ -2771,10 +2770,10 @@ store.setPinnedLetter('W');
 const e2Group = textOf(printables.groupSheet({ letter: 'W', names: false }));
 assert(/W is for Watermelon/.test(e2Group), 'the small-group sheet carries a woken letter’s anchor word');
 assert(/“wuh”/.test(e2Group), 'and gives the adult its sound');
-assert(byClass(printables.groupSheet({ letter: 'W' }), 'wordbank')[0].childNodes.length === 15,
-  'and prints all 15 of its pool words');
+assert(byClass(printables.groupSheet({ letter: 'W' }), 'wordbank')[0].childNodes.length === phonicsPool('W').length,
+  'and prints every phonics pool word');
 const e2Cert = textOf(printables.buildCertificates({ who: 'blank', letter: 'X' }).nodes[0]);
-assert(/X is for Xylophone/.test(e2Cert), 'a certificate can be printed for any letter on the trail');
+assert(/X is for Fox/.test(e2Cert), 'a certificate can be printed for any letter on the trail');
 store.setPinnedLetter(null);
 
 origReset();

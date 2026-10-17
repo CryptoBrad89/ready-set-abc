@@ -3,10 +3,10 @@ import { createLucy } from '../lucy.js';
 import { audio } from '../audio.js';
 import { store } from '../store.js';
 import { letterByChar, picturesFor, activeKid } from '../data.js';
-import { openCloud, beatsFor, pinInOpenCloud } from '../clouds.js';
+import { openCloud, beatsFor } from '../clouds.js';
 import { nextTreat, starsToNext, TREATS } from '../closet.js';
 import { startRound } from '../round.js';
-import { isArcadeLocked, startLetter, workLetters, workModeOf } from '../profile.js';
+import { isArcadeLocked, nextLetter, pinFor, roundLetters, workLetters, workModeOf } from '../profile.js';
 import { wobble } from '../motion.js';
 
 export const chrome = { tabs: true, tab: 'home', who: true };
@@ -45,7 +45,7 @@ function helloPeeks(entry) {
 function beginPlay(ctx, { startAt = null, step = 'meet', mode = 'loop' } = {}) {
   audio.unlock();
   audio.sfx('select');
-  startRound({ startAt: startAt || startLetter(), step, mode });
+  startRound({ startAt: startAt || nextLetter(), step, mode });
   ctx.go('play');
 }
 
@@ -58,13 +58,14 @@ function refuseArcade(node) {
 export function render(ctx) {
   const root = el('div', { class: 'hub' });
   const name = ctx.kid ? ctx.kid.name : 'friend';
-  const pick = startLetter('P');
+  const pick = nextLetter(ctx.kid);
   const pathLetters = workLetters(ctx.kid);
+  const after = roundLetters(pick, 2, ctx.kid)[1];
   const arcadeOff = isArcadeLocked(ctx.kid);
   const assigned = workModeOf(ctx.kid) === 'assigned';
   const pickEntry = letterByChar(pick) || { letter: pick, word: '', phoneme: '' };
   const cloud = openCloud();
-  const pin = pinInOpenCloud();
+  const pin = pinFor(ctx.kid);
   const stars = store.totalStars();
   const today = store.starsToday();
 
@@ -198,7 +199,7 @@ export function render(ctx) {
     'aria-label': `Play letter ${pick}. Tap to start sound.`,
   },
     el('span', { class: 'hub-badge' }, "Today's Star Mission"),
-    el('span', { class: 'hub-title' }, `Letters ${pick} & ${pathLetters[1] || 'A'} Workshop`),
+    el('span', { class: 'hub-title' }, after ? `Letters ${pick} & ${after} Workshop` : `Letter ${pick} Workshop`),
     el('span', { class: 'hub-sub' }, 'Meet Lucy, choose the letter, listen, then pictures.'),
     el('span', { class: 'hub-card-foot' },
       el('span', { class: 'hub-play-disc', 'aria-hidden': 'true' }, icon('play')),
