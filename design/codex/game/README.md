@@ -55,11 +55,27 @@ file URLs; it needs no server or internet. It checks B/J/X/Z at 390×844,
 768×1024 and 1440×1000 in all themes, including touch targets and horizontal
 overflow, and saves screenshots to `/tmp/lpmb-shots`. Set `PLAYWRIGHT_MODULE`
 and/or `CHROMIUM_EXECUTABLE` to existing local installations if needed.
-Browser startup is blocked in this sandbox (`Operation not permitted`);
-no screenshots or phone/tablet visual verification could be completed here.
+Use `CHROMIUM_EXECUTABLE=/usr/bin/google-chrome` when the bundled Playwright browser is unavailable. Set `BROWSER_SMOKE_SHARD` to 0–5 to run one game/viewport pair, with all three themes. Omit it for the full 18-case suite.
 
-Review guidance: Design Taste's hierarchy, spacing, consistency, focus and
-touch-target checks were applied to the A–Z additions while preserving the
-existing design. Screenshot review remains pending because of the browser
-restriction. The local Better Design skill was read; its MCP is unavailable,
-so no MCP principles or review results were retrieved.
+The child UI uses a storybook stage with chunky letter cards, finite staggered
+entrances, expressive portrait movements, sound bars during narration, and
+stamp/star reward choreography. Design Taste's playful-color and motion skills
+informed the presentation. Approved Lucy images and all audio remain unchanged.
+Animations use transform and opacity, including individual transform properties.
+Only the sound bars repeat while narration is active. Hidden tabs pause motion;
+reduced-motion preferences disable it, including hover movement.
+
+Run the motion and reduced-motion browser journeys:
+
+```sh
+CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/motion_smoke.cjs
+```
+
+This exercises both worlds at phone, tablet, and whiteboard sizes with actual
+user interactions, no audio or learning stubs, and no network requests.
+It checks entrances, replay, wrong/correct choices, collection, rapid exits,
+live reduced-motion changes, and compositor-friendly animation properties.
+Screenshots survive browser cleanup in `/tmp/lpmb-motion-shots`.
+The scoped [verification skill](tests/verify-game/SKILL.md) documents repeatable
+home, play, and reward journeys. Local-file offline behavior is covered; these
+design prototypes do not install a service worker on a hosted origin.
