@@ -2,7 +2,7 @@
 
 ## Sub-features
 
-Animated success scene, twenty-four temporary themed paper cut-outs, approved Lucy art, collected letter, word replay, another sound, home return, and cancellation of interrupted scenes.
+Animated success scene, twenty-four continuously recycled themed paper cut-outs, approved Lucy art, collected letter, word replay, another sound, home return, and cancellation of interrupted scenes.
 
 ## How to get to it (user POV)
 
@@ -17,10 +17,10 @@ After a correct `[data-answer="B"]` click, await `body[data-screen="celebrate"]`
 Repeated success for the same letter keeps collection count at one. Finite scene movement ends naturally; inspect animations immediately after the triggering action rather than after screenshots or arbitrary waits. Reduced motion must leave the reward and navigation fully usable with no sustained animation.
 
 Run `CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/confetti_smoke.cjs`
-to check painted confetti in both games, all themes, and phone/whiteboard sizes.
+to check painted confetti in all three games, all themes, and phone/whiteboard sizes.
 The helper waits for visible paper, samples independent descent and drift, then
-captures mid-fall screenshots in `/workspace/rsabc-confetti/v3/`. It verifies painted
-SVG shapes including postal hearts, four large hero pieces, slow finite fades,
-compositor-only animation, absence of SVG filters, natural cleanup, live reduced-motion cleanup,
+captures mid-fall screenshots in `/workspace/rsabc-layouts-r4/confetti/`. It verifies painted
+SVG shapes including postal hearts, four large hero pieces, continuous fall and flutter,
+compositor-only animation, absence of SVG filters, stable DOM reuse across multiple flights and replay, live reduced-motion cleanup,
 and cancellation when navigating during the fall. Counting particle nodes alone
 does not prove visibility.

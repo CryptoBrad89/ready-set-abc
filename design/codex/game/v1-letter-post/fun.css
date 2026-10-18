@@ -122,9 +122,9 @@ body[data-screen="listen"] .lucy-portrait>img,body[data-screen="match"] .lucy-po
 @keyframes play-miss-glow{0%,100%{opacity:0}45%{opacity:1}}
 @media(prefers-reduced-motion:reduce){body[data-screen="listen"] .lucy-portrait>img,body[data-screen="match"] .lucy-portrait>img{animation:none}.choice.miss-active::after{animation:none}}
 .paper-rain{position:fixed;inset:90px 4% 8%;pointer-events:none;perspective:800px}
-.paper-rain [data-paper]{position:absolute;left:var(--lane);top:var(--start);width:calc(clamp(50px,6.5vw,82px)*var(--size));aspect-ratio:1;opacity:0;animation:paper-fall var(--flight) var(--delay) cubic-bezier(.36,.1,.66,.95) both;pointer-events:none}
-.paper-flutter{display:block;width:100%;height:100%;animation:paper-flutter var(--flight) var(--delay) ease-in-out both;transform-style:preserve-3d}
-.paper-piece{display:block;width:100%;height:100%;overflow:visible;fill:var(--tone);stroke:var(--line);stroke-width:.65;stroke-linejoin:round;animation:paper-tumble var(--flight) var(--delay) ease-in-out both;transform-origin:45% 40%}
+.paper-rain [data-paper]{position:absolute;left:var(--lane);top:var(--start);width:calc(clamp(50px,6.5vw,82px)*var(--size));aspect-ratio:1;opacity:0;animation:paper-fall var(--flight) var(--delay) linear infinite both;pointer-events:none}
+.paper-flutter{display:block;width:100%;height:100%;animation:paper-flutter var(--flight) var(--delay) ease-in-out infinite both;transform-style:preserve-3d}
+.paper-piece{display:block;width:100%;height:100%;overflow:visible;fill:var(--tone);stroke:var(--line);stroke-width:.65;stroke-linejoin:round;animation:paper-tumble var(--flight) var(--delay) ease-in-out infinite both;transform-origin:45% 40%}
 .paper-fold{fill:none;stroke:var(--onaccent);stroke-width:1.7;opacity:.7}
 .paper-inset{fill:var(--surface);stroke:none;opacity:.33}
 .paper-mark{fill:var(--tone);stroke:none}

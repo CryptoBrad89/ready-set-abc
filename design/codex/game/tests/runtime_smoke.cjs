@@ -55,18 +55,21 @@ async function smoke(game) {
     window, document, Audio, queueMicrotask,
     localStorage: {getItem() {return null;}, setItem() {}}
   });
+  const scripts = [...fs.readFileSync(path.join(root, game, 'index.html'), 'utf8').matchAll(/<script src="([^"]+)"/g)].map(match => match[1]);
+  const script = name => path.resolve(root, game, scripts.find(file => path.basename(file) === name));
   for (const file of ['config.js', 'art.js']) {
-    vm.runInContext(fs.readFileSync(path.join(root, game, file), 'utf8'), context);
+    vm.runInContext(fs.readFileSync(script(file), 'utf8'), context);
   }
   context.draw = window.draw; context.ico = window.ico;
   vm.runInContext(fs.readFileSync(path.join(root, 'audio-map.js'), 'utf8'), context);
-  const source = fs.readFileSync(path.join(root, game, 'app.js'), 'utf8');
+  const source = fs.readFileSync(script('app.js'), 'utf8');
   assert(source.endsWith('})();\n'), 'Unrecognized app wrapper');
   vm.runInContext(source.slice(0, -6) + `
     window.testGame = {start, continueMatch, answer, replay, go, setTheme,
       get choices(){return choices;}, get current(){return current;}};
   })();`, context);
   const app = window.testGame;
+  const audioPath = file => file.startsWith('assets/') ? (window.CONCEPT.assetBase || 'assets') + file.slice(6) : file;
   const flush = () => new Promise(resolve => setImmediate(resolve));
   const html = () => getNode('#main').innerHTML;
   let rounds = 0;
@@ -101,14 +104,14 @@ async function smoke(game) {
       assert(getNode('.feedback').textContent.includes(letter === 'X' ? 'ends with' : 'starts with'));
       const correct = getNode(`[data-answer="${letter}"]`);
       assert(correct.classList.values.has('hint'), 'Two misses must reveal a hint');
-      assert(played.includes(window.GAME_AUDIO.words[app.current.word]), 'Hint must play the target word');
+      assert(played.includes(audioPath(window.GAME_AUDIO.words[app.current.word])), 'Hint must play the target word');
       correct.dataset.answer = letter;
       await app.answer(correct); await flush();
       assert.equal(document.body.dataset.screen, 'celebrate');
       assert(html().includes('of 26 · this visit'));
       if (letter === 'X') assert(html().includes('Fox ends with x.'));
       await app.replay(true); await flush();
-      assert.equal(played.at(-1), window.GAME_AUDIO.words[app.current.word]);
+      assert.equal(played.at(-1), audioPath(window.GAME_AUDIO.words[app.current.word]));
       const button = makeNode(); button.dataset.action = 'next';
       getNode('#main').listeners.click({target: button}); await flush();
       assert.equal(app.current.letter, alphabet[(alphabet.indexOf(letter) + 1) % 26]);
@@ -129,5 +132,5 @@ async function smoke(game) {
 }
 
 (async () => {
-  for (const game of ['v1-letter-post', 'v3-moonboat']) await smoke(game);
+  for (const game of ['v1-letter-post', 'v3-moonboat', 'v4-silk-thread']) await smoke(game);
 })().catch(error => {console.error(error); process.exitCode = 1;});

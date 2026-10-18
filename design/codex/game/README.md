@@ -1,11 +1,11 @@
-# Ready Set ABC · Letter Post + Moonboat
+# Ready Set ABC · Letter Post, Moonboat, and Silk Thread
 
 Open [index.html](index.html) directly, or serve the repository with
 `python3 -m http.server 8000` and visit `/design/codex/game/`.
-Both games work offline from local files, without a build step.
+All three games work offline from local files, without a build step.
 
-Both games now cover A–Z with the original screens, typography, palettes,
-Lucy photos, finite animations, themes, hints, replay and visit collections.
+All three games cover A–Z with the original screens, typography, palettes,
+Lucy photos, screen animations, themes, hints, replay and visit collections.
 The original envelope/planet cards scroll vertically within their shelves;
 stamp strips/constellations scroll horizontally and count up to 26. A newly
 earned letter is brought into view on the celebration screen. Collections
@@ -45,8 +45,8 @@ node design/codex/game/tests/runtime_smoke.cjs
 node design/codex/game/tests/browser_smoke.cjs
 ```
 
-The dependency-free runtime check passes 156 rounds (26 letters × 3 themes ×
-2 games), exercising actual game rendering and voice sequencing with browser
+The dependency-free runtime check passes 234 rounds (26 letters × 3 themes ×
+3 games), exercising actual game rendering and voice sequencing with browser
 APIs stubbed. It covers listen/replay, wrong answers and two-miss hints,
 celebration, next-letter wraparound, collections and mute.
 
@@ -82,8 +82,8 @@ design prototypes do not install a service worker on a hosted origin.
 
 Screen changes fade out before the next scene enters. Correct picture cards
 bounce before the reward; wrong cards wiggle with a fading soft red glow.
-Rewards add twenty-four temporary paper cut-outs, cleared when their effect ends
-or the route changes. Existing audio and approved Lucy images are unchanged.
+Rewards recycle twenty-four paper cut-outs continuously until the route changes.
+Replay keeps the same pieces falling. Reduced motion removes them. Existing audio and approved Lucy images are unchanged.
 
 Run the confetti visibility regression in Chrome:
 
@@ -91,11 +91,11 @@ Run the confetti visibility regression in Chrome:
 CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/confetti_smoke.cjs
 ```
 
-It checks both games in all three themes at phone and whiteboard sizes. Each
+It checks all three games in all three themes at phone and whiteboard sizes. Each
 correct-answer journey verifies painted SVG artwork, shape variety, independent
-fall and flutter, large hero pieces, slow finite entry and exit, cleanup, and
+fall and flutter, large hero pieces, continuous recycling, replay, theme changes, cleanup, and
 navigation. It also rejects animated layout properties and per-piece SVG filters. Chrome screenshots
-are saved mid-fall in `/workspace/rsabc-confetti/v3/`. Existing reduced-motion
+are saved mid-fall in `/workspace/rsabc-layouts-r4/confetti/`. Existing reduced-motion
 behavior remains unchanged.
 
 Letter Post scatters envelopes, perforated stamps, hearts, and paper curls. Moonboat
@@ -103,8 +103,8 @@ scatters stars, crescents, ringed planets, and curls. Twenty-four bounded descri
 set each piece's lane, delay, size, drift, and turn. Separate transform layers
 handle descent, flutter, and tumble; static folds and inset shapes give the
 SVG cut-outs a matte paper finish. Four larger pieces make the shapes easier to
-recognize. Individual falls last 3.1–3.64 seconds, with staggered starts and
-entry/exit fades. The count stays fixed at 24, and the effect uses no per-frame
+recognize. Individual falls last 3.1–3.64 seconds, with evenly distributed phases and
+entry/exit fades on every cycle. The count stays fixed at 24, and the effect uses no per-frame
 JavaScript or SVG filters. Colors use the existing world palette.
 
 Design references came from the local design-tool repos. Design Taste informed
@@ -112,3 +112,26 @@ finite transform/opacity choreography. Motion Primitives' TransitionPanel
 informed entry, visible, and exit phases. Canvas UI's Shatter informed independent
 piece tilt and scatter. UI Layouts' 3D marquee informed nested perspective and
 orientation. These ideas are implemented in vanilla CSS/JS without dependencies.
+
+
+Silk Thread reuses Letter Post's engine, artwork, motion, fonts, and approved Lucy
+assets through relative paths. Its `config.js` supplies the home view, title,
+palette labels, and asset base. Its stylesheet adapts the round-3 Silk Thread
+plate. Pink is the default, followed by Purple and Yellow. Each world keeps its
+own theme choice. Silk Thread scatters paper hearts, curls, and stars.
+
+Run the Silk Thread browser journeys and requested screenshots:
+
+```sh
+CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/silk_smoke.cjs
+```
+
+This checks all 26 completed rounds, palette persistence, 60px touch targets,
+reduced motion, and local offline resources. It checks widths 390, 1180, and
+1920 and captures every palette at 390 and 1180 in `/workspace/rsabc-layouts-r4/`.
+The chooser screenshots cover all three widths.
+
+The round-4 implementation uses Design Taste's playful-color guidance for the
+chooser hierarchy, Superdesign's spacing guidance for Silk Thread, and Motion
+Primitives' TransitionPanel and InfiniteSlider as motion references. Existing
+vanilla CSS and JavaScript implement the motion without a new dependency.
