@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "results": [
+    "Fresh file load defaults to pink.",
+    "Theme persists across file reload.",
+    "Invalid stored theme falls back to pink.",
+    "Picture selection and feedback survive theme changes. Wrong retry and keyboard-selected Sun success work.",
+    "Partial PIN survives switch. Keyboard PIN 1234 unlocks round size, retained across switch.",
+    "Voice preference and round size persist across reload.",
+    "Escape cancels pending wipe and latest hash route wins.",
+    "Reduced motion has no running CSS/Web animations or tap effects.",
+    "Blocked storage preserves initial render and live theme switching.",
+    "No uncaught page errors."
+  ],
+  "errors": []
+}

@@ -1,0 +1,28 @@
+const path = require('node:path');
+const { chromium } = require(process.env.PLAYWRIGHT_PATH || '/usr/local/lib/pnpm/5/.pnpm/playwright-core@1.59.1/node_modules/playwright-core');
+(async () => {
+  const browser = await chromium.launch({executablePath:process.env.CHROMIUM_EXECUTABLE || '/usr/bin/google-chrome',args:['--no-sandbox']});
+  const context = await browser.newContext({viewport:{width:1180,height:820},recordVideo:{dir:path.join(__dirname,'video'),size:{width:1180,height:820}}});
+  const page = await context.newPage();
+  await page.goto(`file://${path.resolve(__dirname,'../index.html')}`);
+  await page.waitForTimeout(1600);
+  await page.locator('[data-theme-choice=purple]').click();
+  await page.waitForTimeout(1800);
+  await page.locator('[data-theme-choice=yellow]').click();
+  await page.waitForTimeout(1800);
+  await page.locator('[data-theme-choice=pink]').click();
+  await page.waitForTimeout(1300);
+  await page.locator('[data-start]').click();
+  await page.waitForTimeout(1200);
+  await page.locator('[data-letter=S]').click({force:true});
+  await page.waitForTimeout(1200);
+  await page.locator('[data-choice=sun]').click();
+  await page.waitForTimeout(500);
+  await page.locator('#check').click();
+  await page.waitForTimeout(1700);
+  await page.locator('[data-theme-choice=purple]').click();
+  await page.waitForTimeout(1600);
+  await context.close();
+  console.log(await page.video().path());
+  await browser.close();
+})();
