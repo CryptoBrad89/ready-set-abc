@@ -7,6 +7,8 @@ const path = require('node:path');
 const {pathToFileURL} = require('node:url');
 const root = path.resolve(__dirname, '..'), shots = '/tmp/lpmb-shots';
 const alphabet = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
+const shard = process.env.BROWSER_SMOKE_SHARD;
+assert(shard === undefined || /^[0-5]$/.test(shard), 'BROWSER_SMOKE_SHARD must be 0 through 5');
 
 function playwright() {
   if (process.env.PLAYWRIGHT_MODULE) return require(process.env.PLAYWRIGHT_MODULE);
@@ -24,8 +26,9 @@ async function run() {
     args: ['--no-sandbox', '--disable-dev-shm-usage']});
   let cases = 0;
   try {
-    for (const game of ['v1-letter-post', 'v3-moonboat']) {
-      for (const viewport of [{width: 390, height: 844}, {width: 768, height: 1024}, {width: 1440, height: 1000}]) {
+    for (const [gameIndex, game] of ['v1-letter-post', 'v3-moonboat'].entries()) {
+      for (const [viewportIndex, viewport] of [{width: 390, height: 844}, {width: 768, height: 1024}, {width: 1440, height: 1000}].entries()) {
+        if (shard !== undefined && gameIndex * 3 + viewportIndex !== Number(shard)) continue;
         for (let theme = 0; theme < 3; theme++) {
           const context = await browser.newContext({viewport, reducedMotion: 'no-preference'});
           await context.route(/^https?:/, route => route.abort());
