@@ -1,6 +1,6 @@
 ---
 name: verify-game
-description: Drive the Ready Set ABC child-facing Letter Post, Moonboat, and Silk Thread browser games and verify learning journeys, motion, reduced motion, and offline assets. Use after changes inside design/codex/game; excludes teacher screens.
+description: Drive the Ready Set ABC child-facing Letter Post, Moonboat, and Silk Thread browser games and grown-up settings. Verify learning journeys, settings, motion, reduced motion, and offline assets after changes inside design/codex/game.
 ---
 
 ## Launch
@@ -30,3 +30,7 @@ Both helpers close their own contexts and browser in `finally`, including failed
 Invoke the JavaScript helpers with `node` using the commands above; they do not require executable permissions. Maintain this feature map alongside UI changes; `/maintain-verification-skill` provides the maintenance workflow. This skill lives under the game's tests because this branch limits all edits to `design/codex/game/`; it is loaded by its explicit path.
 
 For Silk Thread, run `CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/silk_smoke.cjs`. For continuous confetti in all worlds, run `CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/confetti_smoke.cjs`. Check paper remains visible across multiple fall cycles and replay, then disappears on navigation or a live reduced-motion change.
+
+Run `CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/grownups_smoke.cjs` for the grown-up entry check, settings, persistence, focus, filtered play, and storage failures. See [Grown-ups](features/grownups.md). Screenshots survive in `/workspace/rsabc-grownups/`.
+
+Run `CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/grownups_edges.cjs` for narrow layouts, per-world isolation, one-letter practice, invalid storage, and cancellation during audio or animation.

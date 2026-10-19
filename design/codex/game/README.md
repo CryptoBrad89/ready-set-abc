@@ -135,3 +135,35 @@ The round-4 implementation uses Design Taste's playful-color guidance for the
 chooser hierarchy, Superdesign's spacing guidance for Silk Thread, and Motion
 Primitives' TransitionPanel and InfiniteSlider as motion references. Existing
 vanilla CSS and JavaScript implement the motion without a new dependency.
+
+## Grown-ups
+
+Each world has a **Grown-ups** button in its footer. A fresh reading check
+asks for the digits shown as number words. Opening it returns play to the
+letter shelf and cancels the unfinished round. The check discourages casual
+entry by young children; it is not an account or password.
+
+Choose practice letters, sound, and the world's color theme. **Save and return**
+applies the draft. **Cancel**, **Close**, and Escape discard it. At least one
+letter must remain selected. The shelf and **Another sound** use the chosen
+letters; picture choices still draw from the full vocabulary. The visit
+summary reports pictures found and does not assess mastery.
+
+Letter and sound preferences use one validated, versioned settings record per
+world. Themes retain their existing keys. Collections still last for the
+current visit. If browser storage is unavailable, settings work for the visit
+and the game explains that limitation.
+
+Run the settings journeys and edge cases:
+
+```sh
+CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/grownups_smoke.cjs
+CHROMIUM_EXECUTABLE=/usr/bin/google-chrome node design/codex/game/tests/grownups_edges.cjs
+```
+
+Screenshots remain in `/workspace/rsabc-grownups/`. The shared dialog uses native
+modal focus behavior and the game's existing fonts. Design Taste's local
+accessibility, UX copy, and playful-color guidance informed its quiet paper
+layout, visible labels, and touch targets. Better Design was inspected, but
+its required MCP was unavailable, so no Better Design guidance or review
+results were used.

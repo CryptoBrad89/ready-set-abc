@@ -1,4 +1,4 @@
-# Child game feature map
+# Game feature map
 
 - [Home and letter shelf](home.md): all three worlds, themes, collection, A–Z keyboard navigation.
 - [Listen and picture matching](play.md): letter sounds, replay, wrong answers, hints, correct answers.
@@ -7,3 +7,5 @@
 Run `tests/motion_smoke.cjs` for motion and accessibility and `tests/browser_smoke.cjs` for the full B/J/X/Z, theme, keyboard, and hint matrix. Paths are relative to `design/codex/game/`; invoke with `node` from the repository root using that prefix.
 
 Run `tests/silk_smoke.cjs` for Silk Thread and chooser screenshots in `/workspace/rsabc-layouts-r4/`. Run `tests/confetti_smoke.cjs` for continuous rain, bounded piece reuse, palette changes, and cleanup in all three worlds.
+
+- [Grown-ups](grownups.md): protected entry, per-world settings, selected-letter practice, visit information, and storage fallback. Run `tests/grownups_smoke.cjs`.
